@@ -35,10 +35,29 @@
 
     <!-- Search and Filter Section -->
     <div class="row d-flex align-items-center" style="margin-bottom: 5px;">
-        <div class="col-md-8">
+        <div class="col-md-6">
             <!-- Search Bar -->
             <input type="text" class="form-control" placeholder="Search" ng-model="establishment.searchText"
                 ng-change="establishment.filterData()">
+        </div>
+        <div class="col-md-2">
+            <div ng-if="!establishment.isObjectEmpty(establishment.filterParams)">
+                <span class="col-md-1 ">
+                    <a ng-click="establishment.exportExcel()" uib-tooltip="Excel">
+                        <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="establishment.exportCSV()" uib-tooltip="CSV">
+                        <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="establishment.exportPDF()" uib-tooltip="PDF">
+                        <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+            </div>
         </div>
         <div class="col-md-2">
             <!-- Dropdown to select number of rows per page -->

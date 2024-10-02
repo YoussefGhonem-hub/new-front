@@ -12683,6 +12683,7 @@ html[lang="ar"] .menuList li.active a span::after {
     background: #997133;
     border: none;
     border-radius: 0.3rem;
+        width: 100%;
 }
 
 .custom-button {

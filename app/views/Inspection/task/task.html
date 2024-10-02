@@ -1,12 +1,12 @@
-﻿
-<div class="app-view-header">
+﻿<div class="app-view-header">
     {{'dashboard.home' | translate}}
     <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
 </div>
 
 <div ng-controller="taskController as task">
 
-    <div class="row" ng-if="task.user.userTypeCode == '06'">
+    <!-- Table Controls: Filters and Export Options -->
+    <div class="row">
         <div class="col-md-5">
             <div ng-if="!task.isObjectEmpty(task.filterParams)">
                 <span class="col-md-1">
@@ -26,76 +26,88 @@
                 </span>
             </div>
         </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-5">
-            <button ng-if="task.userFilters == null || task.userFilters.length == 0" class="btn btn-primary btn-md pull-right" btn-layer-morph="task.click()"
-                    btn-layer="task.filter" target="#layer-search">
-                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+
+        <div class="col-md-5 text-right">
+            <button class="btn btn-primary btn-md pull-right" btn-layer-morph="task.click()" btn-layer="task.filter"
+                target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
+                    aria-hidden="true"></em>
             </button>
-            <div ng-if="task.userFilters.length > 0" uib-dropdown="dropdown" class="btn-group mb-sm mr dropdown open pull-right">
-                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
-                    <span ng-if="task.filterParams.userFilterId == undefined">{{'general.filter' | translate}}</span>
-                    <span ng-if="task.filterParams.userFilterId != undefined && task.filterParams.userFilterId == task.defaultUserFilter.id">{{task.defaultUserFilter.name}}</span>
-                    <span ng-if="task.filterParams.userFilterId != undefined && task.filterParams.userFilterId != task.defaultUserFilter.id">{{task.selectedUserFilter.name}}</span>&nbsp;
-                    <span class="caret"></span>
-                    <span class="ripple"><span class="angular-ripple"></span></span>
-                </button>
-                <ul role="menu" class="dropdown-menu">
-                    <li>
-                        <a href="" btn-layer-morph="task.click()" btn-layer="task.filter" target="#layer-search">
-                            {{'dashboard.newFilter' | translate}}
-                        </a>
-                    </li>
-                    <li ng-repeat="userFilter in task.userFilters">
-                        <a href="" ng-click="task.userFilterData(userFilter)">{{userFilter.name}}</a>
-                    </li>
-                </ul>
-            </div>
         </div>
     </div>
 
+    <!-- Table Section -->
     <div class="row">
         <div class="col-md-12">
-            <table datatable="" ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"
-                   dt-options="task.dtApplicationOptions" dt-columns="task.dtApplicationColumns"
-                   dt-instance="task.dtApplicationInstance" width="100%" id="taskDatatable"></table>
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{'completeProfile.establishmentName' | translate}}</th>
+                        <th>{{'address.Emirate' | translate}}</th>
+                        <th>{{'address.Community' | translate}}</th>
+                        <th>{{'establishment.LicenseNumber' | translate}}</th>
+                        <th>{{'inspection.assignedTo' | translate}}</th>
+                        <th>{{'inspection.ScheduleStartingDate' | translate}}</th>
+                        <th>{{'inspection.ScheduleEndingDate' | translate}}</th>
+                        <th>{{'general.actions' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in task.tasks">
+                        <td>{{item.visits[0].establishment.nameEn}}</td>
+                        <td>{{task.getTranslatedEmirate(item.visits[0].establishment.address.community.region.id)}}</td>
+                        <td>{{task.getTranslatedCommunity(item.visits[0].establishment.address.community.id)}}</td>
+                        <td>{{item.visits[0].establishment.licenseNumber}}</td>
+                        <td>{{item.taskGroupEmployee.user.firstName}} {{item.taskGroupEmployee.user.lastName}}</td>
+                        <td>{{item.startsAt | date:'dd-MMMM-yyyy, h:mm:ss a'}}</td>
+                        <td>{{item.endsAt | date:'dd-MMMM-yyyy, h:mm:ss a'}}</td>
+                        <td class="action-icons">
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <em class="fa fa-ellipsis-v"></em>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" ng-click="task.review(item.id)">
+                                        <em class="fa fa-eye"></em> {{'general.view' | translate}}
+                                    </a>
+                                    <a class="dropdown-item" ng-click="task.edit(item.id)">
+                                        <em class="fa fa-pencil"></em> {{'general.edit' | translate}}
+                                    </a>
+                                    <a class="dropdown-item" ng-click="task.delete(item.id)">
+                                        <em class="fa fa-trash"></em> {{'general.delete' | translate}}
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
-    <!-- Layer Morph-->
-    <div class="layer-morph-overlay">
-        <div class="layer-morph-inner bg-primary"></div>
-    </div>
-    <div layer-morph-close="" class="layer-morph-close">
-        <em class="fa fa-close"></em>
-    </div>
-    <div class="layer-morph-container bg-primary">
-        <div class="layer-morph-wrapper">
-            <div id="layer-search" ng-include="'app/views/Inspection/task/filter/filterDashboard.html'" class="layer-morph"></div>
-            <!--<div id="layer-search" ng-include="'app/views/Dashboard/filter/filterDashboard.html'" class="layer-morph"></div>-->
-            <div class="row">
-                <div class="col-md-4 pull-right">
-                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="task.removeFilter(this)">
-                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
-                    </button>
-                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="task.filter(this)">
-                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
-                    </button>
-                </div>
-            </div>
-            <br /><br />
-        </div>
-    </div>
-    <!--End Layer Morph-->
-
+    <!-- Pagination Section -->
+    <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center custom-pagination">
+            <li class="page-item" ng-class="{disabled: task.pageIndex === 0}" ng-click="task.previousPage()">
+                <a class="page-link"><span aria-hidden="true">&lsaquo;</span></a>
+            </li>
+            <li class="page-item" ng-if="task.pageIndex > 2" ng-click="task.goToPage(0)">
+                <a class="page-link">1</a>
+            </li>
+            <li class="page-item" ng-if="task.pageIndex > 2"><span class="page-link">...</span></li>
+            <li class="page-item" ng-repeat="page in task.getPageRange()" ng-class="{active: page === task.pageIndex}"
+                ng-click="task.goToPage(page)">
+                <a class="page-link">{{ page + 1 }}</a>
+            </li>
+            <li class="page-item" ng-if="task.pageIndex < task.totalPages - 3"><span class="page-link">...</span></li>
+            <li class="page-item" ng-if="task.pageIndex < task.totalPages - 3"
+                ng-click="task.goToPage(task.totalPages - 1)">
+                <a class="page-link">{{ task.totalPages }}</a>
+            </li>
+            <li class="page-item" ng-class="{disabled: task.pageIndex === task.totalPages - 1}"
+                ng-click="task.nextPage()">
+                <a class="page-link"><span aria-hidden="true">&rsaquo;</span></a>
+            </li>
+        </ul>
+    </nav>
 </div>
-
-
-
-
-
-
-
-
-
-
