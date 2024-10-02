@@ -101,33 +101,52 @@
     </div>
 
 
-    <!-- Pagination Section -->
+
+
     <nav aria-label="Page navigation" class="mt-3">
-        <ul class="pagination justify-content-center">
+        <ul class="pagination justify-content-center custom-pagination">
+            <!-- Previous Button -->
             <li class="page-item" ng-class="{disabled: establishment.pageIndex === 0}"
                 ng-click="establishment.previousPage()">
-                <a class="page-link">&lsaquo;</a>
+                <a class="page-link">
+                    <span aria-hidden="true">&lsaquo;</span>
+                </a>
             </li>
+
+            <!-- First Page -->
             <li class="page-item" ng-if="establishment.pageIndex > 2" ng-click="establishment.goToPage(0)">
                 <a class="page-link">1</a>
             </li>
+
+            <!-- Ellipsis for Pages Skipped -->
             <li class="page-item" ng-if="establishment.pageIndex > 2">
                 <span class="page-link">...</span>
             </li>
+
+            <!-- Page Numbers Range -->
             <li class="page-item" ng-repeat="page in establishment.getPageRange()"
                 ng-class="{active: page === establishment.pageIndex}" ng-click="establishment.goToPage(page)">
-                <a class="page-link">{{page + 1}}</a>
+                <a class="page-link">{{ page + 1 }}</a>
             </li>
+
+            <!-- Ellipsis for Skipped Pages After -->
             <li class="page-item" ng-if="establishment.pageIndex < establishment.totalPages - 3">
                 <span class="page-link">...</span>
             </li>
+
+            <!-- Last Page -->
+            <!-- Last Page -->
             <li class="page-item" ng-if="establishment.pageIndex < establishment.totalPages - 3"
                 ng-click="establishment.goToPage(establishment.totalPages - 1)">
-                <a class="page-link">{{establishment.totalPages}}</a>
+                <a class="page-link">{{ establishment.totalPages }}</a>
             </li>
+
+            <!-- Next Button -->
             <li class="page-item" ng-class="{disabled: establishment.pageIndex === establishment.totalPages - 1}"
                 ng-click="establishment.nextPage()">
-                <a class="page-link">&rsaquo;</a>
+                <a class="page-link">
+                    <span aria-hidden="true">&rsaquo;</span>
+                </a>
             </li>
         </ul>
     </nav>
