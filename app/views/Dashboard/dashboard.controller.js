@@ -1,200 +1,208 @@
 ﻿/**=========================================================
  * Module: DashboardController.js
  =========================================================*/
-(function () {
-    'use strict';
+    (function () {
+        'use strict';
 
-    angular
-        .module('eServices')
-        .controller('DashboardController', DashboardController);
+        angular
+            .module('eServices')
+            .controller('DashboardController', DashboardController);
 
-    DashboardController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$uibModal', '$state', '$compile', 'SweetAlert', '$window'];
+        DashboardController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$uibModal', '$state', '$compile', 'SweetAlert', '$window'];
 
-    function DashboardController($rootScope, $scope, $http, $filter, $uibModal, $state, $compile, SweetAlert, $window) {
-        var vm = this;
+        function DashboardController($rootScope, $scope, $http, $filter, $uibModal, $state, $compile, SweetAlert, $window) {
+            var vm = this;
 
-        // Initialize variables
-        vm.applications = [];
-        vm.pageIndex = 0;
-        vm.pageSize = 10;
-        vm.totalPages = 0;
-        vm.searchText = '';
-        vm.sortBy = null; // No default sorting column initially
-        vm.sortDirection = null; // No default sorting direction initially
-        vm.entries = [5, 10, 20, 30, 50];
-        vm.selectedEntries = vm.entries[1];
-        vm.totalApplications = 0;
-        vm.isLoading = false; // Loader flag
+            // Initialize variables
+            vm.applications = [];
+            vm.pageIndex = 0;
+            vm.pageSize = 10;
+            vm.totalPages = 0;
+            vm.searchText = '';
+            vm.sortBy = null; // No default sorting column initially
+            vm.sortDirection = null; // No default sorting direction initially
+            vm.entries = [5, 10, 20, 30, 50];
+            vm.selectedEntries = vm.entries[1];
+            vm.totalApplications = 0;
+            vm.isLoading = false; // Loader flag
 
-        // Initialization logic
-        vm.init = function () {
-            vm.loadApplications(); // Load the applications on initialization
-        };
-
-        // Loader function
-        function loader() {
-            vm.isLoading = true;
-            var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
-                '<div class="sk-cube sk-cube1"></div>' +
-                '<div class="sk-cube sk-cube2"></div>' +
-                '<div class="sk-cube sk-cube3"></div>' +
-                '<div class="sk-cube sk-cube4"></div>' +
-                '<div class="sk-cube sk-cube5"></div>' +
-                '<div class="sk-cube sk-cube6"></div>' +
-                '<div class="sk-cube sk-cube7"></div>' +
-                '<div class="sk-cube sk-cube8"></div>' +
-                '<div class="sk-cube sk-cube9"></div>' +
-                '</div>';
-            angular.element('body').append($compile(htmlSectionLoader)($scope));
-        }
-
-        function removeLoader() {
-            angular.element('.sk-cube-grid').remove();
-            vm.isLoading = false;
-        }
-
-        // Load applications with sorting and pagination
-        vm.loadApplications = function () {
-            loader();  // Show loader while fetching data
-
-            var params = {
-                page: vm.pageIndex + 1,
-                pageSize: vm.selectedEntries,
-                searchText: vm.searchText || null,
-                sortBy: vm.sortBy, // No sorting if null
-                sortDirection: vm.sortDirection // No sorting if null
+            // Initialization logic
+            vm.init = function () {
+                vm.loadApplications(); // Load the applications on initialization
             };
 
-            $http.post($rootScope.app.httpSource + 'api/Application/GetApplications', params)
-                .then(function (response) {
-                    vm.applications = response.data.content;
-                    vm.totalApplications = response.data.totalRecords || 0;
-                    vm.totalPages = Math.ceil(vm.totalApplications / vm.selectedEntries);
-                    removeLoader();  // Remove loader after fetching data
-                }, function (error) {
-                    console.error('Error loading applications', error);
-                    removeLoader();  // Remove loader in case of error
-                });
-        };
-
-        // Sorting logic
-        vm.sortColumn = function (column) {
-            if (vm.sortBy === column) {
-                vm.sortDirection = (vm.sortDirection === 'asc') ? 'desc' : 'asc';
-            } else {
-                vm.sortBy = column;
-                vm.sortDirection = 'asc'; // Default to ascending when a column is sorted
+            // Loader function
+            function loader() {
+                vm.isLoading = true;
+                var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
+                    '<div class="sk-cube sk-cube1"></div>' +
+                    '<div class="sk-cube sk-cube2"></div>' +
+                    '<div class="sk-cube sk-cube3"></div>' +
+                    '<div class="sk-cube sk-cube4"></div>' +
+                    '<div class="sk-cube sk-cube5"></div>' +
+                    '<div class="sk-cube sk-cube6"></div>' +
+                    '<div class="sk-cube sk-cube7"></div>' +
+                    '<div class="sk-cube sk-cube8"></div>' +
+                    '<div class="sk-cube sk-cube9"></div>' +
+                    '</div>';
+                angular.element('body').append($compile(htmlSectionLoader)($scope));
             }
-            vm.loadApplications();
+
+            function removeLoader() {
+                angular.element('.sk-cube-grid').remove();
+                vm.isLoading = false;
+            }
+
+            // Load applications with sorting and pagination
+            vm.loadApplications = function () {
+                loader();  // Show loader while fetching data
+
+                var params = {
+                    page: vm.pageIndex + 1,
+                    pageSize: vm.selectedEntries,
+                    searchText: vm.searchText || null,
+                    sortBy: vm.sortBy, // No sorting if null
+                    sortDirection: vm.sortDirection // No sorting if null
+                };
+
+                $http.post($rootScope.app.httpSource + 'api/Application/GetApplications', params)
+                    .then(function (response) {
+                        vm.applications = response.data.content;
+                        vm.totalApplications = response.data.totalRecords || 0;
+                        vm.totalPages = Math.ceil(vm.totalApplications / vm.selectedEntries);
+                        removeLoader();  // Remove loader after fetching data
+                    }, function (error) {
+                        console.error('Error loading applications', error);
+                        removeLoader();  // Remove loader in case of error
+                    });
+            };
+
+      // Function to format consumedTime in whole minutes
+        vm.formatConsumedTime = function (consumedTime) {
+            if (consumedTime) {
+                return Math.floor(consumedTime) + " min";  // Round down to nearest integer
+            }
+            return "0 min";  // Return a default value if consumedTime is not available
         };
 
-        // Pagination controls
-        vm.previousPage = function () {
-            if (vm.pageIndex > 0) {
-                vm.pageIndex--;
+            // Sorting logic
+            vm.sortColumn = function (column) {
+                if (vm.sortBy === column) {
+                    vm.sortDirection = (vm.sortDirection === 'asc') ? 'desc' : 'asc';
+                } else {
+                    vm.sortBy = column;
+                    vm.sortDirection = 'asc'; // Default to ascending when a column is sorted
+                }
                 vm.loadApplications();
-            }
-        };
+            };
 
-        vm.nextPage = function () {
-            if (vm.pageIndex < vm.totalPages - 1) {
-                vm.pageIndex++;
-                vm.loadApplications();
-            }
-        };
+            // Pagination controls
+            vm.previousPage = function () {
+                if (vm.pageIndex > 0) {
+                    vm.pageIndex--;
+                    vm.loadApplications();
+                }
+            };
 
-        vm.goToPage = function (pageIndex) {
-            if (pageIndex >= 0 && pageIndex < vm.totalPages) {
-                vm.pageIndex = pageIndex;
-                vm.loadApplications();
-            }
-        };
+            vm.nextPage = function () {
+                if (vm.pageIndex < vm.totalPages - 1) {
+                    vm.pageIndex++;
+                    vm.loadApplications();
+                }
+            };
 
-        vm.getPageRange = function () {
-            var start = Math.max(0, vm.pageIndex - Math.floor(5 / 2));
-            var end = Math.min(vm.totalPages, start + 5);
-            start = Math.max(0, end - 5);
-            return Array.from({ length: end - start }, (_, i) => start + i);
-        };
+            vm.goToPage = function (pageIndex) {
+                if (pageIndex >= 0 && pageIndex < vm.totalPages) {
+                    vm.pageIndex = pageIndex;
+                    vm.loadApplications();
+                }
+            };
 
-        // Export functions (CSV, PDF, Excel)
-        vm.exportExcel = function () {
-            $http.post($rootScope.app.httpSource + 'api/Application/ExportExcel', vm.params, { responseType: 'arraybuffer' })
-                .then(function (resp) {
-                    var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
-                    saveAs(data, "ApplicationList.xlsx");
-                }, function (error) {
-                    console.error('Error exporting Excel', error);
-                });
-        };
+            vm.getPageRange = function () {
+                var start = Math.max(0, vm.pageIndex - Math.floor(5 / 2));
+                var end = Math.min(vm.totalPages, start + 5);
+                start = Math.max(0, end - 5);
+                return Array.from({ length: end - start }, (_, i) => start + i);
+            };
 
-        vm.exportCSV = function () {
-            $http.post($rootScope.app.httpSource + 'api/Application/ExportCSV', vm.params)
-                .then(function (resp) {
-                    var BOM = "\uFEFF"; // UTF-8 BOM for proper encoding
-                    var csvContent = BOM + resp.data;
-                    var myBlob = new Blob([csvContent], { type: 'text/csv' });
-                    var url = window.URL.createObjectURL(myBlob);
-                    var a = document.createElement("a");
-                    document.body.appendChild(a);
-                    a.href = url;
-                    a.download = "ApplicationList.csv";
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                }, function (error) {
-                    console.error('Error exporting CSV', error);
-                });
-        };
+            // Export functions (CSV, PDF, Excel)
+            vm.exportExcel = function () {
+                $http.post($rootScope.app.httpSource + 'api/Application/ExportExcel', vm.params, { responseType: 'arraybuffer' })
+                    .then(function (resp) {
+                        var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
+                        saveAs(data, "ApplicationList.xlsx");
+                    }, function (error) {
+                        console.error('Error exporting Excel', error);
+                    });
+            };
 
-        vm.exportPDF = function () {
-            $http.post($rootScope.app.httpSource + 'api/Application/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
-                .then(function (resp) {
-                    var data = new Blob([resp.data], { type: 'application/pdf' });
-                    saveAs(data, "ApplicationList.pdf");
-                }, function (error) {
-                    console.error('Error exporting PDF', error);
-                });
-        };
+            vm.exportCSV = function () {
+                $http.post($rootScope.app.httpSource + 'api/Application/ExportCSV', vm.params)
+                    .then(function (resp) {
+                        var BOM = "\uFEFF"; // UTF-8 BOM for proper encoding
+                        var csvContent = BOM + resp.data;
+                        var myBlob = new Blob([csvContent], { type: 'text/csv' });
+                        var url = window.URL.createObjectURL(myBlob);
+                        var a = document.createElement("a");
+                        document.body.appendChild(a);
+                        a.href = url;
+                        a.download = "ApplicationList.csv";
+                        a.click();
+                        window.URL.revokeObjectURL(url);
+                    }, function (error) {
+                        console.error('Error exporting CSV', error);
+                    });
+            };
 
-        // Review function for action buttons
-        vm.viewDetails = function (applicationId) {
-            $state.go('app.applicationDetail', { id: applicationId });
-        };
+            vm.exportPDF = function () {
+                $http.post($rootScope.app.httpSource + 'api/Application/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
+                    .then(function (resp) {
+                        var data = new Blob([resp.data], { type: 'application/pdf' });
+                        saveAs(data, "ApplicationList.pdf");
+                    }, function (error) {
+                        console.error('Error exporting PDF', error);
+                    });
+            };
 
-        // Delete an application
-        vm.delete = function (applicationId, event) {
-            var translate = $filter('translate');
-            SweetAlert.swal({
-                title: translate('general.confirmDelete'),
-                text: translate('general.confirmDeleteInfo'),
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: translate('general.confirmDeleteBtn'),
-                cancelButtonText: translate('general.restoreBtn'),
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        // Perform delete action
-                        $http.post($rootScope.app.httpSource + 'api/Application/DeleteApplication', { id: applicationId })
-                            .then(function (response) {
-                                SweetAlert.swal(translate('general.deleted'), translate('application.deleted'), "success");
-                                vm.loadApplications(); // Refresh application list
-                            }, function (error) {
-                                SweetAlert.swal(translate('general.error'), translate('application.error'), "error");
-                            });
-                    } else {
-                        SweetAlert.swal(translate('general.cancelled'), translate('general.cancelledInfo'), "success");
-                    }
-                });
-        };
+            // Review function for action buttons
+            vm.viewDetails = function (applicationId) {
+                $state.go('app.applicationDetail', { id: applicationId });
+            };
 
-        // Initialize controller by calling the init method
-        vm.init();
-    }
-})();
+            // Delete an application
+            vm.delete = function (applicationId, event) {
+                var translate = $filter('translate');
+                SweetAlert.swal({
+                    title: translate('general.confirmDelete'),
+                    text: translate('general.confirmDeleteInfo'),
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: translate('general.confirmDeleteBtn'),
+                    cancelButtonText: translate('general.restoreBtn'),
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            // Perform delete action
+                            $http.post($rootScope.app.httpSource + 'api/Application/DeleteApplication', { id: applicationId })
+                                .then(function (response) {
+                                    SweetAlert.swal(translate('general.deleted'), translate('application.deleted'), "success");
+                                    vm.loadApplications(); // Refresh application list
+                                }, function (error) {
+                                    SweetAlert.swal(translate('general.error'), translate('application.error'), "error");
+                                });
+                        } else {
+                            SweetAlert.swal(translate('general.cancelled'), translate('general.cancelledInfo'), "success");
+                        }
+                    });
+            };
+
+            // Initialize controller by calling the init method
+            vm.init();
+        }
+    })();
 
 
  

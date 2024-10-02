@@ -139,11 +139,11 @@
                     <tr ng-repeat="application in dashboard.applications">
                         <td>{{ application.applicationNumber }}</td>
                         <td>{{ application.service | localizeString }}</td>
-                        <td>{{ application..emirate | localizeString }}</td>
-                        <td>{{ application.establishmentName | localizeString }}</td>
+                        <td>{{ application.establishment.authority.emirate | localizeString }}</td>
+                        <td>{{ application.establishment | localizeString }}</td>
                         <td>{{ application.createdOn | date: 'dd-MMMM-yyyy' }}</td>
-                        <td>{{ application.applicationStatus | localizeString }}</td>
-                        <td>{{ application.timeConsumed }}</td>
+                        <td>{{ application.applicationDetails[0].applicationStatus | localizeString }}</td>
+                        <td>{{ dashboard.formatConsumedTime(application.applicationDetails[0].consumedTime) }}</td>
                         <td class="action-icons">
                             <button class="btn btn-link" ng-click="dashboard.viewDetails(application.id)">
                                 <em class="fa fa-search"></em>
