@@ -5,9 +5,9 @@
         .module('eServices')
         .controller('EmployeesController', EmployeesController);
 
-    EmployeesController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$timeout'];
+    EmployeesController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$timeout', '$compile'];
 
-    function EmployeesController($rootScope, $scope, $http, $filter, $timeout) {
+    function EmployeesController($rootScope, $scope, $http, $filter, $timeout, $compile) {
         var vm = this;
 
         // Initialize variables
@@ -22,9 +22,34 @@
         vm.entries = [5, 10, 20, 30, 50];  // Options for entries per page
         vm.selectedEntries = vm.entries[1];  // Default selected entry size (10)
         vm.totalUsers = 0;
+        vm.isLoading = false; // Loader flag
+
+        // Loader function
+        function loader() {
+            vm.isLoading = true;
+            var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
+                '<div class="sk-cube sk-cube1"></div>' +
+                '<div class="sk-cube sk-cube2"></div>' +
+                '<div class="sk-cube sk-cube3"></div>' +
+                '<div class="sk-cube sk-cube4"></div>' +
+                '<div class="sk-cube sk-cube5"></div>' +
+                '<div class="sk-cube sk-cube6"></div>' +
+                '<div class="sk-cube sk-cube7"></div>' +
+                '<div class="sk-cube sk-cube8"></div>' +
+                '<div class="sk-cube sk-cube9"></div>' +
+                '</div>';
+            angular.element('body').append($compile(htmlSectionLoader)($scope));
+        }
+
+        function removeLoader() {
+            angular.element('.sk-cube-grid').remove();
+            vm.isLoading = false;
+        }
 
         // Load employees based on current page, search, and entry settings
         vm.loadEmployees = function () {
+            loader();  // Show loader while fetching data
+
             var params = {
                 page: vm.pageIndex + 1,  // API is 1-based, while pageIndex is 0-based
                 pageSize: vm.selectedEntries,  // Number of entries per page
@@ -38,8 +63,10 @@
                     vm.users = response.data.content;
                     vm.totalUsers = response.data.totalRecords || 0;
                     vm.totalPages = Math.ceil(vm.totalUsers / vm.selectedEntries);  // Update total pages based on the selected entry size
+                    removeLoader();  // Remove loader after fetching data
                 }, function (error) {
                     console.error('Error loading employees', error);
+                    removeLoader();  // Remove loader in case of error
                 });
         };
 
@@ -87,6 +114,7 @@
         vm.loadEmployees();
     }
 })();
+
 
 
 
