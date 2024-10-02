@@ -1,0 +1,55 @@
+{
+  "_from": "angular-signalr-hub",
+  "_id": "angular-signalr-hub@1.6.3",
+  "_inBundle": false,
+  "_integrity": "sha1-lq8A+3iIjS/kN5wFk/LFNKz+D2w=",
+  "_location": "/angular-signalr-hub",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "angular-signalr-hub",
+    "name": "angular-signalr-hub",
+    "escapedName": "angular-signalr-hub",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-signalr-hub/-/angular-signalr-hub-1.6.3.tgz",
+  "_shasum": "96af00fb78888d2fe4379c0593f2c534acfe0f6c",
+  "_spec": "angular-signalr-hub",
+  "_where": "E:\\Work\\ng-Mask",
+  "author": {
+    "name": "Justin Maier",
+    "email": "just.maier@gmail.com",
+    "url": "http://justinmaier.com"
+  },
+  "bugs": {
+    "url": "https://github.com/justmaier/angular-signalr-hub/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "A handy wrapper for SignalR Hubs. Just specify the hub name, listening functions, and methods that you're going to use.",
+  "devDependencies": {},
+  "homepage": "https://github.com/justmaier/angular-signalr-hub",
+  "keywords": [
+    "angular",
+    "angularjs",
+    "signalr",
+    "hub",
+    "service"
+  ],
+  "license": "MIT",
+  "main": "signalr-hub.js",
+  "name": "angular-signalr-hub",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/justmaier/angular-signalr-hub.git"
+  },
+  "version": "1.6.3"
+}

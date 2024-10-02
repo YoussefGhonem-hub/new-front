@@ -1,0 +1,34 @@
+body {
+  padding: 0px;
+  margin: 0px;
+}
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Lato', sans-serif;
+  min-height: 100vh;
+  min-width: 100%;
+  background: #222;
+}
+.page > h1 {
+  font-weight: 300 !important;
+  color: #fff;
+  font-size: 44px;
+
+}
+.circles-container {
+  min-height: 400px;
+  width: 80%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;  
+}
+@media screen and (max-width: 400px){
+  .circles-container {
+    min-height: 820px;
+    width: 100%;
+    flex-direction: column;
+  }
+}

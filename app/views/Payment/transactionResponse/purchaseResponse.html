@@ -1,0 +1,54 @@
+﻿     <!-- START panel-->
+
+<div class="app-view-header">
+    {{'transactionResponse.pageTitle' | translate}}
+</div>
+<div class="panel panel-primary">
+    <div class="panel-body">
+        <div>
+            <div class="container-fluid" ng-controller="purchaseResponseController as vm">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row form-group">                        
+                        <label class="col-sm-3 control-label">{{'transactionResponse.Status' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.orderStatusDesc(vm.purchaseResponse.orderStatus)}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.purchaseResponse.checkoutStatus && vm.purchaseResponse.orderStatus == null">
+                        <label class="col-sm-3 control-label"> {{'transactionResponse.Status' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.getCheckoutStatus(vm.purchaseResponse.checkoutStatus)}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.purchaseResponse.amount">
+                        <label class="col-sm-3 control-label">{{'transactionResponse.Amount' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.purchaseResponse.amount}} {{'transactionResponse.AED' | translate}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.purchaseResponse.orderNumber">
+                        <label class="col-sm-3 control-label">{{'transactionResponse.OrderNumber' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.purchaseResponse.orderNumber}} </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.purchaseResponse.urn">
+                        <label class="col-sm-3 control-label">{{'transactionResponse.urn' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.purchaseResponse.urn}} </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.purchaseResponse.paymentDate">
+                        <label class="col-sm-3 control-label">{{'transactionResponse.paymentDate' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.purchaseResponse.paymentDate | date: 'dd-MMMM-yyyy'}} </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.purchaseResponse.receiptUrl">
+                        <label class="col-sm-3 control-label">{{'transactionResponse.receipt' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <a href="/Reports/PaymentReceipt/{{vm.purchaseResponse.receiptUrl}}" target="_blank">
+                                <em class="fa fa-print" style="cursor:pointer" uib-tooltip="{{'transactionResponse.receipt' | translate}}"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

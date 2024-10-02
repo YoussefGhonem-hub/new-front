@@ -1,0 +1,387 @@
+﻿<div ng-controller="ReviewNewspaperMagazineLicenseController as vm">
+    <div class="app-view-header">
+        {{'newspaperMagazineLicense.heading' | translate}}<br /> <small>{{vm.license.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="vm.license.applicationDetail.application.user.userProfiles[0]" applicant-user="vm.license.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="vm.license.applicationDetail.application.establishment" application-detail="vm.license.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary">
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="vm.license.applicationDetail.application.establishment.id" establishment-id="vm.license.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                </uib-accordion-heading>
+
+
+
+
+
+
+
+
+                <div class="row form-group" ng-if="vm.license.applicationDetail.applicationTypeId == 5 || vm.license.applicationDetail.applicationTypeId == 4">
+                    <label class="col-sm-3 control-label">{{'changePartners.initialApproval' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.license.initialApprovalUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{vm.license.initialApprovalUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.license.initialApprovalUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.license.initialApprovalUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{vm.license.initialApprovalUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.license.applicationDetail.applicationTypeId == 5">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="changePartners.partnerList"></h3>
+                            <p>
+                                <establishment-partners-list ng-if="vm.license.applicationDetail.application.establishment.id" for-service="false"
+                                                             media-license-partners="vm.license.mediaLicensePartnerUpdates"
+                                                             establishment-id=vm.license.applicationDetail.application.establishment.id></establishment-partners-list>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div class="row">
+                    <div class="col-sm-12"><h4 style="margin-left: 15px;">{{'newspaperMagazineLicense.stepOne' | translate}}</h4></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.type' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].isMagazine? ('newspaperMagazineLicense.magazineOption' | translate) : ('newspaperMagazineLicense.newspaperOption' | translate)}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.reasonType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].releaseType | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="!vm.license.newspapers[0].isElectronic">
+                    <label class="col-sm-3 control-label">{{'newspaper.periodicalType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].periodicalType | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.license.newspapers[0].isElectronic">
+                    <label class="col-sm-3 control-label">{{'newspaper.newspaperUrl' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].url}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'printingPermit.subject' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="category in vm.license.newspapers[0].newspaperSubjectCategories">{{category.newspaperCategory | localizeString}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.license.newspapers[0].ownerApprovalUrl">
+                    <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.OwnerApproval' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.license.newspapers[0].ownerApprovalUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{vm.license.newspapers[0].ownerApprovalUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.license.newspapers[0].ownerApprovalUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.license.newspapers[0].ownerApprovalUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.license.newspapers[0].ownerApprovalUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.license.newspapers[0].registrationUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'newspaper.uploadRegistration' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.license.newspapers[0].registrationUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{vm.license.newspapers[0].registrationUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.license.newspapers[0].registrationUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.license.newspapers[0].registrationUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.license.newspapers[0].registrationUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="newspaper.languageList"></h3>
+                            <p>
+                                <div class="row">
+                                    <div class="col-md-12" ng-if="vm.languageItemsDt.dtOptions">
+                                        <table datatable="" class="row-border hover" dt-options="vm.languageItemsDt.dtOptions" dt-columns="vm.languageItemsDt.dtColumns"
+                                               dt-instance="vm.languageItemsDt.dtInstance" width="100%"></table>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+                <div class="row form-group">
+                    <h4 class="col-sm-3 control-label">{{'newspaper.address' | translate}}</h4>
+                </div>
+                <div class="row form-group" ng-if="vm.license.newspapers[0].address.emirate">
+                    <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].address.emirate | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.license.newspapers[0].address.region">
+                    <label class="col-sm-3 control-label">{{'address.Region' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].address.region | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'address.Community' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].address.community | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'address.Street' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.license.newspapers[0].address.street}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div ng-if="vm.license.newspapers[0].releaseTypeId == 1">
+                    <div class="row form-group">
+                        <hr />
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12"><h4 style="margin-left: 15px;">{{'newspaperMagazineLicense.stepTwo' | translate}}</h4></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.mobileNumber' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].phoneNumber}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].workPhone">
+                        <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.workPhone' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].workPhone}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.email' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].email}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.qualification' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].qualification | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.UploadYourQualification' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="vm.license.chiefEditors[0].qualificationCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.license.chiefEditors[0].qualificationCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{vm.license.chiefEditors[0].qualificationCopyUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.license.chiefEditors[0].qualificationCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.license.chiefEditors[0].qualificationCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.yearsOfExperience' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].yearsOfExperience}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.Nationality' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].person.country | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].person.emiratesId">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.EmiratesId' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].person.emiratesId | translate}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].person.passportNumber">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].person.passportNumber | translate}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label" ng-if="vm.license.chiefEditors[0].person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' | translate}}</label>
+                        <label class="col-sm-3 control-label" ng-if="vm.license.chiefEditors[0].person.passportNumber">{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].person.name | translate}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].person.title}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].person.gender | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].person.dateOfBirth | date: 'longDate'}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadYourPhoto' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="vm.license.chiefEditors[0].person.photoUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.license.chiefEditors[0].person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{vm.license.chiefEditors[0].person.photoUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.license.chiefEditors[0].person.photoUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.license.chiefEditors[0].person.photoUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].person.emiratesId">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadEmiratesId' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="vm.license.chiefEditors[0].person.emiratesIdCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.license.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{vm.license.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.license.chiefEditors[0].person.emiratesIdCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.license.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].person.passportCopyUrl">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="vm.license.chiefEditors[0].person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.license.chiefEditors[0].person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{vm.license.chiefEditors[0].person.passportCopyUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.license.chiefEditors[0].person.passportCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.license.chiefEditors[0].person.passportCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].person.iqamaUrl">
+                        <label class="col-sm-3 control-label" ng-if="vm.license.chiefEditors[0].person.country.isoCode2 !== 'AE'">{{'profileNationalityDirective.UploadVisa' | translate}}</label>
+                        <label class="col-sm-3 control-label" ng-if="vm.license.chiefEditors[0].person.country.isoCode2 == 'AE'">{{'profileNationalityDirective.UploadKholasa' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="vm.license.chiefEditors[0].person.iqamaUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a href="{{vm.license.chiefEditors[0].person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{vm.license.chiefEditors[0].person.iqamaUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.license.chiefEditors[0].person.iqamaUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.license.chiefEditors[0].person.iqamaUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath">
+                        <label class="col-sm-3 control-label">{{'journalists.UploadAcquaintanceForm' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="vm.license.chiefEditors[0].person.acquitanceFormUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.license.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{vm.license.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}" alt="aquintance" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.license.chiefEditors[0].person.acquitanceFormUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.license.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].address.emirate">
+                        <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].address.emirate | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.license.chiefEditors[0].address.region">
+                        <label class="col-sm-3 control-label">{{'address.Region' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].address.region | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'address.Community' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].address.community | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'address.Street' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{vm.license.chiefEditors[0].address.street}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <service-fee ng-model="vm.serviceFees" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="vm.license.applicationDetail" application="vm.license.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

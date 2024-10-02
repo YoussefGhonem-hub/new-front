@@ -1,0 +1,85 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="mediaMaterial.addNewMaterial"></h4>
+</div>
+<div class="modal-body">
+    <form role="form" class="mb-lg form-horizontal" name="mediaMaterialItemForm">
+        <div class="row form-group" ng-if="!(user.userTypeCode == '07' && beneficiaryTypeId == 2)">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.materialType' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="mediaMaterial.materialType" validator="required" theme="bootstrap" class="text-left" name="materialType">
+                    <ui-select-match placeholder="{{'mediaMaterial.materialType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="mType in mediaMaterial.materialTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="mType | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="user.userTypeCode == '07' && beneficiaryTypeId == 2">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.materialType' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="mediaMaterial.customMaterial" theme="bootstrap" validator="required" name="printedType" class="text-left">
+                    <ui-select-match placeholder="{{'mediaMaterial.materialType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="customMaterial in mediaMaterial.customMaterials | propsFilter: {nameAr: $select.search, nameEn: $select.search, hsCode: $select.search}">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <span class="text-bold">{{'mediaMaterial.materialType' | translate}}</span>
+                            </div>
+                            <div class="col-md-8">
+                                <span ng-bind-html="customMaterial | localizeString | highlight: $select.search"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <small>{{'mediaMaterial.hsCode' | translate}}</small>
+                            </div>
+                            <div class="col-md-8">
+                                <small ng-bind-html="customMaterial.hsCode | highlight: $select.search"></small>
+                            </div>
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="mediaMaterial.materialType.id != 8 && mediaMaterial.materialType.id != 17 && mediaMaterial.materialType.id != 24 &&
+             mediaMaterial.materialType.id != 14 && mediaMaterial.materialType.id != 21 && mediaMaterial.materialType.id != 28">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.titleName' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input type="text" ng-model="mediaMaterial.title" placeholder="{{'mediaMaterial.titleName' | translate}}" autocomplete="off" class="form-control" name="title"
+                       validator="required" />
+            </div>
+        </div>
+        <div class="row form-group" ng-if="mediaMaterial.materialType.id != 8 && mediaMaterial.materialType.id != 17 && mediaMaterial.materialType.id != 24 &&
+             mediaMaterial.materialType.id != 14 && mediaMaterial.materialType.id != 21 && mediaMaterial.materialType.id != 28">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.language' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="mediaMaterial.language" validator="required" theme="bootstrap" class="text-left" name="language">
+                    <ui-select-match placeholder="{{'mediaMaterial.language' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="language in mediaMaterial.languages | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="language | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.numberOfTitles' | translate}}</span></label>
+            <div class="col-sm-4">
+                <input type="number" ng-model="mediaMaterial.numberOfItems" placeholder="{{'mediaMaterial.numberOfTitles' | translate}}" autocomplete="off" class="form-control"
+                       name="numberOfItems" validator="required" />
+            </div>
+        </div>
+
+        <div class="row form-group" ng-if="mediaMaterial.materialType.id == 8 || mediaMaterial.materialType.id == 17 || mediaMaterial.materialType.id == 24">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.weight' | translate}}</span></label>
+            <div class="col-sm-4">
+                <input type="number" ng-model="mediaMaterial.weight" placeholder="{{'mediaMaterial.weightInKg' | translate}}" autocomplete="off" class="form-control"
+                       name="weight" validator="required" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()" validation-submit="mediaMaterialItemForm" class="btn btn-primary" data-translate="general.save"></button>
+    <button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

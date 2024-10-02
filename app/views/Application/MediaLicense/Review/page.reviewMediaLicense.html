@@ -1,0 +1,258 @@
+﻿<div ng-controller="ReviewMediaLicenseController as mediaCtl">
+    <div class="app-view-header">
+        {{'mediaLicense.newMediaLicense' | translate}} <span class="text-warning text-md">{{mediaCtl.mediaLicenses.applicationDetail.applicationType | localizeString}}</span>
+        <br /> <small>{{mediaCtl.mediaLicenses.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="mediaCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0]" is-for-social-media ="mediaCtl.isIndividualSocialMedia" applicant-user="mediaCtl.mediaLicenses.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br ng-if='mediaCtl.userTypeCode !="01"' />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='mediaCtl.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="mediaCtl.mediaLicenses.applicationDetail.application.establishment" application-detail="mediaCtl.mediaLicenses.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br ng-if='mediaCtl.userTypeCode !="01"' />
+            <uib-accordion-group is-open="mediaCtl.partnerOpen" panel-class="panel-primary" ng-if='mediaCtl.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': mediaCtl.partnerOpen, 'glyphicon-chevron-right': !mediaCtl.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="mediaCtl.mediaLicenses.applicationDetail.application.establishment.id" establishment-id="mediaCtl.mediaLicenses.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="mediaCtl.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': mediaCtl.applicationOpen, 'glyphicon-chevron-right': !mediaCtl.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group" ng-if="mediaCtl.mediaLicenses.applicationDetail.applicationStatusId != 4 || mediaCtl.mediaLicenses.applicationDetail.applicationTypeId == 3 ||
+                     mediaCtl.mediaLicenses.applicationDetail.applicationTypeId == 4">
+                    <label class="col-sm-3 control-label">{{'mediaLicense.activities' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="activity in mediaCtl.mediaLicenses.mediaLicenseEconomicActivities">{{activity.economicActivity | localizeString}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="mediaCtl.mediaLicenses.applicationDetail.applicationTypeId == 5 || mediaCtl.mediaLicenses.applicationDetail.applicationTypeId == 4">
+                    <label class="col-sm-3 control-label">{{'changePartners.initialApproval' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="mediaCtl.mediaLicenses.initialApprovalUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{mediaCtl.mediaLicenses.initialApprovalUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{mediaCtl.mediaLicenses.initialApprovalUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="mediaCtl.mediaLicenses.initialApprovalUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{mediaCtl.mediaLicenses.initialApprovalUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="mediaCtl.mediaLicenses.applicationDetail.applicationTypeId == 5">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="changePartners.partnerList"></h3>
+                            <p>
+                                <establishment-partners-list ng-if="mediaCtl.mediaLicenses.applicationDetail.application.establishment.id" for-service="false"
+                                                             media-license-partners="mediaCtl.mediaLicenses.mediaLicensePartnerUpdates"
+                                                             establishment-id=mediaCtl.mediaLicenses.applicationDetail.application.establishment.id></establishment-partners-list>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="mediaCtl.mediaLicenses.applicationDetail.applicationStatusId == 4 && mediaCtl.mediaLicenses.applicationDetail.applicationTypeId != 3 &&
+                     mediaCtl.mediaLicenses.applicationDetail.applicationTypeId != 4">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="mediaLicense.activities"></h3>
+                            <div class="row">
+                                <div class="col-md-12" ng-if="mediaCtl.teamMemberDt.dtOptions">
+                                    <table datatable="" class="row-border hover" dt-options="mediaCtl.teamMemberDt.dtOptions" dt-columns="mediaCtl.teamMemberDt.dtColumns"
+                                           dt-instance="mediaCtl.teamMemberDt.dtInstance" width="100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-repeat="mediaLicenseEconomicActivity in mediaCtl.mediaLicenses.mediaLicenseEconomicActivities">
+                    <external-media-account ng-model="mediaLicenseEconomicActivity" is-review="true"
+                                            ng-if="mediaLicenseEconomicActivity.mediaLicenseEconomicActivityExternalMediaAccounts.length > 0"></external-media-account>
+                </div>
+                <div ng-if="mediaCtl.mediaLicenses.person && !mediaCtl.isBothPersonSame">
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.Nationality' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{mediaCtl.mediaLicenses.person.country | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="mediaCtl.mediaLicenses.person.emiratesId">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.EmiratesId' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{mediaCtl.mediaLicenses.person.emiratesId}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="mediaCtl.mediaLicenses.person.passportNumber">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{mediaCtl.mediaLicenses.person.passportNumber}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label" ng-if="mediaCtl.mediaLicenses.person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' | translate}}</label>
+                        <label class="col-sm-3 control-label" ng-if="mediaCtl.mediaLicenses.person.passportNumber">{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{mediaCtl.mediaLicenses.person.name}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{mediaCtl.mediaLicenses.person.title}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{mediaCtl.mediaLicenses.person.gender | localizeString}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">{{mediaCtl.mediaLicenses.person.dateOfBirth | date: 'longDate'}}</div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadYourPhoto' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="mediaCtl.mediaLicenses.person.photoUrlFullPath.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{mediaCtl.mediaLicenses.person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{mediaCtl.mediaLicenses.person.photoUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="mediaCtl.mediaLicenses.person.photoUrlFullPath.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{mediaCtl.mediaLicenses.person.photoUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="mediaCtl.mediaLicenses.person.emiratesId">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadEmiratesId' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="mediaCtl.mediaLicenses.person.emiratesIdCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{mediaCtl.mediaLicenses.person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{mediaCtl.mediaLicenses.person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="mediaCtl.mediaLicenses.person.emiratesIdCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{mediaCtl.mediaLicenses.person.emiratesIdCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="mediaCtl.mediaLicenses.person.passportNumber">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="mediaCtl.mediaLicenses.person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{mediaCtl.mediaLicenses.person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{mediaCtl.mediaLicenses.person.passportCopyUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="mediaCtl.mediaLicenses.person.passportCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{mediaCtl.mediaLicenses.person.passportCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="mediaCtl.mediaLicenses.person.passportCopyUrl">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="mediaCtl.mediaLicenses.person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a href="{{mediaCtl.mediaLicenses.person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{mediaCtl.mediaLicenses.person.passportCopyUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="mediaCtl.mediaLicenses.person.chiefEditors[0].passportCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{mediaCtl.mediaLicenses.person.passportCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="mediaCtl.mediaLicenses.person.iqamaUrl">
+                        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadVisa' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="mediaCtl.mediaLicenses.person.iqamaUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a href="{{mediaCtl.mediaLicenses.person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{mediaCtl.mediaLicenses.person.iqamaUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="mediaCtl.mediaLicenses.person.iqamaUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{mediaCtl.mediaLicenses.person.iqamaUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                    <div class="row form-group" ng-if="mediaCtl.mediaLicenses.person.acquaintanceFormCopyUrlFullPath">
+                        <label class="col-sm-3 control-label">{{'journalists.UploadAcquaintanceForm' | translate}}</label>
+                        <div class="col-sm-7 form-control-static">
+                            <div ng-if="mediaCtl.mediaLicenses.person.acquitanceFormUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{mediaCtl.mediaLicenses.person.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{mediaCtl.mediaLicenses.person.acquaintanceFormCopyUrlFullPath}}" alt="aquintance" />
+                                </a>
+                            </div>
+                            <a ng-if="mediaCtl.mediaLicenses.person.acquitanceFormUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{mediaCtl.mediaLicenses.person.acquaintanceFormCopyUrlFullPath}}">
+                                <em class="fa fa-5x fa-file-pdf-o"></em>
+                            </a>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <service-fee ng-model="mediaCtl.serviceFees" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="mediaCtl.mediaLicenses.isOpen" panel-class="panel-warning" class="form-horizontal" ng-if='mediaCtl.user.userTypeCode =="06"' ng-show="mediaCtl.mediaLicenses.isShow">
+                <uib-accordion-heading>
+                    {{'inspection.inspectionReport' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': mediaCtl.mediaLicenses.isOpen, 'glyphicon-chevron-right': !mediaCtl.mediaLicenses.isOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <!--<inspection-report ng-model="mediaCtl.mediaLicenses"></inspection-report>-->
+                <inspection-history ng-model="mediaCtl.mediaLicenses.applicationDetail.application.establishment.id" ng-if='mediaCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0].userType.code !="01"' has-vists="mediaCtl.mediaLicenses.isShow" full-details="false"></inspection-history>
+                <inspection-history ng-model="mediaCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0].id" ng-if='mediaCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0].userType.code =="01"' has-vists="mediaCtl.mediaLicenses.isShow" full-details="false"></inspection-history>
+
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="mediaCtl.mediaLicenses.applicationDetail" application="mediaCtl.mediaLicenses.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,203 @@
+﻿<div class="app-view-header">
+    {{'mediaLicense.cancelActivity' | translate}}
+</div>
+<div class="container-fluid" ng-controller="CancelMediaActivityController as mediaCtl">
+
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <br /><br />
+            <div class="wizard">
+                <ul class="steps-bar">
+                    <li ng-class="{'active':mediaCtl.activeStep >= 1}">
+                        <label ng-if="!mediaCtl.isIndividual">{{'mediaLicense.stepOne' | translate}}</label>
+                        <label ng-if="mediaCtl.isIndividual">{{'mediaLicense.stepOneIndividual' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':mediaCtl.activeStep >= 2}">
+                        <label>{{'mediaLicense.stepTwo' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':mediaCtl.activeStep >= 3}" ng-if="!mediaCtl.isIndividual">
+                        <label>{{'mediaLicense.stepThree' | translate}}</label>
+                    </li>
+                </ul>
+                <br />
+                <div ng-if="mediaCtl.activeStep==1" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                        <div class="row form-group" ng-if="!mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <establishment ng-model="mediaCtl.mediaLicenses.applicationDetail.application.establishment" is-preview="true"></establishment>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <profile-nationality ng-model="mediaCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0].person" is-require-third-party="true"></profile-nationality>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.goToSecondStep()"
+                                        validation-submit="stepOneForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="mediaCtl.activeStep==2" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'changePartners.initialApproval' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <uploading-files copyUrl="mediaCtl.mediaLicenses.initialApprovalUrl" copyUrlFullPath="mediaCtl.mediaLicenses.initialApprovalUrlFullPath"
+                                                 url="mediaCtl.uploadInitialApprovalUrl" isrequired="true"></uploading-files>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="box-placeholder b0 bg-gray-lighter">
+                                    <h3 data-translate="mediaLicense.activities"></h3>
+                                    <div class="row">
+                                        <div class="col-md-12" ng-if="mediaCtl.activitiesDt.dtOptions">
+                                            <table datatable="" class="row-border hover" dt-options="mediaCtl.activitiesDt.dtOptions" dt-columns="mediaCtl.activitiesDt.dtColumns"
+                                                   dt-instance="mediaCtl.activitiesDt.dtInstance" width="100%"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <service-fee ng-model="mediaCtl.serviceFeesObj"></service-fee>
+                            </div>
+                        </div>
+                        <uib-alert type="danger" ng-if="mediaCtl.showChooseOneActivity">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{'mediaLicense.chooseOneActivity' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-alert>
+                        <uib-alert type="danger" ng-if="mediaCtl.showCancelLicenseAlert">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{'mediaLicense.cancelLicense' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-alert>
+                        <div class="row" ng-if="mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <terms ng-model="mediaCtl.terms" ng-if="!mediaCtl.editMode" name="terms"></terms>
+                            </div>
+                        </div>
+                        <customer-pulse ng-if="mediaCtl.showHappinessMeter" ng-model="mediaCtl.happinessMeterObj"></customer-pulse>
+                        <hr />
+                        <div class="row" ng-if="mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <button type="button" ripple="" validation-submit="stepTwoForm" ng-if="!mediaCtl.editMode"
+                                        ng-disabled="mediaCtl.isBusy || !mediaCtl.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.save(2)">
+                                    {{'general.apply' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" ripple="" validation-submit="stepTwoForm" ng-if="!mediaCtl.editMode"
+                                        ng-disabled="mediaCtl.isBusy|| !mediaCtl.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="mediaCtl.save(1)">
+                                    {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                </button>
+                                <div uib-dropdown="dropdown" class="btn-group mr pull-right" ng-if="mediaCtl.editMode">
+                                    <button uib-dropdown-toggle="" ng-disabled="mediaCtl.isBusy" class="btn btn-primary dropdown-toggle">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                    <ul role="menu" class="dropdown-menu animated zoomIn">
+                                        <li ng-repeat="transition in mediaCtl.mediaLicenses.applicationDetail.applicationState.transitions">
+                                            <a href="" ng-click="mediaCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="mediaCtl.previousToFirstStep()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="!mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.goToThirdStep()"
+                                        validation-submit="stepTwoForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="mediaCtl.previousToFirstStep()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="mediaCtl.activeStep==3" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                        <hr />
+                        <div class="row form-group" ng-if="mediaCtl.requireAquitanceForm == true">
+                            <div class="col-md-12">
+                                <div class="alert alert-warning" data-translate="general.requireAquitance"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box-placeholder b0 bg-gray-lighter">
+                                    <h3 data-translate="general.licenseOwners"></h3>
+                                    <div class="row">
+                                        <div class="col-md-12" ng-if="mediaCtl.dtPartnerOptions">
+                                            <table datatable="" class="row-border hover" dt-options="mediaCtl.dtPartnerOptions" dt-columns="mediaCtl.dtPartnerColumns"
+                                                   dt-instance="mediaCtl.dtPartnerInstance" width="100%"></table>
+                                        </div>
+                                    </div>
+                                    <div class="row"><br /></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <terms ng-model="mediaCtl.terms" ng-if="!mediaCtl.editMode" name="terms"></terms>
+                            </div>
+                        </div>
+                        <customer-pulse ng-if="mediaCtl.showHappinessMeter" ng-model="mediaCtl.happinessMeterObj"></customer-pulse>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" ripple="" validation-submit="stepThreeForm" ng-disabled="mediaCtl.isBusy || !mediaCtl.terms.isAgreed"
+                                        class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.save(2)">
+                                    {{'general.apply' | translate}}<span class="ripple"></span>
+                                </button>
+                                <div uib-dropdown="dropdown" class="btn-group mr pull-right" ng-if="mediaCtl.user.userTypeCode == '06'">
+                                    <button uib-dropdown-toggle="" ng-disabled="mediaCtl.isBusy" class="btn btn-primary dropdown-toggle">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                    <ul role="menu" class="dropdown-menu animated zoomIn">
+                                        <li ng-repeat="transition in mediaCtl.mediaLicenses.applicationDetail.applicationState.transitions">
+                                            <a href="" ng-click="mediaCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="mediaCtl.previousToSecondStep()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

@@ -1,0 +1,115 @@
+﻿<div ng-controller="ReviewCirculationMediaMaterialController as vm">
+    <div class="app-view-header">
+        {{'CirculationMediaMaterial.pageTitle' | translate}}<br /> <small>{{vm.CirculationMediaMaterial.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="vm.CirculationMediaMaterial.applicationDetail.application.user.userProfiles[0]" applicant-user="vm.CirculationMediaMaterial.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="vm.CirculationMediaMaterial.applicationDetail.application.establishment" application-detail="vm.CirculationMediaMaterial.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary">
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="vm.CirculationMediaMaterial.applicationDetail.application.establishment.id" establishment-id="vm.CirculationMediaMaterial.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.title' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.title}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.mediaMaterialType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.artistWorkType.mediaMaterialType | localizeString}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.type' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.artistWorkType | localizeString}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.language' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.language | localizeString}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.duration' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.durationInMinutes}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.source' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.country | localizeString}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrightsType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.copyrightsType | localizeString}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrightsStartingDate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.copyrightsStartDate | date: 'dd-MMMM-yyyy'}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrightsEndingDate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationMediaMaterial.copyrightsEndDate | date: 'dd-MMMM-yyyy'}}</div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrights' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.CirculationMediaMaterial.copyrightsCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{vm.CirculationMediaMaterial.copyrightsCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.CirculationMediaMaterial.copyrightsCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.CirculationMediaMaterial.copyrightsCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.CirculationMediaMaterial.copyrightsCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <service-fee ng-model="vm.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="vm.CirculationMediaMaterial.applicationDetail" application="vm.CirculationMediaMaterial.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END panel-->
+    </div>
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,173 @@
+<div ng-controller="BookCardController as bookCard">
+    <div class="app-view-header">
+        {{'bookCard.header' | translate}}<br /> <small>{{bookCard.book.isbn}}</small>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel panel-default" role="option">
+                <div class="panel-heading portlet-handler"></div>
+                <div class="panel-body form-horizontal">
+                    <div class="row form-group" ng-if="bookCard.book.authorName">
+                        <label class="col-sm-4 control-label">{{'printingPermit.authorName' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">{{bookCard.book.authorName}}</div>
+                    </div>
+                    <div class="row form-group" ng-if="bookCard.book.title">
+                        <label class="col-sm-4 control-label">{{'printingPermit.bookTitle' | translate }}</label>
+                        <div class="col-sm-8 form-control-static">{{bookCard.book.title}}</div>
+                    </div>
+                    <div class="row form-group" ng-if="bookCard.book.isbn">
+                        <label class="col-sm-4 control-label">{{'printingPermit.isbn' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">{{bookCard.book.isbn}}</div>
+                    </div>
+                    <div class="row form-group" ng-if="bookCard.printingPermit.book.nationalDepositoryNo">
+                        <label class="col-sm-4 control-label">{{'printingPermit.nationalDepositoryNo' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">{{bookCard.book.nationalDepositoryNo}}</div>
+                    </div>
+                    <div class="row form-group" ng-if="bookCard.book.printYear">
+                        <label class="col-sm-4 control-label">{{'printingPermit.printYear' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">{{bookCard.book.printYear}}</div>
+                    </div>
+                    <div class="row form-group" ng-if="bookCard.book.versionNumber">
+                        <label class="col-sm-4 control-label">{{'printingPermit.versionNumber' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">{{bookCard.book.versionNumber}}</div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-4 control-label">{{'printingPermit.languages' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">
+                            <ul>
+                                <li ng-repeat="language in bookCard.book.bookLanguages">{{language.language | localizeString}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-4 control-label">{{'printingPermit.subject' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">
+                            {{bookCard.book.subjectCategory | localizeString}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel panel-default" role="option">
+                <div class="panel-heading portlet-handler">OPEN LIBRARY INFO</div>
+                <div class="panel-body form-horizontal" style="min-height:282px">
+                    <div ng-if="bookCard.openBookLibraryBook">
+                        <div class="col-md-4">
+                            <img ng-src="{{bookCard.openBookLibraryBook.cover.medium}}" />
+                        </div>
+                        <div class="col-md-8">
+                            <div class="row form-group" ng-if="bookCard.openBookLibraryBook.title">
+                                <label class="col-sm-5 control-label">{{'printingPermit.bookTitle' | translate }}</label>
+                                <div class="col-sm-7 form-control-static">{{bookCard.openBookLibraryBook.title}}</div>
+                            </div>
+                            <div class="row form-group" ng-if="bookCard.openBookLibraryBook.authors.length > 0">
+                                <label class="col-sm-5 control-label">{{'printingPermit.authorName' | translate }}</label>
+                                <ul class="col-sm-7 form-control-static">
+                                    <li ng-repeat="author in bookCard.openBookLibraryBook.authors">{{author.name}}</li>
+                                </ul>
+                            </div>
+                            <div class="row form-group" ng-if="bookCard.openBookLibraryBook.number_of_pages">
+                                <label class="col-sm-5 control-label">{{'bookCard.number_of_pages' | translate }}</label>
+                                <div class="col-sm-7 form-control-static">{{bookCard.openBookLibraryBook.number_of_pages}}</div>
+                            </div>
+                            <div class="row form-group" ng-if="bookCard.openBookLibraryBook.publish_date">
+                                <label class="col-sm-5 control-label">{{'bookCard.publish_date' | translate}}</label>
+                                <div class="col-sm-7 form-control-static">{{bookCard.openBookLibraryBook.publish_date}}</div>
+                            </div>
+                            <div class="row form-group" ng-if="bookCard.openBookLibraryBook.publish_places.length > 0">
+                                <label class="col-sm-5 control-label">{{'bookCard.publish_places' | translate}}</label>
+                                <ul class="col-sm-7 form-control-static">
+                                    <li ng-repeat="place in bookCard.openBookLibraryBook.publish_places">{{place.name}}</li>
+                                </ul>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-5 control-label">{{'bookCard.publishers' | translate}}</label>
+                                <ul class="col-sm-7 form-control-static">
+                                    <li ng-repeat="publisher in bookCard.openBookLibraryBook.publishers">{{publisher.name}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="!bookCard.openBookLibraryBook" class="text-center">
+                        <i class="fa fa-exclamation-circle fa-12x" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4">
+            <div ng-class="'panel-' + app.theme.name" class="panel panel-primary">
+                <div class="panel-heading">
+                    <div ng-class="'bg-' + app.theme.name" class="panel-title bg-primary" style="padding-top:5px">
+                        <span class="pull-right"><em class="fa fa-flag fa-lg text-muted"></em></span>{{'mediaMaterialApproval.controllerReport' | translate }}
+                    </div>
+                </div>
+                <div class="panel-body pt0">
+                    <div class="smoothy" style="height:150px">
+                        <br />
+                        <ul class="chat">
+                            <li class="left clearfix">
+                                <span class="chat-img pull-left">
+                                    <img src="app/img/user/01.jpg" alt="Image" class="img-circle thumb48">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="chat-header">
+                                        <a href="" class="text-inverse">
+                                            <strong>Test</strong>
+                                        </a>
+                                        <small class="pull-right text-muted">
+                                            <span class="fa fa-time"></span>12m
+                                        </small>
+                                    </div>
+                                    <div class="chat-msg">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-4 col-sm-4 col-xs-4">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body">
+                            <h1 class="text-thin mt">{{bookCard.numberOfApplications}}</h1>
+                            <div class="text-right text-sm text-muted">{{'bookCard.numberOfApplications' | translate}}</div>
+                        </div>
+                        <span class="ripple"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-xs-4">
+                    <div ripple="" class="panel panel-default">
+                        <div ng-class="'bg-' + app.theme.name" class="panel-body bg-primary">
+                            <h1 class="text-thin mt">{{bookCard.book.numberOfItems}}</h1>
+                            <div class="text-right text-sm text-muted">{{'bookCard.numberOfCopies' | translate}}</div>
+                        </div>
+                        <span class="ripple"></span>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-sm-4 col-xs-4">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body">
+                            <h4 class="text-thin mt" ng-if="bookCard.book.isApproved">{{'bookCard.approvedBook' | translate}}</h4>
+                            <h4 class="text-thin mt" ng-if="!bookCard.book.isApproved">{{'bookCard.pendingBook' | translate}}</h4>
+                            <br />
+                            <div class="text-right text-sm text-muted">{{'printingPermit.bookStatus' | translate}}</div>
+                        </div>
+                        <span class="ripple"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default" role="option">
+                <div class="panel-heading portlet-handler"></div>
+                <div class="panel-body form-horizontal">
+                    <table datatable="" class="row-border hover" dt-options="bookCard.dtApplicationOptions" dt-columns="bookCard.dtApplicationColumns"
+                           dt-instance="bookCard.dtApplicationInstance" width="100%" id="dashboardDatatable"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

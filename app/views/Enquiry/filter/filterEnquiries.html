@@ -1,0 +1,233 @@
+﻿<div class="container form-horizontal" ng-controller="filterEnquiriesController as filterCtrl">
+    <label class="text-hg text-white" data-translate="dashboard.lookingFor"></label>
+    <br /><br /><br /><br />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'address.Emirate' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.emirates" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'address.Emirate' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="emirate in filterCtrl.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="emirate | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="filterCtrl.filter.emirates.length == 0 || filterCtrl.filter.emirates == null">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'address.Region' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.regions" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'address.Region' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="office in filterCtrl.regions | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="filterCtrl.filter.emirates.length > 0">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'address.Region' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.regions" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'address.Region' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="office in filterCtrl.regions | filterByEmirate: filterCtrl.filter.emirates">
+                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'dashboard.serviceCategories' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.serviceCategories" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'dashboard.serviceCategories' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="office in filterCtrl.serviceCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="filterCtrl.filter.serviceCategories.length == 0 || filterCtrl.filter.serviceCategories == null">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'dashboard.services' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.services" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'dashboard.services' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="office in filterCtrl.services | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" ng-if="filterCtrl.filter.serviceCategories.length > 0">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'dashboard.services' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.services" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'dashboard.services' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="office in filterCtrl.services | filterByCategory: filterCtrl.filter.serviceCategories">
+                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'enquiries.enquirySource' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.enquirySources" name="enquirySource" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'enquiries.enquirySource' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="enquirySource in filterCtrl.enquirySources | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="enquirySource | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'enquiries.enquiryType' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.enquiryTypes" name="enquiryType" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'enquiries.enquiryType' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="enquiryType in filterCtrl.enquiryTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="enquiryType | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'enquiries.priority' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.priorities" name="priority" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'enquiries.priority' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="priority in filterCtrl.priorities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="priority | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'enquiries.department' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.departments" name="department" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'enquiries.department' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="department in filterCtrl.departments | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="department | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'dashboard.fromCreatedOn' | translate}}</label>
+                <div class="col-sm-8">
+                    <p class="input-group hackyhack">
+                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.fromCreatedOn"
+                               is-open="filterCtrl.fromCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
+                        <span class="input-group-btn">
+                            <button type="button" ng-click="filterCtrl.openFromCreatedOn($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'dashboard.toCreatedOn' | translate}}</label>
+                <div class="col-sm-8">
+                    <p class="input-group hackyhack">
+                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.toCreatedOn"
+                               is-open="filterCtrl.toCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
+                        <span class="input-group-btn">
+                            <button type="button" ng-click="filterCtrl.openToCreatedOn($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'dashboard.applicationStatuses' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.enquiryStatuses" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'dashboard.applicationStatuses' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="office in filterCtrl.applicationStatuses | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white text-uppercase">{{'dashboard.consumedTime' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.calculatedEnquiryStatuses" name="calculatedEnquiryStatuses" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'dashboard.actions' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="action in filterCtrl.applicationStatuses | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="action | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label class="col-sm-6 control-label text-white">{{'dashboard.saveFilter' | translate}}</label>
+            <div class="col-sm-2">
+                <label class="switch switch-lg switch-warning">
+                    <input type="checkbox" ng-model="filterCtrl.filter.saveFilter" ng-checked="filterCtrl.filter.saveFilter == true"
+                           ng-disabled="filterCtrl.filter.emirates == null && filterCtrl.filter.regions == null && filterCtrl.filter.serviceCategories == null &&
+                           filterCtrl.filter.services == null && filterCtrl.filter.enquirySources == null && filterCtrl.filter.enquiryTypes == null &&
+                           filterCtrl.filter.priorities == null && filterCtrl.filter.departments == null && filterCtrl.filter.fromCreatedOn == null &&
+                           filterCtrl.filter.toCreatedOn == null && filterCtrl.filter.enquiryStatuses == null && filterCtrl.filter.calculatedApplicationStatuses == null ">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <label class="col-sm-4 control-label text-white"><span>{{'dashboard.saveWithName' | translate}}</span></label>
+            <div class="col-sm-8">
+                <input ng-model="filterCtrl.filter.name" type="text" placeholder="{{'dashboard.saveWithName' | translate}}" autocomplete="off" class="form-control" validator="required"
+                       name="fullName" maxlength="120" ng-disabled="!filterCtrl.filter.saveFilter" />
+            </div>
+        </div>
+    </div>
+    <br /><br /><br />
+</div>

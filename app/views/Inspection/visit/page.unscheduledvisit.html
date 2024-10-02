@@ -1,0 +1,381 @@
+﻿<div class="app-view-header">
+    زيارة غير مجدولة
+</div>
+<div class="container-fluid" ng-controller="unscheduledvisitController as vm">
+
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'visit.visitIndividualorOrg' | translate}}</label>
+                    <div class="col-md-8">
+                        <label class="switch switch-lg">
+                            <input type="checkbox" ng-checked="vm.visitIndividual == true" ng-model="vm.visitIndividual">
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="row form-group" ng-if="vm.visitIndividual">
+                    <label class="col-sm-3 control-label">{{('users.email' | translate)}}</label>
+                    <div class="col-md-4">
+                        <input ng-model="user.email" type="email" autocomplete="off" class="form-control" validator="required" name="email"
+                               placeholder="{{('users.email' | translate)}}" ng-blur="findByEmail()" />
+                    </div>
+                    <div class="col-md-4">
+                        <div ng-if="foundUserProfile && foundUserProfile.length>0">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-md-8">
+                                    <span>{{'visit.userProfileFound' | translate}}</span>
+                                    <i class="fa fa-check-circle" style="color:green;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="(!foundUserProfile || foundUserProfile.length<1) && user.email != ''">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-md-8">
+                                    <span>{{'visit.userNotRegistred' | translate}}</span>
+                                    <i class="fa fa-exclamation-circle" style="color:red;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row form-group" ng-if="!vm.visitIndividual">
+                    <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                    <div class="col-md-8">
+                        <ui-select ng-model="establishment.establishmentEmirate" theme="bootstrap" validator="required" name="establishmentEmirate" class="text-left">
+                            <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="row form-group" ng-if="!vm.visitIndividual">
+                    <label class="col-sm-3 control-label">{{('completeProfile.LicenseNumber' | translate)}}</label>
+                    <div class="col-md-4">
+                        <input ng-model="establishment.licenseNumber" type="text" autocomplete="off" class="form-control" validator="required" name="licenseNumber" maxlength="12"
+                               placeholder="{{('completeProfile.LicenseNumber' | translate)}}" ng-blur="findByLicenseNumber()" />
+                    </div>
+                    <div class="col-md-4">
+                        <div ng-if="foundEstablishments && foundEstablishments.length>0">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-md-8">
+                                    <span>تم العثور على النشأة</span>
+                                    <i class="fa fa-check-circle" style="color:green;"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-if="(!foundEstablishments || foundEstablishments.length<1) && establishment.licenseNumber != ''">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"></label>
+                                <div class="col-md-8">
+                                    <span>المنشأة غير مسجلة بالنظام</span>
+                                    <i class="fa fa-exclamation-circle" style="color:red;"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="foundEstablishments && foundEstablishments.length>0">
+
+                    <label class="col-sm-3 control-label"> بيانات الرخصة</label>
+                    <div class="col-md-8">
+                        <div class="row form-group text-center panel animated fadeInUp" ng-repeat="e in foundEstablishments">
+
+                            <table border="0" style="width:100%;height:100%;text-align:right;">
+                                <tr>
+                                    <td rowspan="3" style="width:100px; padding:5px;">
+                                        <button class="btn btn-warning btn-md pull-left" ng-click="inspectEstablishment(e)">
+                                            <em class="fa fa-2x fa-user-secret" aria-hidden="true"></em>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><strong>{{e.nameEn}}</strong></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-rss-square"></i>
+                                        <small class="text"> <b>{{e.licenseNumber}}</b> &nbsp; {{e.authority.nameAr}}</small>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-map-marker"></i>
+                                        <small class="text-muted">{{e.address.community.nameAr}} - {{e.address.street}}</small>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-phone-square"></i>
+                                        <small class="text-muted">{{e.address.phoneNumber}}</small>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--<label class="col-md-3 control-label"></label>
+                            <div class="col-md-8 card-md">
+                                <div class="col-md-1" style="padding:0px;">
+                                    <button class="btn btn-warning btn-md pull-left" ng-click="inspectEstablishment(e)">
+                                        <em class="fa fa-2x fa-user-secret" aria-hidden="true"></em>
+                                    </button>
+                                </div>
+                                <div class="col-md-10">
+                                    <div class="media-heading">
+                                        <div class="col-md-12 row">
+                                            <a href="">
+                                                <strong>{{e.nameEn}}</strong>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-4 row">
+                                            <i class="fa fa-rss-square"></i>
+                                            <small class="text"> <b>{{e.licenseNumber}}</b> &nbsp; {{e.authority.nameAr}}</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa fa-map-marker"></i>
+                                            <small class="text-muted">{{e.address.community.nameAr}} - {{e.address.street}}</small>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <i class="fa fa-phone-square"></i>
+                                            <small class="text-muted">{{e.address.phoneNumber}}</small>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="(!foundEstablishments || foundEstablishments.length<1) && establishment.licenseNumber != ''">
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>إسم المنشاة عربي</span></label>
+                        <div class="col-md-8">
+                            <input ng-model="establishment.nameAr" type="text" placeholder="{{'completeProfile.establishmentName' | translate}}" autocomplete="off" class="form-control"
+                                   validator="required" name="fullName" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>إسم المنشاة اجليزي</span></label>
+                        <div class="col-md-8">
+                            <input ng-model="establishment.nameEn" type="text" placeholder="{{'completeProfile.establishmentName' | translate}}" autocomplete="off" class="form-control"
+                                   validator="required" name="fullName" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'completeProfile.Authority' | translate}}</span></label>
+                        <div class="col-md-8">
+                            <ui-select ng-model="establishment.authority" theme="bootstrap" class="text-left" validator="required" name="Authority">
+                                <ui-select-match placeholder="{{'completeProfile.SelectAuthority' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                <ui-select-choices repeat="authority in establishment.establishmentEmirate.authorities | filter:{isShown: true} | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                    <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{ ('completeProfile.UploadLicenseCopy' | translate)}}</label>
+                        <div class="col-md-8">
+                            <uploading-files copyurl="establishment.licenseCopyUrl" isrequired="false" copyurlfullpath="establishment.licenseCopyUrlFullPath" url="licenseUrl"></uploading-files>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">
+                            {{'completeProfile.UploadTenancyContract' | translate}}
+                        </label>
+                        <div class="col-md-8">
+                            <uploading-files copyurl="establishment.tenancyContractCopyUrl" isrequired="false" copyurlfullpath="establishment.tenancyContractCopyUrlFullPath" url="tenancyUrl"></uploading-files>
+                        </div>
+                    </div>
+
+
+                    <div class="row form-group">
+                        <hr />
+                        <label class="col-sm-1 control-label">
+                        </label>
+                        <div class="col-md-8">
+                            <profile-address establishment-emirate="establishment.establishmentEmirate" ng-model="establishment.address" is-establishment="true"></profile-address>
+                        </div>
+                    </div>
+
+
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-md-8">
+                            <button class="btn btn-warning btn-md pull-left" ng-click="insertEstablishment()">
+                                <span>حفظ</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="foundUserProfile && foundUserProfile.length>0">
+
+                    <label class="col-sm-3 control-label">{{'visit.userProfileData' | translate}}</label>
+                    <div class="col-md-8">
+                        <div class="row form-group text-center panel animated fadeInUp" ng-repeat="e in foundUserProfile">
+
+                            <table border="0" style="width:100%;height:100%;text-align:right;">
+                                <tr>
+                                    <td rowspan="3" style="width:100px; padding:5px;">
+                                        <button class="btn btn-warning btn-md pull-left" ng-click="inspectUser(e)">
+                                            <em class="fa fa-2x fa-user-secret" aria-hidden="true"></em>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <i class="fa fa-regular fa-user"></i>
+                                        <strong>{{e.person.name}}</strong>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-regular fa-id-card"></i>
+                                        <small class="text"> <b>{{e.person.emiratesId}}</b> &nbsp; {{e.authority.nameAr}}</small>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-map-marker"></i>
+                                        <small class="text-muted">{{e.address.community.nameAr}} - {{e.address.street}}</small>
+                                    </td>
+                                    <td>
+                                        <i class="fa fa-phone-square"></i>
+                                        <small class="text-muted">{{e.user.phoneNumber}}</small>
+                                    </td>
+                                    <td>
+                                        <img style="height:100px;width:100px;" ng-src="{{photoUrl}}" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="(!foundUserProfile || foundUserProfile.length<1) && user.email != ''">
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.firstName' | translate}}</span></label>
+                        <div class="col-md-8">
+                            <input ng-model="user.firstName" type="text" placeholder="{{'register.firstName' | translate}}" autocomplete="off" class="form-control"
+                                   validator="required" name="firstName" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.lastName' | translate}}</span></label>
+                        <div class="col-md-8">
+                            <input ng-model="user.lastName" type="text" placeholder="{{'register.lastName' | translate}}" autocomplete="off" class="form-control"
+                                   validator="required" name="lastName" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.mobile' | translate}}</span></label>
+                        <div class="col-md-4">
+                            <ui-select ng-model="user.country" theme="bootstrap" ng-disabled="disabled">
+                                <ui-select-match>
+                                    <div class="col-md-4">
+                                        <img class="img-responsive" style="max-height:23px;" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                    </div>
+                                    <div class="col-md-5 mobileHideName" style="padding-top:3px;">
+                                        <span class="text-sm pull-right">{{$select.selected | localizeString}}</span>
+                                    </div>
+                                    <div class="col-md-3 mobileHideName">
+                                        <span style="direction:ltr !important; float:left !important">(+{{$select.selected.phoneCode}})</span>
+                                    </div>
+                                </ui-select-match>
+                                <ui-select-choices repeat="country in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search, phoneCode: $select.search}">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img class="img-responsive" ng-src="../src/imgs/Countries/{{country.isoCode2}}.png" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div ng-bind-html="country | localizeString | highlight: $select.search"></div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <small data-translate="country.countryCode"></small>: <small ng-bind-html="country.isoCode3 | highlight: $select.search"></small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <small data-translate="country.phoneCode"></small>: <small ng-bind-html="country.phoneCode | highlight: $select.search"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group has-feedback">
+                                <input ng-model="user.phoneNumber" name="Mobile" type="tel" placeholder="{{'register.mobile' | translate}}" autocomplete="off" class="form-control"
+                                       validator="required, phoneNumber" valid-callback="validMobileNumber()"
+                                       invalid-callback="invalidMobileNumber()" valid-method="blur" ng-keypress="preventLeadingZero()" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.email' | translate}}</span></label>
+                        <div class="col-md-8">
+                            <input ng-model="user.email" name="Email" type="email" placeholder="{{'register.email' | translate}}" autocomplete="off" class="form-control"
+                                   validator="required, email" valid-method="blur" />
+                            <div ng-if="emailAlreadyTaken" style="color: #f34235; font-size:11px" data-translate="register.emailTaken"></div>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="(user.country.isoCode2 !== undefined && user.country.isoCode2 == 'AE')">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.EmiratesId' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <input ng-model="user.emiratesId" type="text" placeholder="784-9999-9999999-9" ng-change="checkEmiratesIdExist(user.emiratesId)"
+                                   autocomplete="off" class="form-control" validator="required" name="emiratesId" restrict="reject" mask="784-9999-9999999-9" />
+                            <div ng-if="emiratesIdExist" style="color: #f34235; font-size:11px" data-translate="completeProfile.EmritIdIsRepeated"></div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.password' | translate}}</span></label>
+                        <div class="col-md-8">
+                            <input id="Password" ng-model="user.password" name="Password" type="password" placeholder="{{'register.passwordError' | translate}}" autocomplete="off"
+                                   class="form-control ok-password" valid-method="blur" validator="required, password"
+                                   ng-class="(joinTeamForm.password.$dirty && joinTeamForm.password.$invalid) ? 'error' : ''" />
+                            <div id="meter" class="strength-meter">
+                                <div class="strength-meter-fill" data-strength="{{passwordStrength}}"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.passwordRetype' | translate}}</span></label>
+                        <div class="col-md-8">
+                            <input ng-model="user.confirmPassword" name="PasswordRetype" type="password" placeholder="{{'register.passwordRetype' | translate}}"
+                                   autocomplete="off" class="form-control ok-password" validator="required"
+                                   ng-class="(joinTeamForm.confirmPassword.$dirty && joinTeamForm.confirmPassword.$invalid) ? 'error' : ''" />
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-md-8">
+                            <button class="btn btn-warning btn-md pull-left" ng-click="insertUser()" validation-submit="Form">
+                                <span>{{'general.submit' | translate}}</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+

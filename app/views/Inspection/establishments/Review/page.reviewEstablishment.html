@@ -1,0 +1,58 @@
+﻿<div class="container-fluid" ng-controller="ReviewEstablishmentController as vlCtl">
+    <div class="app-view-header">
+        {{'establishment.reviewEstablishment' | translate}}
+    </div>
+
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="!vlDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.open, 'glyphicon-chevron-right': !vlDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="vlCtl.establishment"></applicant-establishment>
+            </uib-accordion-group>    
+        </uib-accordion>
+
+        <div class="panel panel-default">
+
+
+    <uib-accordion>
+    <uib-accordion-group is-open="vlCtl.estDetisOpen" panel-class="panel-info" class="form-horizontal">
+        <uib-accordion-heading>
+            بيانات المنشأه والترخيص
+            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlCtl.estDetisOpen, 'glyphicon-chevron-right': !vlCtl.estDetisOpen}"></i>
+        </uib-accordion-heading>
+        <license-summary ng-model="vlCtl.establishment.id" full-details="true"></license-summary>
+    </uib-accordion-group>
+    <uib-accordion-group is-open="vlCtl.estMlOpen" panel-class="panel-warning" class="form-horizontal">
+        <uib-accordion-heading>
+            زيارات التفتيش السابقة
+            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlCtl.estMlOpen, 'glyphicon-chevron-right': !vlCtl.estMlOpen}"></i>
+        </uib-accordion-heading>
+        <div ng-if="vlCtl.establishmentHasPrevVists">
+            <inspection-history ng-model="vlCtl.establishment.id" has-vists="vlCtl.establishmentHasPrevVists" full-details="true"></inspection-history>
+        </div>
+        <div ng-if="!vlCtl.establishmentHasPrevVists">
+            <div class="alert alert-info">
+                <p>
+                    <em class="fa fa-info-circle"></em>
+                    لا يوجد زيارات سابقة
+                </p>
+            </div>
+        </div>
+    </uib-accordion-group>
+</uib-accordion>
+
+
+</div>
+    </div>
+</div>
+<div id="blueimp-gallery" class="blueimp-gallery" data-hide-page-scrollbars="false">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

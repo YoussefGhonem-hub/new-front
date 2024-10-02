@@ -1,0 +1,16 @@
+﻿<div class="box-placeholder b0 bg-gray-lighter">
+    <h3 data-translate="visit.retainedMaterials"></h3>
+    <p>
+        <div class="row" ng-if="!isReview">
+            <div class="col-md-12">
+                <div class="btn btn-warning pull-right" ng-click="open('lg')">{{'visit.addretainedMaterials' | translate}}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" ng-if="dtMaterialOptions">
+                <table datatable="" class="row-border hover" dt-options="dtMaterialOptions" dt-columns="dtMaterialColumns" dt-instance="dtMaterialInstance" width="100%"></table>
+            </div>
+        </div>
+        <div class="row"><br /></div>
+    </p>
+</div>

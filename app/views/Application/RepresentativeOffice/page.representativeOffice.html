@@ -1,0 +1,106 @@
+﻿<div class="app-view-header">
+    {{'representativeOffice.pageTitle' | translate}}
+</div>
+<div class="container-fluid" ng-controller="RepresentativeOfficeController as ppCtl">
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row"><br /></div>
+                <div class="row" ng-if="ppCtl.user.userTypeCode != '01' && ppCtl.user.userTypeCode != '03'">
+                    <div class="col-md-3 col-xs-1"></div>
+                    <div class="col-md-6 col-xs-10">
+                        <div class="row">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.establishmentName' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.representativeOfficeModel.applicationDetail.application.establishment | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.TenancyContract' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.representativeOfficeModel.applicationDetail.application.establishment.tenancyContractEndDate | amDateFormat:'DD-MMMM-YYYY'}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.Authority' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.representativeOfficeModel.applicationDetail.application.establishment.authority | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.representativeOfficeModel.applicationDetail.application.establishment.licenseNumber}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-1"></div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row form-group">
+                    <div class="col-sm-12">
+                        <establishment ng-model="ppCtl.representativeOfficeModel.establishment" is-foreigner="true"></establishment>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="photoEquipment.equipmentTeam"></h3>
+                            <p>
+                                <div class="btn btn-warning pull-right" ng-click="ppCtl.teamMemberDt.open('lg')">{{'photoEquipment.addNewMember' | translate}}</div>
+                                <div class="row">
+                                    <div class="col-md-12" ng-if="ppCtl.teamMemberDt.dtOptions">
+                                        <table datatable="" class="row-border hover" dt-options="ppCtl.teamMemberDt.dtOptions" dt-columns="ppCtl.teamMemberDt.dtColumns"
+                                               dt-instance="ppCtl.teamMemberDt.dtInstance" width="100%"></table>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"><br /></div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <service-fee ng-model="ppCtl.serviceFeesObj"></service-fee>
+                    </div>
+                </div>
+                <br />
+                <terms ng-model="ppCtl.terms" ng-if="!ppCtl.editMode" name="terms" class="col-sm-12"></terms>
+                <customer-pulse ng-if="ppCtl.showHappinessMeter" ng-model="ppCtl.happinessMeterObj"></customer-pulse>
+                <hr />
+                <div class="row" ng-if="!ppCtl.editMode">
+                    <div class="col-md-12">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="ppCtl.isBusy || !ppCtl.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="ppCtl.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="ppCtl.isBusy|| !ppCtl.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="ppCtl.save(1)">
+                            {{'general.applyLater' | translate}}<span class="ripple"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-if="ppCtl.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                            <button uib-dropdown-toggle="" ng-disabled="ppCtl.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                            <ul role="menu" class="dropdown-menu animated zoomIn">
+                                <li ng-repeat="transition in ppCtl.photographyPermitModel.applicationDetail.applicationState.transitions">
+                                    <a href="" ng-click="ppCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END panel-->
+</div>

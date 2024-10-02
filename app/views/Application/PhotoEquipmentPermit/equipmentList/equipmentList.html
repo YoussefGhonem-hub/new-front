@@ -1,0 +1,36 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="photoEquipment.addNewEquipment"></h4>
+</div>
+<div class="modal-body">
+    <form role="form" class="mb-lg form-horizontal" name="addPartnerForm">
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.equipment' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="equipment.photoEquipment" validator="required" name="emirate" theme="bootstrap" class="text-left">
+                    <ui-select-match placeholder="{{'photoEquipment.selectEquipment' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="emirate in photoEquipments | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="equipment.photoEquipment.nameEn == 'Other'">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.other' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="equipment.otherText" validator="required" maxlength="20" type="text" placeholder="{{'photoEquipment.other' | translate}}" autocomplete="off" 
+                       class="form-control" name="other" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.number' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="equipment.number" validator="required" maxlength="10" type="number"
+                       placeholder="{{'photoEquipment.number' | translate}}" autocomplete="off" class="form-control" name="souresOfFunding" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" data-translate="general.save"></button><button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

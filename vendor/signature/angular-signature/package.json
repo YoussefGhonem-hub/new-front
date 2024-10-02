@@ -1,0 +1,92 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "angular-signature",
+        "scope": null,
+        "escapedName": "angular-signature",
+        "name": "angular-signature",
+        "rawSpec": "",
+        "spec": "latest",
+        "type": "tag"
+      },
+      "E:\\Signature Plugin"
+    ]
+  ],
+  "_from": "angular-signature@latest",
+  "_id": "angular-signature@1.0.3",
+  "_inCache": true,
+  "_location": "/angular-signature",
+  "_nodeVersion": "4.2.6",
+  "_npmOperationalInternal": {
+    "host": "packages-18-east.internal.npmjs.com",
+    "tmp": "tmp/angular-signature-1.0.3.tgz_1494018378835_0.7965615622233599"
+  },
+  "_npmUser": {
+    "name": "jasny",
+    "email": "arnold@jasny.net"
+  },
+  "_npmVersion": "3.5.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "angular-signature",
+    "scope": null,
+    "escapedName": "angular-signature",
+    "name": "angular-signature",
+    "rawSpec": "",
+    "spec": "latest",
+    "type": "tag"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/angular-signature/-/angular-signature-1.0.3.tgz",
+  "_shasum": "21182fc715d39489e2147f6da4a7e96a497fe1c6",
+  "_shrinkwrap": null,
+  "_spec": "angular-signature",
+  "_where": "E:\\Signature Plugin",
+  "author": {
+    "name": "LegalThings",
+    "email": "info@legalthings.net"
+  },
+  "bugs": {
+    "url": "https://github.com/legalthings/angular-signature/issues"
+  },
+  "dependencies": {
+    "signature_pad": "^1.5.0"
+  },
+  "description": "HTML5 canvas based smooth signature drawing as angularJS directive",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "21182fc715d39489e2147f6da4a7e96a497fe1c6",
+    "tarball": "https://registry.npmjs.org/angular-signature/-/angular-signature-1.0.3.tgz"
+  },
+  "gitHead": "7830f5f2c9a20430fb22e5158e37cad29ffc640d",
+  "homepage": "https://github.com/legalthings/angular-signature#readme",
+  "keywords": [
+    "angular",
+    "signature"
+  ],
+  "license": "MIT",
+  "main": "src/signature.js",
+  "maintainers": [
+    {
+      "name": "jasny",
+      "email": "arnold@jasny.net"
+    }
+  ],
+  "name": "angular-signature",
+  "optionalDependencies": {},
+  "readme": "# Angular Signature\n\n[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/legalthings/angular-signature/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/legalthings/angular-signature/?branch=master)\n\nAngularJS directive for the [signature pad](https://github.com/szimek/signature_pad/) JavaScript library by szimek.\n\n_In contrast to other AngularJS directives for szimek's signature pad, this directive does not apply any styling. The\ndirective only places the canvas and allows you to bind your app to the signature pad by binding the functions in the scope of your\ncontroller. This means you can call them from your own (custom) buttons._\n\n![sign animation](https://cloud.githubusercontent.com/assets/100821/11911005/77b3e2fe-a5de-11e5-9221-cfaafb737cd7.gif)\n\n## Demo\n\nAn online demo of the directive can be found [here](https://rawgit.com/legalthings/angular-signature/master/demo/index.html).\n\n## Installation\n\nInstall this module using **bower**\n\n    bower install angular-signature --save\n\nor install this module using **npm**\n\n    npm install angular-signature --save\n\nAdd the module to your app\n\n    angular.module('app', [\n      'signature',\n    ]);\n\n## Usage\n\n### Basics\n\n```html\n<signature-pad accept=\"accept\" clear=\"clear\" height=\"220\" width=\"568\" disabled=\"false\"></signature-pad>\n<button ng-click=\"clear()\">Clear signature</button>\n<button ng-click=\"signature = accept()\">Sign</button>\n```\n\n### Bootstrap Modal\n\nThis plugin works well in a [Angular UI Bootstrap Modal](https://angular-ui.github.io/bootstrap/#/modal).\n\n```js\nangular.module('app').controller('SignModalCtrl', [\n  '$scope', '$modalInstance'\n  function ($scope, $modalInstance) {\n    $scope.done = function () {\n      var signature = $scope.accept();\n\n      if (signature.isEmpty) {\n        $modalInstance.dismiss();\n      } else {\n        $modalInstance.close(signature.dataUrl);\n      }\n    };\n  }\n]);\n```\n\n```html\n<div class=\"modal-header\">\n    <h3 class=\"modal-title\">Sign</h3>\n</div>\n<div class=\"modal-body\">\n    <signature-pad accept=\"accept\" clear=\"clear\"></signature-pad>\n</div>\n<div class=\"modal-footer\">\n    <button class=\"btn btn-default pull-left\" ng-click=\"clear()\">Clear signature</button>\n    <button class=\"btn btn-default\" ng-click=\"$dismiss()\">Cancel</button>\n    <button class=\"btn btn-primary\" ng-click=\"done()\">Sign</button>\n</div>\n```\n\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/legalthings/angular-signature.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "1.0.3"
+}

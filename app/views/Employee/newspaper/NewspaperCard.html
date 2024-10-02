@@ -1,0 +1,261 @@
+﻿<div ng-controller="NewspaperCardController as NewspaperCard">
+    <div class="app-view-header">
+        {{'newspapercard.header' | translate}}<br /> <small>{{NewspaperCard.book.isbn}}</small>
+    </div>
+    <div class="row" >
+        <div class="col-md-4 animated fadeInDown">
+            <div class="panel panel-default" role="option">
+                <div class="panel-heading portlet-handler"></div>
+                <div class="panel-body form-horizontal">
+                    <div class="row form-group" ng-if="NewspaperCard.newspaper.newspaperLanguages">
+                        <label class="col-sm-4 control-label" ng-if="NewspaperCard.newspaper.isMagazine">{{'newspapercard.mazagineName' | translate}}</label>
+                        <label class="col-sm-4 control-label" ng-if="!NewspaperCard.newspaper.isMagazine">{{'newspapercard.newspaperName'| translate}}</label>
+                        <div class="col-sm-4 form-control-static">                           
+                            <ul>
+                                <li ng-repeat="language in NewspaperCard.newspaper.newspaperLanguages">{{language.language | localizeString}}</li>
+                            </ul>
+                        </div>
+                        <div class="col-sm-offset-8 form-control-static">
+                            <ul>
+                                <li ng-repeat="language in NewspaperCard.newspaper.newspaperLanguages">{{language.name}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="NewspaperCard.newspaper.newspaperSubjectCategories.length>0">
+                        <label class="col-sm-4 control-label">{{'printingPermit.subject' | translate}}</label>
+                        <div class="col-sm-8 form-control-static">
+                            <ul>
+                                <li ng-repeat="newspapersubjectcategorie in NewspaperCard.newspaper.newspaperSubjectCategories">{{newspapersubjectcategorie.newspaperCategory | localizeString}}</li>
+                            </ul>
+                            {{NewspaperCard.newspaper.subjectCategory | localizeString}}
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="NewspaperCard.newspaper.periodicalType">
+                        <label class="col-sm-4 control-label">{{'newspaper.periodicalType' | translate }}</label>
+                        <div class="col-sm-offset-5 form-control-static">{{NewspaperCard.newspaper.periodicalType| localizeString}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 animated fadeInDown" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors.length>0">
+            <div class="panel panel-default" role="option">
+                <div class="panel-heading portlet-handler">{{'newspapercard.chiefEditor' | translate}}</div>
+                <div class="panel-body form-horizontal" style="min-height:282px">
+                    <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0]">                        
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'newspaperMagazineLicense.mobileNumber' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].phoneNumber}}</div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].workPhone">
+                                    <label class="col-sm-5 control-label">{{'newspaperMagazineLicense.workPhone' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].workPhone}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'newspaperMagazineLicense.email' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].email}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'newspaperMagazineLicense.qualification' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].qualification | localizeString}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'newspaperMagazineLicense.UploadYourQualification' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">
+                                        <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].qualificationCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].qualificationCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].qualificationCopyUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].qualificationCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].qualificationCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'newspaperMagazineLicense.yearsOfExperience' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].yearsOfExperience}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.Nationality' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.country | localizeString}}</div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesId">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.EmiratesId' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesId | translate}}</div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportNumber">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportNumber | translate}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' | translate}}</label>
+                                    <label class="col-sm-5 control-label" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportNumber">{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.name | translate}}</div>                                    
+                                </div>
+                            </div>
+                            <div class="col-md-6">                                                                
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.title}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.gender | localizeString}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.dateOfBirth | date: 'longDate'}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.UploadYourPhoto' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">
+                                        <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.photoUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.photoUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.photoUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.photoUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesId">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.UploadEmiratesId' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">
+                                        <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesIdCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesIdCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportNumber">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">
+                                        <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrl">
+                                    <label class="col-sm-5 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">
+                                        <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="teamMember.person.chiefEditors[0].passportCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.passportCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.iqamaUrl">
+                                    <label class="col-sm-5 control-label" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.country.isoCode2 !== 'AE'">{{'profileNationalityDirective.UploadVisa' | translate}}</label>
+                                    <label class="col-sm-5 control-label" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.country.isoCode2 == 'AE'">{{'profileNationalityDirective.UploadKholasa' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">
+                                        <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.iqamaUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.iqamaUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.iqamaUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.iqamaUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>                                   
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath">
+                                    <label class="col-sm-5 control-label">{{'journalists.UploadAcquaintanceForm' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">
+                                        <div ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.acquitanceFormUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}" alt="aquintance" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.acquitanceFormUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>                                   
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].address.emirate">
+                                    <label class="col-sm-5 control-label">{{'address.Emirate' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].address.emirate | localizeString}}</div>                                    
+                                </div>
+                                <div class="row form-group" ng-if="NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].address.region">
+                                    <label class="col-sm-5 control-label">{{'address.Region' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].address.region | localizeString}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'address.Community' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].address.community | localizeString}}</div>                                    
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-5 control-label">{{'address.Street' | translate}}</label>
+                                    <div class="col-sm-7 form-control-static">{{NewspaperCard.chiefeditor.mediaLicens.chiefEditors[0].address.street}}</div>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>                   
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4 col-md-4 animated fadeInDown" ng-if="NewspaperCard.reportcontroller">
+            <div ng-class="'panel-' + app.theme.name" class="panel panel-primary">
+                <div class="panel-heading">
+                    <div ng-class="'bg-' + app.theme.name" class="panel-title bg-primary" style="padding-top:5px">
+                        <span class="pull-right">
+                            <a ng-if="NewspaperCard.reportcontroller.reportWithHeaderUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{NewspaperCard.reportcontroller.reportUrlFullPath}}">
+                                <em class="fa fa-flag fa-lg text-muted"></em>
+                            </a>
+                        </span>{{'mediaMaterialApproval.controllerReport' | translate }}
+                    </div>
+                </div>
+                <div class="panel-body pt0">
+                    <div class="smoothy" style="height:150px">
+                        <br />
+                        <ul class="chat">
+                            <li class="left clearfix">
+                                <span class="chat-img pull-left">
+                                    <img src="app/img/user/01.jpg" alt="Image" class="img-circle thumb48">
+                                </span>
+                                <div class="chat-body clearfix">
+                                    <div class="chat-header">
+                                        <a href="" class="text-inverse">
+                                            <strong>{{NewspaperCard.actiontaken[0].user.firstName}} {{NewspaperCard.actiontaken[0].user.lastName}}</strong>
+                                        </a>
+                                        <small class="pull-right text-muted">                                           
+                                            <span class="fa fa-time"></span>{{(NewspaperCard.actiontaken[0].actionDate| amDifference : null : 'weeks') * -1 }} Weeks <span class="fa fa-time"></span>{{(NewspaperCard.actiontaken[0].actionDate| amDifference : null : 'days') * -1 }} Days
+                                        </small>
+                                    </div>
+                                    <div class="chat-msg"> <span ng-bind-html="NewspaperCard.reportcontroller.notes"></span></div>
+                                </div>
+                            </li>
+                        </ul>                        
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+        <div class="row animated fadeInDown">
+            <div class="col-md-12">
+                <div class="panel panel-default" role="option">
+                    <div class="panel-heading portlet-handler"></div>
+                    <div class="panel-body form-horizontal">
+                        <table datatable="" class="row-border hover" dt-options="NewspaperCard.dtApplicationOptions" dt-columns="NewspaperCard.dtApplicationColumns"
+                               dt-instance="NewspaperCard.dtApplicationInstance" width="100%" id="dashboardDatatable"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+ 
+</div>

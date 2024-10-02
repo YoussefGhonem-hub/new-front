@@ -1,0 +1,75 @@
+﻿<div ng-controller="ReviewTaskController as taskCtl">
+	<div class="app-view-header">
+		{{'inspection.taskReview' | translate}}
+	</div>
+
+	<div class="container-fluid">
+		<uib-accordion close-others="oneAtATime">
+
+			<uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+				<uib-accordion-heading>
+					{{'completeProfile.establishmentDetails' | translate}}
+					<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+				</uib-accordion-heading>
+				<br />
+				<applicant-establishment ng-model="taskCtl.inspectionTaskDetails.establishment"></applicant-establishment>
+			</uib-accordion-group>
+			<br />
+
+			<uib-accordion-group is-open="taskCtl.partnerOpen" panel-class="panel-primary">
+				<uib-accordion-heading>
+					{{'completeProfile.partnerDetails' | translate}}
+					<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': taskCtl.partnerOpen, 'glyphicon-chevron-right': !taskCtl.partnerOpen}"></i>
+				</uib-accordion-heading>
+				<partners-list ng-if="taskCtl.inspectionTaskDetails.establishment.id" establishment-id="taskCtl.inspectionTaskDetails.establishment.id" is-viewonly="true"></partners-list>
+			</uib-accordion-group>
+			<br />
+
+			<uib-accordion-group is-open="taskCtl.mediaLicenses.applicationOpen" ng-if="taskCtl.applicationDetatils && taskCtl.mediaLicenses" panel-class="panel-primary" class="form-horizontal">
+				<uib-accordion-heading>
+					{{'inspection.medialLicenseDetails' | translate}}
+					<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': taskCtl.mediaLicenses.applicationOpen, 'glyphicon-chevron-right': !taskCtl.mediaLicenses.applicationOpen}"></i>
+				</uib-accordion-heading>
+				<br />
+				<div class="row form-group" >
+					<label class="col-sm-3 control-label">{{'mediaLicense.activities' | translate}}</label>
+					<div class="col-sm-7 form-control-static">
+						<ul>
+							<li ng-repeat="activity in taskCtl.mediaLicenses.mediaLicenseEconomicActivities">{{activity.economicActivity | localizeString}}</li>
+						</ul>
+					</div>
+					<div class="col-sm-2"></div>
+				</div>
+				<div class="row form-group" >
+					<div class="col-md-12">
+						<div class="box-placeholder b0 bg-gray-lighter">
+							<h3 data-translate="mediaLicense.activities"></h3>
+							<div class="row">
+								<div class="col-md-12" ng-if="taskCtl.teamMemberDt.dtOptions">
+									<table datatable="" class="row-border hover" dt-options="taskCtl.teamMemberDt.dtOptions" dt-columns="taskCtl.teamMemberDt.dtColumns"
+										   dt-instance="taskCtl.teamMemberDt.dtInstance" width="100%"></table>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row form-group">
+					<service-fee ng-model="taskCtl.serviceFees" class="col-sm-12" is-review="true"></service-fee>
+				</div>
+			</uib-accordion-group>
+			<br />
+
+			<uib-accordion-group is-open="taskCtl.taskDetailsOpen" panel-class="panel-primary" class="form-horizontal">
+				<uib-accordion-heading>
+					{{'inspection.taskDetails' | translate}}
+					<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': taskCtl.taskDetailsOpen, 'glyphicon-chevron-right': !taskCtl.taskDetailsOpen}"></i>
+				</uib-accordion-heading>
+				<inspection-task ng-model="taskCtl.inspectionTaskDetails.id"></inspection-task>
+			</uib-accordion-group>
+			<br />
+
+		</uib-accordion>
+
+	</div>
+
+</div>

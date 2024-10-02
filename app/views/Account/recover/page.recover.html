@@ -1,0 +1,61 @@
+<div class="recoverComponent" ng-controller="RecoverController as recover">
+    <div class="container">
+        <div class="logo">
+            <img class="img" src="app/img/mediacouncil.png" />
+        </div>
+    
+        <div class="recoverContainer">
+            <h1>{{'recover.forgetPassword' | translate}}</h1>
+    
+            <form role="form">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>{{'recover.instructions' | translate}}</h4>
+                        <div class="form-group has-feedback formInput">
+                            <label>{{'register.email' | translate}}</label>
+                            <input id="resetInputEmail1" type="email" placeholder="{{'register.email' | translate}}" autocomplete="off"
+                                   class="form-control" ng-model="recover.account.email" />
+                            <!-- <span class="fa fa-envelope form-control-feedback text-muted"></span> -->
+                        </div>
+                    </div>
+                    <div class="formSubmit col-md-12">
+                        <button type="submit" class="btn btn-danger btn-block" data-translate="general.send"
+                                ng-click="recover.recoverPassword()"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+
+<div class="container container-sm animated fadeInDown" ng-controller="RecoverController as recover" ng-if="false">
+    <div class="center-block mt-xl">
+        <!-- START panel-->
+        <div class="panel class">
+            <div class="panel-body">
+                <p class="pv">
+                    <strong data-translate="recover.reset"></strong>
+                    <br />{{'recover.instructions' | translate}}
+                </p>
+                <form role="form">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="form-group has-feedback">
+                                <input id="resetInputEmail1" type="email" placeholder="{{'register.email' | translate}}" autocomplete="off"
+                                       class="form-control" ng-model="recover.account.email" />
+                                <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-danger btn-block" data-translate="general.send"
+                                    ng-click="recover.recoverPassword()"></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END panel-->
+    </div>
+</div>

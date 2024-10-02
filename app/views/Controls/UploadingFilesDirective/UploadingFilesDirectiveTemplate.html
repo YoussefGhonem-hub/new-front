@@ -1,0 +1,80 @@
+﻿<div class="fileUploader" ng-if="copyurlfullpath">
+
+    <div class="fileUploadType">
+        <div ng-if="fileExtension != 'fa fa-file-pdf-o'" chained-animation="fadeInUp" class="thumbnail">
+            <a ng-href="{{copyurlfullpath}}" data-gallery="#blueimp-image-carousel" title="Unsplash images">
+                <img ng-src="{{copyurlfullpath}}" alt="thumb" title="Unsplash images" />
+            </a>
+        </div>
+        <a ng-if="fileExtension == 'fa fa-file-pdf-o'" target="_blank" ng-href="{{copyurlfullpath}}">
+            <em ng-if="fileExtension == 'fa fa-file-pdf-o'" class="fa fa-5x fa-file-pdf-o"></em>
+        </a>
+    </div>
+    <div class="fileUploadDetails">
+        <div class="fileGroup">
+            <label data-translate="profileNationalityDirective.fileName"></label>
+            <span>{{uploader.queue[0].file.name.split('.')[0]}}</span>
+        </div>
+        <div class="fileGroup">
+            <label data-translate="profileNationalityDirective.fileSize"></label>
+            <span>{{uploader.queue[0].file.size/1024/1024 |number : 2}} MB</span>
+        </div>
+        <div class="fileGroup">
+            <label data-translate="profileNationalityDirective.fileType"></label>
+            <span>{{uploader.queue[0].file.name.split('.')[1].toLowerCase()}}</span>
+            <em ng-class="filePhotoExtension"></em>
+            
+        </div>
+    </div>
+    <div ng-show="uploader.isUploading">
+        Progress:
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+        </div>
+    </div>
+    <div class="fileGroup">
+        <button type="button" ripple="" class="btn btn-warning pull-left" ng-click="uploadAgain()">
+            {{'general.uploadAgain' | translate}}<span class="ripple"></span>
+        </button>
+    </div>
+</div>
+
+<div class="row" ng-if="incorrectType">
+
+    <div class="col-md-12">
+        <span class="text-danger" data-translate="general.incorrectFileType"></span>
+    </div>
+</div>
+<div class="row" ng-if="incorrectSize">
+    <div class="col-md-12">
+        <span class="text-danger" data-translate="general.incorrectPhotoSize"></span>
+    </div>
+</div>
+
+<div ng-if="uploader && copyurlfullpath == undefined">
+
+    <div class="fileUploader" ng-if="isrequired && !ispermit">
+        <input name="{{name}}" filestyle="" type="file" data-icon-name="icon-upload" data-button-text="{{'profileNationalityDirective.UploadFile' | translate}}" data-class-button="btnUpload"
+               data-class-input="form-control inline" nv-file-select="" uploader="uploader" class="form-control" ng-model="copyurl" validator="required" />
+               <span class="inputHint mt-sm">
+                <i class="fa fa-info" aria-hidden="true" style="padding-top:3px"></i>
+                <span>{{'general.uploadLimit' | translate}}</span>
+            </span>
+    </div>
+    <div class="fileUploader" ng-if="!isrequired">
+        <input name="{{name}}" filestyle="" type="file" data-icon-name="icon-upload" data-button-text="{{'profileNationalityDirective.UploadFile' | translate}}" data-class-button="btnUpload"
+               data-class-input="form-control inline" nv-file-select="" uploader="uploader" class="form-control" ng-model="copyurl" />
+               <span class="inputHint mt-sm">
+                <i class="fa fa-info" aria-hidden="true" style="padding-top:3px"></i>
+                <span>{{'general.uploadLimit' | translate}}</span>
+            </span>
+    </div>
+    <div class="fileUploader" ng-if="isrequired && ispermit">
+        <input name="{{name}}" filestyle="" type="file" data-icon-name="icon-upload" data-button-text="{{'profileNationalityDirective.UploadFile' | translate}}" data-class-button="btnUpload"
+               data-class-input="form-control inline" nv-file-select="" uploader="uploader" class="form-control" ng-model="copyurl" validator="required"/>
+               <span class="inputHint mt-sm">
+                <i class="fa fa-info" aria-hidden="true" style="padding-top:3px"></i>
+                <span>{{'general.uploadLimit2' | translate}}</span>
+            </span>
+    </div>
+</div>

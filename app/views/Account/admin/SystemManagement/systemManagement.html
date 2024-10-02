@@ -1,0 +1,41 @@
+﻿
+<div ng-controller="systemManagementController as sm">
+
+    <div class="app-view-header">
+        {{'dashboard.home' | translate}}
+        <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+    </div>
+
+    <div class="container-fluid container-flush">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel">
+                    <div class="panel-body">
+                        <uib-tabset>
+                            <uib-tab heading="{{'systemManagement.lookupMng'| translate}}">
+                                <div>
+                                    <day-off class="col-md-6"></day-off>
+                                    <office class="col-md-6"></office>
+                                </div>
+                            </uib-tab>
+
+                            <uib-tab heading="{{'systemManagement.documentMng' | translate}}">
+                                <div>
+                                    <angular-filemanager></angular-filemanager>
+                                </div>
+                            </uib-tab>
+
+                            <uib-tab heading="{{'systemManagement.configurationMng' | translate}}">
+                                <div>
+                                    <h3>Configuration Management</h3>
+                                    <p>Nothing to display over here.</p>
+                                </div>
+                            </uib-tab>
+                        </uib-tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

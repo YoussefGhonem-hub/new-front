@@ -1,0 +1,106 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="mediaLicense.addExternalMediaAccount"></h4>
+</div>
+<div class="modal-body">
+    <form role="form" class="mb-lg form-horizontal" name="addPartnerForm">
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'externalMediaAccount.category' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.socialMediaCategory" ng-disabled="isIndividual" theme="bootstrap" validator="required" name="category">
+                    <ui-select-match class="flag-container" placeholder="{{'externalMediaAccount.category' | translate}}">
+                        <div class="col-md-4">
+                            <span>{{$select.selected | localizeString}}</span>
+                        </div>
+                    </ui-select-match>
+                    <ui-select-choices repeat="socialMediaCategory in socialMediaCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <div class="row">
+                            <div class="col-md-8 col-xs-8">
+                                <h4 ng-bind-html="socialMediaCategory | localizeString | highlight: $select.search"></h4>
+                            </div>
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'externalMediaAccount.subCategory' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="mediaLicenseEconomicActivityExternalMediaAccount.selectedSubCategory" on-remove="removed($item)"
+                           ui-select-required name="socialMediaSubCategory" theme="bootstrap" class="text-left" multiple ng-required="true" validator="required">
+                    <ui-select-match placeholder="{{'externalMediaAccount.subCategory' | translate}}">{{$item| localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="socialMediaSubCategory in mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.socialMediaCategory.socialMediaSubCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                        <div ng-bind-html="socialMediaSubCategory| localizeString | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+                <span ui-multiple item="'socialMediaSubCategory'" frommodel="mediaLicenseEconomicActivityExternalMediaAccount.selectedSubCategory" tomodel="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.externalMediaAccountClassifications" editmode="permit.editMode"></span>
+                <span ng-if="!addPartnerForm.socialMediaSubCategory.$valid && addPartnerForm.socialMediaSubCategory.$touched">
+                    <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                </span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'externalMediaAccount.type' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.socialMedia" theme="bootstrap" validator="required" name="userCountry">
+                    <ui-select-match class="flag-container" placeholder="{{'externalMediaAccount.type' | translate}}">
+                        <div class="col-md-4 flag-style" style="padding-top:1%; color:{{$select.selected.color}}">
+                            <i class="fa fa-2x {{$select.selected.logo}}"></i>
+                        </div>
+                        <div class="col-md-4">
+                            <span>{{$select.selected | localizeString}}</span>
+                        </div>
+                    </ui-select-match>
+                    <ui-select-choices repeat="socialMedia in socialMedias | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <div class="row">
+                            <div class="col-md-3 col-xs-4" style="padding-top:1%; color:{{socialMedia.color}}">
+                                <i class="fa fa-2x {{socialMedia.logo}}"></i>
+                            </div>
+                            <div class="col-md-8 col-xs-8">
+                                <h4 ng-bind-html="socialMedia | localizeString | highlight: $select.search"></h4>
+                            </div>
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'externalMediaAccount.displayName' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.displayName" type="text" placeholder="{{'externalMediaAccount.displayName' | translate}}"
+                       autocomplete="off" class="form-control" validator="required" name="displayName" maxlength="256" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'externalMediaAccount.websiteUrl' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.websiteUrl" type="text" placeholder="{{'externalMediaAccount.enterUrl' | translate}}"
+                       autocomplete="off" class="form-control" validator="required,url" name="fullName" maxlength="256"
+                       ng-pattern="/^(http[s]?:\/\/){0,1}(www\.){0,1}[a-zA-Z0-9\.\-]+\.[a-zA-Z]{2,5}[\.]{0,1}/" />
+
+            </div>
+        </div>
+        <div class="row form-group" ng-if="!ISForeigMedia">
+            <label class="col-sm-3 control-label">{{'externalMediaAccount.uploadProof' | translate}}</label>
+            <div class="col-sm-9">
+                <uploading-files copyUrl="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.proofDocUrl" copyUrlFullPath="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.proofDocUrlFullPath" url="uploadProofUrl"></uploading-files>
+            </div>
+        </div>
+    </form>
+    <div ng-if="verifiedAccountInfo != null" class="text-center">
+        <div class="text-lg"><img src="{{verifiedAccountInfo.avatarUri.large}}" /></div>
+        <br />
+        <ul class="list-unstyled wd-md center-block">
+            <li class="bb pv" ng-if="verifiedAccountInfo.id">{{verifiedAccountInfo.id}}</li>
+            <li class="bb pv" ng-if="verifiedAccountInfo.email">{{verifiedAccountInfo.email}}</li>
+            <li class="bb pv" ng-if="verifiedAccountInfo.firstName">{{verifiedAccountInfo.firstName}} {{verifiedAccountInfo.lastName}}</li>
+            <li class="bb pv" ng-if="verifiedAccountInfo.username">{{verifiedAccountInfo.username}}</li>
+        </ul>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" data-translate="general.save" validation-submit="addPartnerForm"></button>
+    <button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

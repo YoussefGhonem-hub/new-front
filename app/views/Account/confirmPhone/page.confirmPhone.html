@@ -1,0 +1,55 @@
+﻿<div class="container container-sm animated fadeInDown" ng-controller="ConfirmPhoneController as confirm">
+    <div class="center-block mt-xl">
+        <!-- START panel-->
+        <div class="panel">
+            <div class="panel-body">
+                <p class="pv">
+                    <strong data-translate="confirm.confirmPhone"></strong>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span data-translate="confirm.instructionPartOne"></span>
+                            <span>({{confirm.registeredUser.phoneNumber}})</span>
+                            <span data-translate="confirm.instructionPartTwo"></span>
+                        </div>
+                    </div>
+                </p>
+                <form role="form">
+                    <div class="row" ng-if="confirm.invalidCode">
+                        <div class="col-md-12">
+                            <uib-alert type="danger">{{'login.invalid_grant' | translate}}</uib-alert>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group has-feedback">
+                                <input id="resetInputEmail1" type="text" placeholder="{{'confirm.phoneCode' | translate}}"
+                                       autocomplete="off" class="form-control" validator="required" ng-model="confirm.registeredUser.code" />
+                                <span class="fa fa-code form-control-feedback text-muted"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-primary btn-block" data-translate="general.confirm" ng-click="confirm.sendCode()" ng-disabled="confirm.isBusy"></button>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" class="btn btn-block pull-right" data-translate="general.remindLater" ng-click="confirm.proceed()" ng-disabled="confirm.isBusy"></button>
+                        </div>
+                    </div>
+                    <br />
+                    <br />
+                    <div class="row">
+                        <div class="col-md-9">
+                            <span data-translate="confirm.notReceived" class="text-gray text-sm"></span>
+                        </div>
+                        <div class="col-md-3">
+                            <button type="submit" class="btn btn-default btn-sm pull-right" ng-click="confirm.resendCode()" ng-disabled="confirm.isBusy">
+                                {{'general.resend' | translate}} <i class="fa fa-repeat"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END panel-->
+    </div>
+</div>

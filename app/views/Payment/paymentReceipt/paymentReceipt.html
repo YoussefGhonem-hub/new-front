@@ -1,0 +1,128 @@
+﻿<div ng-controller="PaymentReceiptController as vm">
+    <div class="paymentReceipt bg-white clearfix container" style="color: black !important;">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-5">
+                    <img src="/app/img/nmclogo.jpg" class="pull-left" style="height:150px;" />
+                </div>
+                <div class="col-md-2 Bold text-center">
+                    <h1>RECEIPT</h1>
+                    <h1 class="droid-arabic-kufi">إيصال</h1>
+                </div>
+                <div class="col-md-5">
+                    <img src="/app/img/govLogo.png" class="pull-right" style="height:150px;" />
+                </div>
+            </div>
+        </div>
+        <br /><br /><br /><br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-6">
+                    <h4 class="col-sm-4 text-right">Receipt Number</h4>
+                    <h4 class="col-sm-4 text-center">{{vm.paymentReceipt.pun}}</h4>
+                    <h4 class="col-sm-4 text-left droid-arabic-kufi">رقم الإيصال</h4>
+                </div>
+                <div class="col-md-6">
+                    <h4 class="col-sm-4 text-right">Print Date</h4>
+                    <h4 class="col-sm-4 text-center">{{printDate | date:'dd-MM-yyyy'}}</h4>
+                    <h4 class="col-sm-4 text-left droid-arabic-kufi">تاريخ الطباعة</h4>
+                </div>
+            </div>
+        </div>
+        <br /><br /><br /><br />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-5 table-bordered" style="padding:20px; color:maroon">
+                    <div class="col-md-7">
+                        <h3>Application Number</h3>
+                        <h3 class="droid-arabic-kufi">رقم الطلب</h3>
+                        <h3>{{vm.paymentReceipt.applicationNumber}}</h3>
+                    </div>
+                    <div class="col-md-5 text-right" style="padding-top:7px">
+                        <qrcode data="{{vm.paymentReceipt.applicationNumber}}" size="125"></qrcode>
+                    </div>
+                </div>
+                <div class="col-md-2"></div>
+                <div class="col-md-5 table-bordered" style="padding:20px; color:maroon">
+                    <div class="col-md-7">
+                        <h3>Media File Number</h3>
+                        <h3 class="droid-arabic-kufi">رقم السجل الإعلامي</h3>
+                        <h3>{{vm.paymentReceipt.mediaFileNumber}}</h3>
+                    </div>
+                    <div class="col-md-5 text-right" style="padding-top:7px">
+                        <qrcode data="{{vm.paymentReceipt.mediaFileNumber}}" size="125"></qrcode>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br /><br /><br /><br />
+        <div class="row" style="color: maroon !important; border-bottom-width:1px;
+               border-bottom-style:solid; border-bottom-color:maroon">
+            <div class="col-md-5">
+                <h4 class="text-right">{{'receipt.description' | translate}}</h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="text-center text-bold">{{'receipt.amount' | translate}}</h4>
+            </div>
+            <div class="col-md-5">
+                <h4 class="text-left droid-arabic-kufi">{{'receipt.descriptionAr' | translate}}</h4>
+            </div>
+        </div>
+        <div class="row" ng-repeat="paymentDetail in vm.paymentReceipt.paymentDetails" style="border-bottom-width:1px;
+               border-bottom-style:solid; border-bottom-color:lightgray; padding: 15px 0">
+            <div class="col-md-5">
+                <h4 class="text-right">{{paymentDetail.nameEn}}</h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="text-center text-bold">{{paymentDetail.fee}}</h4>
+            </div>
+            <div class="col-md-5">
+                <h4 class="text-left droid-arabic-kufi">{{paymentDetail.nameAr}}</h4>
+            </div>
+        </div>
+        <div class="row" style="background-color:darkgray; color: white !important">
+            <div class="col-md-5">
+                <h4 class="text-right">{{'serviceFee.totalFees' | translate}}</h4>
+            </div>
+            <div class="col-md-2">
+                <h4 class="text-center text-bold">{{vm.paymentReceipt.totalPaidFee}}</h4>
+            </div>
+            <div class="col-md-5">
+                <h4 class="text-left droid-arabic-kufi">المجموع</h4>
+            </div>
+        </div>
+        <br /><br />
+        <br /><br />
+        <br /><br />
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="col-sm-5 text-right">Date Of Payment</h4>
+                <h4 class="col-sm-2 text-center">{{vm.paymentReceipt.paymentDate}}</h4>
+                <h4 class="col-sm-5 text-left droid-arabic-kufi">تاريخ عملية الدفع</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="col-sm-5 text-right">Printed By</h4>
+                <h4 class="col-sm-2 text-center">{{vm.user.firstName + vm.user.lastName}}</h4>
+                <h4 class="col-sm-5 text-left droid-arabic-kufi">تم طباعة الإيصال بواسطة</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="col-sm-5 text-right">E Dirham Confirmation Number</h4>
+                <h4 class="col-sm-2 text-center">{{vm.paymentReceipt.confirmationID}}</h4>
+                <h4 class="col-sm-5 text-left droid-arabic-kufi">رقم معاملة الدرهم الالكتروني</h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="col-sm-5 text-right">Main Sub Code</h4>
+                <h4 class="col-sm-2 text-center">{{vm.paymentReceipt.mainCode}}</h4>
+                <h4 class="col-sm-5 text-left droid-arabic-kufi">رقم معاملة الدرهم الالكتروني</h4>
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <button ng-click="pdfMaker()" class="btn btn-primary">run pdf</button>
+</div>

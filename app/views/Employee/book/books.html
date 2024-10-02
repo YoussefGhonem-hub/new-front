@@ -1,0 +1,85 @@
+<div class="app-view-header">
+    {{'dashboard.home' | translate}}
+    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+<div ng-controller="BooksController as books">
+    <div class="row">
+        <div class="col-md-2">
+            <span class="col-md-2">
+                <a ng-click="books.exportExcel()" uib-tooltip="Excel">
+                    <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+            <span class="col-md-2">
+                <a ng-click="books.exportCSV()" uib-tooltip="CSV">
+                    <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+            <span class="col-md-2">
+                <a ng-click="books.exportPDF()" uib-tooltip="PDF">
+                    <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+        </div>
+        <div class="col-md-8"></div>
+        <div class="col-md-2">
+            <div class="col-md-4 pull-left" ng-if="books.isAllowedBookForm">
+                <div class="mr mb-sm btn btn-warning pull-left" ng-click="books.open('lg')">
+                    {{'bookCard.addBook' | translate}}
+                    <span class="ripple"></span>
+                </div>
+            </div>
+            <button ng-if="books.userFilters == null || books.userFilters.length == 0" class="btn btn-primary btn-md pull-right" btn-layer-morph="books.click()" btn-layer="books.filter" target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+            </button>
+            <div ng-if="books.userFilters.length > 0" uib-dropdown="dropdown" class="btn-group mb-sm mr dropdown open pull-right">
+                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
+                    <span ng-if="books.filterParams.userFilterId == undefined">{{'general.filter' | translate}}</span>
+                    <span ng-if="books.filterParams.userFilterId != undefined && books.filterParams.userFilterId == books.defaultUserFilter.id">{{books.defaultUserFilter.name}}</span>
+                    <span ng-if="books.filterParams.userFilterId != undefined && books.filterParams.userFilterId != books.defaultUserFilter.id">{{books.selectedUserFilter.name}}</span>&nbsp;
+                    <span class="caret"></span>
+                    <span class="ripple"><span class="angular-ripple"></span></span>
+                </button>
+                <ul role="menu" class="dropdown-menu">
+                    <li>
+                        <a href="" btn-layer-morph="books.click()" btn-layer="books.filter" target="#layer-search">
+                            {{'dashboard.newFilter' | translate}}
+                        </a>
+                    </li>
+                    <li ng-repeat="userFilter in books.userFilters">
+                        <a href="" ng-click="books.userFilterData(userFilter)">{{userFilter.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table datatable="" class="row-border hover" dt-options="books.dtBooksOptions" dt-columns="books.dtBooksColumns"
+                   dt-instance="books.dtBookInstance" width="100%"></table>
+        </div>
+    </div>
+    <!-- Layer Morph-->
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Employee/book/filter/filterBook.html'" class="layer-morph"></div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="bookFilter" layer-morph-close="" ng-click="books.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="bookFilter" layer-morph-filter="" ng-click="books.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Layer Morph-->
+</div>

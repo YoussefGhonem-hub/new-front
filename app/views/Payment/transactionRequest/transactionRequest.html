@@ -1,0 +1,60 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()" ng-if="!ShowLoading">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="transactionRequest.pageTitle" ng-if="!serviceFees.isRenew"></h4>
+    <h4 id="myModalLabel" class="modal-title" data-translate="transactionRequest.renewTitle" ng-if="serviceFees.isRenew"></h4>
+</div>
+
+<div class="modal-body">
+    <div class="loader-message" ng-if="cantRenew">{{'transactionRequest.renewMsg1'| translate}} <span class="text-danger text-bold"> {{expiryDate | date: 'dd-MMMM-yyyy'}}</span>. {{'transactionRequest.renewMsg2'| translate}} <span class="text-success text-bold">{{renewDate | date: 'dd-MMMM-yyyy'}}</span></div>
+    <form role="form" class="form-horizontal" ng-if="!ShowLoading && !cantRenew">
+        <service-fee ng-model="serviceFees" is-review="true"></service-fee>
+    </form>
+    <div ng-if="ShowLoading && !cantRenew">
+        <div class="loader-container">
+            <div class="sk-cube-grid">
+                <div class="sk-cube sk-cube1"></div>
+                <div class="sk-cube sk-cube2"></div>
+                <div class="sk-cube sk-cube3"></div>
+                <div class="sk-cube sk-cube4"></div>
+                <div class="sk-cube sk-cube5"></div>
+                <div class="sk-cube sk-cube6"></div>
+                <div class="sk-cube sk-cube7"></div>
+                <div class="sk-cube sk-cube8"></div>
+                <div class="sk-cube sk-cube9"></div>
+            </div>
+            <div class="loader-title" data-translate="transactionRequest.pleaseWait"></div>
+            <!--<div class="loader-message" data-translate="transactionRequest.redirectMsg"></div>-->
+        </div>
+    </div>
+
+    <!--<div ng-if="paymentMethod=='G3'" class="alert alert-warning"> {{'transactionRequest.eDirhamG3Msg'| translate}} <a href="https://www.edirham.ae/" target="_blank">{{'transactionRequest.clickHere'| translate}}</a> </div>-->
+    
+</div>
+
+<div class="modal-footer">
+    <div class="pull-left">
+        <!--<img src="app/img/edirhamlogo.png" style="vertical-align: bottom;width: 100px;" />-->
+        <img src="app/img/Visa.jpg" style="vertical-align: bottom;width: 50px;" />
+        <img src="app/img/Master.jpg" style="vertical-align: bottom;width: 50px;" />
+    </div>
+
+    <div ng-if="paymentMethod=='G2'">
+        <button ng-click="clickToPay()" class="btn btn-primary" data-translate="transactionRequest.clickToPay"></button>
+        <button ng-click="closeModal()" ng-if="!ShowLoading" class="btn btn-warning" data-translate="general.cancel"></button>
+    </div>
+    <div ng-if="paymentMethod=='G3'">
+        <a href="{{purchaseCheckout.paymentUrl}}" ng-if="purchaseCheckout.paymentUrl && purchaseCheckout.redirectUrl ==''" class="btn btn-primary" data-translate="transactionRequest.clickToPay"></a>
+        <a href="{{purchaseCheckout.redirectUrl}}" ng-if="purchaseCheckout.redirectUrl !=''" class="btn btn-primary" data-translate="transactionRequest.confirmPayment"> ناكيد عملية الدفع</a>
+        <button ng-click="closeModal()" ng-if="!ShowLoading" class="btn btn-warning" data-translate="general.cancel"></button>
+    </div>
+
+
+
+
+
+
+    
+
+
+</div>

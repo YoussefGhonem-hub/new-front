@@ -1,0 +1,138 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" id="btnCloseId" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="establishment.chooseTitle"></h4>
+</div>
+<div class="modal-body bg-white">
+    <form role="form" class="mb-lg form-horizontal" name="addPartnerForm" ng-cloak>
+        <div class="row" ng-if="allEstHasMediaLicenses">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <uib-alert type="warning">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'establishment.allEstHasMediaLicenses' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-alert>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row" ng-if="noEstHasNewspaperLicenses">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <uib-alert type="warning">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'establishment.noEstHasNewspaperLicenses' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-alert>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="sk-cube-grid" ng-if="loading" style="position:fixed; top: 25%; right:47%; z-index:9999">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+        </div>
+        <div class="row" ng-if="params.totalRecords > params.pageSize">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="form-group">
+                    <div class="input-group">
+                        <input type="text" placeholder="{{'establishment.tradeLicenseNumber' | translate}}" class="form-control" ng-model="params.searchtext">
+                        <span class="input-group-btn">
+                            <button type="button" class="btn btn-default" ng-click="DoSearch()">{{'mediaMaterial.search' | translate}}</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <div class="radio c-radio" ng-repeat="est in establishmentApplications">
+                    <div class="radio-hover active-h">
+                        <div style="border-color:darkgrey; border-style:solid; border-width:1px; width:100%; border-radius:10px; padding-top:7px; padding-bottom:7px"
+                             ng-class="{'disableRow': est.info}">
+                            <div class="row">
+                                <div class="col-md-1">
+                                    <label class="radio-style">
+                                        <input type="radio" name="a" ng-value="est.establishment" ng-model="object.selectedItem" ng-disabled="est.info" />
+                                        <span class="fa fa-circle"></span>
+                                    </label>
+                                </div>
+                                <div class="col-md-1">
+                                    <em class="fa-stack fa-2x">
+                                        <i class="fa fa-circle fa-stack-2x"></i>
+                                        <em ng-if="est.establishment.parentId == null" class="fa fa-building-o fa-stack-1x" style="color:white" uib-tooltip="{{'establishment.mainBranch' | translate}}"></em>
+                                        <em ng-if="est.establishment.parentId != null" class="fa fa-sitemap fa-stack-1x" style="color:white" uib-tooltip="{{'establishment.branch' | translate}}"></em>
+                                    </em>
+                                </div>
+                                <div class="col-md-5 text-bold">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{est.establishment | localizeString}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{est.establishment.tenancyContractEndDate | date}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="row">
+                                        <div class="col-md-12 text-sm">
+                                            {{'address.Emirate' | translate}}: {{est.establishment.authority.emirate | localizeString}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-sm">
+                                            {{est.establishment.authority | localizeString}}
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12 text-bold text-sm">
+                                            {{est.establishment.licenseNumber}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1" ng-if="est.info">
+                                    <i class="fa fa-2x fa-info-circle" aria-hidden="true" uib-tooltip="{{est.info}}"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+        <div class="row" ng-if="params.totalRecords > params.pageSize">
+            <div class="col-md-1"></div>
+            <div class="col-md-10 text-center">
+                <div paging page="params.page" page-size="params.pageSize" total="params.totalRecords" paging-action="DoPaging(page, pageSize, total)"></div>
+            </div>
+            <div class="col-md-1"></div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()" type="submit" validation-submit="addPartnerForm" class="btn btn-primary" ng-disabled="!addPartnerForm.$valid" data-translate="general.ok"></button>
+    <button ng-click="closeModal()" type="button" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

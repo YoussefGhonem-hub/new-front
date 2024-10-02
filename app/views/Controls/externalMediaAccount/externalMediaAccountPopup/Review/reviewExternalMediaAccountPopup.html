@@ -1,0 +1,64 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="externalMediaAccount.externalMediaAccountDetails"></h4>
+</div>
+<div class="modal-body form-horizontal">
+    <div class="row form-group">
+        <label class="col-sm-4 control-label">{{'externalMediaAccount.category' | translate}}</label>
+        <div class="col-sm-8 form-control-static">{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.socialMediaCategory | localizeString}}</div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-4 control-label">{{'externalMediaAccount.subCategory' | translate}}</label>
+        <div class="col-sm-8 form-control-static">
+            <ul>
+                <li ng-repeat="subCat in mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.externalMediaAccountClassifications">{{subCat.socialMediaSubCategory | localizeString}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-4 control-label">{{'externalMediaAccount.type' | translate}}</label>
+        <div class="col-sm-6 form-control-static">
+            {{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.socialMedia | localizeString}}
+        </div>
+        <div class="col-sm-2 pull-left">
+            <i style="color:{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.socialMedia.color}}"
+               class="fa fa-2x {{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.socialMedia.logo}}"></i>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-4 control-label">{{'externalMediaAccount.displayName' | translate}}</label>
+        <div class="col-sm-8 form-control-static">{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.displayName}}</div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-4 control-label">{{'externalMediaAccount.websiteUrl' | translate}}</label>
+        <div class="col-sm-8 form-control-static"><a target="_blank" href="{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.websiteUrl}}">{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.websiteUrl}}</a></div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-4 control-label">{{'externalMediaAccount.uploadProof' | translate}}</label>
+        <div class="col-sm-8 form-control-static">
+            <div ng-if="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.proofDocUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                <a href="{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.proofDocUrlFullPath}}" data-gallery="" title="Unsplash images">
+                    <img ng-src="{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.proofDocUrlFullPath}}" alt="thumb" />
+                </a>
+            </div>
+            <a ng-if="mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.proofDocUrl.split('.')[1] == 'pdf'" target="_blank" href="{{mediaLicenseEconomicActivityExternalMediaAccount.externalMediaAccount.proofDocUrlFullPath}}">
+                <em class="fa fa-5x fa-file-pdf-o"></em>
+            </a>
+        </div>
+    </div>
+    <hr />
+    <div ng-if="verifiedAccountInfo != null" class="text-center">
+        <div class="text-lg"><img src="{{verifiedAccountInfo.avatarUri.large}}" /></div>
+        <br />
+        <ul class="list-unstyled wd-md center-block">
+            <li class="bb pv" ng-if="verifiedAccountInfo.id">{{verifiedAccountInfo.id}}</li>
+            <li class="bb pv" ng-if="verifiedAccountInfo.email">{{verifiedAccountInfo.email}}</li>
+            <li class="bb pv" ng-if="verifiedAccountInfo.firstName">{{verifiedAccountInfo.firstName}} {{verifiedAccountInfo.lastName}}</li>
+            <li class="bb pv" ng-if="verifiedAccountInfo.username">{{verifiedAccountInfo.username}}</li>
+        </ul>
+    </div>
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" data-translate="general.save" validation-submit="addPartnerForm"></button>
+    <button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

@@ -1,0 +1,555 @@
+﻿<div class="app-view-header">
+    {{'foreignMedia.newPressCard' | translate}}
+</div>
+<div class="container-fluid" ng-controller="ForeignMediaIssuePressCardController as fm">
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <br /><br />
+                  <div class="wizard">
+                      <ul class="steps-bar">
+                          <li ng-class="{'active':fm.activeStep >= 1}">
+                              <label>{{'foreignMedia.pressCardAppDetails' | translate}}</label>
+                          </li>
+                          <li ng-class="{'active':fm.activeStep >= 2}">
+                              <label>{{'foreignMedia.foreignEntityDetails' | translate}}</label>
+                          </li>
+                          <li ng-class="{'active':fm.activeStep >= 3}">
+                              <label>{{'foreignMedia.personDetails' | translate}}</label>
+                          </li>
+                      </ul>
+                      <hr />
+                      <uib-alert type="warning" ng-if="fm.employeeNote">
+                          <div class="row text-bold">
+                              <div class="col-md-6"><span class="pull-left">{{'mediaLicense.employeeNote' | translate}}</span></div>
+                              <div class="col-md-6"><span class="pull-right">{{fm.employeeNoteDate}}</span></div>
+                          </div>
+                          <br />
+                          <div class="row">
+                              <div class="col-md-12" ng-bind-html="fm.employeeNote"></div>
+                          </div>
+                      </uib-alert>
+
+                      <div ng-if="fm.activeStep==1" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                              <div class="row">
+                                  <label class="col-sm-3 control-label"><span>{{'foreignMedia.issueTemporaryCard' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <label class="switch switch-lg">
+                                          <input type="checkbox" ng-checked="fm.mediaLicenses.pressCard[0].isTemporaryCard == true" ng-model="fm.mediaLicenses.pressCard[0].isTemporaryCard"
+                                                 ng-change="fm.changeFee(fm.mediaLicenses.pressCard[0].isTemporaryCard)" isrequired="true">
+                                          <span></span>
+                                      </label>
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.businessType' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <ui-select ng-model="fm.mediaLicenses.pressCard[0].businessType" placeholder="{{'foreignMedia.selectBusinessType' | translate}}" validator="required" name="businessType" theme="bootstrap" class="text-left" ng-disabled="uiselect.disabled">
+                                          <ui-select-match placeholder="{{'foreignMedia.selectBusinessType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                          <ui-select-choices repeat="businessType in fm.businessTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                              <div ng-bind-html="businessType | localizeString | highlight: $select.search"></div>
+                                          </ui-select-choices>
+                                      </ui-select>
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <!--<div class="row form-group">
+          <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.deliveryOption' | translate}}</span></label>
+          <div class="col-sm-9">
+              <div class="radio-inline c-radio">
+                      <label>
+                          <input type="radio" name="deliveryOption" ng-value="true" ng-model="fm.mediaLicenses.pressCard[0].deliveryType"
+                                 ng-checked="fm.mediaLicenses.pressCard[0].deliveryType" required disabled>
+                          <span class="fa fa-circle"></span>{{'foreignMedia.shippingToAddress' | translate}}
+                      </label>
+                  </div>
+                      <label>
+                      <input type="radio" name="deliveryOption" ng-value="false" ng-model="fm.mediaLicenses.pressCard[0].deliveryType"
+                             ng-checked="!fm.mediaLicenses.pressCard[0].deliveryType" required disabled>
+                      <span class="fa fa-circle"></span>{{'foreignMedia.collectFromMinistry' | translate}}
+                  </label>
+          </div>
+      </div>
+    <div class="row form-group" ng-if="fm.mediaLicenses.pressCard[0].deliveryType">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.shippingAddress' | translate}}</span></label>
+        <div class="col-sm-9">
+            <textarea ng-model="fm.mediaLicenses.pressCard[0].address" validator="required" maxlength="1000" required
+                      placeholder="{{'foreignMedia.shippingAddress' | translate}}" autocomplete="off" class="form-control" name="shippingAddress" />
+        </div>
+    </div>
+    <div class="row"><br /></div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.preferedCollectionPoint' | translate}}</span></label>
+        <div class="col-sm-9">
+            <ui-select ng-model="fm.mediaLicenses.pressCard[0].office" placeholder="{{'general.selectOffice' | translate}}" validator="required" name="office" theme="bootstrap" class="text-left" ng-disabled="uiselect.disabled">
+                <ui-select-match placeholder="{{'general.selectOffice' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                <ui-select-choices repeat="office in fm.offices | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                    <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row"><br /></div>-->
+
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.assignmentLetter' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <uploading-files copyUrl="fm.mediaLicenses.pressCard[0].assignmentLetterUrl" copyUrlFullPath="fm.mediaLicenses.pressCard[0].assignmentLetterUrlFullPath"
+                                                       url="fm.uploadAssignmentLetterUrl" isrequired="true"></uploading-files>
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <service-fee ng-model="fm.serviceFeesObj"></service-fee>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <button type="submit" ripple="" ng-disabled="fm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="fm.goToSecondStep()"
+                                              validation-submit="stepOneForm">
+                                          {{'general.next' | translate}}<span class="ripple"></span>
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                      <div ng-if="fm.activeStep==2" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityName' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <input ng-model="fm.mediaLicenses.pressCard[0].foreignEntity.nameEn" type="text" placeholder="{{'foreignMedia.foreignEntityName' | translate}}"
+                                             class="form-control" name="NameEn" validator="required" />
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityNameAr' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <input ng-model="fm.mediaLicenses.pressCard[0].foreignEntity.nameAr" type="text" placeholder="{{'foreignMedia.foreignEntityNameAr' | translate}}"
+                                             class="form-control" name="NameAr" validator="required" />
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityHQ' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <ui-select ng-model="fm.mediaLicenses.pressCard[0].foreignEntity.country" placeholder="{{'foreignMedia.selectCountry' | translate}}" theme="bootstrap" validator="required" name="userCountry">
+                                          <ui-select-match class="flag-container" placeholder="{{'foreignMedia.selectCountry' | translate}}">
+                                              <div class="col-md-4 flag-style">
+                                                  <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                              </div>
+                                              <div class="col-md-4">
+                                                  <span>{{$select.selected | localizeString}}</span>
+                                              </div>
+                                          </ui-select-match>
+                                          <ui-select-choices repeat="country1 in fm.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                              <div class="row">
+                                                  <div class="col-md-4 col-xs-5">
+                                                      <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                                                  </div>
+                                                  <div class="col-md-8 col-xs-7">
+                                                      <div class="row">
+                                                          <div class="col-md-12">
+                                                              <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                                                          </div>
+                                                      </div>
+                                                      <div class="row">
+                                                          <div class="col-md-12">
+                                                              <small data-translate="country.countryCode"></small>: <small ng-bind-html="country1.isoCode3"></small>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </ui-select-choices>
+                                      </ui-select>
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityWebsite' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <input ng-model="fm.mediaLicenses.pressCard[0].foreignEntity.website" type="text" placeholder="{{'foreignMedia.foreignEntityWebsite' | translate}}"
+                                             class="form-control" name="Website" validator="required" />
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityEmail' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <input ng-model="fm.mediaLicenses.pressCard[0].foreignEntity.email" type="email" placeholder="{{'foreignMedia.foreignEntityEmail' | translate}}"
+                                             class="form-control" name="Email" validator="required, email" />
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+
+                              <div class="row form-group">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityPhone' | translate}}</span></label>
+                                  <div class="col-sm-9">
+                                      <input ng-model="fm.mediaLicenses.pressCard[0].foreignEntity.phoneNumber" placeholder="{{'foreignMedia.foreignEntityPhone' | translate}}"
+                                             class="form-control" name="PhoneNumber" validator="required" />
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+
+                              <div class="row form-group" ng-if="!fm.editMode" ng-repeat="socialMediaAccount in fm.mediaLicenses.pressCard[0].foreignEntity.foreignEntitySocialMedias">
+                                  <external-media-account ng-model="socialMediaAccount" edit-mode="fm.editMode"></external-media-account>
+                              </div>
+                              <div class="row form-group" ng-if="fm.editMode" ng-repeat="socialMediaAccount1 in fm.mediaLicenses2.foreignEntitySocialMedias1">
+                                  <external-media-account ng-model="socialMediaAccount1" edit-mode="fm.editMode"></external-media-account>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="col-md-12">
+                                          <button type="submit" ripple="" ng-disabled="fm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="fm.goToThirdStep()"
+                                                  validation-submit="stepTwoForm">
+                                              {{'general.next' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="fm.activeStep = 1">
+                                              {{'general.previous' | translate}}<span class="ripple"></span>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                      <div ng-if="fm.activeStep==3" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                              <div ng-if="fm.user.userTypeCode == 01 || fm.user.userTypeCode == 07">
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.fullNameAr' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.nameAr" placeholder="{{'foreignMedia.maxCharacter' | translate}}"
+                                                 type="text" class="form-control" maxlength="30" validator="required" extra-help="foreignMedia.maxCharacter" />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.fullNameEn' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.name" placeholder="{{'foreignMedia.maxCharacter' | translate}}"
+                                                 type="text" class="form-control" maxlength="30" validator="required" extra-help="foreignMedia.maxCharacter" />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.DateOfBirth' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <p class="input-group hackyhack">
+                                              <input type="text" uib-datepicker-popup="{{fm.format}}" ng-disabled=true ng-model="fm.loggedUserPersonData.dateOfBirth" validator="required"
+                                                     name="tenancyContractEndDate" is-open="tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                                                     uib-datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+                                              <span class="input-group-btn">
+                                                  <button type="button" ng-click="openTenancyContractDatePopup($event)" class="btn btn-default">
+                                                      <em class="fa fa-calendar"></em>
+                                                  </button>
+                                              </span>
+                                          </p>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Gender' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <div class="radio-inline c-radio">
+                                              <label>
+                                                  <input id="inlineradio1" type="radio" name="i-radio" value="1" ng-model="fm.loggedUserPersonData.genderId" ng-required="!fm.loggedUserPersonData.genderId" />
+                                                  <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderMale' | translate}}
+                                              </label>
+                                          </div>
+                                          <div class="radio-inline c-radio">
+                                              <label>
+                                                  <input id="inlineradio2" type="radio" name="i-radio" value="2" ng-model="fm.loggedUserPersonData.genderId" ng-required="!fm.loggedUserPersonData.genderId" />
+                                                  <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderFemale' | translate}}
+                                              </label>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.email' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserData.email" type="text" class="form-control" readonly disabled required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.mobileNumber' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserData.phoneNumber" type="text" class="form-control" readonly disabled required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <ui-select ng-model="fm.loggedUserPersonData.country" theme="bootstrap" ng-disabled=true class="text-left" validator="required" name="Authority">
+                                              <ui-select-match placeholder="Select">{{$select.selected | localizeString}}</ui-select-match>
+                                              <ui-select-choices repeat="authority in authorities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                                  <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                                              </ui-select-choices>
+                                          </ui-select>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.occupationAr' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.titleAr" type="text" maxlength="25" class="form-control" required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.occupationEn' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.title" type="text" maxlength="25" class="form-control" required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.previousJob' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.previousJob" type="text" class="form-control" required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span>{{'foreignMedia.twitterAccount' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.twitterAccount" type="text" class="form-control" />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.academicQualification' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <uploading-files copyUrl="fm.loggedUserPersonData.academicQualificationUrl" copyUrlFullPath="fm.loggedUserPersonData.academicQualificationUrlFullPath"
+                                                           url="fm.uploadAcademicQualificationUrl" isrequired="true"></uploading-files>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.passportCopy' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <uploading-files copyUrl="fm.loggedUserPersonData.passportCopyUrl" copyUrlFullPath="fm.loggedUserPersonData.passportCopyUrlFullPath"
+                                                           url="fm.passportCopyUrl" isrequired="true"></uploading-files>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.personalPhoto' | translate}}</span></label>
+                                      <div class="col-sm-6">
+                                          <a ng-href="{{fm.loggedUserPersonData.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                              <img ng-src="{{fm.loggedUserPersonData.photoUrlFullPath}}" alt="thumb" style="max-height:230px;" />
+                                          </a>
+                                      </div>
+                                      <div class="col-sm-3">
+                                          <button style="width:193px !important" class="btn btn- btn-warning btn-file center" ng-click="openCrop()">{{'foreignMedia.cropImage' | translate}}</button>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.acquaintanceDoc' | translate}}</span></label>
+                                      <div class="col-sm-6">
+                                          <uploading-files copyUrl="fm.loggedUserPersonData.acquitanceFormUrl" copyUrlFullPath="fm.loggedUserPersonData.acquaintanceFormCopyUrlFullPath"
+                                                           url="fm.acquitanceFormUrl" isrequired="true"></uploading-files>
+                                      </div>
+                                      <div class="col-sm-3">
+                                          <label class="col-sm-8 control-label"><span>{{'foreignMedia.identificationDoc' | translate}}</span></label>
+                                          <div class="col-sm-4">
+                                              <a target="_blank" href="sharedFiles/aquitanceForm.pdf" uib-tooltip="{{'foreignMedia.identificationDoc' | translate}}">
+                                                  <em class="fa fa-4x fa-file-pdf-o"></em>
+                                              </a>
+                                          </div>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="row"><br /></div>
+                              <div ng-if="fm.user.userTypeCode == 05">
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <ui-select ng-model="fm.loggedUserPersonData.country" theme="bootstrap" validator="required" name="userCountry">
+                                              <ui-select-match class="flag-container">
+                                                  <div class="col-md-4 flag-style">
+                                                      <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                                  </div>
+                                                  <div class="col-md-4">
+                                                      <span>{{$select.selected | localizeString}}</span>
+                                                  </div>
+                                              </ui-select-match>
+                                              <ui-select-choices repeat="country1 in fm.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                                  <div class="row">
+                                                      <div class="col-md-4 col-xs-5">
+                                                          <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                                                      </div>
+                                                      <div class="col-md-8 col-xs-7">
+                                                          <div class="row">
+                                                              <div class="col-md-12">
+                                                                  <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                                                              </div>
+                                                          </div>
+                                                          <div class="row">
+                                                              <div class="col-md-12">
+                                                                  <small data-translate="country.countryCode"></small>: <small ng-bind-html="country1.isoCode3"></small>
+                                                              </div>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </ui-select-choices>
+                                          </ui-select>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label ng-show="!(fm.loggedUserPersonData.country.isoCode2 !== undefined && fm.loggedUserPersonData.country.isoCode2 !== 'AE' && fm.loggedUserPersonData.passportNumber == null && fm.isValidResidence) && !fm.isValidResidence" class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.fullNameAr' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.nameAr" placeholder="{{'foreignMedia.maxCharacter' | translate}}"
+                                                 type="text" class="form-control" maxlength="30" validator="required" extra-help="foreignMedia.maxCharacter" />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label ng-show="!(fm.loggedUserPersonData.country.isoCode2 !== undefined && fm.loggedUserPersonData.country.isoCode2 !== 'AE' && fm.loggedUserPersonData.passportNumber == null && fm.isValidResidence) && !fm.isValidResidence" class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.fullNameEn' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.name" placeholder="{{'foreignMedia.maxCharacter' | translate}}"
+                                                 type="text" class="form-control" maxlength="30" validator="required" extra-help="foreignMedia.maxCharacter" />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.occupationAr' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.titleAr" type="text" maxlength="25" class="form-control" required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.occupationEn' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.title" type="text" maxlength="25" class="form-control" required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.passportNumber" placeholder="{{'profileNationalityDirective.PassportNumber' | translate}}" autocomplete="off" class="form-control" name="passportNumber" validator="required" />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Gender' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <div class="radio-inline c-radio">
+                                              <label>
+                                                  <input id="inlineradio1" type="radio" name="i-radio" value="1" ng-model="fm.loggedUserPersonData.genderId" ng-required="!fm.loggedUserPersonData.genderId" />
+                                                  <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderMale' | translate}}
+                                              </label>
+                                          </div>
+                                          <div class="radio-inline c-radio">
+                                              <label>
+                                                  <input id="inlineradio2" type="radio" name="i-radio" value="2" ng-model="fm.loggedUserPersonData.genderId" ng-required="!fm.loggedUserPersonData.genderId" />
+                                                  <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderFemale' | translate}}
+                                              </label>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.DateOfBirth' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <p class="input-group hackyhack">
+                                              <input type="text" uib-datepicker-popup="{{format}}" ng-model="fm.loggedUserPersonData.dateOfBirth" is-open="dateOfBirthPopup.opened" uib-datepicker-options="dateOptions" close-text="Close"
+                                                     class="form-control" name="dateOfBirth" validator="required" init-date="dateOptions.maxDate" min-date="dateOptions.minDate" max-date="dateOptions.maxDate"
+                                                     show-weeks="false" show-button-bar="false" disabled />
+                                              <span class="input-group-btn">
+                                                  <button type="button" ng-click="opendateOfBirthDatePopup($event)" class="btn btn-default">
+                                                      <em class="fa fa-calendar"></em>
+                                                  </button>
+                                              </span>
+                                          </p>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.previousJob' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.previousJob" placeholder="{{'foreignMedia.previousJob' | translate}}" type="text" class="form-control" required />
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span>{{'foreignMedia.twitterAccount' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <input ng-model="fm.loggedUserPersonData.twitterAccount" placeholder="{{'foreignMedia.twitterAccount' | translate}}" type="text" class="form-control" />
+                                      </div>
+                                  </div>
+
+
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.personalPhoto' | translate}}</span></label>
+                                      <div class="col-sm-6">
+                                          <a ng-href="{{fm.loggedUserPersonData.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                              <img ng-src="{{fm.loggedUserPersonData.photoUrlFullPath}}" alt="thumb" style="max-height:230px;" />
+                                          </a>
+                                      </div>
+                                      <div class="col-sm-3">
+                                          <button style="width:193px !important" class="btn btn- btn-warning btn-file center" ng-click="openCrop()">{{'foreignMedia.cropImage' | translate}}</button>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.passportCopy' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <div ng-if="passportUploader && fm.loggedUserPersonData.passportCopyUrlFullPath == undefined">
+                                              <input filestyle="" id="passportUrlId" ng-disabled="isPreview" type="file" data-icon-name="icon-upload" data-button-text="{{'profileNationalityDirective.UploadFile' | translate}}" data-class-button="btn btn-default"
+                                                     data-classinput="form-control inline" nv-file-select="" uploader="passportUploader" class="form-control" ng-model="fm.loggedUserPersonData.passportCopyUrl" validator="required" name="passportUrlId" />
+                                          </div>
+                                          <uploading-files copyUrl="fm.loggedUserPersonData.passportCopyUrl" copyUrlFullPath="fm.loggedUserPersonData.passportCopyUrlFullPath"
+                                                           url="fm.passportCopyUrl" isrequired="true"></uploading-files>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.academicQualification' | translate}}</span></label>
+                                      <div class="col-sm-9">
+                                          <uploading-files copyUrl="fm.loggedUserPersonData.academicQualificationUrl" copyUrlFullPath="fm.loggedUserPersonData.academicQualificationUrlFullPath"
+                                                           url="fm.uploadAcademicQualificationUrl" isrequired="true"></uploading-files>
+                                      </div>
+                                  </div>
+                                  <div class="row form-group">
+                                      <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.acquaintanceDoc' | translate}}</span></label>
+                                      <div class="col-sm-6">
+                                          <uploading-files copyUrl="fm.loggedUserPersonData.acquitanceFormUrl" copyUrlFullPath="fm.loggedUserPersonData.acquaintanceFormCopyUrlFullPath"
+                                                           url="fm.acquitanceFormUrl" isrequired="true"></uploading-files>
+                                      </div>
+                                      <div class="col-sm-3">
+                                          <label class="col-sm-8 control-label"><span>{{'foreignMedia.identificationDoc' | translate}}</span></label>
+                                          <div class="col-sm-4">
+                                              <a target="_blank" href="sharedFiles/aquitanceForm.pdf" uib-tooltip="{{'foreignMedia.identificationDoc' | translate}}">
+                                                  <em class="fa fa-4x fa-file-pdf-o"></em>
+                                              </a>
+                                          </div>
+                                      </div>
+                                  </div>
+                                  <div class="row"><br /></div>
+                              </div>
+
+                              <div class="row"><br /></div>
+                              <terms ng-model="fm.terms" ng-if="!fm.editMode" name="terms" class="col-sm-12"></terms>
+                              <customer-pulse ng-if="fm.showHappinessMeter" ng-model="fm.happinessMeterObj"></customer-pulse>
+                              <hr />
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="col-md-12">
+                                          <button type="button" ripple="" validation-submit="stepThreeForm" ng-if="!fm.editMode" ng-disabled="fm.isBusy || !fm.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right"
+                                                  ng-click="fm.save(2)">
+                                              {{'general.apply' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <button type="button" ripple="" validation-submit="stepThreeForm" ng-if="!fm.editMode" ng-disabled="fm.isBusy || !fm.terms.isAgreed" class="mr mb-sm btn btn-default pull-right"
+                                                  ng-click="fm.save(1)">
+                                              {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <div uib-dropdown="dropdown" class="btn-group mr pull-right" ng-if="fm.editMode">
+                                              <button uib-dropdown-toggle="" ng-disabled="fm.isBusy" class="btn btn-primary dropdown-toggle">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                              <ul role="menu" class="dropdown-menu animated zoomIn">
+                                                  <li ng-repeat="transition in fm.mediaLicenses.applicationDetail.applicationState.transitions">
+                                                      <a href="" ng-click="fm.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                                  </li>
+                                              </ul>
+                                          </div>
+                                          <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="fm.activeStep = 2">
+                                              {{'general.previous' | translate}}<span class="ripple"></span>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+        </div>
+    </div>
+    <!-- END panel-->
+</div>

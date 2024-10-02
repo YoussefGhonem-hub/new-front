@@ -1,0 +1,298 @@
+﻿<div class="app-view-header">
+    {{'mediaMaterial.pageTitle' | translate}}
+</div>
+<!-- START panel-->
+<div ng-controller="RegulateMediaMaterialController as mediaControl" class="container-fluid">
+    <div class="panel panel-default">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row"><br /></div>
+                <div class="row" ng-if="mediaControl.user.userTypeCode != '01' && mediaControl.user.userTypeCode != '07'">
+                    <div class="col-md-3 col-xs-1"></div>
+                    <div class="col-md-6 col-xs-10">
+                        <div class="row">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.establishmentName' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{mediaControl.mediaMaterial.applicationDetail.application.establishment | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.TenancyContract' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{mediaControl.mediaMaterial.applicationDetail.application.establishment.tenancyContractEndDate | amDateFormat:'DD-MMMM-YYYY'}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.Authority' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{mediaControl.mediaMaterial.applicationDetail.application.establishment.authority | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{mediaControl.mediaMaterial.applicationDetail.application.establishment.licenseNumber}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-1"></div>
+                </div>
+                <div class="row"><br /></div>
+                <hr ng-if="mediaControl.user.userTypeCode != '01' && mediaControl.user.userTypeCode != '07'" />
+                <uib-alert type="danger" ng-if="mediaControl.user.userTypeCode == '07' && mediaControl.notSelected">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'printingPermit.regulateEntriesRequired' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-alert>
+                <uib-alert type="danger" ng-if="mediaControl.noItems">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'mediaMaterial.noItems' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-alert>
+                <uib-alert type="info" ng-if="mediaControl.employeeNote">
+                    <div class="row text-bold">
+                        <div class="col-md-6"><span class="pull-left">{{'mediaLicense.employeeNote' | translate}}</span></div>
+                        <div class="col-md-6"><span class="pull-right">{{mediaControl.employeeNoteDate}}</span></div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12" ng-bind-html="mediaControl.employeeNote"></div>
+                    </div>
+                </uib-alert>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.policyNumber' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input ng-model="mediaControl.mediaMaterial.policyNumber" type="text" placeholder="{{'mediaMaterial.policyNumber' | translate}}"
+                               autocomplete="off" class="form-control" validator="required" name="policyNumber" maxlength="32" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.policyDate' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <p class="input-group hackyhack">
+                            <input type="text" name="policyDate" placeholder="{{'mediaMaterial.policyDate' | translate}}" uib-datepicker-popup="{{mediaControl.format}}"
+                                   ng-model="mediaControl.mediaMaterial.policyDate" validator="required" is-open="mediaControl.opened" min-date="false" max-date="false"
+                                   date-disabled="mediaControl.disabled(date, mode)" close-text="{{'datePicker.close' | translate}}" class="form-control"
+                                   current-text="{{'datePicker.today' | translate}}" clear-text="{{'datePicker.clear' | translate}}" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" ng-click="mediaControl.open($event)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.uploadCustomDeclaration' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="mediaControl.mediaMaterial.customDeclarationUrl" copyUrlFullPath="mediaControl.mediaMaterial.customDeclarationUrlFullPath"
+                                         url="mediaControl.uploadCustomDeclarationUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.uploadPolicy' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="mediaControl.mediaMaterial.policyUrl" copyUrlFullPath="mediaControl.mediaMaterial.policyUrlFullPath"
+                                         url="mediaControl.uploadPolicyUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.uploadPurchaseInvoices' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="mediaControl.mediaMaterial.invoicesUrl" copyUrlFullPath="mediaControl.mediaMaterial.invoicesUrlFullPath"
+                                         url="mediaControl.uploadInvoicesUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.arrivalCountry' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="mediaControl.mediaMaterial.country" validator="required" theme="bootstrap" name="userCountry">
+                            <ui-select-match class="flag-container" placeholder="{{'mediaMaterial.selectarrivalCountry' | translate}}">
+                                <div class="col-md-4 flag-style">
+                                    <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                </div>
+                                <div class="col-md-4">
+                                    <span>{{$select.selected | localizeString}}</span>
+                                </div>
+                            </ui-select-match>
+                            <ui-select-choices repeat="country1 in mediaControl.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div ng-bind-html="country1 | localizeString | highlight: $select.search"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <small data-translate="country.countryCode"></small>: <small ng-bind-html="country1.isoCode3"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.portOfArrival' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="mediaControl.mediaMaterial.port" validator="required" placeholder="{{'mediaMaterial.selectportOfArrival' | translate}}" name="port" theme="bootstrap" class="text-left" ng-disabled="uiselect.disabled">
+                            <ui-select-match placeholder="{{'mediaMaterial.selectportOfArrival' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="portOfArrival in mediaControl.portOfArrivals | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                <div ng-bind-html="portOfArrival | localizeString | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="mediaControl.user.userTypeCode == '07'">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.beneficiaryType' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <div class="radio c-radio" ng-repeat="beneficiaryType in mediaControl.beneficiaryTypes">
+                            <label>
+                                <input type="radio" name="customerTypeRadio" ng-value="beneficiaryType.id" ng-checked="(mediaControl.mediaMaterial.beneficiaryTypeId == beneficiaryType.id)"
+                                       ng-model="mediaControl.mediaMaterial.beneficiaryTypeId" ng-required="true" ng-change="mediaControl.clear()" />
+                                <span class="fa fa-circle"></span>{{beneficiaryType | localizeString}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="mediaControl.user.userTypeCode == '07' && mediaControl.mediaMaterial.beneficiaryTypeId == 1">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.licenceNumber' | translate}}</span></label>
+                    <div class="col-sm-3">
+                        <input ng-model="mediaControl.mediaMaterial.mediaLicenseNumber" type="text" placeholder="{{'mediaMaterial.licenceNumber' | translate}}"
+                               autocomplete="off" class="form-control" validator="required" name="policyNumber" maxlength="32" />
+                    </div>
+                    <div class="col-sm-2">
+                        <a class="btn btn-primary btn-sm" ng-click="mediaControl.searchLicense()">
+                            <i class="fa fa-search"></i> <span data-translate="mediaMaterial.search"></span>
+                        </a>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="mediaControl.user.userTypeCode == '07' && mediaControl.establishmentLicense">
+                    <label class="col-sm-3 control-label">{{'mediaMaterial.beneficiaryName' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{mediaControl.establishmentLicense | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="mediaControl.user.userTypeCode == '07' && mediaControl.mediaMaterial.beneficiaryTypeId != 1">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterial.beneficiaryName' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input ng-model="mediaControl.mediaMaterial.beneficiaryName" type="text" placeholder="{{'mediaMaterial.beneficiaryName' | translate}}"
+                               autocomplete="off" class="form-control" validator="required" name="beneficiaryName" maxlength="32" />
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="mediaControl.user.userTypeCode != '07' || (mediaControl.user.userTypeCode == '07' && mediaControl.establishmentLicense) ||
+                     (mediaControl.user.userTypeCode == '07' && mediaControl.mediaMaterial.beneficiaryTypeId != 1)">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="mediaMaterial.materialList"></h3>
+                            <p>
+                                <div class="btn btn-warning pull-right" ng-if="!mediaControl.isHideButton" ng-click="mediaControl.regulateItemsDt.open('lg')">{{'mediaMaterial.addNewMaterial' | translate}}</div>
+                                <div class="row">
+                                    <div class="col-md-12" ng-if="mediaControl.regulateItemsDt.dtOptions">
+                                        <table datatable="" class="row-border hover" dt-options="mediaControl.regulateItemsDt.dtOptions" dt-columns="mediaControl.regulateItemsDt.dtColumns"
+                                               dt-instance="mediaControl.regulateItemsDt.dtInstance" width="100%"></table>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="((mediaControl.mediaMaterial.regulateEntriesItems | filter:{materialType: {id: 8}}: true).length > 0) || ((mediaControl.mediaMaterial.regulateEntriesItems | filter: {materialType: {id: 17}}: true).length > 0) || ((mediaControl.mediaMaterial.regulateEntriesItems | filter: {materialType: {id: 24}}: true).length > 0)">
+                    <div class="col-md-12">
+                        <h3>
+                            {{'mediaMaterial.bookList' | translate}}
+                            <a target="_blank" href="sharedFiles/bookList.xlsx" uib-tooltip="{{'mediaMaterial.bookList' | translate}}">
+                                <em class="fa fa-2x fa-file-excel-o"></em>
+                            </a>
+                            <br />
+                        </h3>
+                    </div>
+                    <div class="col-md-12">
+                        <div id="grid1" ui-grid="mediaControl.gridOptions" class="grid" ui-grid-edit style="direction:ltr">
+                            <div class="grid-msg-overlay" ng-show="!mediaControl.gridOptions.data.length">
+                                <div class="msg">
+                                    <div class="center">
+                                        <span class="muted">{{'mediaMaterial.uploadExcel' | translate}}</span>
+                                        <br />
+                                        <input type="file" accept=".xls,.xlsx,.csv" fileread="" opts="mediaControl.gridOptions" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="((mediaControl.mediaMaterial.regulateEntriesItems | filter:{materialType: {id: 14}}: true).length > 0) || ((mediaControl.mediaMaterial.regulateEntriesItems | filter: {materialType: {id: 21}}: true).length > 0) || ((mediaControl.mediaMaterial.regulateEntriesItems | filter: {materialType: {id: 28}}: true).length > 0)">
+                    <div class="col-md-12">
+                        <div id="grid2" ui-grid="mediaControl.magazineOptions" class="grid" ui-grid-edit style="direction:ltr">
+                            <div class="grid-msg-overlay" ng-show="!mediaControl.magazineOptions.data.length">
+                                <div class="msg">
+                                    <div class="center">
+                                        <span class="muted">{{'mediaMaterial.uploadExcel' | translate}}</span>
+                                        <br />
+                                        <input type="file" accept=".xls,.xlsx,.csv" fileread="" opts="mediaControl.magazineOptions" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <service-fee ng-model="mediaControl.serviceFeesObj"></service-fee>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <terms ng-model="mediaControl.terms" ng-if="!mediaControl.editMode" name="terms" class="col-sm-12"></terms>
+                </div>
+                <customer-pulse ng-if="mediaControl.showHappinessMeter" ng-model="mediaControl.happinessMeterObj"></customer-pulse>
+                <hr />
+                <div class="row" ng-if="!mediaControl.editMode">
+                    <div class="col-md-12">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="mediaControl.isBusy || !mediaControl.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaControl.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="mediaControl.isBusy|| !mediaControl.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="mediaControl.save(1)">
+                            {{'general.applyLater' | translate}}<span class="ripple"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-if="mediaControl.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                            <button uib-dropdown-toggle="" ng-disabled="mediaControl.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                            <ul role="menu" class="dropdown-menu animated zoomIn">
+                                <li ng-repeat="transition in mediaControl.mediaMaterial.applicationDetail.applicationState.transitions">
+                                    <a href="" ng-click="mediaControl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- END panel-->
+</div>

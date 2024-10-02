@@ -1,0 +1,190 @@
+﻿<div class="container form-horizontal" ng-controller="FilterCustomersController as filterCtrl">
+    <label class="text-hg text-white" data-translate="dashboard.lookingFor"></label>
+    <br /><br /><br /><br />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'completeProfile.customerType' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.userTypes" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'completeProfile.customerType' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="customerType in filterCtrl.customerTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="customerType | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'profileNationalityDirective.Nationality' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.nationalities" name="nationality" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'profileNationalityDirective.Nationality' | translate}}">
+                            <div class="col-md-5">
+                                <img class="img-responsive" style="max-height:25px;" ng-src="../src/imgs/Countries/{{$item.isoCode2}}.png" />
+                            </div>
+                            <div class="col-md-5 mobileHideName" style="padding-top:3px;">
+                                <span class="text-sm pull-right">{{$item | localizeString}}</span>
+                            </div>
+                        </ui-select-match>
+                        <ui-select-choices repeat="nationality in filterCtrl.nationalities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <img class="img-responsive" ng-src="../src/imgs/Countries/{{nationality.isoCode2}}.png" />
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div ng-bind-html="nationality | localizeString | highlight: $select.search"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <small data-translate="country.countryCode"></small>: <small ng-bind-html="nationality.isoCode3 | highlight: $select.search"></small>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <small data-translate="country.phoneCode"></small>: <small ng-bind-html="nationality.phoneCode | highlight: $select.search"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'completeProfile.fromCreatedOn' | translate}}</label>
+                <div class="col-sm-8">
+                    <p class="input-group hackyhack">
+                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.fromCreatedOn"
+                               is-open="filterCtrl.fromCreatedOnPopup.opened" min-date="false" max-date="false" close-text="{{'datePicker.close' | translate}}" class="form-control" 
+                               current-text="{{'datePicker.today' | translate}}" clear-text="{{'datePicker.clear' | translate}}"/>
+                        <span class="input-group-btn">
+                            <button type="button" ng-click="filterCtrl.openFromCreatedOn($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'completeProfile.toCreatedOn' | translate}}</label>
+                <div class="col-sm-8">
+                    <p class="input-group hackyhack">
+                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.toCreatedOn"
+                               is-open="filterCtrl.toCreatedOnPopup.opened" min-date="false" max-date="false" close-text="{{'datePicker.close' | translate}}" class="form-control" 
+                               current-text="{{'datePicker.today' | translate}}" clear-text="{{'datePicker.clear' | translate}}"/>
+                        <span class="input-group-btn">
+                            <button type="button" ng-click="filterCtrl.openToCreatedOn($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'address.Emirate' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.emirates" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'address.Emirate' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="emirate in filterCtrl.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="emirate | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'dashboard.economicActivities' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.economicActivities" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'dashboard.economicActivities' | translate}}">
+                            <span style="white-space:normal">
+                                {{$item | localizeString}}
+                            </span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="economicActivity in filterCtrl.economicActivities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="economicActivity | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'completeProfile.gender' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.genders" name="gender" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'completeProfile.gender' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="gender in filterCtrl.genders | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="gender | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'profileNationalityDirective.Occupation' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.titles" name="nationality" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'profileNationalityDirective.Occupation' | translate}}">{{$item | localizeString}}
+                        </ui-select-match>
+                        <ui-select-choices repeat="title in filterCtrl.titles | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="title | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-12">
+            <div class="row">
+                <label class="col-sm-3 control-label text-white">{{'completeProfile.age' | translate}}</label>
+                <div class="col-sm-9">
+                    <rzslider rz-slider-model="filterCtrl.filter.minAge" rz-slider-high="filterCtrl.filter.maxAge" rz-slider-options="filterCtrl.sliderOptions"></rzslider>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <hr style="border-top-color:white" />
+</div>
+<style>
+    .rzslider .rz-bubble {
+        color: orange;
+    }
+
+    .rzslider .rz-pointer {
+        background-color: orange;
+    }
+
+    .rzslider .rz-selection {
+        background-color: orange;
+    }
+
+    .rzslider .rz-tick.rz-selected {
+        background-color: white;
+    }
+</style>

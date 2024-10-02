@@ -1,0 +1,40 @@
+<div ng-show="IsLoadingMenu === false" class="sidebar-wrapper">
+    <div ui-sidebar="" class="sidebar">
+        <div class="sidebar-nav">
+            <ul class="nav" ng-repeat="mitem in userMenu">
+                <li ng-if="mitem.subMenus.length == 0" class="nav-heading">
+                    <span translate="sidebar.heading.HEADER" class="text-muted">Main Navigation</span>
+                </li>
+                <li ng-if="mitem.subMenus.length == 0" ui-sref-active="active">
+                    <a ui-sref="{{mitem.url}}" title="{{mitem | localizeString}}" ripple="">
+                        <em class="sidebar-item-icon" ng-class="mitem.logo"></em>
+                        <span>{{mitem | localizeString}}</span>
+                    </a>
+                </li>
+                <li ng-if="mitem.subMenus.length > 0" ng-class="{active:$state.includes(mitem.url)}">
+                    <a href="" title="{{mitem | localizeString}}" ripple="">
+                        <em class="sidebar-item-caret fa pull-right fa-angle-right"></em>
+                        <em class="sidebar-item-icon" ng-class="mitem.logo"></em>
+                        <span>{{mitem | localizeString}}</span>
+                    </a>
+                    <ul class="nav sidebar-subnav">
+                        <li class="sidebar-subnav-header">
+                            <a>
+                                <em class="sidebar-item-icon fa fa-angle-right"></em>{{mitem | localizeString}}
+                            </a>
+                        </li>
+                        <li ng-repeat="submitem in mitem.subMenus" ng-class="{active:$state.includes(submitem.url)}">
+                            <!--ui-sref-active="active"-->
+                            <a ui-sref="{{submitem.url}}" title="{{submitem | localizeString}}" ripple="">
+                                <!--ui-sref="app.ui.buttons"-->
+                                <div class="label pull-right label-primary">{{submitem.menuCount}}</div>
+                                <em class="sidebar-item-icon" ng-class="submitem.logo"></em>
+                                <span>{{submitem | localizeString}}</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

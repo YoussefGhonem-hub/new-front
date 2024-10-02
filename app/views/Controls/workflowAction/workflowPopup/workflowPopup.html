@@ -1,0 +1,250 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 class="modal-title">{{objOptions.modalTitle}}</h4>
+</div>
+<div class="modal-body">
+    <form role="form" name="WorkflowPopupForm">
+        <div class="row">
+            <div class="col-md-12">
+                <label data-translate="employees.notes"></label><br />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <textarea name="notes" ng-model="actionTakenDetail.notes" ckeditor></textarea>
+            </div>
+        </div>
+        <br />
+        <div class="row" ng-if="objOptions.isPrintPermitService && objOptions.isCloudLinkAttached">
+            <div class="col-md-12">
+                <label data-translate="workflow.cloudLink"></label><br />
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isPrintPermitService && objOptions.isCloudLinkAttached">
+            <div class="col-md-12">
+                <input type="text" ng-model="actionTakenDetail.attachmentUrl" class="form-control"
+                       name="cloudLinkUrl" maxlength="256">
+                <span extra-Help="workflow.cloudLinkDesc"></span>
+            </div>
+        </div>
+        <br />
+        <div class="row" ng-if="both">
+            <div class="col-md-12">
+                <label class="col-sm-8 control-label"><span>{{'workflow.externalParty' | translate}}</span></label>
+                <div class="col-sm-4">
+                    <label class="switch switch-lg">
+                        <input type="checkbox" ng-model="actionTakenDetail.externalParty">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isConditionalApproval">
+            <div class="col-md-12">
+                <label class="col-sm-8 control-label"><span>{{'workflow.isConditionallyApproved' | translate}}</span></label>
+                <div class="col-sm-4">
+                    <label class="switch switch-lg">
+                        <input type="checkbox" ng-model="actionTakenDetail.isConditionallyApproved">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isThirdParty && !objOptions.isAssigning">
+            <div class="col-md-12">
+                <span class="text-danger">* </span>
+                <label>{{'workflow.AttachmentUrl' | translate}}</label>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isThirdParty && !objOptions.isAssigning">
+            <div class="col-md-12">
+                <uploading-files copyUrl="actionTakenDetail.attachmentUrl" copyUrlFullPath="actionTakenDetail.attachmentUrlFullPath" url="thirdPartyApprovalUrl" isrequired="true"></uploading-files>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isMagazine">
+            <div class="col-md-12">
+                <span class="text-danger">* </span>
+                <label>{{'workflow.BankGuarantee' | translate}}</label>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isMagazine">
+            <div class="col-md-12">
+                <uploading-files copyUrl="actionTakenDetail.bankGuaranteeUrl" copyUrlFullPath="actionTakenDetail.bankGuaranteeUrlFullPath" url="bankGuaranteeUrl" isrequired="true"></uploading-files>
+            </div>
+        </div>
+        <br ng-if="objOptions.isMagazine" />
+        <div class="row" ng-if="objOptions.isMagazine">
+            <div class="col-md-12">
+                <span class="text-danger">* </span>
+                <label>{{'workflow.ContentReport' | translate}}</label>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isMagazine">
+            <div class="col-md-12">
+                <uploading-files copyUrl="actionTakenDetail.contentReportUrl" copyUrlFullPath="actionTakenDetail.contentReportUrlFullPath" url="contentReportUrl" isrequired="true"></uploading-files>
+            </div>
+        </div>
+        <br ng-if="objOptions.isMagazine" />
+        <div class="row" ng-if="(objOptions.isThirdParty && !objOptions.isAssigning) || (actionTakenDetail.externalParty == true)">
+            <div class="col-md-12">
+                <span class="text-danger">* </span>
+                <label>{{'workflow.Organization' | translate}}</label>
+            </div>
+        </div>
+        <div class="row" ng-if="(objOptions.isThirdParty && !objOptions.isAssigning) || (actionTakenDetail.externalParty == true)">
+            <div class="col-sm-12">
+                <ui-select ng-model="actionTakenDetail.thirdPartyOrganization" theme="bootstrap" ng-required="true" class="text-left" validator="required" name="ThirdPartyOrganization">
+                    <ui-select-match placeholder="{{'workflow.Organization' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="thirdPartyOrganization in thirdPartyOrganizations | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="thirdPartyOrganization | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row" ng-if="(objOptions.isAssigning && !objOptions.isThirdParty) || (actionTakenDetail.externalParty == false)">
+            <div class="col-md-12">
+                <span class="text-danger">* </span>
+                <label>{{'workflow.selectEmployee' | translate}}</label>
+            </div>
+        </div>
+        <div class="row" ng-if="(objOptions.isAssigning && !objOptions.isThirdParty) || (actionTakenDetail.externalParty == false)">
+            <div class="col-sm-12">
+                <ui-select ng-model="actionTakenDetail.assignedToUser" theme="bootstrap" ng-required="true" class="text-left" validator="required" name="AssignedTo">
+                    <ui-select-match placeholder="{{'workflow.selectEmployee' | translate}}">{{$select.selected.firstName + ' ' + $select.selected.lastName}}</ui-select-match>
+                    <ui-select-choices repeat="user in users | propsFilter: {firstName: $select.search, lastName: $select.search}">
+                        <span ng-bind-html="user.firstName + ' ' + user.lastName | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="objOptions.isSponsorship">
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-sm-4 control-label">{{'mediaLicense.issueDate' | translate}}</label>
+                    <div class="col-sm-8">
+                        <p class="input-group hackyhack">
+                            <input type="text" uib-datepicker-popup="{{format}}" ng-model="actionTakenDetail.fromCreatedOn"
+                                   is-open="fromCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
+                            <span class="input-group-btn">
+                                <button type="button" ng-click="openFromCreatedOn($event)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <label class="col-sm-4 control-label">{{'mediaLicense.expiryDate' | translate}}</label>
+                    <div class="col-sm-8">
+                        <p class="input-group hackyhack">
+                            <input type="text" uib-datepicker-popup="{{format}}" ng-model="actionTakenDetail.toCreatedOn"
+                                   is-open="toCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
+                            <span class="input-group-btn">
+                                <button type="button" ng-click="openToCreatedOn($event)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <uploading-files copyUrl="actionTakenDetail.attachmentUrl" copyUrlFullPath="actionTakenDetail.attachmentUrlFullPath" url="thirdPartyApprovalUrl" isrequired="true"></uploading-files>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isDepartmentAssigning">
+            <div class="col-md-6">
+                <label class="col-sm-9 control-label"><span>{{'enquiries.modifyEnquiryType' | translate}}</span></label>
+                <div class="col-sm-3">
+                    <label class="switch switch-lg">
+                        <input type="checkbox" ng-checked="actionTakenDetail.modifyType == true" ng-model="actionTakenDetail.modifyType">
+                        <span></span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-md-6" ng-if="actionTakenDetail.modifyType">
+                <ui-select ng-model="actionTakenDetail.enquiryType" theme="bootstrap" ng-required="true" class="text-left" validator="required" name="enquiryType">
+                    <ui-select-match placeholder="{{'enquiries.selectEnquiryType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="enquiryType in enquiryTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="enquiryType | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <br />
+        <div class="row" ng-if="objOptions.isDepartmentAssigning">
+            <div class="col-md-6">
+                <ui-select ng-model="actionTakenDetail.priority" theme="bootstrap" ng-required="true" class="text-left" validator="required" name="priority">
+                    <ui-select-match placeholder="{{'enquiries.selectPriority' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="priority in priorities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="priority | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-md-6">
+                <ui-select ng-model="actionTakenDetail.department" theme="bootstrap" ng-required="true" class="text-left" validator="required" name="AssignedTo">
+                    <ui-select-match placeholder="{{'enquiries.selectDepatrtment' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="department in departments | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="department | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <hr ng-if="objOptions.isResolving" />
+        <div class="row" ng-if="objOptions.isResolving">
+            <div class="col-md-12">
+                <label data-translate="enquiries.resolutionDesc"></label><br />
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isResolving">
+            <div class="col-md-12">
+                <textarea name="resolutionDesc" ng-model="actionTakenDetail.resolutionDesc" ckeditor></textarea>
+            </div>
+        </div>
+        <br ng-if="objOptions.isResolving" />
+        <div class="row" ng-if="objOptions.isResolving">
+            <div class="col-md-12">
+                <span class="text-danger">* </span>
+                <label>{{'enquiries.selectProblemCause' | translate}}</label>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isResolving">
+            <div class="col-sm-12">
+                <ui-select ng-model="actionTakenDetail.problemCause" theme="bootstrap" class="text-left" name="problemCause" ng-required="true" validator="required">
+                    <ui-select-match placeholder="{{'enquiries.selectProblemCause' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="problemCause in problemCauses | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="problemCause | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <br ng-if="objOptions.isResolving" />
+        <div class="row" ng-if="objOptions.isResolving">
+            <div class="col-md-12">
+                <label>{{'enquiries.attachements' | translate}}</label>
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isResolving">
+            <div class="col-sm-12">
+                <uploading-files copyUrl="actionTakenDetail.attachementUrl" copyUrlFullPath="actionTakenDetail.attachementUrlFullPath" url="uploadAttachmentUrl" isrequired="false"></uploading-files>
+            </div>
+        </div>
+        <hr ng-if="objOptions.isNeedMessage" />
+        <div class="row" ng-if="objOptions.isNeedMessage">
+            <div class="col-md-12">
+                <label data-translate="enquiries.customerNote"></label><br />
+            </div>
+        </div>
+        <div class="row" ng-if="objOptions.isNeedMessage">
+            <div class="col-md-12">
+                <textarea name="messageToCustomer" ng-model="actionTakenDetail.messageToCustomer" ckeditor></textarea>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="submit()" class="btn btn-primary" validation-submit="WorkflowPopupForm">{{'general.submit' | translate}}</button>
+    <button ng-click="closeModal()" class="btn btn-warning">{{'general.cancel' | translate}}</button>
+</div>

@@ -1,0 +1,8 @@
+﻿<div class="app-view-header">
+    {{'dashboard.home' | translate}}
+    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+
+<div ng-controller="visitBookController as visitbook">
+    <book-scanner ng-model="visitbook.visitId"></book-scanner>
+</div>

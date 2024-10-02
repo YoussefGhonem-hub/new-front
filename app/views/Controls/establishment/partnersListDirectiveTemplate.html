@@ -1,0 +1,25 @@
+﻿<div class="fw" ng-if="!isViewonly">
+    <span class="inputHint">
+        <i class="fa fa-info" aria-hidden="true" style="padding-top:3px"></i>
+        <span>يجب اضافة اصحاب الترخيص والشركاء حسب الرخصة التجارية تماما ، سواء كانو افراد ام شركات</span>
+    </span>
+    <!-- <div class="col-md-10">
+        <br />
+        <p>
+            <em class="fa fa-info-circle" style="color:#2095f2;font-size:20px;vertical-align: middle;"></em>
+            يجب اضافة اصحاب الترخيص والشركاء حسب الرخصة التجارية تماما ، سواء كانو افراد ام شركات
+        </p>
+    </div> -->
+    
+        <div class="btn btn-warning mb-lg formBtn" ng-click="openPartner('lg')">{{'completeProfile.addNewPartner' | translate}}</div>
+</div>
+
+<div class="formTitle">
+    <h4 data-translate="completeProfile.stepThree" class="text-primary"></h4>
+</div>
+
+<div class="formCard">
+    <div ng-if="dtPartnerOptions">
+        <table datatable="" class="row-border hover" dt-options="dtPartnerOptions" dt-columns="dtPartnerColumns" dt-instance="dtPartnerInstanceCallback" width="100%"></table>
+    </div>
+</div>

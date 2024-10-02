@@ -1,0 +1,427 @@
+﻿<div ng-controller="MediaMaterialApprovalController as mediaCtl">
+    <div class="app-view-header">
+        {{'mediaMaterialApproval.controllerReport' | translate}}
+    </div>
+    <div class="container-fluid">
+
+        <!-- START panel-->
+        <div class="container-fluid">
+            <uib-accordion>
+                <uib-accordion-group is-open="mediaCtl.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                    <uib-accordion-heading>
+                        {{'general.applicationDetails' | translate}}
+                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': mediaCtl.applicationOpen, 'glyphicon-chevron-right': !mediaCtl.applicationOpen}"></i>
+                    </uib-accordion-heading>
+                    <br />
+                    <div ng-if="mediaCtl.mediaMaterialTypeId == 9 || mediaCtl.mediaMaterialTypeId == 0">
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.publicationType">
+                            <label class="col-sm-3 control-label">{{'printingPermit.publicationType' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.publicationType | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.publicationType.code == '02'">
+                            <label class="col-sm-3 control-label">{{'printingPermit.howCollectBook' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.bookCollectType | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.invoiceUrlFullPath">
+                            <label class="col-sm-3 control-label">{{'printingPermit.UploadInvoice' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <div ng-if="mediaCtl.printingPermit.invoiceUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                    <a href="{{mediaCtl.printingPermit.invoiceUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                        <img ng-src="{{mediaCtl.printingPermit.invoiceUrlFullPath}}" alt="thumb" />
+                                    </a>
+                                </div>
+                                <a ng-if="mediaCtl.printingPermit.invoiceUrl.split('.')[1] == 'pdf'" target="_blank" href="{{mediaCtl.printingPermit.invoiceUrlFullPath}}">
+                                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                                </a>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.printingPermit1">
+                            <label class="col-sm-3 control-label">{{'photographyPermit.PublicationsPrintingPermit' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.printingPermit1 | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.regulateEntry">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.regulateEntry' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.regulateEntry.applicationDetail.application.applicationNumber}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.authorName">
+                            <label class="col-sm-3 control-label">{{'printingPermit.authorName' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.authorName}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.title">
+                            <label class="col-sm-3 control-label">
+                                {{
+                                    ((mediaCtl.printingPermit.publicationType.id == 1 && mediaCtl.printingPermit.printedType.id == 1) ||
+                                    mediaCtl.printingPermit.publicationType.id == 2 ? ('printingPermit.bookTitle' | translate) : ('printingPermit.publicationTitle' | translate))
+                                }}
+                            </label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.title}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.book.isbn">
+                            <label class="col-sm-3 control-label">{{'printingPermit.isbn' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.book.isbn}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.book.nationalDepositoryNo">
+                            <label class="col-sm-3 control-label">{{'printingPermit.nationalDepositoryNo' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.book.nationalDepositoryNo}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.book.printYear">
+                            <label class="col-sm-3 control-label">{{'printingPermit.printYear' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.book.printYear}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.book.versionNumber">
+                            <label class="col-sm-3 control-label">{{'printingPermit.versionNumber' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.book.versionNumber}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.printingPermitsLanguages && !mediaCtl.printingPermit.book">
+                            <label class="col-sm-3 control-label">{{'printingPermit.languages' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <ul>
+                                    <li ng-repeat="language in mediaCtl.printingPermit.printingPermitsLanguages">{{language.language | localizeString}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.publicationType.code == '02'">
+                            <label class="col-sm-3 control-label">{{'printingPermit.languages' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <ul>
+                                    <li ng-repeat="language in mediaCtl.printingPermit.book.bookLanguages">{{language.language | localizeString}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.printedType">
+                            <label class="col-sm-3 control-label">{{'printingPermit.printedType' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.printedType | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.publicationType.code == '02'">
+                            <label class="col-sm-3 control-label">{{'printingPermit.subject' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                {{mediaCtl.printingPermit.book.subjectCategory | localizeString}}<br />
+                                <small>{{mediaCtl.printingPermit.book.subjectCategory | localizeDescString}}</small>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.publicationType.code != '02' && mediaCtl.printingPermit.printedType.code == 'BK'">
+                            <label class="col-sm-3 control-label">{{'printingPermit.subject' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                {{mediaCtl.printingPermit.subjectCategory | localizeString}}<br />
+                                <small>{{mediaCtl.printingPermit.subjectCategory | localizeDescString}}</small>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.distributorAgency">
+                            <label class="col-sm-3 control-label">{{'printingPermit.distributorAgency' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.distributorAgency}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.director">
+                            <label class="col-sm-3 control-label">{{'printingPermit.director' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.director}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.production">
+                            <label class="col-sm-3 control-label">{{'printingPermit.production' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.production}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.numberOfEpisodes">
+                            <label class="col-sm-3 control-label">{{'printingPermit.numberOfEpisodes' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.printingPermit.numberOfEpisodes}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.printingPermit.materialUrlFullPath">
+                            <label class="col-sm-3 control-label">{{'printingPermit.UploadYourMaterial' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <div ng-if="mediaCtl.printingPermit.materialUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                    <a href="{{mediaCtl.printingPermit.materialUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                        <img ng-src="{{mediaCtl.printingPermit.materialUrlFullPath}}" alt="thumb" />
+                                    </a>
+                                </div>
+                                <a ng-if="mediaCtl.printingPermit.materialUrl.split('.')[1] == 'pdf'" target="_blank" href="{{mediaCtl.printingPermit.materialUrlFullPath}}">
+                                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                                </a>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                    </div>
+                    <div ng-if="mediaCtl.mediaMaterialTypeId != 9 && mediaCtl.mediaMaterialTypeId != 0 && mediaCtl.mediaMaterialTypeId != 8 && mediaCtl.mediaMaterialTypeId != 7 && mediaCtl.mediaMaterialTypeId != 10">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'circulationNewspaper.title' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.title}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.mediaMaterialType' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.artistWorkType.mediaMaterialType | localizeString}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.type' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.artistWorkType | localizeString}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'circulationNewspaper.language' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.language | localizeString}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.duration' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.durationInMinutes}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.source' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.country | localizeString}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrightsType' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.copyrightsType | localizeString}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrightsStartingDate' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.copyrightsStartDate | date: 'dd-MMMM-yyyy'}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrightsEndingDate' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.CirculationMediaMaterial.copyrightsEndDate | date: 'dd-MMMM-yyyy'}}</div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'CirculationMediaMaterial.copyrights' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <div ng-if="mediaCtl.CirculationMediaMaterial.copyrightsCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                    <a ng-href="{{mediaCtl.CirculationMediaMaterial.copyrightsCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                        <img ng-src="{{mediaCtl.CirculationMediaMaterial.copyrightsCopyUrlFullPath}}" alt="thumb" />
+                                    </a>
+                                </div>
+                                <a ng-if="mediaCtl.CirculationMediaMaterial.copyrightsCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{mediaCtl.CirculationMediaMaterial.copyrightsCopyUrlFullPath}}">
+                                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="mediaCtl.mediaMaterialTypeId == 10">
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterial.policyNumber">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.policyNumber' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.mediaMaterial.policyNumber}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterial.policyDate">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.policyDate' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.mediaMaterial.policyDate | date: 'dd-MMMM-yyyy'}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.uploadPolicy' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <div ng-if="mediaCtl.mediaMaterial.policyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                    <a ng-href="{{mediaCtl.mediaMaterial.policyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                        <img ng-src="{{mediaCtl.mediaMaterial.policyUrlFullPath}}" alt="thumb" />
+                                    </a>
+                                </div>
+                                <a ng-if="vm.mediaMaterial.policyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{mediaCtl.mediaMaterial.policyUrlFullPath}}">
+                                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterial.country">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.arrivalCountry' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.mediaMaterial.country | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterial.port">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.portOfArrival' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.mediaMaterial.port | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.user.userTypeCode == '07'">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.beneficiaryType' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.mediaMaterial.beneficiaryType | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterial.shippingBeneficiary">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.beneficiaryName' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.mediaMaterial.shippingBeneficiary | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterial.beneficiaryName">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.beneficiaryName' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{mediaCtl.mediaMaterial.beneficiaryName}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                    </div>
+                </uib-accordion-group>
+                <br />
+                <uib-accordion-group is-open="mediaCtl.reportOpen" panel-class="panel-primary" class="form-horizontal">
+                    <uib-accordion-heading>
+                        {{'mediaMaterialApproval.reportDetails' | translate}}
+                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': mediaCtl.reportOpen, 'glyphicon-chevron-right': !mediaCtl.reportOpen}"></i>
+                    </uib-accordion-heading>
+                    <br />
+                    <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                        <div class="row" ng-if="mediaCtl.mediaMaterialCategories.length > 0">
+                            <div class="col-sm-12"><h4 style="margin-left: 15px;">{{'mediaMaterialApproval.categorization' | translate}}</h4></div>
+                        </div>
+                        <div class="row form-group" ng-repeat="mediaMaterialCategory in mediaCtl.mediaMaterialCategories">
+                            <label class="col-sm-3 control-label"><span>{{mediaMaterialCategory | localizeString}}</span></label>
+                            <div class="col-sm-9" style="padding-bottom:20px">
+                                <div class="checkbox c-checkbox needsclick" ng-repeat="subCategory in mediaMaterialCategory.mediaMaterialSubCategories">
+                                    <label class="needsclick" style="width:100%">
+                                        <input id="{{subCategory.id}}" type="checkbox" class="needsclick" name="{{subCategory.mediaMateriaCategoryId}}" item="subCategory"
+                                               checkbox-group options="mediaCtl.reportModel.reportSubCategories" property="'mediaMaterialSubCategory'">
+                                        <span class="fa fa-check"></span><label style="width:99%" for="{{subCategory.id}}" ng-bind-html="subCategory | localizeString"></label>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterialApproval.detailedReport' | translate}}</span></label>
+                            <div class="col-md-9">
+                                <textarea ng-model="mediaCtl.reportModel.notes" ckeditor id="editor1" name="editor1"></textarea>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span>{{'mediaMaterialApproval.UploadObligation' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <uploading-files copyUrl="mediaCtl.reportModel.obligationUrl" copyUrlFullPath="mediaCtl.reportModel.obligationUrlFullPath" url="mediaCtl.obligationUrl"></uploading-files>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.ageClassifications != null && mediaCtl.ageClassifications.length > 0">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaMaterialApproval.ageClassification' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <ui-select ng-model="mediaCtl.reportModel.ageClassification" theme="bootstrap" validator="required" name="ageClassification" class="text-left">
+                                    <ui-select-match placeholder="{{'mediaMaterialApproval.selectAgeClassification' | translate}}">
+                                        {{$select.selected | localizeString}} - {{$select.selected | localizeDescString}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="ageClassification in mediaCtl.ageClassifications | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                        <span ng-bind-html="ageClassification | localizeString | highlight: $select.search"></span> -
+                                        <span ng-bind-html="ageClassification | localizeDescString | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterialTypeId == 10">
+                            <div class="col-md-6">
+                                <div class="box-placeholder b0 bg-success bg-dark" dnd-list="mediaCtl.reportModel.approvedRegulateEntriesItems" dnd-allowed-types="mediaCtl.allowedTypes">
+                                    <h4>{{'mediaMaterialApproval.approvedMaterials' | translate}}</h4>
+                                    <ul class="nav">
+                                        <li ng-repeat="regulateEntriesItem in mediaCtl.reportModel.approvedRegulateEntriesItems" dnd-draggable="regulateEntriesItem" dnd-type="'materials'" 
+                                            dnd-moved="mediaCtl.reportModel.approvedRegulateEntriesItems.splice($index, 1)">
+                                            <div class="dd-handle dd3-handle">Drag</div>
+                                            <div class="dd3-content" style="color:black">
+                                                <div class="row">
+                                                    <label class="col-sm-3">{{'mediaMaterial.materialType' | translate}}</label>
+                                                    <div class="col-sm-4" ng-if="regulateEntriesItem.materialType" >{{regulateEntriesItem.materialType | localizeString}}</div>
+                                                    <div class="col-sm-4" ng-if="!regulateEntriesItem.materialType">{{regulateEntriesItem.customMaterial.materialType | localizeString}}</div>
+                                                    <label class="col-sm-2">{{'mediaMaterial.language' | translate}}</label>
+                                                    <div class="col-sm-3" ng-if="!regulateEntriesItem.book">{{regulateEntriesItem.language | localizeString}}</div>
+                                                    <div class="col-sm-3" ng-if="regulateEntriesItem.book">{{regulateEntriesItem.book.bookLanguages[0].language | localizeString}}</div>
+                                                </div>
+                                                <div class="row" ng-if="regulateEntriesItem.customMaterial">
+                                                    <label class="col-sm-3">{{'mediaMaterial.hsCode' | translate}}</label>
+                                                    <div class="col-sm-8">{{regulateEntriesItem.customMaterial.hsCode}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="col-sm-3">{{'mediaMaterial.titleName' | translate}}</label>
+                                                    <div class="col-sm-4">{{regulateEntriesItem.title}}</div>
+                                                    <label class="col-sm-2">{{'mediaMaterial.numberOfTitles' | translate}}</label>
+                                                    <div class="col-sm-3">{{regulateEntriesItem.numberOfItems}}</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li class="dndPlaceholder">
+                                            {{'profile.dropany' | translate}} <strong>{{'profile.mediaLicenseRole' | translate}}</strong> {{'profile.here' | translate}}
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="box-placeholder b0 bg-success bg-light" dnd-list="mediaCtl.reportModel.rejectedRegulateEntriesItems" dnd-allowed-types="mediaCtl.allowedTypes">
+                                    <h4>{{'mediaMaterialApproval.rejectedMaterials' | translate}}</h4>
+                                    <ul class="nav">
+                                        <li class="dd-item dd3-item" ng-repeat="regulateEntriesItem in mediaCtl.reportModel.rejectedRegulateEntriesItems" dnd-draggable="regulateEntriesItem" 
+                                            dnd-type="'materials'" dnd-moved="mediaCtl.reportModel.rejectedRegulateEntriesItems.splice($index, 1)">
+                                            <div class="dd-handle dd3-handle">Drop</div>
+                                            <div class="dd3-content" style="color:black">
+                                                <div class="row">
+                                                    <label class="col-sm-3">{{'mediaMaterial.materialType' | translate}}</label>
+                                                    <div class="col-sm-4" ng-if="regulateEntriesItem.materialType">{{regulateEntriesItem.materialType | localizeString}}</div>
+                                                    <div class="col-sm-4" ng-if="!regulateEntriesItem.materialType">{{regulateEntriesItem.customMaterial.materialType | localizeString}}</div>
+                                                    <label class="col-sm-2">{{'mediaMaterial.language' | translate}}</label>
+                                                    <div class="col-sm-3" ng-if="!regulateEntriesItem.book">{{regulateEntriesItem.language | localizeString}}</div>
+                                                    <div class="col-sm-3" ng-if="regulateEntriesItem.book">{{regulateEntriesItem.book.bookLanguages[0].language | localizeString}}</div>
+                                                </div>
+                                                <div class="row" ng-if="regulateEntriesItem.customMaterial">
+                                                    <label class="col-sm-3">{{'mediaMaterial.hsCode' | translate}}</label>
+                                                    <div class="col-sm-8">{{regulateEntriesItem.customMaterial.hsCode}}</div>
+                                                </div>
+                                                <div class="row">
+                                                    <label class="col-sm-3">{{'mediaMaterial.titleName' | translate}}</label>
+                                                    <div class="col-sm-4">{{regulateEntriesItem.title}}</div>
+                                                    <label class="col-sm-2">{{'mediaMaterial.numberOfTitles' | translate}}</label>
+                                                    <div class="col-sm-3">{{regulateEntriesItem.numberOfItems}}</div>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.mediaMaterialTypeId != 10">
+                            <div class="col-md-12">
+                                <div class="box-placeholder b0 bg-gray-lighter">
+                                    <h3 data-translate="mediaMaterialApproval.noteList"></h3>
+                                    <p>
+                                        <div class="btn btn-warning pull-right" ng-click="mediaCtl.reportActionsDt.open('lg')">{{'mediaMaterialApproval.addNewNote' | translate}}</div>
+                                        <div class="row">
+                                            <div class="col-md-12" ng-if="mediaCtl.reportActionsDt.dtOptions">
+                                                <table datatable="" class="row-border hover" dt-options="mediaCtl.reportActionsDt.dtOptions" dt-columns="mediaCtl.reportActionsDt.dtColumns" width="100%"
+                                                       dt-instance="mediaCtl.reportActionsDt.dtInstance"></table>
+                                            </div>
+                                        </div>
+                                        <div class="row"><br /></div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-4" ng-if="mediaCtl.mediaMaterialTypeId == 9 || mediaCtl.mediaMaterialTypeId == 0">
+                                <workflow-action ng-model="mediaCtl.printingPermit.applicationDetail" application="mediaCtl.printingPermit.applicationDetail.application"
+                                                 report="mediaCtl.reportModel" validation-submit="stepTwoForm"></workflow-action>
+                            </div>
+                            <div class="col-md-4" ng-if="mediaCtl.mediaMaterialTypeId != 9 && mediaCtl.mediaMaterialTypeId != 0 && mediaCtl.mediaMaterialTypeId != 8 &&
+                                                            mediaCtl.mediaMaterialTypeId != 7 && mediaCtl.mediaMaterialTypeId != 10">
+                                <workflow-action ng-model="mediaCtl.CirculationMediaMaterial.applicationDetail" application="mediaCtl.CirculationMediaMaterial.applicationDetail.application"
+                                                 report="mediaCtl.reportModel" validation-submit="stepTwoForm"></workflow-action>
+                            </div>
+                            <div class="col-md-4" ng-if="mediaCtl.mediaMaterialTypeId == 8 || mediaCtl.mediaMaterialTypeId == 7">
+                                <workflow-action ng-model="mediaCtl.CirculationNewspaper.applicationDetail" application="mediaCtl.CirculationNewspaper.applicationDetail.application"
+                                                 report="mediaCtl.reportModel" validation-submit="stepTwoForm"></workflow-action>
+                            </div>
+                            <div class="col-md-4" ng-if="mediaCtl.mediaMaterialTypeId == 10">
+                                <workflow-action ng-model="mediaCtl.mediaMaterial.applicationDetail" application="mediaCtl.mediaMaterial.applicationDetail.application"
+                                                 report="mediaCtl.reportModel" validation-submit="stepTwoForm"></workflow-action>
+                            </div>
+                        </div>
+                    </form>
+                </uib-accordion-group>
+            </uib-accordion>
+        </div>
+        <!-- END panel-->
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

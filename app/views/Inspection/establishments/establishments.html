@@ -1,0 +1,113 @@
+<div class="app-view-header">
+    {{'dashboard.home' | translate}}
+    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+<div ng-controller="EstablishmentsController as establishment">
+    <tour step="currentStep">
+        <p tourtip="Hey! I'd like to walk you through our site, it's great"
+           tourtip-next-label="Hmmm, okay sure!"
+           tourtip-placement="top"
+           tourtip-margin="10"
+           tourtip-step="0">
+        </p>
+        <p ng-show="currentStep === 1"
+           tourtip="Behold! I am now explaining the feature..."
+           tourtip-next-label="Wow, Amazing!"
+           tourtip-placement="right"
+           tourtip-offset-vertical="-300"
+           tourtip-offset-horizontal="-26"
+           tourtip-step="1">
+        </p>
+    </tour>
+
+    <!--Add New Establishment Button-->
+    <div class="row">
+        <div class="col-md-4">
+            <div class="mr mb-sm btn btn-warning pull-left" ng-click="establishment.open('lg')">
+                {{'inspection.addEstablishment' | translate}}
+                <span class="ripple"></span>
+            </div>
+            <button type="button" ripple="" class="btn btn-primary" ng-click="establishment.checkFine()">
+                {{'inspection.search' | translate}}
+            </button>
+        </div>
+    </div>
+    <div class="row" ng-if="establishment.user.userTypeCode == '06'">
+        <div class="col-md-5">
+            <div ng-if="!establishment.isObjectEmpty(establishment.filterParams)">
+                <span class="col-md-1 ">
+                    <a ng-click="establishment.exportExcel()" uib-tooltip="Excel">
+                        <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="establishment.exportCSV()" uib-tooltip="CSV">
+                        <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="establishment.exportPDF()" uib-tooltip="PDF">
+                        <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            <button ng-if="establishment.userFilters == null || establishment.userFilters.length == 0" class="btn btn-primary btn-md pull-right" btn-layer-morph="establishment.click()"
+                    btn-layer="establishment.filter" target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+            </button>
+            <div ng-if="establishment.userFilters.length > 0" uib-dropdown="dropdown" class="btn-group mb-sm mr dropdown open pull-right">
+                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
+                    <span ng-if="establishment.filterParams.userFilterId == undefined">{{'general.filter' | translate}}</span>
+                    <span ng-if="establishment.filterParams.userFilterId != undefined && establishment.filterParams.userFilterId == establishment.defaultUserFilter.id">{{establishment.defaultUserFilter.name}}</span>
+                    <span ng-if="establishment.filterParams.userFilterId != undefined && establishment.filterParams.userFilterId != establishment.defaultUserFilter.id">{{establishment.selectedUserFilter.name}}</span>&nbsp;
+                    <span class="caret"></span>
+                    <span class="ripple"><span class="angular-ripple"></span></span>
+                </button>
+                <ul role="menu" class="dropdown-menu">
+                    <li>
+                        <a href="" btn-layer-morph="establishment.click()" btn-layer="establishment.filter" target="#layer-search">
+                            {{'dashboard.newFilter' | translate}}
+                        </a>
+                    </li>
+                    <li ng-repeat="userFilter in establishment.userFilters">
+                        <a href="" ng-click="establishment.userFilterData(userFilter)">{{userFilter.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" ng-if="establishment.dtApplicationOptions">
+            <table datatable="" ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"
+                   dt-options="establishment.dtApplicationOptions" dt-columns="establishment.dtApplicationColumns"
+                   dt-instance="establishment.dtApplicationInstance" width="100%" id="establishmentDatatable"></table>
+        </div>
+    </div>
+    <!-- Layer Morph-->
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Dashboard/filter/filterDashboard.html'" class="layer-morph"></div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="establishment.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="establishment.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+            <br /><br />
+        </div>
+    </div>
+    <!-- End Layer Morph-->
+</div>

@@ -1,0 +1,270 @@
+﻿<div class="formTitle">
+    <h4 data-translate="completeProfile.stepTwo" class="text-primary"></h4>
+</div>
+
+<div class="formCard">
+    <div class="formList">
+        <div class="formInput">
+            <label>{{'completeProfile.establishmentNameAr' | translate}}<span class="text-danger"> *</span></label>
+            <input ng-model="complete.userProfile.userEstablishments[0].establishment.nameAr" type="text"
+                placeholder="{{'completeProfile.establishmentNameAr' | translate}}" autocomplete="off"
+                class="form-control" validator="required" name="estNameAr" />
+
+        </div>
+
+        <div class="formInput">
+            <label>{{'completeProfile.establishmentNameEn' | translate}}<span class="text-danger"> *</span></label>
+            <input ng-model="complete.userProfile.userEstablishments[0].establishment.nameEn" type="text"
+                placeholder="{{'completeProfile.establishmentNameEn' | translate}}" autocomplete="off"
+                class="form-control" validator="required" name="fullName" />
+
+        </div>
+
+        <div class="formInput" ng-if="!complete.isFreeZone">
+            <label>{{'address.Emirate' | translate}}<span class="text-danger"> *</span></label>
+            <ui-select ng-model="complete.establishmentEmirate" theme="bootstrap" class="text-left">
+                <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="emirate in complete.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+
+        </div>
+
+        <div class="formInput" ng-if="!complete.isFreeZone">
+            <label>{{'completeProfile.Authority' | translate}}<span class="text-danger"> *</span></label>
+            <ui-select ng-model="complete.userProfile.userEstablishments[0].establishment.authority" theme="bootstrap"
+                class="text-left" validator="required" name="Authority">
+                <ui-select-match placeholder="{{'completeProfile.SelectAuthority' | translate}}">{{$select.selected |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="authority in complete.establishmentEmirate.authorities | filter:{isShown: true} | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+
+        </div>
+
+        <div class="formInput" ng-if="!complete.isFreeZone">
+            <label>{{'completeProfile.HasValidLicense' | translate}}<span class="text-danger"> *</span></label>
+            <!-- <input type="checkbox" ng-model="complete.hasValidLicense" ng-checked="complete.hasValidLicense"> -->
+            <div class="formGroup">
+                <div class="formRadio">
+                    <input type="radio" 
+                               name="residenceCheck" 
+                               ng-model="complete.hasValidLicense" 
+                               ng-value="true">
+                        <span>Yes</span>
+                </div>
+                <div class="formRadio">
+                    <input type="radio" 
+                               name="residenceCheck" 
+                               ng-model="complete.hasValidLicense" 
+                               ng-value="false">
+                        <span>No</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="formInput" ng-if="!complete.isFreeZone">
+            <label>
+                {{(complete.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}
+                <span class="text-danger"> *</span>
+            </label>
+            <input ng-model="complete.userProfile.userEstablishments[0].establishment.licenseNumber" type="text"
+                placeholder="{{(complete.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}"
+                autocomplete="off" class="form-control" validator="required" name="licenseNumber" maxlength="20"
+                ng-blur="complete.checkerLicenseNumber()" />
+
+        </div>
+
+        <div class="formInput" ng-if="!complete.isFreeZone">
+            <label>{{(complete.hasValidLicense? ('completeProfile.UploadLicenseCopy' | translate):
+                ('completeProfile.UploadTradeNameCopy' | translate))}}<span class="text-danger"> *</span></label>
+            <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.licenseCopyUrl"
+                copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.licenseCopyUrlFullPath"
+                url="licenseCopyUrl"></uploading-files>
+
+        </div>
+
+        <div class="formInput" ng-if="!complete.isFreeZone && complete.hasValidLicense">
+            <label>{{'completeProfile.TenancyContract' | translate}}<span class="text-danger"> *</span></label>
+            <div class="input-group">
+                <input type="text" uib-datepicker-popup="{{complete.format}}"
+                    ng-model="complete.userProfile.userEstablishments[0].establishment.tenancyContractEndDate"
+                    is-open="complete.tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                    uib-datepicker-options="complete.dateOptions" date-disabled="disabled(date, mode)"
+                    close-text="Close" class="form-control" />
+
+                <button type="button" ng-click="complete.openTenancyContractDatePopup($event)" class="btn btn-default">
+                    <em class="fa fa-calendar"></em>
+                </button>
+            </div>
+
+        </div>
+
+        <div class="formInput" ng-if="!complete.isFreeZone && complete.hasValidLicense">
+            <label>{{'completeProfile.UploadTenancyContract' | translate}}<span class="text-danger"> *</span></label>
+            <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.tenancyContractCopyUrl"
+                copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.tenancyContractCopyUrlFullPath"
+                url="tenancyContractUrl"></uploading-files>
+
+        </div>
+
+        <div class="formInput">
+            <label>{{'completeProfile.MemorandumOfAssociation' | translate}}<span class="text-danger"> *</span></label>
+            <uploading-files
+                copyUrl="complete.userProfile.userEstablishments[0].establishment.memorandumOfAssociationCopyUrl"
+                copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.memorandumOfAssociationCopyUrl"
+                url="licenseCopyUrl"></uploading-files>
+
+        </div>
+
+        <div class="formInput">
+            <label>{{'completeProfile.PowerOfAttorney' | translate}}<span class="text-danger"> *</span></label>
+            <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.powerOfAttorneyCopyUrl"
+                copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.powerOfAttorneyCopyUrl"
+                url="licenseCopyUrl"></uploading-files>
+
+        </div>
+
+        <div class="formInput">
+            <label>{{'completeProfile.Statement' | translate}}<span class="text-danger"> *</span></label>
+            <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.statementCopyUrl"
+                copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.statementCopyUrl"
+                url="licenseCopyUrl"></uploading-files>
+
+        </div>
+
+        <div class="fw">
+            <profile-address establishment-emirate="complete.establishmentEmirate"
+            ng-model="complete.userProfile.userEstablishments[0].establishment.address"
+            is-establishment="complete.forEstablishment"></profile-address>
+        </div>
+        
+
+
+    </div>
+</div>
+
+
+<div ng-if="false">
+<div class="row form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'completeProfile.establishmentNameAr' | translate}}</label>
+    <div class="col-sm-9">
+        <input ng-model="complete.userProfile.userEstablishments[0].establishment.nameAr" type="text" placeholder="{{'completeProfile.establishmentNameAr' | translate}}"
+               autocomplete="off" class="form-control" validator="required" name="estNameAr" />
+    </div>
+</div>
+<div class="row form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'completeProfile.establishmentNameEn' | translate}}</label>
+    <div class="col-sm-9">
+        <input ng-model="complete.userProfile.userEstablishments[0].establishment.nameEn" type="text" placeholder="{{'completeProfile.establishmentNameEn' | translate}}"
+               autocomplete="off" class="form-control" validator="required" name="fullName" />
+    </div>
+</div>
+<div class="row form-group" ng-if="!complete.isFreeZone">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'address.Emirate' | translate}}</label>
+    <div class="col-sm-9">
+        <ui-select ng-model="complete.establishmentEmirate" theme="bootstrap" class="text-left">
+            <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="emirate in complete.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+<div class="row form-group" ng-if="!complete.isFreeZone">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'completeProfile.Authority' | translate}}</label>
+    <div class="col-sm-9">
+        <ui-select ng-model="complete.userProfile.userEstablishments[0].establishment.authority" theme="bootstrap" class="text-left" validator="required" name="Authority">
+            <ui-select-match placeholder="{{'completeProfile.SelectAuthority' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="authority in complete.establishmentEmirate.authorities | filter:{isShown: true} | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+<div class="row form-group" ng-if="!complete.isFreeZone">
+    <label class="col-sm-3 control-label">{{'completeProfile.HasValidLicense' | translate}}</label>
+    <div class="col-sm-2">
+        <label class="switch switch-lg">
+            <input type="checkbox" ng-model="complete.hasValidLicense" ng-checked="complete.hasValidLicense">
+            <span></span>
+        </label>
+    </div>
+</div>
+<div class="row form-group" ng-if="!complete.isFreeZone">
+    <label class="col-sm-3 control-label">
+        <span class="text-danger">* </span>
+        {{(complete.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}
+    </label>
+    <div class="col-sm-9">
+        <input ng-model="complete.userProfile.userEstablishments[0].establishment.licenseNumber" type="text"
+               placeholder="{{(complete.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}"
+               autocomplete="off" class="form-control" validator="required" name="licenseNumber" maxlength="20" ng-blur="complete.checkerLicenseNumber()" />
+    </div>
+</div>
+<div class="row form-group" ng-if="!complete.isFreeZone">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{(complete.hasValidLicense? ('completeProfile.UploadLicenseCopy' | translate): ('completeProfile.UploadTradeNameCopy' | translate))}}</label>
+    <div class="col-sm-9">
+        <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.licenseCopyUrl" copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.licenseCopyUrlFullPath" url="licenseCopyUrl"></uploading-files>
+    </div>
+</div>
+<div class="row form-group" ng-if="!complete.isFreeZone && complete.hasValidLicense">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'completeProfile.TenancyContract' | translate}}</label>
+    <div class="col-sm-9">
+        <p class="input-group hackyhack">
+            <input type="text" uib-datepicker-popup="{{complete.format}}" ng-model="complete.userProfile.userEstablishments[0].establishment.tenancyContractEndDate"
+                   is-open="complete.tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                   uib-datepicker-options="complete.dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+            <span class="input-group-btn">
+                <button type="button" ng-click="complete.openTenancyContractDatePopup($event)" class="btn btn-default">
+                    <em class="fa fa-calendar"></em>
+                </button>
+            </span>
+        </p>
+    </div>
+</div>
+<div class="row form-group" ng-if="!complete.isFreeZone && complete.hasValidLicense">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'completeProfile.UploadTenancyContract' | translate}}</label>
+    <div class="col-sm-9">
+        <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.tenancyContractCopyUrl" copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.tenancyContractCopyUrlFullPath" url="tenancyContractUrl"></uploading-files>
+    </div>
+</div>
+<div class="row form-group">
+    <label class="col-sm-3 control-label">
+        <span>{{'completeProfile.MemorandumOfAssociation' | translate}}</span>
+    </label>
+    <div class="col-sm-9">
+        <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.memorandumOfAssociationCopyUrl" copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.memorandumOfAssociationCopyUrl" url="licenseCopyUrl"></uploading-files>
+    </div>
+</div>
+<div class="row form-group">
+    <label class="col-sm-3 control-label">
+        <span>{{'completeProfile.PowerOfAttorney' | translate}}</span>
+    </label>
+    <div class="col-sm-9">
+        <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.powerOfAttorneyCopyUrl" copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.powerOfAttorneyCopyUrl" url="licenseCopyUrl"></uploading-files>
+    </div>
+</div>
+
+<div class="row form-group">
+    <label class="col-sm-3 control-label">
+        <span>{{'completeProfile.Statement' | translate}}</span>
+    </label>
+    <div class="col-sm-9">
+        <uploading-files copyUrl="complete.userProfile.userEstablishments[0].establishment.statementCopyUrl" copyUrlFullPath="complete.userProfile.userEstablishments[0].establishment.statementCopyUrl" url="licenseCopyUrl"></uploading-files>
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <profile-address establishment-emirate="complete.establishmentEmirate" ng-model="complete.userProfile.userEstablishments[0].establishment.address" is-establishment="complete.forEstablishment"></profile-address>
+    </div>
+</div>
+<hr />
+</div>

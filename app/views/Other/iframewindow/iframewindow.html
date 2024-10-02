@@ -1,0 +1,11 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title">{{windowTitle}}</h4>
+</div>
+<div class="modal-body">
+    <iframe  ng-src="{{windowUrl | trusted}}" style="height:100%;width:100%;min-height:700px;" height="100%" width="100%" frameborder="0"></iframe>
+</div>
+<div class="modal-footer">
+    <button  ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>
+

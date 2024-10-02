@@ -1,0 +1,495 @@
+﻿<style>
+    .blink_text {
+        animation: 1s blinker linear infinite;
+        -webkit-animation: 1s blinker linear infinite;
+        -moz-animation: 1s blinker linear infinite;
+    }
+
+    @-moz-keyframes blinker {
+        0% {
+            opacity: 1.0;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1.0;
+        }
+    }
+
+    @-webkit-keyframes blinker {
+        0% {
+            opacity: 1.0;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1.0;
+        }
+    }
+
+    @keyframes blinker {
+        0% {
+            opacity: 1.0;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1.0;
+        }
+    }
+
+    span > .ng-scope .ng-binding {
+        font-size: 14px;
+        color: #2095f2;
+    }
+</style>
+
+<div class="app-view-header">
+    نقل الرخص القديمة
+</div>
+<div class="container-fluid app-container" ng-controller="MigrateOldLicensController as vm">
+    <div class="panel panel-primary" ng-if="vm.queryresponse == null">
+        <div class="panel-body">
+            <div class="row col-md-12">
+                <form role="form" class="mb-lg form-horizontal">
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">البريد الالكتروني الجديد</label>
+                        <div class="col-sm-9">
+                            <input ng-model="vm.QueryParam.email" type="email" placeholder="البريد الالكتروني الجديد" autocomplete="off" class="form-control" validator="required" name="email" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">رقم الرخصة القديمة</label>
+                        <div class="col-sm-9">
+                            <input ng-model="vm.QueryParam.oldlicenseid" type="number" placeholder="رقم الرخصة القديمة" autocomplete="off" class="form-control" validator="required" name="oldlicenseid" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"></label>
+                        <div class="col-sm-9">
+                            <button type="button" ng-click="queryCurrentstate($event)" class="btn btn-primary">
+                                استعلام
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="panel panel-primary" ng-if="vm.queryresponse != null">
+        <div class="panel-body">
+            <div class="row col-md-12">
+                <form role="form" class="mb-lg form-horizontal">
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">البريد الالكتروني الجديد</label>
+                        <div class="col-sm-9">
+                            <h5>{{vm.QueryParam.email}}</h5>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">رقم الرخصة القديمة</label>
+                        <div class="col-sm-9">
+                            <h5>{{vm.QueryParam.oldlicenseid}}</h5>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <div role="tabpanel" class="col-md-12">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active"><a id="tabtabsmain" href="#tab1" onclick="return false;" aria-controls="tab1" role="tab" data-toggle="tab">نقل الرخص</a></li>
+            <li role="presentation"><a href="#tab2" aria-controls="tab2" onclick="return false;" role="tab" data-toggle="tab" ng-if="vm.migratedEconomicActivities !=null" class="blink_text">تم نقله مسبقا</a></li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content" style="padding:0 0 0 0;">
+            <div role="tabpanel" class="tab-pane active" id="tab1">
+                <div class="dropping">
+                    <div class="panel panel-primary" ng-if="vm.migrationResponse != null">
+                        <div class="panel-heading">
+                            <h3>نتيجة عملية النقل</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row col-md-12">
+                                <form role="form" class="mb-lg form-horizontal">
+                                    <div class="row form-group">
+                                        <label class="col-sm-3 control-label">البريد الالكتروني الجديد</label>
+                                        <div class="col-sm-9">
+                                            <h5>{{vm.migrationResponse.email}}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <label class="col-sm-3 control-label">رقم الرخصة القديمة</label>
+                                        <div class="col-sm-9">
+                                            <h5>{{vm.migrationResponse.oldlicenseid}}</h5>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row col-md-12">
+
+                                <span ng-if="vm.migrationResponse.eRRORMESSAGE == ''" style="color:green;">تم النقل بنجاح</span>
+                                <span ng-if="vm.migrationResponse.eRRORMESSAGE != ''" style="color:red;">يوجد خطاْ يرجى ارسال رقم الرخصة القديمة والايميل والخطاء التالي للدعم الفني</span>
+                                <br />
+                                <span ng-if="vm.migrationResponse.eRRORMESSAGE != ''" style="color:red;">{{vm.migrationResponse.eRRORMESSAGE}}</span>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary" ng-if="vm.queryresponse != null">
+                        <div class="panel-heading">
+                            <h3>بيانات الحساب الجديد</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row col-md-12">
+                                <div class="row col-md-6">
+                                    <form role="form" class="mb-lg form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col-md-12 row">
+                                                <label class="col-sm-3 control-label">الحساب موجود؟</label>
+                                                <span class="col-sm-9 form-control-static">
+                                                    <span ng-if="vm.queryresponse.isUserExists == true" style="color:green;">نعم</span>
+                                                    <span ng-if="vm.queryresponse.isUserExists == false" style="color:red;">لا</span>
+                                                </span>
+                                            </div>
+
+                                            <div class="col-md-12 row">
+                                                <label class="col-sm-3 control-label">تم تأكيد البريد؟</label>
+                                                <span class="col-sm-9 form-control-static">
+                                                    <span ng-if="vm.queryresponse.emailConfirmed == true" style="color:green;">نعم</span>
+                                                    <span ng-if="vm.queryresponse.emailConfirmed == false" style="color:red;">لا</span>
+                                                </span>
+                                            </div>
+
+                                            <div class="col-md-12 row">
+                                                <label class="col-sm-3 control-label">تم اكمال التسجيل؟</label>
+                                                <span class="col-sm-9 form-control-static">
+                                                    <span ng-if="vm.queryresponse.isUserProfileExists == true" style="color:green;">نعم</span>
+                                                    <span ng-if="vm.queryresponse.isUserProfileExists == false" style="color:red;">لا</span>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-12 row">
+                                                <label class="col-sm-3 control-label">نوع الحساب</label>
+                                                <span class="col-sm-9 form-control-static">
+                                                    <span ng-if="vm.queryresponse.userType == 'ﺷﺮﻛﺔ ﺗﺠﺎرﻳة / مؤسسة فردية'" style="color:green;">{{vm.queryresponse.userType}}</span>
+                                                    <span ng-if="vm.queryresponse.userType != 'ﺷﺮﻛﺔ ﺗﺠﺎرﻳة / مؤسسة فردية'" style="color:red;">{{vm.queryresponse.userType}}</span>
+                                                </span>
+                                            </div>
+                                            <div class="col-md-12 row">
+                                                <label class="col-sm-3 control-label">تاريخ تسجيل الحساب</label>
+                                                <span class="col-sm-9 form-control-static">
+                                                    <span style="color:green;">{{vm.queryresponse.regDate}}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary" ng-if="vm.queryresponse != null">
+                        <div class="panel-heading">
+                            <h3>المنشأه التي سيتم نقل الانشطة اليها ({{vm.selectedEstablishment.id}})</h3>
+                        </div>
+
+                        <div class="row col-md-12" ng-if="vm.queryresponse.accountEstablishments.length > 1">
+                            <div class="alert alert-warning">يوجد اكثر من منشأه على هذا الحساب يرجى اختيار النشأه الصحيحة</div>
+                            <select style="width:100%;" data-ng-model="vm.selectedEstablishment" data-ng-options="v as v.nameAr for v in vm.queryresponse.accountEstablishments"></select>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row col-md-12">
+                                <div class="row col-md-6">
+                                    <div class="row col-md-12" ng-if="vm.queryresponse.isUserProfileExists == true">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <form role="form" class="mb-lg form-horizontal">
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <label class="col-sm-3 control-label">الرقم التجاري</label>
+                                                            <span class="col-sm-9 form-control-static">
+                                                                <a target="_blank" href="https://apis.uaemc.gov.ae/UserUploads/ProfileLicenseCopy/{{vm.selectedEstablishment.licenseCopyUrl}}">{{vm.selectedEstablishment.licenseNumber}}</a>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <label class="col-sm-3 control-label">اسم الشركة</label>
+                                                            <span class="col-sm-9 form-control-static">
+                                                                {{vm.selectedEstablishment.nameAr}}
+                                                            </span>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <label class="col-sm-3 control-label">صاحب الترخيص</label>
+                                                            <div class="col-sm-9 form-control-static">
+                                                                <ul>
+                                                                    <li>{{vm.selectedEstablishment.personName}}</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <label class="col-sm-3 control-label">الشركاء</label>
+                                                            <div class="col-sm-9 form-control-static">
+                                                                <span ng-if="vm.queryresponse.partners.length ==0">لايوجد </span>
+                                                                <ul>
+                                                                    <li ng-repeat="x in vm.queryresponse.partners">{{x}}</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <br />
+                                                    </div>
+                                                    <div class="row form-group">
+                                                        <div class="col-md-12">
+                                                            <div class="checkbox c-checkbox pull-left mt0">
+                                                                <label ng-click="login.rememberMe()" class="ng-binding" tabindex="0">
+                                                                    <input type="checkbox" value="" ng-model="login.remember" class="ng-pristine ng-untouched ng-valid" tabindex="0" aria-checked="false" aria-invalid="false">
+                                                                    <span class="fa fa-check"></span>
+                                                                    اوافق بأن معلومات الحساب المسجل مطابقة للمعلومات بالرخصة التجارية
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary" ng-if="vm.queryresponse != null && vm.queryresponse.old != null">
+                        <div class="panel-heading">
+                            <h3>بيانات الرخصة القديمة ({{vm.QueryParam.oldlicenseid}})</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="row col-md-6">
+                                    <form role="form" class="mb-lg form-horizontal">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label class="col-sm-3 control-label">اسم صاحب الترخيص</label>
+                                                <span class="col-sm-9 form-control-static">
+                                                    {{vm.queryresponse.old.personName}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label class="col-sm-3 control-label">اسم الشركة</label>
+                                                <span class="col-sm-9 form-control-static">
+                                                    {{vm.queryresponse.old.companyName}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <label class="col-sm-3 control-label">الانشطة الاعلامية الموجودة على الرخصة القديمة</label>
+                                                <div class="col-sm-9 form-control-static">
+                                                    <ul>
+                                                        <li ng-repeat="x in vm.queryresponse.oldActivitieList">{{x}}</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="row col-md-6">
+                                    <form role="form" class="mb-lg form-horizontal">
+
+                                        <div class="row form-group">
+                                            <div class="row col-md-12">
+                                                <label class="col-sm-5 control-label"> تاريخ اول اصدار حسب النظام القديم</label>
+                                                <span class="col-sm-7 form-control-static">
+                                                    {{vm.selectedexpiryoption.firstIssuanceDate}}
+                                                </span>
+                                            </div>
+                                            <div class="row col-md-12">
+                                                <label class="col-sm-5 control-label">تاريخ الاصدار حسب النظام القديم</label>
+                                                <span class="col-sm-7 form-control-static">
+                                                    {{vm.selectedexpiryoption.issuanceDate}}
+                                                </span>
+                                            </div>
+                                            <div class="row col-md-12">
+                                                <label class="col-sm-5 control-label">تاريخ الانتهاء حسب النظام القديم</label>
+                                                <span class="col-sm-7 form-control-static">
+                                                    {{vm.selectedexpiryoption.expiryDate}}
+                                                </span>
+                                            </div>
+                                            <div class="row col-md-12" ng-if="vm.selectedexpiryoption.msg != ''">
+                                                <label class="col-sm-5 control-label"> تعديل تاريخ الانتهاء ليصبح مطابق للرخصة القديمة تماما (تجديد يدوي) </label>
+                                                <div class="col-sm-7 form-control-static">
+                                                    <select ng-model="vm.selectedexpiryoption" data-ng-options="v as v.name for v in [vm.queryresponse.originalExpiryOption,vm.queryresponse.exceptionalExpiryOption]"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="alert alert-danger" ng-if="vm.selectedexpiryoption.msg != ''">
+                            <span class="blink_text">
+                                {{vm.selectedexpiryoption.msg}}
+                            </span>
+                        </div>
+
+                    </div>
+
+                    <div class="panel panel-primary" ng-if="vm.queryresponse != null">
+                        <div class="panel-heading">
+                            <h3>الانشطة الاعلامية التي سيتم نقلها الى الحساب الجديد ({{vm.QueryParam.email}}) </h3>
+                        </div>
+                        <div class="panel-body center-block">
+                            <div class="row col-md-12">
+                                <ui-select ng-model="vm.selectActivities" ui-select-required name="economicActivities" theme="bootstrap" multiple ng-required="true">
+                                    <ui-select-match placeholder="{{'mediaLicense.selectActivities' | translate}}">{{$item| localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="economicActivity in vm.economicActivities | filter:{isShown: true} | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                        <div ng-bind-html="economicActivity | localizeString | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row col-md-12">
+                        <button type="button" ng-click="migrateLicens($event)" class="btn btn-info" ng-if="vm.queryresponse != null && vm.migratedEconomicActivities==null && (vm.selectedexpiryoption.migrateType == 0||vm.selectedexpiryoption.migrateType == 1 || vm.selectedexpiryoption.migrateType == 2 ) ">
+                            اتمام عملية النقل
+                        </button>
+                        <button type="button" ng-click="showQuery($event)" class="btn btn-primary" ng-if="vm.queryresponse != null">
+                            استعلام مرة اخرى
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <br />
+                        <hr />
+                    </div>
+
+                    <div class="row col-md-12">
+                        <h4>ملاحظات مهمة:</h4>
+                        <ul>
+                            <li>
+                                <h5 class="alert alert-warning">
+                                    يرجى توخي الحذر في اختيار الانشظة.. وفي حال التردد في الاختيار يرجى مراجعة مدير الادارة
+                                </h5>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="tab2" ng-if="vm.migratedEconomicActivities !=null">
+                <div class="dropping">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h3>الانشطة التي تم نقلها</h3>
+                        </div>
+                        <div class="panel-body">
+
+                            <div class="row col-md-12">
+                                <span>تم نقل الانشطة التالية: </span>
+                                <br />
+                                <ul>
+                                    <li ng-repeat="x in vm.migratedEconomicActivities">{{x}}</li>
+                                </ul>
+                                <br />
+                                <span>
+                                    لحساب
+                                    <b>{{vm.queryresponse.migratedtoemail}}</b>
+                                    بتاريخ
+                                    <b> {{vm.queryresponse.migrateddate}}</b>
+                                    ورقم الطلب هو
+                                    <b>{{vm.queryresponse.migratedappnum}}</b>
+                                </span>
+                            </div>
+
+                            <div class="row col-md-12" ng-if="vm.undomigrationResponse !=null && vm.undomigrationResponse.eRRORMESSAGE != '' ">
+                                <p style="color:red;">{{vm.undomigrationResponse.eRRORMESSAGE}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-md-12">
+                        <button type="button" ng-click="undomigrateLicens($event)" class="btn btn-danger">
+                            حذف عمليات النقل والطلبات المتعلقة بها
+                        </button>
+                        <button type="button" ng-click="printCertificate($event)" class="btn btn-info">
+                            طباعة الشهادة للمتعامل
+                        </button>
+                        <button type="button" ng-click="showQuery($event)" class="btn btn-primary">
+                            استعلام مرة اخرى
+                        </button>
+                    </div>
+
+                    <div class="row">
+                        <br />
+                        <hr />
+                    </div>
+
+                    <div class="row col-md-12">
+                        <h4>ملاحظات مهمة:</h4>
+                        <ul>
+                            <li>
+                                <h5 class="alert alert-warning">
+                                    عند حذف عمليات النقل سيتم حذف كل الطلبات الفرعية المبنية على طلب الرخصة المنقولة مثل طلب التجديد او طلب اضافة نشاط
+                                </h5>
+                            </li>
+                            <li>
+                                <h5 class="alert alert-warning">
+
+                                    لايكمن حذف عمليات النقل المرتبطة بعمليات دفع من قبل المتعامل في هذه الحالة يجب تعديله يدويا من قبل ادارة تقنية المعلومات حيث سيرفض النظام عملية الحذف
+                                </h5>
+                            </li>
+                            <li>
+                                <h5 class="alert alert-warning">
+
+                                    زر طبعاعة الشهادة ينشئ شهادة للمتعامل تمكنه من استخدامها رسميا ... لذا يرجى التأكد تماما من بيانات المتعامل الشركاء ،اصحاب التراخيص الرخصة التجارية الصور والهويات الانشطة ...
+                                </h5>
+                            </li>
+                            <li>
+                                <h5 class="alert alert-warning">
+
+                                    زر طباعة الشهادة يستخدم فقط في حال كان لدى المتعامل رخصة اعلامية سارية ويريد التقديم على خدمات اخرى
+                                </h5>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
+

@@ -1,0 +1,105 @@
+<div class="app-view-header">
+    {{'enquiries.title' | translate}}
+</div>
+<div ng-controller="EnquiriesController as enquiry">
+
+    <div class="sk-cube-grid" ng-if="enquiry.loading" style="position:fixed; top: 25%; right:47%; z-index:9999">
+        <div class="sk-cube sk-cube1"></div>
+        <div class="sk-cube sk-cube2"></div>
+        <div class="sk-cube sk-cube3"></div>
+        <div class="sk-cube sk-cube4"></div>
+        <div class="sk-cube sk-cube5"></div>
+        <div class="sk-cube sk-cube6"></div>
+        <div class="sk-cube sk-cube7"></div>
+        <div class="sk-cube sk-cube8"></div>
+        <div class="sk-cube sk-cube9"></div>
+    </div>
+
+    <!--Add New Enquiry Button-->
+    <div class="row">
+        <div class="col-md-4 pull-left">
+            <div class="mr mb-sm btn btn-warning pull-left" ng-click="enquiry.open('lg')">
+                {{'enquiries.addEnquiry' | translate}}
+                <span class="ripple"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="enquiry.user.userTypeCode == '06'">
+        <div class="col-md-5">
+            <div ng-if="!enquiry.isObjectEmpty(enquiry.filterParams)">
+                <span class="col-md-1" >
+                    <a ng-click="enquiry.exportExcel()" uib-tooltip="Excel">
+                        <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="enquiry.exportCSV()" uib-tooltip="CSV">
+                        <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="enquiry.exportPDF()" uib-tooltip="PDF">
+                        <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            <button ng-if="enquiry.userFilters == null || enquiry.userFilters.length == 0" class="btn btn-primary btn-md pull-right" btn-layer-morph="enquiry.click()"
+                    btn-layer="enquiry.filter" target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+            </button>
+            <div ng-if="enquiry.userFilters.length > 0" uib-dropdown="dropdown" class="btn-group mb-sm mr dropdown open pull-right">
+                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
+                    <span ng-if="enquiry.filterParams.userFilterId == undefined">{{'general.filter' | translate}}</span>
+                    <span ng-if="enquiry.filterParams.userFilterId != undefined && enquiry.filterParams.userFilterId == enquiry.defaultUserFilter.id">{{enquiry.defaultUserFilter.name}}</span>
+                    <span ng-if="enquiry.filterParams.userFilterId != undefined && enquiry.filterParams.userFilterId != enquiry.defaultUserFilter.id">{{enquiry.selectedUserFilter.name}}</span>&nbsp;
+                    <span class="caret"></span>
+                    <span class="ripple"><span class="angular-ripple"></span></span>
+                </button>
+                <ul role="menu" class="dropdown-menu">
+                    <li>
+                        <a href="" btn-layer-morph="enquiry.click()" btn-layer="enquiry.filter" target="#layer-search">
+                            {{'dashboard.newFilter' | translate}}
+                        </a>
+                    </li>
+                    <li ng-repeat="userFilter in enquiry.userFilters">
+                        <a href="" ng-click="enquiry.userFilterData(userFilter)">{{userFilter.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12" ng-if="enquiry.dtApplicationOptions">
+            <table datatable="" ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"
+                   dt-options="enquiry.dtApplicationOptions" dt-columns="enquiry.dtApplicationColumns"
+                   dt-instance="enquiry.dtApplicationInstance" width="100%" id="establishmentDatatable"></table>
+        </div>
+    </div>
+    <!-- Layer Morph-->
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Enquiry/filter/filterEnquiries.html'" class="layer-morph"></div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="enquiry.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="enquiry.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+            <br /><br />
+        </div>
+    </div>
+    <!-- End Layer Morph-->
+</div>

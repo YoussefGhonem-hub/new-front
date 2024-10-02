@@ -1,0 +1,861 @@
+﻿<style>
+    .blink_text {
+        animation: 1s blinker linear infinite;
+        -webkit-animation: 1s blinker linear infinite;
+        -moz-animation: 1s blinker linear infinite;
+    }
+
+    @-moz-keyframes blinker {
+        0% {
+            opacity: 1.0;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1.0;
+        }
+    }
+
+    @-webkit-keyframes blinker {
+        0% {
+            opacity: 1.0;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1.0;
+        }
+    }
+
+    @keyframes blinker {
+        0% {
+            opacity: 1.0;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+
+        100% {
+            opacity: 1.0;
+        }
+    }
+
+    span > .ng-scope .ng-binding {
+        font-size: 14px;
+        color: #2095f2;
+    }
+
+    .renderjson a {
+        text-decoration: none;
+    }
+
+    .renderjson .disclosure {
+        color: crimson;
+        font-size: 150%;
+    }
+
+    .renderjson .syntax {
+        color: grey;
+    }
+
+    .renderjson .string {
+        color: blue;
+    }
+
+    .renderjson .number {
+        color: blue;
+    }
+
+    .renderjson .boolean {
+        color: plum;
+    }
+
+    .renderjson .key {
+        color: #585f69;
+    }
+
+    .renderjson .keyword {
+        color: lightgoldenrodyellow;
+    }
+
+    .renderjson .object.syntax {
+        color: lightseagreen;
+    }
+
+    .renderjson .array.syntax {
+        color: lightsalmon;
+    }
+</style>
+
+<div class="app-view-header">
+    الدعم
+    <small> - الدعم وتعديل البيانات</small>
+</div>
+
+<div class="container-fluid app-container" ng-controller="techsupportController as vm">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <div class="row col-md-12">
+                <form role="form" class="mb-lg form-horizontal">
+
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">يوجد رقم بلاغ</label>
+                        <div class="col-sm-4">
+                            <label class="switch switch-lg">
+                                <input type="checkbox" ng-model="vm.enquiry.isByEnqury">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.enquiry.isByEnqury">
+                        <label class="col-sm-3 control-label">رقم البلاغ</label>
+                        <div class="col-sm-4">
+                            <input ng-model="vm.enquiry.EnquryNumber" autocomplete="off" class="form-control" placeholder="HC-XX-XX-XXXXXXX" ng-change="vm.enquiryChange()" />
+                            <small style="color:red;" ng-if="vm.enquiry.enquiryErrorMsg != ''">{{vm.enquiry.enquiryErrorMsg}}</small>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.enquiry.found">
+                        <label class="col-sm-3 control-label">وصف البلاغ</label>
+                        <div class="col-sm-4">
+                            <div class="form-control" ng-bind-html="vm.enquiry.description" style="height:auto;"></div>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.enquiry.found">
+                        <label class="col-sm-3 control-label">حالة البلاغ</label>
+                        <div class="col-sm-4">
+                            <div class="form-control-static">
+                                {{vm.enquiry.enquiryStatus.nameAr}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.enquiry.found">
+                        <label class="col-sm-3 control-label">الادارة</label>
+                        <div class="col-sm-4">
+                            <div class="form-control-static">
+                                {{vm.enquiry.department.nameAr}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-if="vm.enquiry.found && vm.enquiry && vm.enquiry.department.id==3 &&vm.enquiry.enquiryStatus.id ==17 ">
+                        <label class="col-sm-3 control-label">اغلاق البلاغ بعد عمل التعديل</label>
+                        <div class="col-sm-4">
+                            <label class="switch switch-lg">
+                                <input type="checkbox" ng-model="vm.enquiry.closeEnquiryAfterSave">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">نوع التعديل</label>
+                        <div class="col-sm-4">
+                            <ui-select ng-model="vm.selectedChangeType" validator="required" name="type" theme="bootstrap" class="text-left">
+                                <ui-select-match placeholder="اختر نوع التعديل">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="ct in vm.changeTypes | propsFilter: {name: $select.search, name: $select.search}">
+                                    <div ng-bind-html="ct.name| highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="vm.selectedChangeType.id != 0">
+        <div class="col-md-12">
+            <div class="panel panel-inverse">
+                <div class="panel-heading">
+                    <h4>{{vm.selectedChangeType.name}}</h4>
+                </div>
+                <div class="panel-body">
+                    <div ng-if="vm.selectedChangeType.id == 1" heading="تعديل حساب">
+                        <form role="form" class="mb-lg form-horizontal">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">البريد الالكتروني</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.account.user.email" type="email" placeholder="البريد الالكتروني" autocomplete="off" class="form-control" ng-disabled="vm.account.editMode" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" ng-click="vm.GetAccount($event)" class="btn btn-primary" ng-disabled="vm.account.editMode">
+                                        استعلام
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.account.editMode">
+                                <label class="col-sm-3 control-label">رقم الهاتف</label>
+                                <div class="col-sm-4">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        {{vm.account.user.phoneNumber}}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.account.editMode">
+                                <label class="col-sm-3 control-label">الاسم الاول</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.account.user.firstName" autocomplete="off" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.account.editMode">
+                                <label class="col-sm-3 control-label">الاسم الاخير</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.account.user.lastName" autocomplete="off" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.account.editMode">
+                                <label class="col-sm-3 control-label">خاصية ال OTP</label>
+                                <div class="col-sm-4">
+                                    <label class="switch switch-lg">
+                                        <input type="checkbox" ng-model="vm.account.user.twoFactorEnabled" placeholder="OTP">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.account.editMode">
+                                <label class="col-sm-3 control-label">نوع المتعامل</label>
+                                <div class="col-sm-4">
+                                    <div class="form-control-static">
+                                        {{vm.account.userProfile.userType.nameAr}}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row form-group" ng-if="vm.account.editMode">
+                                <label class="col-sm-3 control-label">تعديل رقم الهاتف او اسم المستخدم</label>
+                                <div class="col-sm-4">
+                                    <label class="switch switch-lg">
+                                        <input type="checkbox" ng-model="vm.account.modifyMobileandUsername" ng-change="vm.account.user.newemail = ''; vm.account.user.newphoneNumber = '';">
+                                        <span></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="row form-group" style="color:red;" ng-if="vm.account.modifyMobileandUsername">
+                                <label class="col-sm-3 control-label">تنويه</label>
+                                <div class="col-sm-4">
+                                    <div class="alert alert-warning">
+                                        تعديل اسم المستخدم او رقم الهاتف يطلب من صاحب الحساب رسالة رسمية بختم الشركة تفيد بتفاصيل التعديل
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row form-group" style="color:red;" ng-if="vm.account.modifyMobileandUsername">
+                                <label class="col-sm-3 control-label">البريد الالكتروني الجديد</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.account.user.newemail" type="email" placeholder="البريد الالكتروني الجديد" autocomplete="off" class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="row form-group" style="color:red;" ng-if="vm.account.modifyMobileandUsername">
+                                <label class="col-sm-3 control-label">رقم الهاتف الجديد</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.account.user.newphoneNumber" autocomplete="off" placeholder="رقم الهاتف الجديد" class="form-control" style="direction:ltr;text-align:right;" />
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <button type="submit" class="btn btn-primary" ng-click="vm.modifyAccount()" ng-disabled="vm.isBusy">{{'general.save' | translate}}</button>
+                                    <button type="button" class="btn btn-warning" ng-click="vm.Cancel()" ng-disabled="vm.isBusy">{{'general.cancel' | translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-if="vm.selectedChangeType.id  == 2" heading="تعديل بيانات المنشأة">
+                        <form role="form" class="mb-lg form-horizontal">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                                <div class="col-md-4">
+                                    <ui-select ng-model="vm.emirates.establishmentEmirate" theme="bootstrap" name="establishmentEmirate" class="text-left">
+                                        <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                        <ui-select-choices repeat="emirate in vm.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                            <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">رقم الرخصة التجارية</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.establishment.licenseNumber" placeholder="رقم الرخصة التجارية" type="text" autocomplete="off" class="form-control" ng-disabled="vm.establishment.editMode" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" ng-click="vm.GetEstablishment($event)" class="btn btn-primary" ng-disabled="vm.establishment.editMode">
+                                        استعلام
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'completeProfile.establishmentNameAr' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <input ng-model="vm.establishment.nameAr" placeholder="اسم المنشاة بالعربية" style="direction:ltr;text-align:right;" autocomplete="off" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'completeProfile.establishmentNameEn' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <input ng-model="vm.establishment.nameEn" autocomplete="off" placeholder="اسم المنشاة بالإنجليزية" class="form-control" />
+                                </div>
+                            </div>
+                            <!--<div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"> <span>{{(vm.establishment.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static">
+                                        {{vm.establishment.licenseNumber}}
+                                    </div>
+                                </div>
+                            </div>-->
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"> <span>{{(vm.establishment.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static">
+                                        <input ng-model="vm.establishment.licenseNumber" autocomplete="off" placeholder="رقم حجز الاسم التجاري" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"><span>{{(vm.establishment.modifyEstablishment? ('completeProfile.UploadLicenseCopy' | translate): ('completeProfile.UploadTradeNameCopy' | translate))}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        <uploading-files copyUrl="vm.establishment.licenseCopyUrl" copyUrlFullPath="vm.establishment.licenseCopyUrlFullPath" url="vm.uploadlicenseCopytUrl" isrequired="true"></uploading-files>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'completeProfile.TenancyContract' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        <p class="input-group hackyhack">
+                                            <input type="text" uib-datepicker-popup="{{vm.format}}" ng-model="vm.establishment.tenancyContractEndDate"
+                                                   is-open="vm.toCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
+                                            <span class="input-group-btn">
+                                                <button type="button" ng-click="vm.openToCreatedOn($event)" class="btn btn-default">
+                                                    <em class="fa fa-calendar"></em>
+                                                </button>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'completeProfile.UploadTenancyContract' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        <uploading-files copyUrl="vm.establishment.tenancyContractCopyUrl" copyUrlFullPath="vm.establishment.tenancyContractCopyUrlFullPath" url="vm.uploadtenancyContractUrl" isrequired="true"></uploading-files>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'completeProfile.MemorandumOfAssociation' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        <uploading-files copyUrl="vm.establishment.memorandumOfAssociationCopyUrl" copyUrlFullPath="vm.establishment.memorandumOfAssociationCopyUrlFullPath" url="vm.uploadlicenseCopytUrl"></uploading-files>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'completeProfile.PowerOfAttorney' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <uploading-files copyUrl="vm.establishment.powerOfAttorneyCopyUrl" copyUrlFullPath="vm.establishment.powerOfAttorneyCopyUrlFullPath" url="vm.uploadlicenseCopytUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.establishment.editMode">
+                                <label class="col-sm-3 control-label"> <span>{{'completeProfile.Statement' | translate}}</span> </label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        <uploading-files copyUrl="vm.establishment.statementCopyUrl" copyUrlFullPath="vm.establishment.statementCopyUrlFullPath" url="vm.uploadlicenseCopytUrl"></uploading-files>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <button type="submit" class="btn btn-primary" ng-click="vm.modifyEstablishment()" ng-disabled="vm.isBusy">{{'general.save' | translate}}</button>
+                                    <button type="button" class="btn btn-warning" ng-click="vm.Cancel()" ng-disabled="vm.isBusy">{{'general.cancel' | translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-if="vm.selectedChangeType.id  ==3" heading="تعديل بيانات شخص">
+                        <form role="form" class="mb-lg form-horizontal">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">رقم الهوية الاماراتية</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.person.emiratesId" placeholder="رقم الهوية الاماراتية" type="text" autocomplete="off" class="form-control" ng-disabled="vm.person.editMode" />
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" ng-click="vm.GetPerson($event)" class="btn btn-primary" ng-disabled="vm.person.editMode">
+                                        استعلام
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <ui-select ng-model="vm.person.country" theme="bootstrap" validator="required" name="userCountry">
+                                        <ui-select-match class="flag-container">
+                                            <div class="col-md-4 flag-style">
+                                                <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                            </div>
+                                            <div class="col-md-4">
+                                                <span>{{$select.selected | localizeString}}</span>
+                                            </div>
+                                        </ui-select-match>
+                                        <ui-select-choices repeat="country1 in vm.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                            <div class="row">
+                                                <div class="col-md-4 col-xs-5">
+                                                    <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                                                </div>
+                                                <div class="col-md-8 col-xs-7">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <small data-translate="country.countryCode"></small>: <small ng-bind-html="country1.isoCode3"></small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.fullName' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <input ng-model="vm.person.name" placeholder="{{'profileNationalityDirective.fullName' | translate}}" style="direction:ltr;text-align:right;" autocomplete="off" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Occupation' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <input ng-model="vm.person.title" type="text" placeholder="{{'profileNationalityDirective.Occupation' | translate}}"
+                                           style="direction:ltr;text-align:right;" autocomplete="off" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Gender' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input id="inlineradio1" type="radio" name="i-radio" value="1" ng-model="vm.person.genderId" ng-required="!vm.person.genderId" />
+                                            <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderMale' | translate}}
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input id="inlineradio2" type="radio" name="i-radio" value="2" ng-model="vm.person.genderId" ng-required="!vm.person.genderId" />
+                                            <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderFemale' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.DateOfBirth' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <p class="input-group hackyhack">
+                                        <input type="text" uib-datepicker-popup="{{vm.format}}" ng-model="vm.person.dateOfBirth" is-open="vm.dateOfBirthPopup.opened" uib-datepicker-options="dateOptions" close-text="Close"
+                                               class="form-control" name="dateOfBirth" validator="required" init-date="dateOptions.maxDate" min-date="dateOptions.minDate" max-date="dateOptions.maxDate"
+                                               show-weeks="false" show-button-bar="false" disabled />
+                                        <span class="input-group-btn">
+                                            <button type="button" ng-click="vm.opendateOfBirthDatePopup($event)" class="btn btn-default">
+                                                <em class="fa fa-calendar"></em>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.UploadYourPhoto' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        <uploading-files copyUrl="vm.person.photoUrl" copyUrlFullPath="vm.person.photoUrlFullPath" url="vm.uploadPhotoUrl" isrequired="true"></uploading-files>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode && vm.person.IsPassport != true">
+                                <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.UploadEmiratesId' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <div class="form-control-static" style="direction:ltr;text-align:right;">
+                                        <uploading-files copyUrl="vm.person.emiratesIdCopyUrl" copyUrlFullPath="vm.person.emiratesIdCopyUrlFullPath" url="vm.uploadEmiratesIdUrl" isrequired="true"></uploading-files>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.UploadPassport' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <uploading-files copyUrl="vm.person.passportCopyUrl" copyUrlFullPath="vm.person.passportCopyUrlFullPath" url="vm.uploadPassportUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label" ng-if="vm.person.country.isoCode2 !== 'AE'"><span>{{'profileNationalityDirective.UploadVisa' | translate}}</span></label>
+                                <label class="col-sm-3 control-label" ng-if="vm.person.country.isoCode2 == 'AE'"><span>{{'profileNationalityDirective.UploadKholasa' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <uploading-files copyUrl="vm.person.iqamaUrl" copyUrlFullPath="vm.person.iqamaUrlFullPath" url="vm.uploadIqamaUrl" isrequired="true"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.person.editMode">
+                                <label class="col-sm-3 control-label"><span>{{'journalists.UploadAcquaintanceForm' | translate}}</span></label>
+                                <div class="col-sm-6">
+                                    <uploading-files copyUrl="vm.person.acquitanceFormUrl" copyUrlFullPath="vm.person.acquaintanceFormCopyUrlFullPath" url="vm.uploadAcquaintanceFormUrl" isrequired="true"></uploading-files>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <button type="submit" class="btn btn-primary" ng-click="vm.modifyPerson()" ng-disabled="vm.isBusy">{{'general.save' | translate}}</button>
+                                    <button type="button" class="btn btn-warning" ng-click="vm.Cancel()" ng-disabled="vm.isBusy">{{'general.cancel' | translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div ng-if="vm.selectedChangeType.id  == 4" heading="ChiefEditor">
+                        <form role="form" class="mb-lg form-horizontal" name="chiefEditorForm">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">رقم الطلب</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.chiefEditor.applicationNumber" placeholder="رقم الطلب" type="text" autocomplete="off" class="form-control" ng-disabled="vm.chiefEditor.editMode" />
+                                </div>
+                                <div class="col-sm-2">
+                                    <button type="button" ng-click="vm.GetChiefEditor($event)" class="btn btn-primary" ng-disabled="vm.chiefEditor.editMode">
+                                        استعلام
+                                    </button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" ng-click="vm.changeChiefEditor()" class="btn btn-warning" ng-if="vm.chiefEditor.isChiefEditorExist">
+                                        تغير رئيس التحرير
+                                    </button>
+                                </div>
+                            </div>                            
+                            <div class="row col-md-12" ng-if="vm.chiefEditor.isChangeEditor">
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaper.name' | translate}}</span></label>
+                                    <div class="col-sm-9">                                      
+                                        {{vm.chiefEditor.newspaperLanguageName}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.mobileNumber' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <input type="tel" ng-model="vm.chiefEditorPost.phoneNumber" placeholder="{{'newspaperMagazineLicense.mobileNumber' | translate}}" autocomplete="off"
+                                               class="form-control" name="mobileNumber" valid-method="blur" ng-keypress="vm.preventLeadingZero()" validator="required, phoneNumber" />
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.workPhone' | translate}}</label>
+                                    <div class="col-sm-9">
+                                        <input type="tel" ng-model="vm.chiefEditorPost.workPhone" placeholder="{{'newspaperMagazineLicense.workPhone' | translate}}" autocomplete="off"
+                                               class="form-control" name="workPhone" />
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.email' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="vm.chiefEditorPost.email" name="Email" type="email" placeholder="{{'newspaperMagazineLicense.email' | translate}}" autocomplete="off"
+                                               class="form-control" validator="required, email" valid-method="blur" />
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.qualification' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <ui-select ng-model="vm.chiefEditorPost.qualification" validator="required" theme="bootstrap" class="text-left" name="qualification">
+                                            <ui-select-match placeholder="{{'newspaperMagazineLicense.selectQualification' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                            <ui-select-choices repeat="qualification in vm.qualifications | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                                <span ng-bind-html="qualification | localizeString | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.UploadYourQualification' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <uploading-files copyUrl="vm.chiefEditorPost.qualificationCopyUrl" copyUrlFullPath="vm.chiefEditorPost.qualificationCopyUrlFullPath"
+                                                         url="vm.uploadQualificationUrl" isrequired="true"></uploading-files>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.yearsOfExperience' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <input type="number" ng-model="vm.chiefEditorPost.yearsOfExperience" max="50" placeholder="{{'newspaperMagazineLicense.yearsOfExperience' | translate}}" autocomplete="off" class="form-control" name="yearsOfExperience" validator="required" />
+                                        <div><i class="fa fa-info-circle" aria-hidden="true"></i> <span data-translate="newspaperMagazineLicense.yearsOfExperienceLimit"></span></div>
+                                    </div>
+                                </div>
+                                <div class="row form-group" ng-if="vm.chiefEditor.isChangeEditor">
+                                    <div class="col-sm-12">
+                                        <profile-address ng-model="vm.chiefEditorPost.address"></profile-address>
+                                    </div>
+                                </div>
+
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label">EmiratesId</label>
+                                    <div class="col-sm-4">
+                                        <input ng-model="vm.chiefEditorPost.emiratesId" placeholder="784-9999-9999999-9" type="text" autocomplete="off" class="form-control" mask="784-9999-9999999-9" ng-blur="vm.GetPersonForChiefEditor()" ng-disabled="vm.chiefEditor.editModeForPerson" />
+                                    </div>
+                                </div>
+                                <div class="row form-group" ng-if="vm.chiefEditor.isEmiratesIdExist">
+                                    <div class="col-sm-12">
+                                        <profile-nationality is-require-third-party="true" ng-model="vm.chiefEditorPost.person"></profile-nationality>
+                                    </div>
+                                </div>
+                                <div class="row" ng-if="vm.chiefEditor.isChangeEditor">
+                                    <div class="col-md-offset-3 col-md-3">
+                                        <button type="submit" class="btn btn-primary" ng-click="vm.modifyChiefEditor()" ng-disabled="vm.isBusy" validation-submit="chiefEditorForm">{{'general.save' | translate}}</button>
+                                        <button type="button" class="btn btn-warning" ng-click="vm.Cancel()" ng-disabled="vm.isBusy">{{'general.cancel' | translate}}</button>
+                                    </div>
+                                </div>
+                            </div>                            
+                            <div class="row col-md-12" ng-if="vm.chiefEditor.isChiefEditorExist">
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label"><span>{{'newspaper.name' | translate}}</span></label>
+                                    <div class="col-sm-9">                                         
+                                        {{vm.chiefEditor.newspaperLanguageName}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'newspaperMagazineLicense.mobileNumber' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.chiefEditor.phoneNumber}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.workPhone' | translate}}</label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.chiefEditor.workPhone}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'newspaperMagazineLicense.email' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.chiefEditor.email}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'newspaperMagazineLicense.qualification' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.chiefEditor.qualification | localizeString}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'newspaperMagazineLicense.UploadYourQualification' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        <div ng-if="vm.chiefEditor.qualificationCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a ng-href="{{vm.chiefEditor.qualificationCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{vm.chiefEditor.qualificationCopyUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="vm.chiefEditor.qualificationCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.chiefEditor.qualificationCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'newspaperMagazineLicense.yearsOfExperience' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.chiefEditor.yearsOfExperience}}
+                                    </div>
+                                </div>
+                                <div class="row form-group" ng-if="vm.chiefEditor.isChiefEditorExist">                                    
+                                    <div class="col-sm-12">
+                                        <profile-address ng-model="vm.chiefEditor.address" is-preview="true"></profile-address>
+                                    </div>
+                                </div>
+                                <div class="row form-group" ng-if="vm.chiefEditor.isChiefEditorExist">                                    
+                                    <div class="col-sm-12">
+                                        <profile-nationality is-require-third-party="true" ng-model="vm.chiefEditor.person"></profile-nationality>
+                                    </div>
+                                </div>
+                                <hr />
+                            </div>
+                            <div class="row form-group">                                
+                            </div>
+                            <div class="row col-md-12" ng-if="vm.isPersonExist.length > 0">
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.isPersonExist[0].country | localizeString}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.EmiratesId' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <div class="form-control-static">                                            
+                                            {{vm.isPersonExist[0].emiratesId}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.fullName' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.isPersonExist[0].name}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span class="text-danger"></span><span>{{'profileNationalityDirective.Occupation' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.isPersonExist[0].title}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span class="text-danger"></span><span>{{'profileNationalityDirective.Gender' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.isPersonExist[0].gender | localizeString}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span class="text-danger"></span><span>{{'profileNationalityDirective.DateOfBirth' | translate}}</span></label>
+                                    <div class="col-sm-9">                                        
+                                        {{vm.isPersonExist[0].dateOfBirth}}
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span class="text-danger"></span><span>{{'profileNationalityDirective.UploadYourPhoto' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <div ng-if="vm.isPersonExist[0].photoUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{vm.isPersonExist[0].photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{vm.isPersonExist[0].photoUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="vm.isPersonExist[0].photoUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.isPersonExist[0].photoUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row form-group" ng-if="vm.isPersonExist[0].emiratesIdCopyUrl">                                   
+                                    <label class="col-sm-3 control-label"><span class="text-danger"></span><span>{{'profileNationalityDirective.UploadEmiratesId' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <div ng-if="vm.isPersonExist[0].emiratesIdCopyUrlFullPath.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{vm.isPersonExist[0].emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{vm.isPersonExist[0].emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="vm.isPersonExist[0].emiratesIdCopyUrlFullPath.split('.')[1] == 'pdf'" target="_blank" href="{{vm.isPersonExist[0].emiratesIdCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row form-group" ng-if="vm.isPersonExist[0].passportCopyUrl">                                    
+                                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.UploadPassport' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <div ng-if="vm.isPersonExist[0].passportCopyUrlFullPath.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{vm.isPersonExist[0].passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{vm.isPersonExist[0].passportCopyUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="vm.isPersonExist[0].passportCopyUrlFullPath.split('.')[1] == 'pdf'" target="_blank" href="{{vm.isPersonExist[0].passportCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label" ng-if="vm.isPersonExist[0].country.isoCode2 !== 'AE'"><span class="text-danger"></span><span>{{'profileNationalityDirective.UploadVisa' | translate}}</span></label>
+                                    <label class="col-sm-3 control-label" ng-if="vm.isPersonExist[0].country.isoCode2 == 'AE'"><span class="text-danger"></span><span>{{'profileNationalityDirective.UploadKholasa' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <div ng-if="vm.isPersonExist[0].iqamaUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{vm.isPersonExist[0].iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{vm.isPersonExist[0].iqamaUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="vm.isPersonExist[0].iqamaUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.isPersonExist[0].iqamaUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="row form-group">                                    
+                                    <label class="col-sm-3 control-label"><span class="text-danger"></span><span>{{'journalists.UploadAcquaintanceForm' | translate}}</span></label>
+                                    <div class="col-sm-9">
+                                        <div ng-if="vm.isPersonExist[0].acquitanceFormUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a ng-href="{{vm.isPersonExist[0].acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img ng-src="{{vm.isPersonExist[0].acquaintanceFormCopyUrlFullPath}}" alt="aquintance" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="vm.isPersonExist[0].acquitanceFormUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.isPersonExist[0].acquaintanceFormCopyUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>                        
+                    </div>
+                    <div ng-if="vm.selectedChangeType.id  == 5" heading="سجل التعديلات">
+                        <form role="form" class="mb-lg form-horizontal">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">Logs</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.personLogs.emiratesId" placeholder="رقم الطلب" type="text" autocomplete="off" class="form-control" ng-disabled="vm.personLogs.editMode" />
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" ng-click="vm.GetPersonLogs($event)" class="btn btn-primary" ng-disabled="vm.personLogs.editMode">
+                                        Get Person Logs
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                                <div class="col-md-8">
+                                    <ui-select ng-model="vm.emiratesLogs.establishmentEmirateLog" theme="bootstrap" name="establishmentEmirateLog" class="text-left">
+                                        <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                        <ui-select-choices repeat="emirateLog in vm.emiratesLogs | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                            <span ng-bind-html="emirateLog | localizeString | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">رقم الرخصة التجارية</label>
+                                <div class="col-sm-4">
+                                    <input ng-model="vm.establishmentLogs.licenseNumber" placeholder="رقم الطلب" type="text" autocomplete="off" class="form-control" ng-disabled="vm.establishmentLogs.editMode" />
+
+                                </div>
+                                <div class="col-sm-3">
+                                    <button type="button" ng-click="vm.GetEstablishmentLogs($event)" class="btn btn-primary" ng-disabled="vm.establishmentLogs.editMode">
+                                        استعلام
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div id="personLogs">
+
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div id="establishmentLogs">
+
+                                </div>
+                            </div>
+                            <hr />
+
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-3">
+                                    <button type="button" class="btn btn-warning" ng-click="vm.Cancel()" ng-disabled="vm.isBusy">{{'general.cancel' | translate}}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+
+<!-- The Gallery as inline carousel, can be positioned anywhere on the page -->
+<div id="blueimp-image-carousel" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="play-pause"></a>
+</div>

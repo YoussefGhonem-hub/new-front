@@ -1,0 +1,239 @@
+﻿<div class="app-view-header">
+    {{'foreignMedia.newSponsorship' | translate}}
+</div>
+
+<div class="container-fluid" ng-controller="IssueSponsorshipController as vm">
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row"><br /></div>
+
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.choosePressCard' | translate}}</span></label>
+                    <div class="col-sm-7">
+                        <ui-select ng-model="vm.pressCardModel.pressCard1" validator="required" ng-change="vm.selectPressCard()" name="pressCard" theme="bootstrap" class="text-left">
+                            <ui-select-match placeholder="{{'foreignMedia.selectPressCard' | translate}}">{{$select.selected.applicationDetail.application.applicationNumber}}</ui-select-match>
+                            <ui-select-choices repeat="pressCard in vm.getAllPressCardApplications | filter:  {applicationDetail :{application: {applicationNumber: $select.search}}}">
+                                <div ng-bind-html="pressCard.applicationDetail.application.applicationNumber | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <uib-accordion close-others="oneAtATime" ng-if="vm.getAllPressCardApplications.length && vm.selectedPressCard">
+                    <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                        <uib-accordion-heading>
+                            {{'foreignMedia.pressCardApplicationDetails' | translate}}
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                        </uib-accordion-heading>
+                        <br />
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span>{{'foreignMedia.pressCardType' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input type="radio" name="pressCardType" ng-value="true" ng-model="vm.pressCardModel.isTemporaryCard"
+                                               ng-checked="vm.pressCardModel.isTemporaryCard" disabled>
+                                        <span class="fa fa-circle"></span>{{'foreignMedia.temporaryCard' | translate}}
+                                    </label>
+                                </div>
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input type="radio" name="pressCardType" ng-value="false" ng-model="vm.pressCardModel.isTemporaryCard"
+                                               ng-checked="!vm.pressCardModel.isTemporaryCard" disabled>
+                                        <span class="fa fa-circle"></span>{{'foreignMedia.permenantCard' | translate}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'foreignMedia.businessType' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{vm.pressCardModel.businessType | localizeString}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'mediaLicense.issueDate' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{vm.mydata.applicationDetail.certificates[0].certificateDetails[0].issueDate| date:'dd-MMMM-yyyy'}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'mediaLicense.expiryDate' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{vm.mydata.applicationDetail.certificates[0].certificateDetails[0].expiryDate | date:'dd-MMMM-yyyy'}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'foreignMedia.pressCardCopy' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <div ng-if="vm.pressCardModel.pressCard1.applicationDetail.certificates[0].certificateWithHeaderUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                    <a ng-href="{{vm.pressCardModel.certificateWithHeaderFullUrl}}" data-gallery="" title="Unsplash images">
+                                        <img ng-src="{{vm.pressCardModel.certificateWithHeaderFullUrl}}" alt="thumb" />
+                                    </a>
+                                </div>
+                                <a ng-if="vm.pressCardModel.pressCard1.applicationDetail.certificates[0].certificateWithHeaderUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{vm.pressCardModel.pressCard1.applicationDetail.certificates[0].certificateWithHeaderFullUrl}}">
+                                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                                </a>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="vm.pressCardModel.assignmentLetterUrl">
+                            <label class="col-sm-3 control-label">{{'foreignMedia.assignmentLetter' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <div ng-if="vm.pressCardModel.assignmentLetterUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                    <a ng-href="{{vm.pressCardModel.assignmentLetterUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                        <img ng-src="{{vm.pressCardModel.assignmentLetterUrlFullPath}}" alt="thumb" />
+                                    </a>
+                                </div>
+                                <a ng-if="vm.pressCardModel.assignmentLetterUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{vm.pressCardModel.assignmentLetterUrlFullPath}}">
+                                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                                </a>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <!--<div class="row form-group" ng-if="vm.pressCardModel.pressCard1.applicationDetail.applicationStatusId == 4">
+                <div class="col-md-12">
+                    <div class="box-placeholder b0 bg-gray-lighter">
+                        <h3 data-translate="mediaLicense.activities"></h3>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table datatable="" class="row-border hover" dt-options="vm.teamMemberDt.dtOptions" dt-columns="vm.teamMemberDt.dtColumns"
+                                       dt-instance="vm.teamMemberDt.dtInstance" width="100%"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+                    </uib-accordion-group>
+                    <br />
+
+                    <uib-accordion-group is-open="foreignEntityDetails" panel-class="panel-primary" class="form-horizontal">
+                        <uib-accordion-heading>
+                            {{'foreignMedia.foreignEntityDetails' | translate}}
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': foreignEntityDetails, 'glyphicon-chevron-right': !foreignEntityDetails.open}"></i>
+                        </uib-accordion-heading>
+                        <br />
+                        <div ng-if="vm.pressCardModel.foreignEntity">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'foreignMedia.foreignEntityName' | translate}}</label>
+                                <div class="col-sm-7 form-control-static">{{vm.pressCardModel.foreignEntity.nameEn}}</div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'foreignMedia.foreignEntityHQ' | translate}}</label>
+                                <div class="col-sm-7 form-control-static">{{vm.pressCardModel.foreignEntity.country | localizeString}}</div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'foreignMedia.foreignEntityEmail' | translate}}</label>
+                                <div class="col-sm-7 form-control-static">{{vm.pressCardModel.foreignEntity.email}}</div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'foreignMedia.foreignEntityPhone' | translate}}</label>
+                                <div class="col-sm-7 form-control-static">{{vm.pressCardModel.foreignEntity.phoneNumber}}</div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'foreignMedia.foreignEntityWebsite' | translate}}</label>
+                                <div class="col-sm-7 form-control-static">{{vm.pressCardModel.foreignEntity.website}}</div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        </div>
+                    </uib-accordion-group>
+                    <br />
+
+                    <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                        <uib-accordion-heading>
+                            {{'applicantDetails.applicantDetails' | translate}}
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                        </uib-accordion-heading>
+                        <br />
+                        <applicant ng-model="vm.pressCardModel.pressCard1.applicationDetail.application.user.userProfiles[0]" applicant-user="vm.pressCardModel.pressCard1.applicationDetail.application.user"></applicant>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'foreignMedia.twitterAccount' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{vm.pressCardModel.person.twitterAccount}}</div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                        <div class="row form-group" ng-if="vm.pressCardModel.person.academicQualificationUrl">
+                            <label class="col-sm-3 control-label">{{'foreignMedia.academicQualification' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <div ng-if="vm.pressCardModel.person.academicQualificationUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                    <a ng-href="{{vm.pressCardModel.person.academicQualificationUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                        <img ng-src="{{vm.pressCardModel.person.academicQualificationUrlFullPath}}" alt="thumb" />
+                                    </a>
+                                </div>
+                                <a ng-if="vm.pressCardModel.person.academicQualificationUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{vm.pressCardModel.person.academicQualificationUrlFullPath}}">
+                                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                                </a>
+                            </div>
+                            <div class="col-sm-2"></div>
+                        </div>
+                    </uib-accordion-group>
+                    <br />
+                </uib-accordion>
+
+                <div class="row" ng-if="vm.getAllPressCardApplications.length">
+                    <div class="col-md-12">
+                        <service-fee ng-model="vm.serviceFeesObj"></service-fee>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+
+                <div class="box-placeholder b0 bg-gray-lighter">
+                    <h3>{{'foreignMedia.visaFees' | translate}}</h3>
+                    <uib-alert type="info">
+                        <div class="row">
+                            <div class="col-md-6"><span class="pull-left">{{'foreignMedia.visaFeeNote' | translate}}</span></div>
+                        </div>
+                    </uib-alert>
+                    <p>
+                        <div class="row">
+                            <div class="col-md-12" ng-if="vm.grid.dtOptions">
+                                <table datatable="" class="row-border hover" dt-options="vm.grid.dtOptions" dt-columns="vm.grid.dtColumns"
+                                       dt-instance="vm.grid.dtInstance" width="100%"></table>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <span class="text-md pull-right bg-gray-dark rounded" style="padding:10px;">
+                                    <span class="pull-left">{{'serviceFee.totalFees' | translate}}: </span>
+                                    {{vm.totalFees}}
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                    </p>
+                </div>
+                <div class="row"><br /></div>
+
+                <div class="row" ng-if="vm.getAllPressCardApplications.length">
+                    <div class="col-md-12">
+                        <terms ng-model="vm.terms" ng-if="!vm.editMode" name="terms"></terms>
+                    </div>
+                </div>
+
+                <customer-pulse ng-if="vm.showHappinessMeter" ng-model="vm.happinessMeterObj"></customer-pulse>
+                <hr />
+                <div class="row" ng-if="!vm.editMode && vm.getAllPressCardApplications.length">
+                    <div class="col-md-12">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="vm.isBusy || !vm.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                        <!--<button type="button" ripple="" validation-submit="Form"
+                    ng-disabled="vm.isBusy|| !vm.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="vm.save(1)">
+                {{'general.applyLater' | translate}}<span class="ripple"></span>
+            </button>-->
+                    </div>
+                     <
+                </div>
+
+                 <
+
+            </form>
+        </div>
+    </div>
+    <!-- END panel-->
+</div>

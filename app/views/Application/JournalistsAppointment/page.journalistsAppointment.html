@@ -1,0 +1,119 @@
+﻿<div class="app-view-header">
+    {{'journalists.pageTitle' | translate}}
+</div>
+<div class="container-fluid" ng-controller="JournalistsAppointmentController as journalists">
+
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row"><br /></div>
+                <div class="row" ng-if="journalists.user.userTypeCode != '01' && journalists.user.userTypeCode != '03'">
+                    <div class="col-md-3 col-xs-1"></div>
+                    <div class="col-md-6 col-xs-10">
+                        <div class="row">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.establishmentName' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{journalists.journalistsAppointment.applicationDetail.application.establishment | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.TenancyContract' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{journalists.journalistsAppointment.applicationDetail.application.establishment.tenancyContractEndDate | amDateFormat:'DD-MMMM-YYYY'}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.Authority' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{journalists.journalistsAppointment.applicationDetail.application.establishment.authority | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{journalists.journalistsAppointment.applicationDetail.application.establishment.licenseNumber}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-1"></div>
+                </div>
+                <hr ng-if="journalists.user.userTypeCode != '01' && journalists.user.userTypeCode != '03'" />
+                <br /><br />
+                <uib-alert type="info" ng-if="journalists.employeeNote">
+                    <div class="row text-bold">
+                        <div class="col-md-6"><span class="pull-left">{{'mediaLicense.employeeNote' | translate}}</span></div>
+                        <div class="col-md-6"><span class="pull-right">{{journalists.employeeNoteDate}}</span></div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12" ng-bind-html="journalists.employeeNote"></div>
+                    </div>
+                </uib-alert>
+                <br />
+                <div class="row form-group" ng-if="journalists.user.userTypeCode != '01'">
+                    <div class="col-md-12">
+                        <uib-alert type="danger" ng-if="journalists.EmritIdRepeated">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'journalists.EmritIdIsRepeated' | translate}}
+                                </div>
+                            </div>
+                        </uib-alert>
+                        <profile-nationality is-require-third-party="true" ng-model="journalists.journalistsAppointment.person"></profile-nationality>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'journalists.UploadOfficialLetter' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="journalists.journalistsAppointment.officialLetterUrl" copyUrlFullPath="journalists.journalistsAppointment.officialLetterUrlFullPath"
+                                         url="journalists.uploadOfficialLetterUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <service-fee ng-model="journalists.serviceFeesObj"></service-fee>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <terms ng-model="journalists.terms" ng-if="!journalists.editMode" name="terms"></terms>
+                    </div>
+                </div>
+                <customer-pulse ng-if="journalists.showHappinessMeter" ng-model="journalists.happinessMeterObj"></customer-pulse>
+                <hr />
+                <div class="row" ng-if="!journalists.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="journalists.isBusy|| !journalists.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="journalists.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="journalists.isBusy|| !journalists.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="journalists.save(1)">
+                            {{'general.applyLater' | translate}}<span class="ripple"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-if="journalists.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                            <button uib-dropdown-toggle="" ng-disabled="journalists.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                            <ul role="menu" class="dropdown-menu animated zoomIn">
+                                <li ng-repeat="transition in journalists.journalistsAppointment.applicationDetail.applicationState.transitions">
+                                    <a href="" ng-click="journalists.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div>

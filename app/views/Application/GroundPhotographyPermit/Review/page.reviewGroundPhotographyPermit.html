@@ -1,0 +1,153 @@
+﻿<div ng-controller="ReviewGroundPhotographyPermitController as ppCtl">
+    <div class="app-view-header">
+        {{'photographyPermit.pageTitleGround' | translate}}<br /> <small>{{ppCtl.photographyPermitModel.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="ppCtl.photographyPermitModel.applicationDetail.application.user.userProfiles[0]" applicant-user="ppCtl.photographyPermitModel.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='ppCtl.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="ppCtl.photographyPermitModel.applicationDetail.application.establishment" application-detail="ppCtl.photographyPermitModel.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="ppCtl.partnerOpen" panel-class="panel-primary" ng-if='ppCtl.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ppCtl.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="ppCtl.photographyPermitModel.applicationDetail.application.establishment.id" establishment-id="ppCtl.photographyPermitModel.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="ppCtl.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': ppCtl.applicationOpen, 'glyphicon-chevron-right': !ppCtl.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'photographyPermit.PurposeOfPhotography' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="photographyPermitPurpose in ppCtl.photographyPermitModel.photographyPermitPurposes">{{photographyPermitPurpose.photographyPurpos | localizeString}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'photographyPermit.PhotographyStartingDate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{ppCtl.photographyPermitModel.startingDate | date: 'dd-MMMM-yyyy'}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'photographyPermit.PhotographyEndingDate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{ppCtl.photographyPermitModel.endingDate | date: 'dd-MMMM-yyyy'}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="ppCtl.photographyPermitModel.printingPermit.applicationDetail.application.applicationNumber">
+                    <label class="col-sm-3 control-label">{{'photographyPermit.PublicationsPrintingPermit' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{ppCtl.photographyPermitModel.printingPermit.applicationDetail.application.applicationNumber}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'photographyPermit.FormPermit' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="ppCtl.photographyPermitModel.requestedFrom.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{ppCtl.photographyPermitModel.requestedFromFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{ppCtl.photographyPermitModel.requestedFromFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="ppCtl.photographyPermitModel.requestedFrom.split('.')[1] == 'pdf'" target="_blank" href="{{ppCtl.photographyPermitModel.requestedFromFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <!--==========================================EXPO2020============================-->
+                <div class="row form-group" ng-if="ppCtl.photographyPermitModel.isExpo">
+                    <label class="col-sm-3 control-label">{{'expo2020.areYouexpoUser' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{'expo2020.yes' | translate}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="ppCtl.photographyPermitModel.isExpo && ppCtl.photographyPermitModel.expoProofUrl">
+                    <label class="col-sm-3 control-label">{{'expo2020.expoProofDoc' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="ppCtl.photographyPermitModel.expoProofUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{ppCtl.photographyPermitModel.expoProofUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{ppCtl.photographyPermitModel.expoProofUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="ppCtl.photographyPermitModel.expoProofUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{ppCtl.photographyPermitModel.expoProofUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <!--==========================================EXPO2020============================-->
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="photographyPermit.filmingTeam"></h3>
+                            <div class="row">
+                                <div class="col-md-12" ng-if="ppCtl.teamMemberDt.dtOptions">
+                                    <table datatable="" class="row-border hover" dt-options="ppCtl.teamMemberDt.dtOptions" dt-columns="ppCtl.teamMemberDt.dtColumns"
+                                           dt-instance="ppCtl.teamMemberDt.dtInstance" width="100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="photographyPermit.filmingLocations"></h3>
+                            <div class="row">
+                                <div class="col-md-12" ng-if="ppCtl.locationDt.dtOptions">
+                                    <table datatable="" class="row-border hover" dt-options="ppCtl.locationDt.dtOptions" dt-columns="ppCtl.locationDt.dtColumns"
+                                           dt-instance="ppCtl.locationDt.dtInstance" width="100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <service-fee ng-model="ppCtl.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="ppCtl.photographyPermitModel.applicationDetail" application="ppCtl.photographyPermitModel.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

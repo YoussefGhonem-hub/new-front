@@ -1,0 +1,190 @@
+﻿<div ng-controller="ReviewJournalistsAppointmentController as vm">
+    <div class="app-view-header">
+        {{'journalists.pageTitle' | translate}}<br /> <small>{{vm.journalistsAppointment.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="vm.journalistsAppointment.applicationDetail.application.user.userProfiles[0]" applicant-user="vm.journalistsAppointment.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="vm.journalistsAppointment.applicationDetail.application.establishment" application-detail="vm.journalistsAppointment.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="vm.journalistsAppointment.applicationDetail.application.establishment.id" establishment-id="vm.journalistsAppointment.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Nationality' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.journalistsAppointment.person.country | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.journalistsAppointment.person.emiratesId">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.EmiratesId' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.journalistsAppointment.person.emiratesId}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.journalistsAppointment.person.passportNumber">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.journalistsAppointment.person.passportNumber}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label" ng-if="vm.journalistsAppointment.person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' | translate}}</label>
+                    <label class="col-sm-3 control-label" ng-if="vm.journalistsAppointment.person.passportNumber">{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.journalistsAppointment.person.name}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.journalistsAppointment.person.title}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.journalistsAppointment.person.gender | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.journalistsAppointment.person.dateOfBirth | date: 'dd-MMMM-yyyy'}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadYourPhoto' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.journalistsAppointment.person.photoUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.journalistsAppointment.person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.journalistsAppointment.person.photoUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.journalistsAppointment.person.photoUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.journalistsAppointment.person.photoUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.journalistsAppointment.person.emiratesId">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadEmiratesId' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.journalistsAppointment.person.emiratesIdCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.journalistsAppointment.person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.journalistsAppointment.person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.journalistsAppointment.person.emiratesIdCopyUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.journalistsAppointment.person.emiratesIdCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.journalistsAppointment.person.passportCopyUrl">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.journalistsAppointment.person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.journalistsAppointment.person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.journalistsAppointment.person.passportCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.journalistsAppointment.person.passportCopyUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.journalistsAppointment.person.passportCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.journalistsAppointment.person.iqamaUrl">
+                    <label class="col-sm-3 control-label" ng-if="vm.journalistsAppointment.person.country.isoCode2 !== 'AE'">{{'profileNationalityDirective.UploadVisa' | translate}}</label>
+                    <label class="col-sm-3 control-label" ng-if="vm.journalistsAppointment.person.country.isoCode2 == 'AE'">{{'profileNationalityDirective.UploadKholasa' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.journalistsAppointment.person.iqamaUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.journalistsAppointment.person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.journalistsAppointment.person.iqamaUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.journalistsAppointment.person.iqamaUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.journalistsAppointment.person.iqamaUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.journalistsAppointment.person.acquitanceFormUrl">
+                    <label class="col-sm-3 control-label">{{'journalists.UploadAcquaintanceForm' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.journalistsAppointment.person.acquitanceFormUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.journalistsAppointment.person.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.journalistsAppointment.person.acquaintanceFormCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.journalistsAppointment.person.acquitanceFormUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.journalistsAppointment.person.acquaintanceFormCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.journalistsAppointment.officialLetterUrl">
+                    <label class="col-sm-3 control-label">{{'journalists.UploadOfficialLetter' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.journalistsAppointment.officialLetterUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.journalistsAppointment.officialLetterUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.journalistsAppointment.officialLetterUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.journalistsAppointment.officialLetterUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.journalistsAppointment.officialLetterUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row">
+                    <service-fee ng-model="vm.serviceFees" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="vm.journalistsAppointment.applicationDetail" application="vm.journalistsAppointment.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

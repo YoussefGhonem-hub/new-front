@@ -1,0 +1,115 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="completeProfile.partnerDetails"></h4>
+</div>
+<div class="modal-body form-horizontal">
+    <div ng-if="establishmentPartner.person">
+        <div class="row form-group">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.Nationality' | translate}}</label>
+            <div class="col-sm-7 form-control-static">{{establishmentPartner.person.country | localizeString}}</div>
+        </div>
+        <div class="row form-group" ng-if="establishmentPartner.person.emiratesId">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.EmiratesId' | translate}}</label>
+            <div class="col-sm-7 form-control-static">{{establishmentPartner.person.emiratesId}}</div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label" ng-show="establishmentPartner.person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' | translate}}</label>
+            <label class="col-sm-3 control-label" ng-show="!establishmentPartner.person.emiratesId">{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</label>
+            <div class="col-sm-7 form-control-static">{{establishmentPartner.person.name}}</div>
+        </div>
+        <div class="row form-group" ng-if="establishmentPartner.person.passportNumber">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+            <div class="col-sm-7 form-control-static">{{establishmentPartner.person.passportNumber}}</div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
+            <div class="col-sm-7 form-control-static">{{establishmentPartner.person.title | localizeString}}</div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
+            <div class="col-sm-7 form-control-static">{{establishmentPartner.person.gender | localizeString}}</div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
+            <div class="col-sm-7 form-control-static">{{establishmentPartner.person.dateOfBirth | date: 'dd-MMMM-yyyy'}}</div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadYourPhoto' | translate}}</label>
+            <div class="col-sm-7 form-control-static">
+                <div ng-if="establishmentPartner.person.photoUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                    <a ng-href="{{establishmentPartner.person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <img ng-src="{{establishmentPartner.person.photoUrlFullPath}}" alt="thumb" />
+                    </a>
+                </div>
+                <a ng-if="establishmentPartner.person.photoUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{establishmentPartner.person.photoUrlFullPath}}">
+                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                </a>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        <div class="row form-group" ng-if="establishmentPartner.person.emiratesId">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadEmiratesId' | translate}}</label>
+            <div class="col-sm-7 form-control-static">
+                <div ng-if="establishmentPartner.person.emiratesIdCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                    <a ng-href="{{establishmentPartner.person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <img ng-src="{{establishmentPartner.person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                    </a>
+                </div>
+                <a ng-if="establishmentPartner.person.emiratesIdCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{establishmentPartner.person.emiratesIdCopyUrlFullPath}}">
+                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                </a>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        <div class="row form-group" ng-if="establishmentPartner.person.passportCopyUrlFullPath">
+            <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+            <div class="col-sm-7 form-control-static">
+                <div ng-if="establishmentPartner.person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                    <a ng-href="{{establishmentPartner.person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <img ng-src="{{establishmentPartner.person.passportCopyUrlFullPath}}" alt="thumb" />
+                    </a>
+                </div>
+                <a ng-if="establishmentPartner.person.passportCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{establishmentPartner.person.passportCopyUrlFullPath}}">
+                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                </a>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        <div class="row form-group" ng-if="establishmentPartner.person.iqamaUrlFullPath">
+            <label class="col-sm-3 control-label" ng-if="establishmentPartner.person.country.isoCode2 !== 'AE'">{{'profileNationalityDirective.UploadVisa' | translate}}</label>
+            <label class="col-sm-3 control-label" ng-if="establishmentPartner.person.country.isoCode2 == 'AE'">{{'profileNationalityDirective.UploadKholasa' | translate}}</label>
+            <div class="col-sm-7 form-control-static">
+                <div ng-if="establishmentPartner.person.iqamaUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                    <a ng-href="{{establishmentPartner.person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <img ng-src="{{establishmentPartner.person.iqamaUrlFullPath}}" alt="thumb" />
+                    </a>
+                </div>
+                <a ng-if="establishmentPartner.person.iqamaUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{establishmentPartner.person.iqamaUrlFullPath}}">
+                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                </a>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+        <div class="row form-group" ng-if="establishmentPartner.person.acquaintanceFormCopyUrlFullPath">
+            <label class="col-sm-3 control-label">{{'journalists.UploadAcquaintanceForm' | translate}}</label>
+            <div class="col-sm-7 form-control-static">
+                <div ng-if="establishmentPartner.person.acquitanceFormUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                    <a ng-href="{{establishmentPartner.person.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <img ng-src="{{establishmentPartner.person.acquaintanceFormCopyUrlFullPath}}" alt="thumb" />
+                    </a>
+                </div>
+                <a ng-if="establishmentPartner.person.acquitanceFormUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{establishmentPartner.person.acquaintanceFormCopyUrlFullPath}}">
+                    <em class="fa fa-5x fa-file-pdf-o"></em>
+                </a>
+            </div>
+            <div class="col-sm-2"></div>
+        </div>
+    </div>
+    <div ng-if="establishmentPartner.partnerEstablishment">
+        <establishment ng-model="establishmentPartner.partnerEstablishment" is-partner="true" is-preview="true"></establishment>
+    </div>
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary">{{'general.ok' | translate}}</button><button ng-click="closeModal()" class="btn btn-warning">{{'general.cancel' | translate}}</button>
+</div>

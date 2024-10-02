@@ -1,0 +1,60 @@
+<div class="app-view-header">
+    {{'dashboard.home' | translate}}
+    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+<div ng-controller="RegulateEntryItemsController as regulate">
+    <div class="row">
+        <div class="col-md-2">
+            <!--<span class="col-md-2">
+                <a ng-click="books.exportExcel()" uib-tooltip="Excel">
+                    <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+            <span class="col-md-2">
+                <a ng-click="books.exportCSV()" uib-tooltip="CSV">
+                    <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+            <span class="col-md-2">
+                <a ng-click="books.exportPDF()" uib-tooltip="PDF">
+                    <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>-->
+        </div>
+        <div class="col-md-8"></div>
+        <div class="col-md-2">
+            <button class="btn btn-primary btn-md pull-right" btn-layer-morph="regulate.click()" btn-layer="books.filter" target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table datatable="" class="row-border hover" dt-options="regulate.dtBooksOptions" dt-columns="regulate.dtBooksColumns"
+                   dt-instance="regulate.dtBookInstance" width="100%"></table>
+        </div>
+    </div>
+    <!-- Layer Morph-->
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Employee/regulate/filter/filterRegulateItem.html'" class="layer-morph"></div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="bookFilter" layer-morph-close="" ng-click="regulate.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="bookFilter" layer-morph-filter="" ng-click="regulate.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Layer Morph-->
+</div>

@@ -1,0 +1,99 @@
+﻿
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-body">
+                <uib-tabset>
+                    <uib-tab heading="{{'visit.visitDet' | translate}}">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'completeProfile.establishmentName' | translate}}</label>
+                            <div class="col-sm-7 form-control-static" ng-if="visitInfo.establishment">{{visitInfo.establishment | localizeString}}</div>
+                            <div class="col-sm-7 form-control-static" ng-if="!visitInfo.establishment">{{visitInfo.taskList.establishment | localizeString}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                            <div class="col-sm-7 form-control-static" ng-if="visitInfo.establishment">{{visitInfo.establishment.licenseNumber}}</div>
+                            <div class="col-sm-7 form-control-static" ng-if="!visitInfo.establishment">{{visitInfo.taskList.establishment.licenseNumber}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'establishment.TenancyContract' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{ContractEndDate}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'dashboard.applicationStatus' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{visitInfo.applicationStatus | localizeString}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'inspection.inspectionVisitOn' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{InspectionVisitOn}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'inspection.inspectedBy' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{visitInfo.user.firstName}} {{visitInfo.user.lastName}}</div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="{{'visit.violationDetails' | translate}}">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'visit.typesofviolation' | translate}}</label>
+                            <div class="col-sm-9">
+                                <div ng-repeat="violationReason in violationReasons" class="form-control-static">
+                                    <i class="fa fa-check-circle"></i> {{violationReason.violation | localizeString}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'workflow.notes' | translate}}</label>
+                            <div class="col-md-9 form-control-static" ng-bind-html="notes"></div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="{{'visit.bookDetails' | translate}}">
+                        <div class="row form-horizontal">
+                            <div class="col-md-12">
+                                <book-scanner ng-model="visitBooks" is-review="true"></book-scanner>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="{{'visit.retainedMaterials' | translate}}">
+                        <div class="row form-horizontal">
+                            <div class="col-md-12">
+                                <retained-materials ng-model="visitRetainedMaterials" is-review="true"></retained-materials>
+                            </div>
+                        </div>
+                    </uib-tab>
+                    <uib-tab heading="{{'visit.contactPerson' | translate}}">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'visit.contactPersonName' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{contactName}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'visit.contactPersonEmail' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{contactEmail}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'visit.contactPersonPhone' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">{{contactPhone}}</div>
+                        </div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'visit.contactPersonSignature' | translate}}</label>
+                            <div class="col-sm-3 form-control-static" chained-animation="fadeInUp thumbnail">
+                                <a ng-href="{{contactSignatureUrl}}" data-gallery="" title="Unsplash images">
+                                    <img ng-src="{{contactSignatureUrl}}" alt="thumb" style="max-height:230px;" />
+                                </a>
+                            </div>
+                        </div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>
+

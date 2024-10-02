@@ -1,0 +1,37 @@
+﻿<div class="col-md-12">
+    <div class="box-placeholder b0 bg-gray-lighter">
+        <!-- <h3 ng-show="!passModel.isForeignMediaLicense">{{passModel.economicActivity | localizeString}}</h3>
+        <h3 ng-show="passModel.isForeignMediaLicense">{{'foreignMedia.foreignEntitySocialMediaAccounts' | translate}}</h3> -->
+        <h5 ng-if="!isReview" class="alert alert-warning">{{'mediaLicense.addAllSocialMediaAccount' | translate}}</h5>
+        <div ng-if="!canEditExternalMediaAccount">
+            <div ng-if="!isReview" class="btn btn-warning pull-right" ng-click="open('md')">{{'mediaLicense.addExternalMediaAccount' | translate}}</div>
+            <div class="row">
+                <div class="col-md-12" ng-if="externalMediaAccountsDt.dtOptions">
+                    <table datatable="" class="row-border hover" dt-options="externalMediaAccountsDt.dtOptions" dt-columns="dtColumns" dt-instance="externalMediaAccountsDt.dtInstance" width="100%"></table>
+                </div>
+            </div>
+            <div class="row"><br /></div>
+        </div>
+        <div ng-if="canEditExternalMediaAccount && !passModel.isForeignMediaLicense">
+            <h5 class="alert alert-warning">
+                ملاحظة ... انت تقوم بالتعديل على الحسابات الالكترونية لرخصة مكتملة لانك تملك الصلاحيات اللازمة لذلك بعد اكمال التعديل يجب <a href="" ng-click="ModifyExternalMediaAccountAndReprint();">اعادة طباعة</a> الرخصة
+            </h5>
+            <div class="btn btn-warning pull-right" ng-click="open('md')">{{'mediaLicense.addExternalMediaAccount' | translate}}</div>
+            <div class="row">
+                <div class="col-md-12" ng-if="externalMediaAccountsDt.dtOptions">
+                    <table datatable="" class="row-border hover" dt-options="externalMediaAccountsDt.dtOptions" dt-columns="dtColumns" dt-instance="externalMediaAccountsDt.dtInstance" width="100%"></table>
+                </div>
+            </div>
+            <div class="row"><br /></div>
+        </div>
+        <div ng-if="canEditExternalMediaAccount && passModel.isForeignMediaLicense && isReview">
+            <div class="row">
+                <div class="col-md-12" ng-if="externalMediaAccountsDt.dtOptions">
+                    <table datatable="" class="row-border hover" dt-options="externalMediaAccountsDt.dtOptions" dt-columns="dtColumns" dt-instance="externalMediaAccountsDt.dtInstance" width="100%"></table>
+                </div>
+            </div>
+            <div class="row"><br /></div>
+        </div>
+
+    </div>
+</div>

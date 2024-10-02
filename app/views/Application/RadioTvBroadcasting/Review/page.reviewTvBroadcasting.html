@@ -1,0 +1,266 @@
+﻿<div ng-controller="ReviewRadioTvBroadcastingController as radioCtl">
+    <div class="app-view-header">
+        {{'radioTvBroadCasting.radioTvBroadCasting' | translate}}<br /> <small>{{radioCtl.mediaLicenses.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="radioCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0]" applicant-user="radioCtl.mediaLicenses.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="radioCtl.mediaLicenses.applicationDetail.application.establishment" application-detail="radioCtl.mediaLicenses.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="radioCtl.partnerOpen" panel-class="panel-primary">
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': radioCtl.partnerOpen, 'glyphicon-chevron-right': !radioCtl.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="radioCtl.mediaLicenses.applicationDetail.application.establishment.id" establishment-id="radioCtl.mediaLicenses.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="radioCtl.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': radioCtl.applicationOpen, 'glyphicon-chevron-right': !radioCtl.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.type' | translate}}</label>
+                    <div class="col-sm-7 form-control-static" ng-if="radioCtl.mediaLicenses.tVs[0].isRadio">{{'radioTvBroadCasting.radioOption' | translate}}</div>
+                    <div class="col-sm-7 form-control-static" ng-if="!radioCtl.mediaLicenses.tVs[0].isRadio">{{'radioTvBroadCasting.tvOption' | translate}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'radioTvBroadCasting.encryptionType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static" ng-if="radioCtl.mediaLicenses.tVs[0].isEncrypted">{{'radioTvBroadCasting.encrypted' | translate}}</div>
+                    <div class="col-sm-7 form-control-static" ng-if="!radioCtl.mediaLicenses.tVs[0].isEncrypted">{{'radioTvBroadCasting.notEncrypted' | translate}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'newspaper.languages' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="language in radioCtl.mediaLicenses.tVs[0].tvLanguages">{{language.language | localizeString}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'radioTvBroadCasting.capital' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.tVs[0].capital}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'radioTvBroadCasting.souresOfFunding' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.tVs[0].fundingSources}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'radioTvBroadCasting.suggestedTvName' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.tVs[0].name}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'radioTvBroadCasting.programsOffered' | translate}}</label>
+                    <div class="col-sm-7 form-control-static" ng-bind-html="radioCtl.mediaLicenses.tVs[0].programsCategory"></div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'radioTvBroadCasting.companysObjective' | translate}}</label>
+                    <div class="col-sm-7">
+                        <div ng-if="radioCtl.mediaLicenses.tVs[0].objectivesUrlFullPath.split('.')[1] != 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{radioCtl.mediaLicenses.tVs[0].objectivesUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{radioCtl.mediaLicenses.tVs[0].objectivesUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="radioCtl.mediaLicenses.tVs[0].objectivesUrlFullPath.split('.')[1] == 'pdf'" target="_blank" href="{{radioCtl.mediaLicenses.tVs[0].objectivesUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'radioTvBroadCasting.feasibilityStudy' | translate}}</label>
+                    <div class="col-sm-7">
+                        <div ng-if="radioCtl.mediaLicenses.tVs[0].feasibilityStudyUrlFullPath.split('.')[1] != 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{radioCtl.mediaLicenses.tVs[0].feasibilityStudyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{radioCtl.mediaLicenses.tVs[0].feasibilityStudyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="radioCtl.mediaLicenses.tVs[0].feasibilityStudyUrlFullPath.split('.')[1] == 'pdf'" target="_blank"
+                           href="{{radioCtl.mediaLicenses.tVs[0].feasibilityStudyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <hr />
+                </div>
+                <div class="row">
+                    <div class="col-sm-12"><h4 style="margin-left: 15px;">{{'radioTvBroadCasting.stepThree' | translate}}</h4></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.emiratesId">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.EmiratesId' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].person.emiratesId | translate}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.passportNumber">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].person.passportNumber | translate}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' | translate}}</label>
+                    <label class="col-sm-3 control-label" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.passportNumber">{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].person.name | translate}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].person.title}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].person.gender | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].person.dateOfBirth | date: 'longDate'}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadYourPhoto' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.photoUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{radioCtl.mediaLicenses.chiefEditors[0].person.photoUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.photoUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.photoUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.emiratesId">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadEmiratesId' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.emiratesIdCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{radioCtl.mediaLicenses.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.emiratesIdCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.emiratesIdCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.passportCopyUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.passportCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.passportCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{radioCtl.mediaLicenses.chiefEditors[0].person.passportCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.passportCopyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.passportCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.iqamaUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadVisa' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.iqamaUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{radioCtl.mediaLicenses.chiefEditors[0].person.iqamaUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.iqamaUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.iqamaUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'journalists.UploadAcquaintanceForm' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.acquitanceFormUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{radioCtl.mediaLicenses.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="radioCtl.mediaLicenses.chiefEditors[0].person.acquitanceFormUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{radioCtl.mediaLicenses.chiefEditors[0].person.acquaintanceFormCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].address.emirate">
+                    <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].address.emirate | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="radioCtl.mediaLicenses.chiefEditors[0].address.region">
+                    <label class="col-sm-3 control-label">{{'address.Region' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].address.region | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'address.Community' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].address.community | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'address.Street' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{radioCtl.mediaLicenses.chiefEditors[0].address.street}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row form-group">
+                    <service-fee ng-model="radioCtl.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="radioCtl.mediaLicenses.applicationDetail" application="radioCtl.mediaLicenses.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END panel-->
+
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

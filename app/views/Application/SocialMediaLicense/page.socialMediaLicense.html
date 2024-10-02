@@ -1,0 +1,451 @@
+﻿<div class="mct-nav-path-pages">
+    <a href="#">Home</a>><a href="#">Services</a>><a href="#"></a><a href="#">{{'mediaLicense.newSocialMediaLicense' | translate}}</a>
+</div>
+
+<section ng-if="true" class="mct-shape-container" ng-controller="socialMediaLicenseController as mediaCtl">
+    <div class="mct-header-container">
+        <button class="mct-go-back">
+            <svg width="10"
+                 height="18"
+                 viewBox="0 0 10 18"
+                 fill="none"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path d="M9.42464 15.7031C9.63598 15.9145 9.75471 16.2011 9.75471 16.5C9.75471 16.7989 9.63598 17.0855 9.42464 17.2969C9.21329 17.5082 8.92665 17.627 8.62776 17.627C8.32888 17.627 8.04223 17.5082 7.83089 17.2969L0.330887 9.79687C0.226007 9.69236 0.142791 9.56816 0.0860095 9.43142C0.0292284 9.29467 0 9.14806 0 9C0 8.85193 0.0292284 8.70532 0.0860095 8.56858C0.142791 8.43183 0.226007 8.30764 0.330887 8.20312L7.83089 0.703123C8.04223 0.491779 8.32888 0.373047 8.62776 0.373047C8.92665 0.373047 9.21329 0.491779 9.42464 0.703123C9.63598 0.914468 9.75471 1.20111 9.75471 1.5C9.75471 1.79888 9.63598 2.08553 9.42464 2.29687L2.72245 8.99906L9.42464 15.7031Z"
+                      fill="black" />
+            </svg>
+            <span>{{'mediaLicense.newSocialMediaLicense' | translate}}</span>
+        </button>
+        <div class="mct-progress-bar">
+            <div class="mct-icon-progress-bar">
+                <svg viewBox="0 0 36 36"
+                     style="width: 100%; height: 100%; transform: 0">
+                    <path style="stroke: #f2c294; color: #f2c294"
+                          stroke-width="3.8"
+                          fill="none"
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                    <path style="stroke: #997133; color: #997133"
+                          stroke-width="3.8"
+                          stroke-linecap="round"
+                          fill="none"
+                          stroke-dasharray="75, 100"
+                          d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                </svg>
+                <div class="mct-progress-value mct-text-sm">75%</div>
+            </div>
+            <span class="mct-title-progress-bar mct-text-sm">Completion Percentage</span>
+        </div>
+    </div>
+
+    <div class="mct-stepper">
+        <div ng-class="{'mct-activeStepperCol':mediaCtl.activeStep == 1,'mct-checkedStepperCol':mediaCtl.activeStep > 1}">
+            <div class="mct-stepContainer">
+                <img class="mct-stepCheck" ng-class="{'mct-displayNone':mediaCtl.activeStep == 1}" src="../app/img/correct.svg" alt="">
+                <h4 class="mct-stepNumber" ng-class="{'mct-displayNone':mediaCtl.activeStep > 1}">01</h4>
+                <div class="mct-stepContent">
+                    <h4 ng-if="!mediaCtl.isIndividual">{{'mediaLicense.stepOne' | translate}}</h4>
+                    <h4 ng-if="mediaCtl.isIndividual">{{'mediaLicense.stepOneIndividual' | translate}}</h4>
+                </div>
+            </div>
+        </div>
+        <div ng-class="{'mct-activeStepperCol':mediaCtl.activeStep == 2,'mct-checkedStepperCol':mediaCtl.activeStep > 2,'mct-uncheckedStepperCol': mediaCtl.activeStep<2}">
+            <div class="mct-stepContainer">
+                <img class="mct-stepCheck" ng-class="{'mct-displayNone':mediaCtl.activeStep <= 2}" src="../app/img/correct.svg" alt="">
+                <h4 class="mct-stepNumber" ng-class="{'mct-displayNone':mediaCtl.activeStep > 2}">02</h4>
+                <div class="mct-stepContent">
+                    <h4>{{'mediaLicense.stepTwo' | translate}}</h4>
+                </div>
+            </div>
+        </div>
+        <div ng-class="{'mct-activeStepperCol':mediaCtl.activeStep == 3,'mct-checkedStepperCol':mediaCtl.activeStep > 3,'mct-uncheckedStepperCol': mediaCtl.activeStep<3}" ng-if="mediaCtl.isExternalMediaAccount">
+            <div class="mct-stepContainer">
+                <img class="mct-stepCheck" ng-class="{'mct-displayNone':mediaCtl.activeStep <= 3}" src="../app/img/correct.svg" alt="">
+                <h4 class="mct-stepNumber" ng-class="{'mct-displayNone':mediaCtl.activeStep > 3}">03</h4>
+                <div class="mct-stepContent">
+                    <h4>{{'mediaLicense.stepFour' | translate}}</h4>
+                </div>
+            </div>
+        </div>
+        <div ng-class="{'mct-activeStepperCol':mediaCtl.activeStep == 4,'mct-checkedStepperCol':mediaCtl.activeStep > 4,'mct-uncheckedStepperCol': mediaCtl.activeStep<4}" ng-if="!mediaCtl.isIndividual">
+            <div class="mct-stepContainer">
+                <img class="mct-stepCheck" ng-class="{'mct-displayNone':mediaCtl.activeStep <= 4}" src="../app/img/correct.svg" alt="">
+                <h4 class="mct-stepNumber" ng-class="{'mct-displayNone':mediaCtl.activeStep > 4}">03</h4>
+                <div class="mct-stepContent">
+                    <h4>{{'mediaLicense.stepThree' | translate}}</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="" ng-if="mediaCtl.activeStep==1">
+        <div class="formTitle">
+            <h4>{{'mediaLicense.stepOne' | translate}}</h4>
+        </div>
+        <form role="form" name="stepOneForm">
+            <div class="formCard" ng-if="!mediaCtl.isIndividual">
+                <establishment ng-model="mediaCtl.mediaLicenses.applicationDetail.application.establishment" is-media-license-step="true" is-renew="false"></establishment>
+            </div>
+            <div class="formCard" ng-if="mediaCtl.isIndividual">
+                <profile-nationality ng-model="mediaCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0].person" is-for-social-media="true" is-require-third-party="true"></profile-nationality>
+            </div>
+
+            <div class="mct-buttons-row">
+                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mct-form-button mct-primary-button" ng-click="mediaCtl.goToSecondStep()"
+                        validation-submit="stepOneForm">
+                    {{'general.next' | translate}}
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <div class="mct-form-container" ng-if="mediaCtl.activeStep==2">
+       
+        <form role="form" class="mct-form-group" name="stepTwoForm">
+            <div class="mct-alert-message" ng-if="mediaCtl.noExternalMediaAccountActivities">
+                <svg width="21"
+                     height="21"
+                     viewBox="0 0 24 24"
+                     fill="none"
+                     xmlns="http://www.w3.org/2000/svg">
+                    <g clip-path="url(#clip0_1638_1533)">
+                        <mask id="mask0_1638_1533"
+                              style="mask-type: alpha"
+                              maskUnits="userSpaceOnUse"
+                              x="0"
+                              y="0"
+                              width="24"
+                              height="24">
+                            <path fill-rule="evenodd"
+                                  clip-rule="evenodd"
+                                  d="M12 21.25C17.1086 21.25 21.25 17.1086 21.25 12C21.25 6.89137 17.1086 2.75 12 2.75C6.89137 2.75 2.75 6.89137 2.75 12C2.75 17.1086 6.89137 21.25 12 21.25ZM12 9C12.5523 9 13 8.55228 13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8C11 8.55228 11.4477 9 12 9ZM12.75 11.25C12.75 10.8358 12.4142 10.5 12 10.5C11.5858 10.5 11.25 10.8358 11.25 11.25V16.75C11.25 17.1642 11.5858 17.5 12 17.5C12.4142 17.5 12.75 17.1642 12.75 16.75V11.25Z"
+                                  fill="#1B1D21" />
+                        </mask>
+                        <g mask="url(#mask0_1638_1533)">
+                            <rect width="24" height="24" fill="#FF0000" />
+                        </g>
+                    </g>
+                    <defs>
+                        <clipPath id="clip0_1638_1533">
+                            <rect width="24" height="24" fill="white" />
+                        </clipPath>
+                    </defs>
+                </svg>
+                {{'externalMediaAccount.noExternalMediaActivity' | translate}}
+            </div>
+            <div class="formTitle" ng-if="mediaCtl.meldiaLicenses.applicationDetail.applicationTypeId != 2">
+                <h4 data-translate="mediaLicense.stepTwo" class="text-primary"></h4>
+            </div>
+            <div class="formCard" ng-if="mediaCtl.meldiaLicenses.applicationDetail.applicationTypeId != 2">
+                <div class="formInput">
+                    <label>{{'mediaLicense.activities' | translate}}<span class="text-danger"> *</span></label>
+                    <ui-select ng-model="mediaCtl.mediaLicenses.selectedActivity" ui-select-required name="economicActivities"
+                        theme="bootstrap" multiple ng-required="true" ng-disabled="mediaCtl.selected">
+                        <ui-select-match placeholder="{{'mediaLicense.selectActivities' | translate}}">{{$item|
+                            localizeString}}</ui-select-match>
+                        <ui-select-choices
+                            repeat="economicActivity in mediaCtl.mediaLicenses.economicActivities | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                            <div ng-bind-html="economicActivity| localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                    <span ui-multiple item="'economicActivity'" frommodel="mediaCtl.mediaLicenses.selectedActivity"
+                        tomodel="mediaCtl.mediaLicenses.mediaLicenseEconomicActivities" editmode="mediaCtl.editMode"></span>
+                    <span ng-if="!Form.economicActivities.$valid && Form.economicActivities.$touched">
+                        <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                    </span>
+                </div>
+            </div>
+
+            
+            <div class="fw" ng-repeat="externalMediaAccountActivity in mediaCtl.externalMediaAccountActivities">
+                <external-media-account ng-model="externalMediaAccountActivity" edit-mode="mediaCtl.editMode"></external-media-account>
+            </div>
+
+            <div class="formInput" ng-if="mediaCtl.mediaLicenses.applicationDetail.applicationTypeId == 2">
+                <label>{{'mediaLicense.activities' | translate}}</label>
+                <ul class="form-control">
+                    <li ng-repeat="mediaLicenseEconomicActivity in mediaCtl.mediaLicenses.mediaLicenseEconomicActivities">{{mediaLicenseEconomicActivity.economicActivity | localizeString}}</li>
+                </ul>
+            </div>
+            <section class="mct-section-fields">
+                <service-fee ng-model="mediaCtl.serviceFeesObj"></service-fee>
+            </section>
+
+            <div class="mct-buttons-row justify-content-between">
+                <button type="button" class="mct-form-button mct-secondary-button" ng-click="mediaCtl.previousToFirstStep()">
+                    {{'general.previous' | translate}}<span class="ripple"></span>
+                </button>
+                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mct-form-button mct-primary-button" ng-click="mediaCtl.goToThirdStep()"
+                        validation-submit="stepTwoForm">
+                    {{'general.next' | translate}}
+                </button>
+
+            </div>
+        </form>
+
+        
+    </div>
+</section>
+
+
+<div class="app-view-header">
+    {{'mediaLicense.newSocialMediaLicense' | translate}}
+</div>
+
+<div class="container-fluid" ng-controller="socialMediaLicenseController as mediaCtl" ng-if="false">
+
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <br /><br />
+            <uib-alert type="info" ng-if="mediaCtl.employeeNote">
+                <div class="row text-bold">
+                    <div class="col-md-6"><span class="pull-left">{{'mediaLicense.employeeNote' | translate}}</span></div>
+                    <div class="col-md-6"><span class="pull-right">{{mediaCtl.employeeNoteDate}}</span></div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12" ng-bind-html="mediaCtl.employeeNote"></div>
+                </div>
+            </uib-alert>
+            <uib-alert type="danger" ng-if="mediaCtl.licenseNumberValidChecker">
+                <div class="row">
+                    <div class="col-md-12">
+                        {{'completeProfile.licenseNumberValidChecker' | translate}}
+                    </div>
+                </div>
+            </uib-alert>
+            <br />
+            <div class="wizard">
+                <ul class="steps-bar">
+                    <li ng-class="{'active':mediaCtl.activeStep >= 1}">
+                        <label ng-if="!mediaCtl.isIndividual">{{'mediaLicense.stepOne' | translate}}</label>
+                        <label ng-if="mediaCtl.isIndividual">{{'mediaLicense.stepOneIndividual' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':mediaCtl.activeStep >= 2}">
+                        <label>{{'mediaLicense.stepTwo' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':mediaCtl.activeStep >= 3}" ng-if="mediaCtl.isExternalMediaAccount">
+                        <label>{{'mediaLicense.stepFour' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':mediaCtl.activeStep >= 4}" ng-if="!mediaCtl.isIndividual">
+                        <label>{{'mediaLicense.stepThree' | translate}}</label>
+                    </li>
+                </ul>
+                <hr />
+                <div ng-if="mediaCtl.activeStep==1" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                        <div class="row form-group" ng-if="!mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <establishment ng-model="mediaCtl.mediaLicenses.applicationDetail.application.establishment" is-media-license-step="true" is-renew="false"></establishment>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <profile-nationality ng-model="mediaCtl.mediaLicenses.applicationDetail.application.user.userProfiles[0].person" is-for-social-media="true" is-require-third-party="true"></profile-nationality>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.goToSecondStep()"
+                                        validation-submit="stepOneForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="mediaCtl.activeStep==2" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                        <uib-alert type="danger" ng-if="mediaCtl.noExternalMediaAccountActivities">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{'externalMediaAccount.noExternalMediaActivity' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-alert>
+                        <div class="row form-group" ng-if="mediaCtl.meldiaLicenses.applicationDetail.applicationTypeId != 2">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'mediaLicense.activities' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <ui-select ng-model="mediaCtl.mediaLicenses.selectedActivity" ui-select-required name="economicActivities" theme="bootstrap" multiple ng-required="true"
+                                           ng-disabled="mediaCtl.selected">
+                                    <ui-select-match placeholder="{{'mediaLicense.selectActivities' | translate}}">{{$item| localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="economicActivity in mediaCtl.mediaLicenses.economicActivities | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                        <div ng-bind-html="economicActivity| localizeString | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span ui-multiple item="'economicActivity'" frommodel="mediaCtl.mediaLicenses.selectedActivity" tomodel="mediaCtl.mediaLicenses.mediaLicenseEconomicActivities" editmode="mediaCtl.editMode"></span>
+                                <span ng-if="!Form.economicActivities.$valid && Form.economicActivities.$touched">
+                                    <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-repeat="externalMediaAccountActivity in mediaCtl.externalMediaAccountActivities">
+                            <external-media-account ng-model="externalMediaAccountActivity" edit-mode="mediaCtl.editMode"></external-media-account>
+                        </div>
+                        <div class="row form-group" ng-if="mediaCtl.mediaLicenses.applicationDetail.applicationTypeId == 2">
+                            <label class="col-sm-3 control-label">{{'mediaLicense.activities' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <ul>
+                                    <li ng-repeat="mediaLicenseEconomicActivity in mediaCtl.mediaLicenses.mediaLicenseEconomicActivities">{{mediaLicenseEconomicActivity.economicActivity | localizeString}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <service-fee ng-model="mediaCtl.serviceFeesObj"></service-fee>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.goToThirdStep()"
+                                        validation-submit="stepTwoForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="mediaCtl.previousToFirstStep()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="mediaCtl.activeStep==3" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'mediaLicense.doYouhaveManager' | translate}}</label>
+                            <div class="col-sm-2">
+                                <label class="switch switch-lg">
+                                    <input type="checkbox" ng-init="mediaCtl.isValidResidence = true" ng-model="mediaCtl.isValidResidence"
+                                           ng-click="mediaCtl.isChecked(mediaCtl.isValidResidence)">
+                                    <span></span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="!mediaCtl.isValidResidence && mediaCtl.isIndividual">
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <profile-nationality ng-model="mediaCtl.mediaLicenses.person"></profile-nationality>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="!mediaCtl.isValidResidence && !mediaCtl.isIndividual">
+                            <div class="row form-group">
+                                <div class="col-sm-12">
+                                    <profile-nationality ng-model="mediaCtl.mediaLicenses.person"></profile-nationality>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <terms ng-model="mediaCtl.terms" ng-if="!mediaCtl.editMode" name="terms" is-social-license="mediaCtl.isSocialLicense"></terms>
+                            </div>
+                        </div>
+                        <customer-pulse ng-if="mediaCtl.showHappinessMeter" ng-model="mediaCtl.happinessMeterObj"></customer-pulse>
+                        <hr />
+                        <div class="row" ng-if="mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <button type="button" ripple="" validation-submit="stepThreeForm" ng-if="!mediaCtl.editMode"
+                                        ng-disabled="mediaCtl.isBusy || !mediaCtl.terms.isAgreed || !mediaCtl.terms.isAgreedSocial" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.save(2)">
+                                    {{'general.apply' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" ripple="" validation-submit="stepThreeForm" ng-if="!mediaCtl.editMode"
+                                        ng-disabled="mediaCtl.isBusy|| !mediaCtl.terms.isAgreed || !mediaCtl.terms.isAgreedSocial" class="mr mb-sm btn btn-default pull-right" ng-click="mediaCtl.save(1)">
+                                    {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                </button>
+                                <div uib-dropdown="dropdown" class="btn-group mr pull-right" ng-if="mediaCtl.editMode">
+                                    <button uib-dropdown-toggle="" ng-disabled="mediaCtl.isBusy" class="btn btn-primary dropdown-toggle">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                    <ul role="menu" class="dropdown-menu animated zoomIn">
+                                        <li ng-repeat="transition in mediaCtl.mediaLicenses.applicationDetail.applicationState.transitions">
+                                            <a href="" ng-click="mediaCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="mediaCtl.previousToSecondStep()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="!mediaCtl.isIndividual">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.goToFourthStep()"
+                                        validation-submit="stepThreeForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="mediaCtl.previousToSecondStep()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="mediaCtl.activeStep==4" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepFourForm">
+                        <div class="row form-group" ng-if="mediaCtl.requireAquitanceForm == true">
+                            <div class="col-md-12">
+                                <div class="alert alert-warning" data-translate="general.requireAquitance"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="box-placeholder b0 bg-gray-lighter">
+                                    <h3 data-translate="changePartners.partnerList"></h3>
+                                    <p>
+                                        <establishment-partners-list ng-if="mediaCtl.establishmentId" for-service="mediaCtl.forService" edit-only="mediaCtl.editOnly"
+                                                                     dt-partner-instance="mediaCtl.dtPartnerInstance"
+                                                                     establishment-partners="mediaCtl.mediaLicenses.applicationDetail.application.establishment.establishmentPartners"
+                                                                     is-require-third-party="mediaCtl.requireAquitanceForm"
+                                                                     establishment-id=mediaCtl.establishmentId></establishment-partners-list>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <terms ng-model="mediaCtl.terms" ng-if="!mediaCtl.editMode" name="terms" is-social-license="mediaCtl.isSocialLicense"></terms>
+                            </div>
+                        </div>
+                        <customer-pulse ng-if="mediaCtl.showHappinessMeter" ng-model="mediaCtl.happinessMeterObj"></customer-pulse>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="button" ripple="" validation-submit="stepFourForm" ng-if="!mediaCtl.editMode"
+                                        ng-disabled="mediaCtl.isBusy || !mediaCtl.terms.isAgreed || !mediaCtl.terms.isAgreedSocial" class="mr mb-sm btn btn-primary pull-right" ng-click="mediaCtl.save(2)">
+                                    {{'general.apply' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" ripple="" validation-submit="stepFourForm" ng-if="!mediaCtl.editMode"
+                                        ng-disabled="mediaCtl.isBusy|| !mediaCtl.terms.isAgreed || !mediaCtl.terms.isAgreedSocial" class="mr mb-sm btn btn-default pull-right" ng-click="mediaCtl.save(1)">
+                                    {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                </button>
+                                <div uib-dropdown="dropdown" class="btn-group mr pull-right" ng-if="mediaCtl.editMode">
+                                    <button uib-dropdown-toggle="" ng-disabled="mediaCtl.isBusy" class="btn btn-primary dropdown-toggle">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                    <ul role="menu" class="dropdown-menu animated zoomIn">
+                                        <li ng-repeat="transition in mediaCtl.mediaLicenses.applicationDetail.applicationState.transitions">
+                                            <a href="" ng-click="mediaCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="mediaCtl.previousToThirdStep()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

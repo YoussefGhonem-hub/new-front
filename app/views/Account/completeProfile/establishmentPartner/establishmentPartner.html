@@ -1,0 +1,60 @@
+﻿<div class="formCard">
+    <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+        <h4 id="myModalLabel" class="modal-title" data-translate="completeProfile.addNewPartner"></h4>
+    </div>
+    <div class="modal-body">
+    
+        <form role="form" class="mb-lg form-horizontal" name="addPartnerForm">
+            <div class="formInput">
+                <label>{{'completeProfile.PartnerType' | translate}} <span class="text-danger"> *</span></label>
+                <select class="form-control ng-pristine ng-pending ng-valid-maxlength ng-touched"
+                        ng-model="selectedpartnertype"
+                        data-ng-options="v as (v | localizeString) for v in partnertypes"></select>
+            </div>
+            
+            <div class="fw" ng-if="selectedpartnertype.id == 1">
+                <profile-nationality ng-model="establishmentPartner.person" is-require-third-party="establishmentPartner.requireAcquintanceForm"></profile-nationality>
+            </div>
+            <div class="fw" ng-if="selectedpartnertype.id == 2">
+                <establishment ng-model="establishmentPartner.partnerEstablishment" is-Partner="true"></establishment>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="ok()" class="formBtn btn btn-primary" type="submit" validation-submit="addPartnerForm" data-translate="general.ok"></button>
+        <button ng-click="closeModal()" class="formBtn btnCancel btn btn-warning" data-translate="general.cancel"></button>
+    </div>
+</div>
+
+<!-- 
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="completeProfile.addNewPartner"></h4>
+</div>
+<div class="modal-body">
+
+    <form role="form" class="mb-lg form-horizontal" name="addPartnerForm">
+        <div class="row form-group">
+            <label class="col-sm-3 control-label">
+                <span class="text-danger">* </span>
+                <span>{{'completeProfile.PartnerType' | translate}}</span>
+            </label>
+            <div class="col-sm-9">
+                <select class="form-control ng-pristine ng-pending ng-valid-maxlength ng-touched" style="padding-top:0px;"
+                        ng-model="selectedpartnertype"
+                        data-ng-options="v as (v | localizeString) for v in partnertypes"></select>
+            </div>
+        </div>
+        <div ng-if="selectedpartnertype.id == 1">
+            <profile-nationality ng-model="establishmentPartner.person" is-require-third-party="establishmentPartner.requireAcquintanceForm"></profile-nationality>
+        </div>
+        <div ng-if="selectedpartnertype.id == 2">
+            <establishment ng-model="establishmentPartner.partnerEstablishment" is-Partner="true"></establishment>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" type="submit" validation-submit="addPartnerForm" data-translate="general.ok"></button>
+    <button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div> -->

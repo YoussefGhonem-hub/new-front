@@ -1,0 +1,252 @@
+﻿<div ng-controller="ReviewPrintingPermitController as vm">
+    <div class="app-view-header">
+        {{'printingPermit.pubPrintingPermit' | translate}}<br /> <small>{{vm.printingPermit.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-alert type="warning" ng-if="vm.printingPermit.applicationDetail.applicationStatusId == 11">
+            <div class="row">
+                <div class="col-md-6"><span class="pull-left">{{'printingPermit.applicationRejectReason' | translate}}</span></div>
+            </div>
+            <br />
+        </uib-alert>
+
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="vm.printingPermit.applicationDetail.application.user.userProfiles[0]" applicant-user="vm.printingPermit.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="vm.printingPermit.applicationDetail.application.establishment" application-detail="vm.printingPermit.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="vm.printingPermit.applicationDetail.application.establishment.id" establishment-id="vm.printingPermit.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <div class="row form-group" ng-if="vm.printingPermit.publicationType">
+                    <label class="col-sm-3 control-label">{{'printingPermit.publicationType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.publicationType | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.publicationType.code == '02'">
+                    <label class="col-sm-3 control-label">{{'printingPermit.howCollectBook' | translate}}</label>
+                    <div class="col-sm-2 form-control-static">{{vm.printingPermit.bookCollectType | localizeString}}</div>
+
+                    <div class="col-sm-2">
+                        <div ng-if="vm.printingPermit.regulateEntry || vm.printingPermit.printingPermitId"
+                             ng-click="vm.printingPermit.bookCollectTypeId == 1 ? vm.Buttonclick(vm.printPermitId) : vm.Buttonclick(vm.printingPermit) ">
+                            <a style="cursor:pointer;text-decoration:underline">{{vm.applicationNumber}}</a>
+                            <i class="fa fa-external-link" style="font-size:25px;cursor:pointer"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.invoiceUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'printingPermit.UploadInvoice' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.printingPermit.invoiceUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.printingPermit.invoiceUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.printingPermit.invoiceUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.printingPermit.invoiceUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.printingPermit.invoiceUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.printingPermit1">
+                    <label class="col-sm-3 control-label">{{'photographyPermit.PublicationsPrintingPermit' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.printingPermit1 | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.authorName">
+                    <label class="col-sm-3 control-label">{{'printingPermit.authorName' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.authorName}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.title">
+                    <label class="col-sm-3 control-label">
+                        {{
+                                    ((vm.printingPermit.publicationType.id == 1 && vm.printingPermit.printedType.id == 1) ||
+                                    vm.printingPermit.publicationType.id == 2 ? ('printingPermit.bookTitle' | translate) : ('printingPermit.publicationTitle' | translate))
+                        }}
+                    </label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.title}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.isElectronic != null">
+                    <label class="col-sm-3 control-label">{{'printingPermit.bookType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        {{(vm.printingPermit.isElectronic == true ? ('printingPermit.bookType2' | translate) : ('printingPermit.bookType1' | translate))}}
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.book.isbn">
+                    <label class="col-sm-3 control-label">{{'printingPermit.isbn' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <isbn-validator ng-model="vm.printingPermit.book.isbn"></isbn-validator>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.book.nationalDepositoryNo && vm.printingPermit.book.nationalDepositoryNo != '0RJ78565_0'">
+                    <label class="col-sm-3 control-label">{{'printingPermit.nationalDepositoryNo' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.book.nationalDepositoryNo}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.book.printYear">
+                    <label class="col-sm-3 control-label">{{'printingPermit.printYear' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.book.printYear}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.book.versionNumber">
+                    <label class="col-sm-3 control-label">{{'printingPermit.versionNumber' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.book.versionNumber}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.printingPermitsLanguages && !vm.printingPermit.book">
+                    <label class="col-sm-3 control-label">{{'printingPermit.languages' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="language in vm.printingPermit.printingPermitsLanguages">{{language.language | localizeString}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.publicationType.code == '02'">
+                    <label class="col-sm-3 control-label">{{'printingPermit.languages' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="language in vm.printingPermit.book.bookLanguages">{{language.language | localizeString}}</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.printedType">
+                    <label class="col-sm-3 control-label">{{'printingPermit.printedType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.printedType | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.publicationType.code == '02'">
+                    <label class="col-sm-3 control-label">{{'printingPermit.subject' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        {{vm.printingPermit.book.subjectCategory | localizeString}}<br />
+                        <small>{{vm.printingPermit.book.subjectCategory | localizeDescString}}</small>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.publicationType.code != '02' && vm.printingPermit.printedType.code == 'BK'">
+                    <label class="col-sm-3 control-label">{{'printingPermit.subject' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        {{vm.printingPermit.subjectCategory | localizeString}}<br />
+                        <small>{{vm.printingPermit.subjectCategory | localizeDescString}}</small>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.publicationType.code != '02' && vm.printingPermit.printedType.code == 'BK' && vm.printingPermit.subjectSubCategory">
+                    <label class="col-sm-3 control-label">{{'printingPermit.subjectSubCategory' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        {{vm.printingPermit.subjectSubCategory | localizeString}}<br />
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.publicationType.code == '02' && vm.printingPermit.subjectSubCategory">
+                    <label class="col-sm-3 control-label">{{'printingPermit.subjectSubCategory' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        {{vm.printingPermit.subjectSubCategory | localizeString}}<br />
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.bookCollectTypeId == 2 && vm.printingPermit.ageClassification">
+                    <label class="col-sm-3 control-label">{{'mediaMaterialApproval.ageClassification' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        {{vm.printingPermit.ageClassification | localizeString}}<br />
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.distributorAgency">
+                    <label class="col-sm-3 control-label">{{'printingPermit.distributorAgency' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.distributorAgency}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.director">
+                    <label class="col-sm-3 control-label">{{'printingPermit.director' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.director}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.production">
+                    <label class="col-sm-3 control-label">{{'printingPermit.production' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.production}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.printingPermit.numberOfEpisodes">
+                    <label class="col-sm-3 control-label">{{'printingPermit.numberOfEpisodes' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.printingPermit.numberOfEpisodes}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+
+                <div class="row form-group" ng-if="vm.printingPermit.materialUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'printingPermit.YourMaterial' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="!(vm.printingPermit.materialUrl.includes('http') || vm.printingPermit.materialUrl.split('.')[0] == 'www') && vm.printingPermit.materialUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.printingPermit.materialUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.printingPermit.materialUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.printingPermit.materialUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.printingPermit.materialUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                        <a ng-if="(vm.printingPermit.materialUrl.includes('http') || vm.printingPermit.materialUrl.split('.')[0] == 'www')"
+                           target="_blank" href="{{vm.printingPermit.materialUrl}}">
+                            <em class="fa fa-5x fa-file-text-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <service-fee ng-model="vm.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="vm.printingPermit.applicationDetail" application="vm.printingPermit.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

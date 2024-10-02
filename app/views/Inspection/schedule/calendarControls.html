@@ -1,0 +1,35 @@
+﻿<h2 class="text-center">{{ schedule.calendarTitle }}</h2>
+<div class="row">
+    <div class="col-md-6 text-center">
+        <div class="btn-group">
+            <button class="btn btn-primary"
+                    mwl-date-modifier
+                    date="schedule.viewDate"
+                    decrement="schedule.calendarView">
+                <i class="fa fa-angle-left" aria-hidden="true"></i>
+            </button>
+            <button class="btn btn-default"
+                    mwl-date-modifier
+                    date="schedule.viewDate"
+                    set-to-today>
+                <span data-translate="datePicker.today"></span>
+            </button>
+            <button class="btn btn-primary"
+                    mwl-date-modifier
+                    date="schedule.viewDate"
+                    increment="schedule.calendarView">
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <br class="visible-xs visible-sm">
+    <div class="col-md-6 text-center">
+        <div class="btn-group">
+            <label class="btn btn-default" ng-model="schedule.calendarView" uib-btn-radio="'year'">Year</label>
+            <label class="btn btn-default" ng-model="schedule.calendarView" uib-btn-radio="'month'">Month</label>
+            <label class="btn btn-default" ng-model="schedule.calendarView" uib-btn-radio="'week'">Week</label>
+            <label class="btn btn-default" ng-model="schedule.calendarView" uib-btn-radio="'day'">Day</label>
+        </div>
+    </div>
+</div>
+<br>

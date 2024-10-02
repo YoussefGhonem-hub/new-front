@@ -1,0 +1,38 @@
+﻿
+
+<section class="tl-timeline-container">
+    <div class="tl-timeline-block" ng-repeat="vItem in visitsHistory">
+        <div class="tl-timeline-icon tl-picture" style="background-color:{{(vItem.violations && vItem.violations.length)>0?'#f34235':'#4caf50'}};">
+            <em class="fa fa-camera"></em>
+        </div>
+        <div class="tl-timeline-content">
+            <h2>{{vItem.visitNumber}}</h2>
+            <p ng-if="fullDetails" ng-bind-html="vItem.note"></p>
+            <ul ng-if="vItem.violations && vItem.violations.length>0">
+                <li ng-repeat="vio in vItem.violations" style="color:#f34235;">
+                    {{vio  | localizeString }}
+                </li>
+            </ul>
+            <div class="tl-date">
+                <span ng-if="fullDetails">{{vItem.inspectionBy}}</span>
+                {{'dashboard.on' | translate}}
+                {{vItem.inspectionDate | amDateFormat:'dddd, Do MMMM YYYY, h:mm:ss a'}}
+            </div>
+
+            <div class="col-md-12" ng-if="fullDetails">
+                <div class="row">
+                    <h5> <em class="fa fa-check-circle" style="color:{{(vItem.establishmentVisitStatus.id == 1?'#f34235' :'#4caf50')}};"></em>      {{vItem.establishmentVisitStatus  | localizeString}}</h5>
+                </div>
+                <div class="row">
+                    <h5> <em class="fa fa-check-circle" style="color:{{(vItem.visitStatus.id == 4?'#4caf50' : '#f34235')}};"></em>    {{vItem.visitStatus  | localizeString}}</h5>
+                </div>
+                <div class="row" ng-if="vItem.paymentStatus">
+                    <h5> <em class="fa fa-check-circle" style="color:{{(vItem.paymentStatus.id == 3? '#4caf50' : '#f34235')}};"></em>     {{vItem.paymentStatus | localizeString }}</h5>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</section>
+

@@ -1,0 +1,138 @@
+﻿<div class="app-view-header">
+    {{'journalists.foreignJournalist' | translate}}
+</div>
+<div class="container-fluid" ng-controller="ReviewForeignJournalistsController as vm">
+
+    <uib-accordion close-others="oneAtATime">
+        <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary">
+            <uib-accordion-heading>
+                {{'general.applicationDetails' | translate}}
+                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+            </uib-accordion-heading>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'completeProfile.establishmentName' | translate}}</label>
+                <div class="col-sm-7">{{vm.foreignJournalists.applicationDetail.application.establishment | localizeString}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'completeProfile.LicenseNumber' | translate}}</label>
+                <div class="col-sm-7">{{vm.foreignJournalists.applicationDetail.application.establishment.licenseNumber}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'completeProfile.UploadLicenseCopy' | translate}}</label>
+                <div class="col-sm-7">
+                    <div ng-if="vm.foreignJournalists.applicationDetail.application.establishment.licenseCopyUrlFullPath.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                        <a href="{{vm.foreignJournalists.applicationDetail.application.establishment.licenseCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                            <img src="{{vm.foreignJournalists.applicationDetail.application.establishment.licenseCopyUrlFullPath}}" alt="thumb" />
+                        </a>
+                    </div>
+                    <a ng-if="vm.foreignJournalists.applicationDetail.application.establishment.licenseCopyUrlFullPath.split('.')[1] == 'pdf'" target="_blank" href="{{vm.foreignJournalists.applicationDetail.application.establishment.licenseCopyUrlFullPath}}">
+                        <em class="fa fa-5x fa-file-pdf-o"></em>
+                    </a>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'completeProfile.TenancyContract' | translate}}</label>
+                <div class="col-sm-7">{{vm.foreignJournalists.applicationDetail.application.establishment.tenancyContractEndDate | date: 'dd-MMMM-yyyy'}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'completeProfile.UploadTenancyContract' | translate}}</label>
+                <div class="col-sm-7">
+                    <div ng-if="vm.foreignJournalists.applicationDetail.application.establishment.tenancyContractCopyUrlFullPath.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                        <a href="{{vm.foreignJournalists.applicationDetail.application.establishment.tenancyContractCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                            <img src="{{vm.foreignJournalists.applicationDetail.application.establishment.tenancyContractCopyUrlFullPath}}" alt="thumb" />
+                        </a>
+                    </div>
+                    <a ng-if="vm.foreignJournalists.applicationDetail.application.establishment.tenancyContractCopyUrlFullPath.split('.')[1] == 'pdf'" target="_blank" href="{{vm.foreignJournalists.applicationDetail.application.establishment.tenancyContractCopyUrlFullPath}}">
+                        <em class="fa fa-5x fa-file-pdf-o"></em>
+                    </a>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'establishment.CirculationorAudienceFigure' | translate}}</label>
+                <div class="col-sm-7">{{vm.foreignJournalists.applicationDetail.application.establishment.circulationAudienceFigure}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'establishment.EstablishmentType' | translate}}</label>
+                <div class="col-sm-7">{{vm.foreignJournalists.applicationDetail.application.establishment.establishmentType | localizeString}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'journalists.dateofassignment' | translate}}</label>
+                <div class="col-sm-7">{{vm.foreignJournalists.dateOfAssignment | date: 'dd-MMMM-yyyy'}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'journalists.UploadAcquaintanceForm' | translate}}</label>
+                <div class="col-sm-7">
+                    <div ng-if="vm.foreignJournalists.acquaintanceFormCopyUrlFullPath.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                        <a href="{{vm.foreignJournalists.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                            <img src="{{vm.foreignJournalists.acquaintanceFormCopyUrlFullPath}}" alt="thumb" />
+                        </a>
+                    </div>
+                    <a ng-if="vm.foreignJournalists.acquaintanceFormCopyUrlFullPath.split('.')[1] == 'pdf'" target="_blank" href="{{vm.foreignJournalists.acquaintanceFormCopyUrlFullPath}}">
+                        <em class="fa fa-5x fa-file-pdf-o"></em>
+                    </a>
+                </div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'journalists.office' | translate}}</label>
+                <div class="col-sm-7">{{vm.foreignJournalists.applicationDetail.application.office | localizeString}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <service-fee ng-model="vm.serviceFees" class="col-sm-12"></service-fee>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <workflow-action ng-model="vm.foreignJournalists.applicationDetail" application="vm.foreignJournalists.applicationDetail.application"></workflow-action>   
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

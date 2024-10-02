@@ -1,0 +1,180 @@
+﻿<script type="text/ng-template" id="/terms.html">
+    <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+        <h4 id="myModalLabel" class="modal-title text-capitalize" data-translate="register.terms"></h4>
+    </div>
+    <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.intro"></h4>
+                <p data-translate="terms.introDesc"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.intellectualRights"></h4>
+                <ol>
+                    <li data-translate="terms.intellectualRightsDesc1"></li>
+                    <li data-translate="terms.intellectualRightsDesc2"></li>
+                    <li data-translate="terms.intellectualRightsDesc3"></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.gurantees"></h4>
+                <ol>
+                    <li data-translate="terms.guranteesDesc1"></li>
+                    <li data-translate="terms.guranteesDesc2"></li>
+                    <li data-translate="terms.guranteesDesc3"></li>
+                    <li data-translate="terms.guranteesDesc4"></li>
+                    <li data-translate="terms.guranteesDesc5"></li>
+                    <li data-translate="terms.guranteesDesc6"></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.registration"></h4>
+                <ol>
+                    <li data-translate="terms.registrationDesc1"></li>
+                    <li data-translate="terms.registrationDesc2"></li>
+                    <li data-translate="terms.registrationDesc3"></li>
+                    <li data-translate="terms.registrationDesc4"></li>
+                    <li data-translate="terms.registrationDesc5"></li>
+                    <li data-translate="terms.registrationDesc6"></li>
+                    <li data-translate="terms.registrationDesc7"></li>
+                    <li data-translate="terms.registrationDesc8"></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.links"></h4>
+                <ol>
+                    <li data-translate="terms.linksDesc1"></li>
+                    <li data-translate="terms.linksDesc2"></li>
+                    <li data-translate="terms.linksDesc3"></li>
+                </ol>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.electronicCopies"></h4>
+                <p data-translate="terms.electronicCopiesDesc"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.versioning"></h4>
+                <p data-translate="terms.versioningDesc"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.laws"></h4>
+                <p data-translate="terms.lawsDesc"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.adjustments"></h4>
+                <p data-translate="terms.adjustmentsDesc"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.responsibilities"></h4>
+                <ol>
+                    <li data-translate="terms.responsibilitiesDesc1"></li>
+                    <li data-translate="terms.responsibilitiesDesc2"></li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="/MediaStandard.html">
+    <div class="modal-header">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+        <h4 id="myModalLabel" class="modal-title text-capitalize" data-translate="register.medaiContentStandards"></h4>
+    </div>
+    <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+        <div class="row">
+            <div class="col-lg-12">
+                <h4 data-translate="terms.intro"></h4>
+                <p data-translate="terms.introDesc"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>Media Standards</h4>
+                <ol>
+                    <li>Media Standards 1</li>
+                    <li>Media Standards 2</li>
+                    <li>Media Standards 3</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+    </div>
+</script>
+<form name="terms">
+    <div class="mt-lg">
+        <div class="formTitle">
+            <h4 data-translate="terms.title" class="text-primary"></h4>
+        </div>
+        <div class="formCard">
+            <div class="checkbox c-checkbox mt0">
+                <label>
+                    <input type="checkbox" ng-model="termsControl.isAgreed" name="isAgreed" />
+                    <span class="fa fa-check"></span>{{'register.agree' | translate}} <a href="" data-translate="register.terms" ng-click="openTerms('lg')"></a>
+                </label>
+            </div>
+            <div class="checkbox c-checkbox mt0" ng-if="termsControl.isShow">
+                <label>
+                    <input type="checkbox" ng-model="termsControl.isAgreed2" name="isAgreed2" />
+                    <span class="fa fa-check"></span>{{'register.agreeBookStandards' | translate}} <b><a target="_blank" href="sharedFiles/MediaContentStandards.pptx" data-translate="register.bookStandardsLink" style="color: #3f51b5"></a></b>
+                </label>
+            </div>
+            <div class="checkbox c-checkbox mt0" ng-if="termsControl.isSocialLicense">
+                <label>
+                    <input type="checkbox" ng-model="termsControl.isAgreedSocial" name="isAgreedSocial" />
+                    <span class="fa fa-check"></span>{{'register.agreeSMLStandards' | translate}} <b><a target="_blank" href="sharedFiles/MediaContentStandards.pdf" data-translate="register.bookStandardsLink" style="color: #3f51b5"></a></b>
+                </label>
+            </div>
+            <!-- <p>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="checkbox c-checkbox mt0">
+                            <label>
+                                <input type="checkbox" ng-model="termsControl.isAgreed" name="isAgreed" />
+                                <span class="fa fa-check"></span>{{'register.agree' | translate}} <a href="" data-translate="register.terms" ng-click="openTerms('lg')"></a>
+                            </label>
+                        </div>
+                        <div class="checkbox c-checkbox mt0" ng-if="termsControl.isShow">
+                            <label>
+                                <input type="checkbox" ng-model="termsControl.isAgreed2" name="isAgreed2" />
+                                <span class="fa fa-check"></span>{{'register.agreeBookStandards' | translate}} <b><a target="_blank" href="sharedFiles/MediaContentStandards.pptx" data-translate="register.bookStandardsLink" style="color: #3f51b5"></a></b>
+                            </label>
+                        </div>
+                        <div class="checkbox c-checkbox mt0" ng-if="termsControl.isSocialLicense">
+                            <label>
+                                <input type="checkbox" ng-model="termsControl.isAgreedSocial" name="isAgreedSocial" />
+                                <span class="fa fa-check"></span>{{'register.agreeSMLStandards' | translate}} <b><a target="_blank" href="sharedFiles/MediaContentStandards.pdf" data-translate="register.bookStandardsLink" style="color: #3f51b5"></a></b>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="(terms.isAgreed.$dirty || (terms.isAgreed2.$dirty && termsControl.isShow) || (terms.isAgreedSocial.$dirty && termsControl.isSocialLicense) ) && (!termsControl.isAgreed || (!termsControl.isAgreed2 && termsControl.isShow) || (!termsControl.isAgreedSocial && termsControl.isSocialLicense))" style="color: #f34235; font-size:12px" data-translate="register.notAgreed"></div>
+            </p> -->
+        </div>
+        
+    </div>
+</form>

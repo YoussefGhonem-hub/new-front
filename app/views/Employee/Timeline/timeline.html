@@ -1,0 +1,139 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="timeline.title"></h4>
+</div>
+<div class="modal-body bg-gray-lighter" style="height:750px; overflow-y: auto">
+    <form role="form" class="mb-lg form-horizontal" name="addPartnerForm">
+        <div class="well mt text-center text-md">
+            <b data-translate="dashboard.applicationNumber"></b>: <span>{{application.applicationNumber}}</span>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <section class="tl-timeline-container">
+                    <!-- timeline block-->
+                    <div class="tl-timeline-block" ng-repeat="actionItem in applicationDetail.actionsTakens | orderBy : 'actionDate' ">
+                        <div class="tl-timeline-icon tl-picture" ng-if="actionItem.user.userProfiles[0].userType.code == '06' && actionItem.user.userProfiles[0].person.genderId == 1">
+                            <em class="fa fa-male"></em>
+                        </div>
+                        <div class="tl-timeline-icon tl-picture" ng-if="actionItem.user.userProfiles[0].userType.code == '06' && actionItem.user.userProfiles[0].person.genderId == 2">
+                            <em class="fa fa-female"></em>
+                        </div>
+                        <div class="tl-timeline-icon tl-picture" style="background-color:darkorange" ng-if="actionItem.user.userProfiles[0].userType.code != '06'">
+                            <em class="fa fa-user"></em>
+                        </div>
+                        <div class="tl-timeline-content">
+                            <h2>{{actionItem.transition.action | localizeString}}</h2>
+                            <div class="col-md-12 pull-left" ng-if="actionItem.note">
+                                <p ng-bind-html="actionItem.note"></p>
+                            </div>
+                            <div class="col-md-12 pull-left" ng-if="applicationDetail.isConditionalApproved">
+                                <p>{{'workflow.isConditionallyApproved' | translate}}</p>
+                            </div>
+                            <blockquote class="pull-left" ng-if="actionItem.assignedToUser">
+                                <p>{{actionItem.assignedToUser.firstName + ' ' + actionItem.assignedToUser.lastName}}</p>
+                            </blockquote>
+                            <div class="row" ng-if="actionItem.thirdPartyOrganization && application.service.serviceCategory.code == 'MC' && actionItem.transition.actionId != 19 &&
+                                 actionItem.transition.actionId != 20">
+                                <div class="col-md-12">
+                                    <label>{{'workflow.Organization' | translate}}</label>
+                                    <span>{{actionItem.thirdPartyOrganization | localizeString}}</span>
+                                </div>
+                            </div>
+                            <span class="tl-date">{{actionItem.user.firstName}} {{actionItem.user.lastName}} {{'dashboard.on' | translate}} {{actionItem.actionDate | amDateFormat:'dddd, Do MMMM YYYY, h:mm:ss a'}}</span>
+                            <div ng-if="actionItem.transition.action.nameEn == 'External Party Approve' || actionItem.transition.action.nameEn == 'External Party Reject' || actionItem.transition.action.nameEn == 'Approve Sponsorship Data'">
+                                <div class="row" ng-if="actionItem.attachmentUrl != null">
+                                    <div class="col-md-12">
+                                        <div ng-if="actionItem.attachmentUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{actionItem.attachmentUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img src="{{actionItem.attachmentUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="actionItem.attachmentUrl.split('.')[1] == 'pdf'" target="_blank" href="{{actionItem.attachmentUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label>{{'workflow.Organization' | translate}}</label>
+                                        <span>{{actionItem.thirdPartyOrganization | localizeString}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="actionItem.transition.action.nameEn == 'Media Material Approve' || actionItem.transition.action.nameEn == 'Media Material Reject'">
+                                <div class="row" ng-if="actionItem.report.reportUrl != null">
+                                    <div class="col-md-12">
+                                        <div ng-if="actionItem.report.reportUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{actionItem.report.reportUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img src="{{actionItem.report.reportUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="actionItem.report.reportUrl.split('.')[1] == 'pdf'" target="_blank" href="{{actionItem.report.reportUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row" ng-if="actionItem.report.obligationUrl != null">
+                                    <label class="col-sm-4 control-label"><span>{{'mediaMaterialApproval.UploadObligation' | translate}}</span></label>
+                                    <div class="col-md-8">
+                                        <div ng-if="actionItem.report.obligationUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{actionItem.report.obligationUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img src="{{actionItem.report.obligationUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="actionItem.report.obligationUrl.split('.')[1] == 'pdf'" target="_blank" href="{{actionItem.report.obligationUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="application.serviceId == 12 && applicationDetail.applicationTypeId == 1">
+                                <div class="row" ng-if="actionItem.bankGuaranteeUrl != null">
+                                    <label class="col-sm-4 control-label"><span>{{'workflow.BankGuarantee' | translate}}</span></label>
+                                    <div class="col-md-8">
+                                        <div ng-if="actionItem.bankGuaranteeUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{actionItem.bankGuaranteeUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img src="{{actionItem.bankGuaranteeUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="actionItem.bankGuaranteeUrl.split('.')[1] == 'pdf'" target="_blank" href="{{actionItem.bankGuaranteeUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                                <br />
+                                <div class="row" ng-if="actionItem.contentReportUrl != null">
+                                    <label class="col-sm-4 control-label"><span>{{'workflow.ContentReport' | translate}}</span></label>
+                                    <div class="col-md-8">
+                                        <div ng-if="actionItem.contentReportUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                            <a href="{{actionItem.contentReportUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                                <img src="{{actionItem.contentReportUrlFullPath}}" alt="thumb" />
+                                            </a>
+                                        </div>
+                                        <a ng-if="actionItem.contentReportUrl.split('.')[1] == 'pdf'" target="_blank" href="{{actionItem.contentReportUrlFullPath}}">
+                                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- timeline block-->
+                    <!-- timeline block-->
+                    <div class="tl-timeline-block">
+                        <div class="tl-timeline-icon">
+                            <em class="fa fa-star"></em>
+                        </div>
+                    </div>
+                    <!-- timeline block-->
+                </section>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button ng-click="closeModal()" class="btn btn-primary" data-translate="general.ok"></button>
+</div>
+

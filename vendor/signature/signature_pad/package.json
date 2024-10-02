@@ -1,0 +1,106 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "signature_pad@^1.5.0",
+        "scope": null,
+        "escapedName": "signature_pad",
+        "name": "signature_pad",
+        "rawSpec": "^1.5.0",
+        "spec": ">=1.5.0 <2.0.0",
+        "type": "range"
+      },
+      "E:\\Signature Plugin\\node_modules\\angular-signature"
+    ]
+  ],
+  "_from": "signature_pad@>=1.5.0 <2.0.0",
+  "_id": "signature_pad@1.6.0",
+  "_inCache": true,
+  "_location": "/signature_pad",
+  "_nodeVersion": "7.7.4",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/signature_pad-1.6.0.tgz_1490469225793_0.5685168791096658"
+  },
+  "_npmUser": {
+    "name": "szimek",
+    "email": "szimek@gmail.com"
+  },
+  "_npmVersion": "4.1.2",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "signature_pad@^1.5.0",
+    "scope": null,
+    "escapedName": "signature_pad",
+    "name": "signature_pad",
+    "rawSpec": "^1.5.0",
+    "spec": ">=1.5.0 <2.0.0",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "/angular-signature"
+  ],
+  "_resolved": "https://registry.npmjs.org/signature_pad/-/signature_pad-1.6.0.tgz",
+  "_shasum": "b1fbc97a69d65b809bdd706d0926416cce2e3ab1",
+  "_shrinkwrap": null,
+  "_spec": "signature_pad@^1.5.0",
+  "_where": "E:\\Signature Plugin\\node_modules\\angular-signature",
+  "author": {
+    "name": "Szymon Nowak",
+    "email": "szimek@gmail.com",
+    "url": "https://github.com/szimek"
+  },
+  "bugs": {
+    "url": "https://github.com/szimek/signature_pad/issues"
+  },
+  "dependencies": {},
+  "description": "Library for drawing smooth signatures.",
+  "devDependencies": {
+    "babel-plugin-transform-es2015-modules-umd": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "del": "^2.2.2",
+    "eslint": "^3.13.1",
+    "eslint-config-airbnb-base": "^11.0.1",
+    "eslint-plugin-import": "^2.2.0",
+    "gulp": "^3.9.1",
+    "rollup": "^0.41.4",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-eslint": "^3.0.0",
+    "rollup-plugin-uglify": "^1.0.1"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "b1fbc97a69d65b809bdd706d0926416cce2e3ab1",
+    "tarball": "https://registry.npmjs.org/signature_pad/-/signature_pad-1.6.0.tgz"
+  },
+  "files": [
+    "src",
+    "dist",
+    "example"
+  ],
+  "gitHead": "350ef365d924ea00f1ee36e23ff92320ef60a60a",
+  "homepage": "https://github.com/szimek/signature_pad",
+  "license": "MIT",
+  "main": "dist/signature_pad.js",
+  "maintainers": [
+    {
+      "name": "szimek",
+      "email": "szimek@gmail.com"
+    }
+  ],
+  "module": "dist/signature_pad.mjs",
+  "name": "signature_pad",
+  "optionalDependencies": {},
+  "readme": "# Signature Pad [![Code Climate](https://d25lcipzij17d.cloudfront.net/badge.svg?id=js&type=6&v=1.5.3&x2=0)](https://www.npmjs.com/package/signature_pad) [![Code Climate](https://codeclimate.com/github/szimek/signature_pad.png)](https://codeclimate.com/github/szimek/signature_pad)\n\n\nSignature Pad is a JavaScript library for drawing smooth signatures. It's HTML5 canvas based and uses variable width Bézier curve interpolation based on [Smoother Signatures](http://corner.squareup.com/2012/07/smoother-signatures.html) post by [Square](https://squareup.com).\nIt works in all modern desktop and mobile browsers and doesn't depend on any external libraries.\n\n![Example](https://f.cloud.github.com/assets/9873/268046/9ced3454-8efc-11e2-816e-a9b170a51004.png)\n\n## Demo\n[Demo](http://szimek.github.io/signature_pad) works in desktop and mobile browsers. You can check out its [source code](https://github.com/szimek/signature_pad/blob/gh-pages/js/app.js) for some tips on how to handle window resize and high DPI screens. You can also find more about the latter in [HTML5 Rocks tutorial](http://www.html5rocks.com/en/tutorials/canvas/hidpi).\n\n## Installation\nYou can install the latest release using npm:\n```bash\nnpm install --save signature_pad\n```\nor Yarn:\n```bash\nyarn add signature_pad\n```\n\nYou can also add it directly to your page using `<script>` tag:\n```html\n<script src=\"https://cdnjs.cloudflare.com/ajax/libs/signature_pad/1.5.3/signature_pad.min.js\"></script>\n```\nYou can select a different version at [https://cdnjs.com/libraries/signature_pad](https://cdnjs.com/libraries/signature_pad).\n\nThis library is provided as UMD (Universal Module Definition) and ES6 module.\n\n**NOTE** When importing this library in TypeScript, one needs to use the following syntax:\n```js\nimport * as SignaturePad from 'signature_pad';\n```\nFor more info why it's needed, check these 2 issues: [TypeScript#13017](https://github.com/Microsoft/TypeScript/issues/13017) and [rollup#1156](https://github.com/rollup/rollup/issues/1156).\n\n## Usage\n### API\n``` javascript\nvar canvas = document.querySelector(\"canvas\");\n\nvar signaturePad = new SignaturePad(canvas);\n\n// Returns signature image as data URL (see https://mdn.io/todataurl for the list of possible parameters)\nsignaturePad.toDataURL(); // save image as PNG\nsignaturePad.toDataURL(\"image/jpeg\"); // save image as JPEG\nsignaturePad.toDataURL(\"image/svg+xml\"); // save image as SVG\n\n// Draws signature image from data URL\nsignaturePad.fromDataURL(\"data:image/png;base64,iVBORw0K...\");\n\n// Returns signature image as an array of point groups\nconst data = signaturePad.toData();\n\n// Draws signature image from an array of point groups\nsignaturePad.fromData(data);\n\n// Clears the canvas\nsignaturePad.clear();\n\n// Returns true if canvas is empty, otherwise returns false\nsignaturePad.isEmpty();\n\n// Unbinds all event handlers\nsignaturePad.off();\n\n// Rebinds all event handlers\nsignaturePad.on();\n```\n\n### Options\n<dl>\n<dt>dotSize</dt>\n<dd>(float or function) Radius of a single dot.</dd>\n<dt>minWidth</dt>\n<dd>(float) Minimum width of a line. Defaults to <code>0.5</code>.</dd>\n<dt>maxWidth</dt>\n<dd>(float) Maximum width of a line. Defaults to <code>2.5</code>.</dd>\n<dt>backgroundColor</dt>\n<dd>(string) Color used to clear the background. Can be any color format accepted by <code>context.fillStyle</code>. Defaults to <code>\"rgba(0,0,0,0)\"</code> (transparent black). Use a non-transparent color e.g. <code>\"rgb(255,255,255)\"</code> (opaque white) if you'd like to save signatures as JPEG images.</dd>\n<dt>penColor</dt>\n<dd>(string) Color used to draw the lines. Can be any color format accepted by <code>context.fillStyle</code>. Defaults to <code>\"black\"</code>.</dd>\n<dt>velocityFilterWeight</dt>\n<dd>(float) Weight used to modify new velocity based on the previous velocity. Defaults to <code>0.7</code>.</dd>\n<dt>onBegin</dt>\n<dd>(function) Callback when stroke begin.</dd>\n<dt>onEnd</dt>\n<dd>(function) Callback when stroke end.</dd>\n</dl>\n\nYou can set options during initialization:\n```javascript\nvar signaturePad = new SignaturePad(canvas, {\n    minWidth: 5,\n    maxWidth: 10,\n    penColor: \"rgb(66, 133, 244)\"\n});\n```\nor during runtime:\n```javascript\nvar signaturePad = new SignaturePad(canvas);\nsignaturePad.minWidth = 5;\nsignaturePad.maxWidth = 10;\nsignaturePad.penColor = \"rgb(66, 133, 244)\";\n```\n\n\n### Tips and tricks\n#### Handling high DPI screens\nTo correctly handle canvas on low and high DPI screens one has to take `devicePixelRatio` into account and scale the canvas accordingly. This scaling is also necessary to properly display signatures loaded via `SignaturePad#fromDataURL`. Here's an example how it can be done:\n```javascript\nfunction resizeCanvas() {\n    var ratio =  Math.max(window.devicePixelRatio || 1, 1);\n    canvas.width = canvas.offsetWidth * ratio;\n    canvas.height = canvas.offsetHeight * ratio;\n    canvas.getContext(\"2d\").scale(ratio, ratio);\n    signaturePad.clear(); // otherwise isEmpty() might return incorrect value\n}\n\nwindow.addEventListener(\"resize\", resizeCanvas);\nresizeCanvas();\n```\nInstead of `resize` event you can listen to screen orientation change, if you're using this library only on mobile devices. You can also throttle the `resize` event - you can find some examples on [this MDN page](https://developer.mozilla.org/en-US/docs/Web/Events/resize).\n\nWhen you modify width or height of a canvas, it will be automatically cleared by the browser. SignaturePad doesn't know about it by itself, so you can call `signaturePad.clear()` to make sure that `signaturePad.isEmpty()` returns correct value in this case.\n\nThis clearing of the canvas by the browser can be annoying, especially on mobile devices e.g. when screen orientation is changed. There are a few workarounds though, e.g. you can [lock screen orientation](https://developer.mozilla.org/en-US/docs/Web/API/Screen/lockOrientation), or read an image from the canvas before resizing it and write the image back after.\n\n#### Handling data URI encoded images on the server side\nIf you are not familiar with data URI scheme, you can read more about it on [Wikipedia](http://en.wikipedia.org/wiki/Data_URI_scheme).\n\nThere are 2 ways you can handle data URI encoded images.\n\nYou could simply store it in your database as a string and display it in HTML like this:\n\n``` html\n<img src=\"data:image/png;base64,iVBORw0K...\" />\n```\n\nbut this way has many disadvantages - it's not easy to get image dimensions, you can't manipulate it e.g. to create a thumbnail and it also [has some performance issues on mobile devices](http://www.mobify.com/blog/data-uris-are-slow-on-mobile/).\n\nThus, more common way is to decode it and store as a file. Here's an example in Ruby:\n\n``` ruby\nrequire \"base64\"\n\ndata_uri = \"data:image/png;base64,iVBORw0K...\"\nencoded_image = data_uri.split(\",\")[1]\ndecoded_image = Base64.decode64(encoded_image)\nFile.open(\"signature.png\", \"wb\") { |f| f.write(decoded_image) }\n```\n\nHere's an example in PHP:\n\n``` php\n$data_uri = \"data:image/png;base64,iVBORw0K...\";\n$encoded_image = explode(\",\", $data_uri)[1];\n$decoded_image = base64_decode($encoded_image);\nfile_put_contents(\"signature.png\", $decoded_image);\n```\n\n#### Removing empty space around a signature\nIf you'd like to remove (trim) empty space around a signature, you can do it on the server side or the client side. On the server side you can use e.g. ImageMagic and its `trim` option: `convert -trim input.jpg output.jpg`. If you don't have access to the server, or just want to trim the image before submitting it to the server, you can do it on the client side as well. There are a few examples how to do it, e.g. [here](https://github.com/szimek/signature_pad/issues/49#issue-29108215) or [here](https://github.com/szimek/signature_pad/issues/49#issuecomment-260976909) and there's also a tiny library [trim-canvas](https://github.com/agilgur5/trim-canvas) that provides this functionality.\n\n#### Drawing over an image\nDemo: <https://jsfiddle.net/szimek/d6a78gwq/>\n\n## License\nReleased under the [MIT License](http://www.opensource.org/licenses/MIT).\n",
+  "readmeFilename": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/szimek/signature_pad.git"
+  },
+  "scripts": {
+    "build": "gulp",
+    "prepublish": "npm run build",
+    "watch": "gulp watch"
+  },
+  "version": "1.6.0"
+}

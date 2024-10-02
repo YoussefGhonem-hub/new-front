@@ -1,0 +1,170 @@
+﻿<div ng-controller="ReviewCirculationNewspaperController as vm">
+    <div class="app-view-header">
+        {{'circulationNewspaper.circulationNewspaperTitle' | translate}}<br /> <small>{{vm.CirculationNewspaper.applicationDetail.application.applicationNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'applicantDetails.applicantDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="vm.CirculationNewspaper.applicationDetail.application.user.userProfiles[0]" applicant-user="vm.CirculationNewspaper.applicationDetail.application.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="vm.CirculationNewspaper.applicationDetail.application.establishment" application-detail="vm.CirculationNewspaper.applicationDetail"></applicant-establishment>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary">
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <partners-list ng-if="vm.CirculationNewspaper.applicationDetail.application.establishment.id" establishment-id="vm.CirculationNewspaper.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.type' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.newspaper.isMagazine? ('newspaperMagazineLicense.magazineOption' | translate): ('newspaperMagazineLicense.newspaperOption' | translate)}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.source' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.newspaper.country | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <div ng-repeat="language in vm.CirculationNewspaper.newspaper.newspaperLanguages">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'mediaMaterial.language' | translate}}</label>
+                            <div class="col-sm-3 form-control-static">{{language.language | localizeString}}</div>
+                            <label class="col-sm-3 control-label">{{'newspaper.suggestedName' | translate}}</label>
+                            <div class="col-sm-3 form-control-static">{{language.name}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.periodicType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.newspaper.periodicalType | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'printingPermit.subject' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="category in vm.CirculationNewspaper.newspaper.newspaperSubjectCategories">{{category.newspaperCategory | localizeString}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.lastVersionNumber' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.versionNumber}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.CirculationNewspaper.parentId != null">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.versionNumberDate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.createdOn | date: 'longDate'}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.publishingHouse' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.publishingHouse}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.distributionStartingDate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.copyrightsStartDate | date: 'longDate'}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.distributionEndingDate' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.copyrightsEndDate | date: 'longDate'}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.distributionScope' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <ul>
+                            <li ng-repeat="category in vm.CirculationNewspaper.circulationMediaMaterialEmirates">{{category.emirate | localizeString}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.numberOfCopies' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.CirculationNewspaper.numberOfCopies}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.distributionCopyrights' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.CirculationNewspaper.copyrightsCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{vm.CirculationNewspaper.copyrightsCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.CirculationNewspaper.copyrightsCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.CirculationNewspaper.copyrightsCopyUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.CirculationNewspaper.copyrightsCopyUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.CirculationNewspaper.newspaperLicenseUrl">
+                    <label class="col-sm-3 control-label">{{'circulationNewspaper.license' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.CirculationNewspaper.newspaperLicenseUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{vm.CirculationNewspaper.newspaperLicenseUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.CirculationNewspaper.newspaperLicenseUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.CirculationNewspaper.newspaperLicenseUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.CirculationNewspaper.newspaperLicenseUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <service-fee ng-model="vm.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="vm.CirculationNewspaper.applicationDetail" application="vm.CirculationNewspaper.applicationDetail.application"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,536 @@
+﻿<header ng-include="'app/views/Master/header/NewHeader.html'"></header>
+<div class="container">
+
+    <!-- Menu-->
+    <div ng-include="'app/views/Master/menu/NewMenu.html'"></div>
+
+    <div class="completeProfileComponent"  ng-controller="CompleteProfileController as complete">
+
+        <div class="pageTite">
+            <i class="fa fa-angle-left"></i>
+            <h1>{{'completeProfile.pageTitle' | translate}}</h1>
+        </div>
+        <!-- wizard -->
+        <wizard class="profileWizard" hide-indicators="complete.userProfile.userTypeId == null? true: (complete.userProfile.userTypeId == 1 || complete.userProfile.userTypeId == 19? true: false)">
+            <wz-step wz-title="{{'completeProfile.stepOne' | translate}}">
+                <!--================Update account info of MCY Customer ===========-->
+                
+                <div ng-if="complete.isUpdateInfo">
+                    <form role="form" name="Form1">
+                        
+                        <h4 data-translate="{{'completeProfile.AccountInfo' | translate}}" class="text-primary" ng-if="complete.isUpdateInfo"></h4>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'register.firstName' | translate}}</label>
+                            <div class="col-sm-9">
+                                <input ng-model="complete.user.firstName" type="text" class="form-control" validator="required" name="fName" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'register.lastName' | translate}}</label>
+                            <div class="col-sm-9">
+                                <input ng-disabled="passModel.isSmartpass" ng-model="complete.user.lastName" type="text" class="form-control" validator="required" name="lName" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'register.mobile' | translate}}</label>
+                            <div class="col-sm-4">
+                                <ui-select ng-model="complete.user.country" theme="bootstrap" ng-disabled="register.disabled">
+                                    <ui-select-match>
+                                        <div class="col-md-4">
+                                            <img class="img-responsive" style="max-height:23px;" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                        </div>
+                                        <div class="col-md-5 mobileHideName" style="padding-top:3px;">
+                                            <span class="text-sm pull-right">{{$select.selected | localizeString}}</span>
+                                        </div>
+                                        <div class="col-md-3 mobileHideName">
+                                            <span style="direction:ltr !important; float:left !important">(+{{$select.selected.phoneCode}})</span>
+                                        </div>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="country in complete.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search, phoneCode: $select.search}">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <img class="img-responsive" ng-src="../src/imgs/Countries/{{country.isoCode2}}.png" />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div ng-bind-html="country | localizeString | highlight: $select.search"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <small data-translate="country.countryCode"></small>: <small ng-bind-html="country.isoCode3 | highlight: $select.search"></small>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <small data-translate="country.phoneCode"></small>: <small ng-bind-html="country.phoneCode | highlight: $select.search"></small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group has-feedback">
+                                    <input ng-model="complete.user.phoneNumber" name="Mobile" type="tel" autocomplete="off" class="form-control"
+                                           validator="required, phoneNumber" valid-callback="complete.validMobileNumber()"
+                                           invalid-callback="complete.invalidMobileNumber()" valid-method="blur" ng-keypress="complete.preventLeadingZero()" />
+                                    <span class="fa fa-phone form-control-feedback text-muted"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-show="complete.isUpdateInfo">
+                            <div class="col-md-12">
+                                <button type="button" ng-disabled="" ng-click="complete.updateAccountInfo()" validation-submit="Form1" class="mr mb-sm btn btn-primary pull-right">
+                                    {{'completeProfile.UpdateAccountInfo' | translate}}
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <hr />
+                </div>
+                <!--================Update account info of MCY Customer ===========-->
+
+                <form role="form" class="mb-lg form-horizontal profileForm" name="Form">
+                    <div class="profileType" ng-if="(complete.userProfile.userTypeId && complete.userProfile.userTypeId != 19) || (complete.userProfile.userTypeId == undefined && complete.userProfile.userType.id != 19)">
+                       
+                        <!-- customer slect input    -->
+                        <label>{{'completeProfile.customerType' | translate}}</label>
+                        
+                        <div class="customerTypeInput">
+                            <select id="customerTypeSelect" 
+                                    ng-model="complete.userProfile.userTypeId" 
+                                    ng-disabled="complete.individualUserOnly"
+                                    ng-options="customerType.id as (customerType | localizeString) for customerType in complete.customerTypes">
+                            </select>
+                        </div>
+
+                        <!-- End customer slect input    -->
+
+                    </div>
+                    <hr ng-if="(complete.userProfile.userTypeId && complete.userProfile.userTypeId != 19) || (complete.userProfile.userTypeId == undefined && complete.userProfile.userType.id != 19)" />
+                    <!-- <div class="form-group" ng-if="complete.userProfile.userTypeId == 3">
+                        <label class="control-label">{{'completeProfile.governmentType' | translate}}</label>
+                        <div>
+                            <div class="radio c-radio" ng-repeat="governmentType in complete.governmentTypes">
+                                <label>
+                                    <input type="radio" name="governmentTypeRadio" ng-value="governmentType.id" ng-checked="(complete.userProfile.governmentTypeId == governmentType.id)" ng-model="complete.userProfile.governmentTypeId" />
+                                    <span class="fa fa-circle"></span>{{governmentType | localizeString}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <hr ng-if="complete.userProfile.userTypeId == 3" /> -->
+                    <div class="formTitle">
+                        <h4 data-translate="profileNationalityDirective.ownerDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 2 || complete.userProfile.userTypeId == 20"></h4>
+                        <h4 data-translate="profileNationalityDirective.personalDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 1"></h4>
+                        <h4 data-translate="profileNationalityDirective.personalDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 3"></h4>
+
+                    </div>
+                    <div class="formCard">
+                        <div class="formInput" ng-if="complete.userProfile.userTypeId != 3">
+                            <label>{{'completeProfile.name' | translate}}</label>
+                            <input id="exampleInputEmail1" type="text" name="name" ng-disabled="true"
+                                   class="form-control" value="{{complete.user.firstName}} {{complete.user.lastName}}" />
+                            <!--<span class="fa fa-envelope form-control-feedback text-muted"></span>-->
+                        </div>
+                        <div class="formList" ng-if="complete.userProfile.userTypeId == 3">
+                            <div class="formInput">
+                                <label>{{'completeProfile.name' | translate}}</label>
+                                <input id="exampleInputEmail1" type="text" name="name" ng-disabled="true"
+                                       class="form-control" value="{{complete.user.firstName}} {{complete.user.lastName}}" />
+                                <!--<span class="fa fa-envelope form-control-feedback text-muted"></span>-->
+                            </div>
+                            <div class="formInput" ng-if="complete.userProfile.userTypeId == 3">
+                                <label>{{'completeProfile.governmentType' | translate}}</label>
+                                <select placeholder="{{'completeProfile.governmentType' | translate}}" class="form-control" id="governmentTypeSelect" ng-model="complete.userProfile.governmentTypeId"
+                                    ng-options="governmentType.id as (governmentType | localizeString) for governmentType in complete.governmentTypes">
+                                    <option value="">{{'completeProfile.governmentType' | translate}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <profile-nationality is-license-owner="(complete.userProfile.userTypeId == 2? true: false)" ng-model="complete.userProfile.person"></profile-nationality>
+                        
+                    </div>
+                    <hr />
+                    <div class="formTitle">
+                        <h4 data-translate="profileNationalityDirective.ownerAddressDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 2 || complete.userProfile.userTypeId == 20"></h4>
+                            <h4 data-translate="profileNationalityDirective.personAddressDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 1"></h4>
+                    </div>
+                    <div class="formCard">
+                        <profile-address ng-if="complete.userProfile.address" ng-model="complete.userProfile.address" data-is-establishment="complete.forPerson"></profile-address>
+                    </div>
+                    
+                    <hr ng-if="complete.userProfile.userTypeId != 19 && complete.userProfile.userTypeId != 1" />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.save()" validation-submit="Form"
+                                    ng-disabled="complete.isBusy">
+                                <span ng-show="complete.userProfile.userType == null? true: (complete.userProfile.userTypeId == 1 || complete.userProfile.userTypeId == 19? true: false)">{{'general.save' | translate}}</span>
+                                <span ng-show="complete.userProfile.userType == null? false: (complete.userProfile.userTypeId == 1 || complete.userProfile.userTypeId == 19? false: true)">{{'general.next' | translate}}</span>
+                                <span class="ripple"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </wz-step>
+            <wz-step wz-title="{{complete.userProfile.userTypeId == 5? ('completeProfile.freeZoneData' | translate):('completeProfile.stepTwo' | translate)}}" wz-disabled="{{complete.userProfile.userTypeId == 1? true: false}}">
+                <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                    <div ng-include="'app/views/Account/completeProfile/establishmentProfile.html'"></div>
+                    <div>
+                        <br /><br />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" ng-if="complete.isNPO" wz-next ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.save()" validation-submit="stepTwoForm"
+                                    ng-disabled="complete.isBusy">
+                                {{'general.next' | translate}}<span class="ripple"></span>
+                            </button>
+
+                            <button ng-if="!complete.isNPO" type="submit" wz-next ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.finish()" validation-submit="stepTwoForm"
+                                    ng-disabled="complete.isBusy">
+                                {{'general.finish' | translate}}<span class="ripple"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </wz-step>
+            <wz-step wz-title="{{'completeProfile.stepThree' | translate}}" wz-disabled="{{complete.userProfile.userTypeId != 3 && complete.userProfile.userTypeId != 4? false: true}}">
+                <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                    
+                    <div class="row" ng-if="complete.invalidPartners">
+                        <div class="col-md-12">
+                            <uib-alert type="danger">{{'completeProfile.invalidPartners' | translate}}</uib-alert>
+                        </div>
+                    </div>
+
+                    
+                    
+                        
+                        <div class="fw">
+                            <div ng-if="complete.isFreeZone" class="btn btn-warning pull-right" ng-click="complete.open('lg')">{{'completeProfile.addNewEstablishment' | translate}}</div>
+                            <div class="row" ng-if="complete.isFreeZone">
+                                <div ng-if="complete.dtOptions">
+                                    <table datatable="" class="row-border hover" dt-options="complete.dtOptions" dt-columns="complete.dtColumns"
+                                           dt-instance="complete.dtInstance"></table>
+                                </div>
+                            </div>
+                            <div class="fw" ng-if="!complete.isFreeZone">
+                                <partners-list ng-if="complete.userProfile.userType" id="partnersList" user-profile="complete.userProfile"></partners-list>
+                            </div>
+                        </div>
+                        
+                    
+                    
+                        <div class="mb-lg">
+                            <div>
+                                <br><br>
+                            </div>
+                            <button type="submit" wz-next ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.finish()" validation-submit="stepThreeForm"
+                                    ng-disabled="complete.isBusy">
+                                {{'general.finish' | translate}}<span class="ripple"></span>
+                            </button>
+                        </div>
+                </form>
+            </wz-step>
+        </wizard>
+    </div>
+ 
+ </div>
+
+ <div>
+    <br><br>
+</div>
+ 
+<footer ng-include="'app/views/Master/footer/NewFooter.html'" class="newFooter" ng-class="{'color-blind' : app.layout.isColorBlind}"></footer>
+
+<div class="container container-lg animated fadeInDown" ng-controller="CompleteProfileController as complete" ng-if="false">
+
+    <div class="center-block mt-xl">
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+
+
+            <div class="panel-heading col-md-12">
+
+                <div class="col-md-11"><h3>{{'completeProfile.pageTitle' | translate}} </h3></div>
+                <div class="col-md-1">
+                    <a href="" ng-click="complete.logOut()">
+                        <h3><em class="fa fa-sign-out fa-fw" style="color:white;"></em></h3>
+                    </a>
+                </div>
+            </div>
+            <div class="panel-body form-horizontal">
+                <div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label">{{'completeProfile.name' | translate}}</label>
+                        <div class="col-sm-9 form-control-static">
+                            {{complete.user.firstName}} {{complete.user.lastName}}
+                        </div>
+                    </div>
+                    <hr />
+                </div>
+
+                <uib-alert type="danger" ng-if="complete.EmritIdRepeated">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{'completeProfile.EmritIdIsRepeated' | translate}}
+                        </div>
+                    </div>
+                </uib-alert>
+                <uib-alert type="danger" ng-if="complete.differentData">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{'completeProfile.differentData' | translate}}
+                        </div>
+                    </div>
+                </uib-alert>
+                <uib-alert type="danger" ng-if="complete.establishmentExist">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{'completeProfile.establishmentExist' | translate}}
+                        </div>
+                    </div>
+                </uib-alert>
+                <uib-alert type="danger" ng-if="complete.licenseNumberValidChecker">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{'completeProfile.licenseNumberValidChecker' | translate}}
+                        </div>
+                    </div>
+                </uib-alert>
+                <wizard hide-indicators="complete.userProfile.userTypeId == null? true: (complete.userProfile.userTypeId == 1 || complete.userProfile.userTypeId == 19? true: false)">
+                    <wz-step wz-title="{{'completeProfile.stepOne' | translate}}">
+                        <!--================Update account info of MCY Customer ===========-->
+                        <div class="row form-group">
+                            <div class="col-sm-offset-1"></div>
+                        </div>
+                        <div ng-if="complete.isUpdateInfo">
+                            <form role="form" name="Form1">
+                                <div class="col-sm-offset-1">
+                                    <h4 data-translate="{{'completeProfile.AccountInfo' | translate}}" class="text-primary" ng-if="complete.isUpdateInfo"></h4>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label">{{'register.firstName' | translate}}</label>
+                                    <div class="col-sm-9">
+                                        <input ng-model="complete.user.firstName" type="text" class="form-control" validator="required" name="fName" />
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label">{{'register.lastName' | translate}}</label>
+                                    <div class="col-sm-9">
+                                        <input ng-disabled="passModel.isSmartpass" ng-model="complete.user.lastName" type="text" class="form-control" validator="required" name="lName" />
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="col-sm-3 control-label">{{'register.mobile' | translate}}</label>
+                                    <div class="col-sm-4">
+                                        <ui-select ng-model="complete.user.country" theme="bootstrap" ng-disabled="register.disabled">
+                                            <ui-select-match>
+                                                <div class="col-md-4">
+                                                    <img class="img-responsive" style="max-height:23px;" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                                </div>
+                                                <div class="col-md-5 mobileHideName" style="padding-top:3px;">
+                                                    <span class="text-sm pull-right">{{$select.selected | localizeString}}</span>
+                                                </div>
+                                                <div class="col-md-3 mobileHideName">
+                                                    <span style="direction:ltr !important; float:left !important">(+{{$select.selected.phoneCode}})</span>
+                                                </div>
+                                            </ui-select-match>
+                                            <ui-select-choices repeat="country in complete.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search, phoneCode: $select.search}">
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{country.isoCode2}}.png" />
+                                                    </div>
+                                                    <div class="col-md-8">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div ng-bind-html="country | localizeString | highlight: $select.search"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <small data-translate="country.countryCode"></small>: <small ng-bind-html="country.isoCode3 | highlight: $select.search"></small>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <small data-translate="country.phoneCode"></small>: <small ng-bind-html="country.phoneCode | highlight: $select.search"></small>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="form-group has-feedback">
+                                            <input ng-model="complete.user.phoneNumber" name="Mobile" type="tel" autocomplete="off" class="form-control"
+                                                   validator="required, phoneNumber" valid-callback="complete.validMobileNumber()"
+                                                   invalid-callback="complete.invalidMobileNumber()" valid-method="blur" ng-keypress="complete.preventLeadingZero()" />
+                                            <span class="fa fa-phone form-control-feedback text-muted"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-show="complete.isUpdateInfo">
+                                    <div class="col-md-12">
+                                        <button type="button" ng-disabled="" ng-click="complete.updateAccountInfo()" validation-submit="Form1" class="mr mb-sm btn btn-primary pull-right">
+                                            {{'completeProfile.UpdateAccountInfo' | translate}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                            <hr />
+                        </div>
+                        <!--================Update account info of MCY Customer ===========-->
+
+                        <form role="form" class="mb-lg form-horizontal" name="Form">
+                            <div class="row form-group" ng-if="(complete.userProfile.userTypeId && complete.userProfile.userTypeId != 19) || (complete.userProfile.userTypeId == undefined && complete.userProfile.userType.id != 19)">
+                                <label class="col-sm-3 control-label">{{'completeProfile.customerType' | translate}}</label>
+                                <div class="col-sm-9">
+                                    <div class="radio c-radio" ng-repeat="customerType in complete.customerTypes">
+                                        <label>
+                                            <input type="radio" name="customerTypeRadio" ng-value="customerType.id" ng-checked="(complete.userProfile.userTypeId == customerType.id)"
+                                                   ng-model="complete.userProfile.userTypeId" ng-disabled="complete.individualUserOnly" />
+                                            <span class="fa fa-circle"></span>{{customerType | localizeString}}
+                                            <br />
+                                            <small class="text-gray">{{customerType | localizeDescString}}</small>
+                                            <br /><br />
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-if="(complete.userProfile.userTypeId && complete.userProfile.userTypeId != 19) || (complete.userProfile.userTypeId == undefined && complete.userProfile.userType.id != 19)" />
+                            <div class="row form-group" ng-if="complete.userProfile.userTypeId == 3">
+                                <label class="col-sm-3 control-label">{{'completeProfile.governmentType' | translate}}</label>
+                                <div class="col-sm-9">
+                                    <div class="radio c-radio" ng-repeat="governmentType in complete.governmentTypes">
+                                        <label>
+                                            <input type="radio" name="governmentTypeRadio" ng-value="governmentType.id" ng-checked="(complete.userProfile.governmentTypeId == governmentType.id)" ng-model="complete.userProfile.governmentTypeId" />
+                                            <span class="fa fa-circle"></span>{{governmentType | localizeString}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr ng-if="complete.userProfile.userTypeId == 3" />
+                            <div class="row form-group">
+                                <div class="col-sm-offset-1">
+                                    <h4 data-translate="profileNationalityDirective.ownerDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 2 || complete.userProfile.userTypeId == 20"></h4>
+                                    <h4 data-translate="profileNationalityDirective.personalDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 1"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <profile-nationality is-license-owner="(complete.userProfile.userTypeId == 2? true: false)" ng-model="complete.userProfile.person"></profile-nationality>
+                                </div>
+                            </div>
+                            <hr />
+                            <div class="row form-group">
+                                <div class="col-sm-offset-1">
+                                    <h4 data-translate="profileNationalityDirective.ownerAddressDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 2 || complete.userProfile.userTypeId == 20"></h4>
+                                    <h4 data-translate="profileNationalityDirective.personAddressDetails" class="text-primary" ng-if="complete.userProfile.userTypeId == 1"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <profile-address ng-if="complete.userProfile.address" ng-model="complete.userProfile.address" data-is-establishment="complete.forPerson"></profile-address>
+                                </div>
+                            </div>
+                            <hr ng-if="complete.userProfile.userTypeId != 19 && complete.userProfile.userTypeId != 1" />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.save()" validation-submit="Form"
+                                            ng-disabled="complete.isBusy">
+                                        <span ng-show="complete.userProfile.userType == null? true: (complete.userProfile.userTypeId == 1 || complete.userProfile.userTypeId == 19? true: false)">{{'general.save' | translate}}</span>
+                                        <span ng-show="complete.userProfile.userType == null? false: (complete.userProfile.userTypeId == 1 || complete.userProfile.userTypeId == 19? false: true)">{{'general.next' | translate}}</span>
+                                        <span class="ripple"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </wz-step>
+                    <wz-step wz-title="{{complete.userProfile.userTypeId == 5? ('completeProfile.freeZoneData' | translate):('completeProfile.stepTwo' | translate)}}" wz-disabled="{{complete.userProfile.userTypeId == 1? true: false}}">
+                        <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                            <div ng-include="'app/views/Account/completeProfile/establishmentProfile.html'"></div>
+                            <div>
+                                <br /><br />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" ng-if="complete.isNPO" wz-next ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.save()" validation-submit="stepTwoForm"
+                                            ng-disabled="complete.isBusy">
+                                        {{'general.next' | translate}}<span class="ripple"></span>
+                                    </button>
+
+                                    <button ng-if="!complete.isNPO" type="submit" wz-next ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.finish()" validation-submit="stepTwoForm"
+                                            ng-disabled="complete.isBusy">
+                                        {{'general.finish' | translate}}<span class="ripple"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </wz-step>
+                    <wz-step wz-title="{{'completeProfile.stepThree' | translate}}" wz-disabled="{{complete.userProfile.userTypeId != 3 && complete.userProfile.userTypeId != 4? false: true}}">
+                        <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                            <div class="row" ng-if="complete.invalidPartners">
+                                <div class="col-md-12">
+                                    <uib-alert type="danger">{{'completeProfile.invalidPartners' | translate}}</uib-alert>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-1"></div>
+                                <div class="col-md-10">
+                                    <div ng-if="complete.isFreeZone" class="btn btn-warning pull-right" ng-click="complete.open('lg')">{{'completeProfile.addNewEstablishment' | translate}}</div>
+                                    <div class="row" ng-if="complete.isFreeZone">
+                                        <div class="col-md-1"></div>
+                                        <div class="col-md-10" ng-if="complete.dtOptions">
+                                            <table datatable="" class="row-border hover" dt-options="complete.dtOptions" dt-columns="complete.dtColumns"
+                                                   dt-instance="complete.dtInstance" style="width:100%;"></table>
+                                        </div>
+                                        <div class="col-md-1"></div>
+                                    </div>
+                                    <div class="row" ng-if="!complete.isFreeZone">
+                                        <partners-list ng-if="complete.userProfile.userType" id="partnersList" user-profile="complete.userProfile"></partners-list>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div>
+                                <br /><br />
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" wz-next ripple="" class="formBtn mr mb-sm btn btn-primary pull-right" ng-click="complete.finish()" validation-submit="stepThreeForm"
+                                            ng-disabled="complete.isBusy">
+                                        {{'general.finish' | translate}}<span class="ripple"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </wz-step>
+                </wizard>
+            </div>
+        </div>
+        <!-- END panel-->
+    </div>
+</div>
+<script type="text/ng-template" id="/Partner.html">
+    <div class="modal-body">
+        <div class="row">
+            <div class="btn btn-warning col-lg-offset-9" ng-click="complete.openPartner('lg')">{{'completeProfile.addNewPartner' | translate}}</div>
+        </div>
+
+        <div class="row" ng-if="complete.dtPartnerOptions">
+            <table datatable="" class="row-border hover" dt-options="complete.dtPartnerOptions" dt-columns="complete.dtPartnerColumns"
+                   dt-instance="complete.dtPartnerInstance"></table>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+    </div>
+</script>

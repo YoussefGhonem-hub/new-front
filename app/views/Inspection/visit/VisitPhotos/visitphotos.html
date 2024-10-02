@@ -1,0 +1,25 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="visit.addvisitphotos"></h4>
+</div>
+<div class="modal-body">
+    <form role="form" class="mb-lg form-horizontal" name="addVisitPhotoForm">
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'visit.violationphoto' | translate}}</span></label>
+            <div class="col-sm-9">
+                <uploading-files copyUrl="violationphotos.visitPhotoUrl" copyUrlFullPath="violationphotos.visitPhotoUrlFullPath"
+                                 url="uploadViolationPhotoUrl" isrequired="true"></uploading-files>
+            </div>
+            <div class="row">
+                <span class="col-sm-3 control-label" ng-if="showRequiredError">
+                    <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                </span>
+            </div>
+        </div>
+    </form>
+    
+</div>
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" data-translate="general.save"></button><button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

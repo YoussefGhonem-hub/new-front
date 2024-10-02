@@ -1,0 +1,275 @@
+﻿<div class="d-flex loginComponent">
+    <div class="loginImg">
+        <img src="app/img/registerImage.png" />
+    </div>
+
+    <div class="loginContainer">
+        <div class="loginHeader">
+            <div class="mediaLogo">
+                <img class="img" src="app/img/mediacouncil.png" />
+            </div>
+            <div class="loginActions">
+                <!-- <button class="btn">Pay Fines</button> -->
+                <a ui-sref="page.payFines/" class="btn" ng-disabled="login.isBusy" target="_blank" data-translate="inspection.payFine">
+                </a>
+                <div class="langDropdown">
+                    <select>
+                        <option>Ar</option>
+                        <option>En</option>
+                    </select>
+                </div>
+
+                <div class="uaeLogo">
+                    <img class="img" src="app/img/uaeLogo.png" />
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="loginForm" ng-controller="LoginController as login" ng-init="init()">
+            <h1>Welcome back!</h1>
+
+            <div class="uaePassBtn">
+                <form role="form" name="loginSPForm">
+                    <div>
+                        <a ng-disabled="login.isBusy" ng-if="!app.layout.isRTL" ng-click="login.uaepasslogin('en');" style="cursor:pointer;">
+                            <img ng-src="app/img/uaepass.png" alt="Cinque Terre" class="img-rounded">
+                        </a>
+                        <a ng-disabled="login.isBusy" ng-if="app.layout.isRTL" ng-click="login.uaepasslogin('ar');" style="cursor:pointer;">
+                            <img ng-src="app/img/uaepass.png" alt="Cinque Terre" class="img-rounded">
+                        </a>
+                    </div>
+                </form>
+                <!--<img class="img" src="app/img/uaepass.png" />-->
+            </div>
+
+            <div class="loginSeparator">
+                <span data-translate="login.or"></span>
+            </div>
+
+            <form role="form" class="mb-lg" name="loginForm">
+                <!--<div class="row" ng-if="login.invalidCredential">
+                    <div class="col-md-12">
+                        <uib-alert type="danger">{{'login.invalid_grant' | translate}}</uib-alert>
+                    </div>
+                </div>
+                <div class="row" ng-if="login.userLocked">
+                    <div class="col-md-12">
+                        <uib-alert type="danger">{{'login.userLocked' | translate}}</uib-alert>
+                    </div>
+                </div>-->
+                <div class="row" ng-if="!login.emailConfirmed">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <uib-alert type="danger">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    {{'login.email_not_confirmed' | translate}}
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <span data-translate="login.resendConfirmEmail"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="button" class="btn btn-block btn-default" ng-click="login.resendConfirmEmail()" ng-disabled="login.isBusy">
+                                                {{'general.resend' | translate}} <span class="fa fa-repeat"></span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </uib-alert>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group has-feedback mb formInput">
+                            <label>{{'register.email' | translate}}</label>
+                            <input id="exampleInputEmail1" type="email" placeholder="{{'register.email' | translate}}" name="inputEmail"
+                                   autocomplete="off" class="form-control" ng-model="login.userEmail" validator="required, email" valid-method="blur" />
+                            <!--<span class="fa fa-envelope form-control-feedback text-muted"></span>-->
+                        </div>
+                        <div class="form-group has-feedback formInput">
+                            <label>{{'register.password' | translate}}</label>
+                            <input id="exampleInputPassword1" type="password" placeholder="{{'register.password' | translate}}" name="inputPassword"
+                                   class="form-control" ng-model="login.userPassword" validator="required" valid-method="blur" />
+                            <!--<span class="fa fa-lock form-control-feedback text-muted"></span>-->
+                        </div>
+                        <div class="twoColLayout">
+                            <div class="checkToggle">
+                                <label class="inputToggle" ng-click="login.rememberMe()">
+                                    <input type="checkbox" value="" ng-model="login.remember" />
+                                    <span class="slider round"></span>
+                                </label>
+                                {{'login.rememberMe' | translate}}
+                            </div>
+                            <div class="underLineUrl">
+                                <a ui-sref="page.recover" data-translate="login.forgotPassword"></a>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-md-12 formSubmit">
+                        <button type="submit" class="btn btn-block btn-info mb" data-translate="register.login" ng-click="login.login()" ng-disabled="login.isBusy"
+                                validation-submit="loginForm"></button>
+                        <span>
+                            <p class="text-muted mb0" data-translate="login.noAccount"></p>
+                            <a ui-sref="page.register" class="btn" ng-disabled="login.isBusy">
+                                <strong data-translate="register.createAccount"></strong>
+                            </a>
+                        </span>
+                        
+                    </div>
+                </div>
+                
+            </form>
+
+
+
+
+
+
+        </div>
+    </div>
+    
+</div>
+<!-- <div class="container container-lg animated fadeInDown">
+    <div class="center-block mt-xl">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group" style="float:right !important;">
+                    <label ng-repeat="(localeId, langName) in language.available" ng-model="radioModel" uib-btn-radio="'Left'" ng-click="language.set(localeId, $event)"
+                           class="btn btn-default ng-pristine ng-untouched ng-valid active"
+                           ng-style="langName == 'English'? {'float':'left', 'font-family': 'Roboto'}: {'float':'right', 'font-family': 'Droid Arabic Kufi'}">{{langName}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+
+<!--<div class="container container-lg animated fadeInDown" ng-controller="LoginController as login" ng-init="init()">
+    <div class="center-block mt-xl">-->
+        <!-- START panel-->
+        <!--<div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-8">
+                <div class="panel">
+                    <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+                        <p class="pv text-bold" data-translate="login.credentials"></p>
+                        <form role="form" class="mb-lg" name="loginForm">
+                            <div class="row" ng-if="login.invalidCredential">
+                                <div class="col-md-12">
+                                    <uib-alert type="danger">{{'login.invalid_grant' | translate}}</uib-alert>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="login.userLocked">
+                                <div class="col-md-12">
+                                    <uib-alert type="danger">{{'login.userLocked' | translate}}</uib-alert>
+                                </div>
+                            </div>
+                            <div class="row" ng-if="!login.emailConfirmed">
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <uib-alert type="danger">
+                                                <div class="row">
+                                                    <div class="col-md-9">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                {{'login.email_not_confirmed' | translate}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <span data-translate="login.resendConfirmEmail"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3">
+                                                        <button type="button" class="btn btn-block btn-default" ng-click="login.resendConfirmEmail()" ng-disabled="login.isBusy">
+                                                            {{'general.resend' | translate}} <span class="fa fa-repeat"></span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </uib-alert>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <hr />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group has-feedback mb">
+                                        <input id="exampleInputEmail1" type="email" placeholder="{{'register.email' | translate}}" name="inputEmail"
+                                               autocomplete="off" class="form-control" ng-model="login.userEmail" validator="required, email" valid-method="blur" />
+                                        <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                                    </div>
+                                    <br />
+                                    <div class="form-group has-feedback">
+                                        <input id="exampleInputPassword1" type="password" placeholder="{{'register.password' | translate}}" name="inputPassword"
+                                               class="form-control" ng-model="login.userPassword" validator="required" valid-method="blur" />
+                                        <span class="fa fa-lock form-control-feedback text-muted"></span>
+                                    </div>
+                                    <div class="checkbox c-checkbox pull-left mt0">
+                                        <label ng-click="login.rememberMe()">
+                                            <input type="checkbox" value="" ng-model="login.remember" />
+                                            <span class="fa fa-check"></span>{{'login.rememberMe' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="submit" class="btn btn-block btn-info mb" data-translate="register.login" ng-click="login.login()" ng-disabled="login.isBusy"
+                                            validation-submit="loginForm"></button>
+                                    <p class="text-muted mb0" data-translate="login.noAccount"></p>
+                                    <a ui-sref="page.register" class="btn btn-block btn-default" ng-disabled="login.isBusy">
+                                        <strong data-translate="register.createAccount"></strong>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="text-center text-md" style="right: 50%">
+                                    <div class="wordSP label label-warning" data-translate="login.or"></div>
+                                </div>
+                                <div style="border-bottom: 1px dashed lightgrey; margin:-20px 2% 20px 2%  ; width:96% ; height:10px"></div>
+                                <br /><br />
+                                <form class="row" role="form" name="loginSPForm">
+                                    <div style="width:300px ; margin:auto">
+                                        <a ng-disabled="login.isBusy" ng-if="!app.layout.isRTL" ng-click="login.uaepasslogin('en');" style="cursor:pointer;">
+                                            <img ng-src="app/img/UAEPass_LoginBtn_White-EN.png" alt="Cinque Terre" class="img-rounded" width="300">
+                                        </a>
+                                        <a ng-disabled="login.isBusy" ng-if="app.layout.isRTL" ng-click="login.uaepasslogin('ar');" style="cursor:pointer;">
+                                            <img ng-src="app/img/UAEPass_LoginBtn_White-AR.png" alt="Cinque Terre" class="img-rounded" width="300">
+                                        </a>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row">
+                                <br />
+                                <div style="border-bottom: 1px dashed lightgrey; margin:-20px 2% 20px 2%  ; width:96% ; height:10px"></div>
+                                <br />
+                                <div style="width:300px ; margin:auto">
+                                    <a ui-sref="page.payFines/" class="btn btn-block btn-info mb" ng-disabled="login.isBusy" target="_blank">
+                                        <strong data-translate="inspection.payFine"></strong>
+                                    </a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="text-center mt">
+                    <a ui-sref="page.recover" class="text-muted" data-translate="login.forgotPassword"></a>
+                </div>
+            </div>
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>-->

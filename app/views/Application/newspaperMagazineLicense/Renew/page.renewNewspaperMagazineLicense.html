@@ -1,0 +1,355 @@
+﻿<div class="app-view-header">
+    {{'newspaperMagazineLicense.heading' | translate}}
+</div>
+<div class="container-fluid" ng-controller="RenewNewspaperMagazineLicenseController as vm">
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <div class="row"><br /></div>
+            <div class="row"><br /></div>
+            <div class="wizard">
+                <ul class="steps-bar">
+                    <li ng-class="{'active':vm.activeStep >= 1}">
+                        <label>{{'mediaLicense.stepOne' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':vm.activeStep>=2}">
+                        <label>{{'newspaperMagazineLicense.stepOne' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':vm.activeStep>=3}" ng-if="vm.license.newspapers[0].releaseTypeId == 1">
+                        <label>{{'newspaperMagazineLicense.stepTwo' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':vm.activeStep>=4}">
+                        <label>{{'newspaperMagazineLicense.stepThree' | translate}}</label>
+                    </li>
+                </ul>
+                <br />
+                <div ng-if="vm.activeStep==1" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <establishment ng-model="vm.license.applicationDetail.application.establishment" is-preview="true" is-renew="true"></establishment>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="mediaCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.nextToSecond()"
+                                        validation-submit="stepOneForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="vm.activeStep==2" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                        <hr />
+                        <div class="row form-group" ng-if="!vm.isEmaratiOwner">
+                            <div class="col-md-12">
+                                <div class="alert alert-warning" data-translate="newspaperMagazineLicense.requireEmarati"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br />
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.issuanceFormat' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input disabled="disabled" type="radio" name="issuanceFormat" ng-value="false" ng-model="vm.license.newspapers[0].isElectronic" ng-checked="!vm.license.newspapers[0].isElectronic" ng-required="true">
+                                        <span class="fa fa-circle"></span>{{'newspaperMagazineLicense.printedFormat' | translate}}
+                                    </label>
+                                </div>
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input disabled="disabled" type="radio" name="issuanceFormat" ng-value="true" ng-model="vm.license.newspapers[0].isElectronic"
+                                               ng-checked="vm.license.newspapers[0].isElectronic" ng-disabled="!vm.isEmaratiOwner">
+                                        <span class="fa fa-circle"></span>{{'newspaperMagazineLicense.electronicFormat' | translate}}
+                                    </label>
+                                </div>
+                            </div>
+                            <span class="col-sm-3 control-label" ng-if="!stepOneForm.licenseType.$valid && stepOneForm.licenseType.$touched">
+                                <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                            </span>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.type' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input disabled="disabled" type="radio" name="licenseType" ng-value="false" ng-model="vm.license.newspapers[0].isMagazine" ng-checked="!vm.license.newspapers[0].isMagazine" ng-required="true">
+                                        <span class="fa fa-circle"></span>{{'newspaperMagazineLicense.newspaperOption' | translate}}
+                                    </label>
+                                </div>
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input disabled="disabled" type="radio" name="licenseType" ng-value="true" ng-model="vm.license.newspapers[0].isMagazine" ng-checked="vm.license.newspapers[0].isMagazine">
+                                        <span class="fa fa-circle"></span>{{'newspaperMagazineLicense.magazineOption' | translate}}
+                                    </label>
+                                </div>
+                            </div>
+                            <span class="col-sm-3 control-label" ng-if="!stepOneForm.licenseType.$valid && stepOneForm.licenseType.$touched">
+                                <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                            </span>
+                        </div>
+                        <div class="row form-group" ng-if="!vm.license.newspapers[0].isElectronic">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.reasonType' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <div class="radio c-radio" ng-repeat="releaseType in vm.releaseTypes">
+                                    <label>
+                                        <input ng-disabled="true" type="radio" name="customerTypeRadio" ng-value="releaseType.id" ng-checked="(vm.license.newspapers[0].releaseTypeId == releaseType.id)"
+                                               ng-model="vm.license.newspapers[0].releaseTypeId" validator="required" />
+                                        <span class="fa fa-circle"></span>{{releaseType | localizeString}}
+                                        <br />
+                                        <small class="text-gray">{{releaseType | localizeDescString}}</small>
+                                        <br />
+                                    </label>
+                                </div>
+                            </div>
+
+
+                            <span class="col-sm-3 control-label" ng-if="!stepOneForm.isReprint.$valid && stepOneForm.isReprint.$touched">
+                                <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                            </span>
+                        </div>
+                        <div class="row form-group" ng-if="!vm.license.newspapers[0].isElectronic">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span data-translate="newspaper.periodicalType"></span></label>
+                            <div class="col-sm-9">
+                                <ui-select disabled="disabled" ng-model="vm.license.newspapers[0].periodicalType" validator="required" theme="bootstrap" class="text-left" name="periodicalType">
+                                    <ui-select-match placeholder="{{'newspaper.selectPeriodicalType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="periodicalType in vm.license.newspapers[0].periodicalTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                        <span ng-bind-html="periodicalType | localizeString | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'printingPermit.subject' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <ui-select disabled="disabled" ng-model="vm.license.newspapers[0].selectedCategories" ui-select-required theme="bootstrap" ng-required="true" name="category" multiple>
+                                    <ui-select-match placeholder="{{'printingPermit.selectSubject' | translate}}">{{$item | localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="category in vm.license.newspapers[0].categories | propsFilter: {nameAr: $select.search, nameEn: $select.search, descEn: $select.search, descAr: $select.search}">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <span ng-bind-html="category | localizeString | highlight: $select.search"></span>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <span class="text-sm" style="white-space:normal" ng-bind-html="category | localizeDescString | highlight: $select.search"></span>
+                                            </div>
+                                        </div>
+                                    </ui-select-choices>
+                                </ui-select>
+                                <span ui-multiple item="'newspaperCategory'" frommodel="vm.license.newspapers[0].selectedCategories" tomodel="vm.license.newspapers[0].newspaperSubjectCategories" editmode="vm.editMode"></span>
+                                <span ng-if="!stepTwoForm.category.$valid && stepTwoForm.category.$touched">
+                                    <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="vm.license.newspapers[0].isElectronic">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaper.newspaperUrl' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input disabled="disabled" type="url" name="electronicUrl" validator="required, url" ng-model="vm.license.newspapers[0].url" placeholder="protocol://" class="form-control">
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="vm.license.newspapers[0].isElectronic">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaper.uploadRegistration' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <uploading-files copyUrl="vm.license.newspapers[0].registrationUrl" copyUrlFullPath="vm.license.newspapers[0].registrationUrlFullPath"
+                                                 url="vm.uploadRegistrationUrl" isrequired="true"></uploading-files>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="box-placeholder b0 bg-gray-lighter">
+                                    <h3 data-translate="newspaper.languageList"></h3>
+                                    <p>
+                                        <div class="row">
+                                            <div class="col-md-12" ng-if="vm.languageItemsDt.dtOptions">
+                                                <table datatable="" class="row-border hover" dt-options="vm.languageItemsDt.dtOptions" dt-columns="vm.languageItemsDt.dtColumns"
+                                                       dt-instance="vm.languageItemsDt.dtInstance" width="100%"></table>
+                                            </div>
+                                        </div>
+                                        <div class="row"><br /></div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row form-group">
+                            <h4 class="col-sm-3 control-label">{{'newspaper.address' | translate}}</h4>
+                        </div>
+                        <br />
+                        <div class="row form-group">
+                            <div class="col-sm-12">
+                                <profile-address ng-model="vm.license.newspapers[0].address" is-preview="true"></profile-address>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <service-fee ng-model="vm.serviceFeesObj"></service-fee>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" ripple=""
+                                        ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.nextToThird()" validation-submit="stepTwoForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.activeStep=1">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="vm.activeStep==3 && vm.license.newspapers[0].releaseTypeId == 1" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                        <hr />
+                        <div class="row">
+                            <br />
+                        </div>
+                        <uib-alert type="danger" ng-if="vm.EmritIdRepeated">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'photographyPermit.EmritIdIsRepeated' | translate}}
+                                </div>
+                            </div>
+                        </uib-alert>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.mobileNumber' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input disabled="disabled" type="tel" ng-model="vm.license.chiefEditors[0].phoneNumber" placeholder="{{'newspaperMagazineLicense.mobileNumber' | translate}}" autocomplete="off"
+                                       class="form-control" name="mobileNumber" valid-method="blur" ng-keypress="vm.preventLeadingZero()" validator="required, phoneNumber" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'newspaperMagazineLicense.workPhone' | translate}}</label>
+                            <div class="col-sm-9">
+                                <input disabled="disabled" type="tel" ng-model="vm.license.chiefEditors[0].workPhone" placeholder="{{'newspaperMagazineLicense.workPhone' | translate}}" autocomplete="off"
+                                       class="form-control" name="workPhone" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.email' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input disabled="disabled" ng-model="vm.license.chiefEditors[0].email" name="Email" type="email" placeholder="{{'newspaperMagazineLicense.email' | translate}}" autocomplete="off"
+                                       class="form-control" validator="required, email" valid-method="blur" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.qualification' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <ui-select disabled="disabled" ng-model="vm.license.chiefEditors[0].qualification" validator="required" theme="bootstrap" class="text-left" name="qualification">
+                                    <ui-select-match placeholder="{{'newspaperMagazineLicense.selectQualification' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="qualification in vm.license.chiefEditors[0].qualifications | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                        <span ng-bind-html="qualification | localizeString | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.UploadYourQualification' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <uploading-files disabled="disabled"  copyUrl="vm.license.chiefEditors[0].qualificationCopyUrl" copyUrlFullPath="vm.license.chiefEditors[0].qualificationCopyUrlFullPath"
+                                                 url="uploadQualificationUrl" isrequired="true"></uploading-files>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.yearsOfExperience' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input disabled="disabled" type="number" ng-model="vm.license.chiefEditors[0].yearsOfExperience" max="50" placeholder="{{'newspaperMagazineLicense.yearsOfExperience' | translate}}" autocomplete="off" class="form-control" name="yearsOfExperience" validator="required" />
+                                <div><i class="fa fa-info-circle" aria-hidden="true"></i> <span data-translate="newspaperMagazineLicense.yearsOfExperienceLimit"></span></div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-sm-12">
+                                <profile-nationality is-require-third-party="true" ng-model="vm.license.chiefEditors[0].person" is-emarati="true"></profile-nationality>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row form-group">
+                            <div class="col-sm-12">
+                                <profile-address ng-model="vm.license.chiefEditors[0].address" is-preview="true"></profile-address>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.nextToFourth()" validation-submit="stepThreeForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.activeStep=2">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div ng-if="vm.activeStep==4" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepFourForm">
+                        <hr />
+                        <div class="row">
+                            <br />
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="alert alert-warning" data-translate="general.requireAquitance"></div>
+                                <div class="alert alert-warning" data-translate="general.requireMagazineAge"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <br />
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <partners-list ng-if="vm.license.applicationDetail.application.establishment.id" establishment-id="vm.license.applicationDetail.application.establishment.id" is-viewonly="false"></partners-list>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <terms ng-model="vm.license.terms" ng-if="!vm.editMode" name="terms"></terms>
+                            </div>
+                        </div>
+                        <customer-pulse ng-if="vm.showHappinessMeter" ng-model="vm.happinessMeterObj"></customer-pulse>
+                        <div class="row">
+                            <br />
+                        </div>
+                        <div class="row" ng-if="!vm.editMode">
+                            <div class="col-md-12">
+                                <button type="button" ripple="" validation-submit="stepFourForm"
+                                        ng-disabled="vm.isBusy || !vm.license.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.save(2)">
+                                    {{'general.apply' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" ripple="" validation-submit="stepFourForm"
+                                        ng-disabled="vm.isBusy|| !vm.license.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="vm.save(1)">
+                                    {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                </button>
+                                <button type="button" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goBackFromLast()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="vm.editMode">
+                            <div class="col-md-8"></div>
+                            <div class="col-md-4">
+                                <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                                    <button uib-dropdown-toggle="" ng-disabled="vm.isBusy" class="btn btn-primary dropdown-toggle mr mb-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                    <ul role="menu" class="dropdown-menu animated zoomIn">
+                                        <li ng-repeat="transition in vm.license.applicationDetail.applicationState.transitions">
+                                            <a href="" ng-click="vm.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goBackFromLast()">
+                                    {{'general.previous' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END panel-->
+</div>

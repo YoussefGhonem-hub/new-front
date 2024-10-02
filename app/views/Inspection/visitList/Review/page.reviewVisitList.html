@@ -1,0 +1,225 @@
+﻿<div class="container-fluid" ng-controller="ReviewVisitListController as vlCtl">
+    <div class="app-view-header">
+        {{'visit.reviewVisitList' | translate}}
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+
+            <uib-accordion-group is-open="vlDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='!vlCtl.isIndividual'>
+                <uib-accordion-heading>
+                    {{'completeProfile.establishmentDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.open, 'glyphicon-chevron-right': !vlDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant-establishment ng-model="vlCtl.visitListDetails.establishment"></applicant-establishment>
+            </uib-accordion-group>
+
+            <uib-accordion-group is-open="vlDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vlCtl.isIndividual'>
+                <uib-accordion-heading>
+                    {{'completeProfile.stepOne' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.open, 'glyphicon-chevron-right': !vlDetails.open}"></i>
+                </uib-accordion-heading>
+                <br />
+                <applicant ng-model="vlCtl.individualUser" applicant-user="vlCtl.individualUser.user"></applicant>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vlDetails.partnerOpen" panel-class="panel-primary" ng-if='!vlCtl.isIndividual'>
+                <uib-accordion-heading>
+                    {{'completeProfile.partnerDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.partnerOpen, 'glyphicon-chevron-right': !vlDetails.partnerOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <partners-list ng-if="vlCtl.visitListDetails.establishment.id" establishment-id="vlCtl.visitListDetails.establishment.id" is-viewonly="true"></partners-list>
+            </uib-accordion-group>
+            <div ng-if='!vlCtl.isIndividual'> <br /> </div>
+            <uib-accordion-group is-open="vlDetails.mediaLicenses.applicationOpen" ng-if="vlCtl.applicationDetatils && vlCtl.mediaLicenses" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'mediaLicense.stepTwo' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.mediaLicenses.applicationOpen, 'glyphicon-chevron-right': !vlDetails.mediaLicenses.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'mediaLicense.activities' | translate}}</label>
+                    <div class="col-md-4 form-control-static">
+                        <ul>
+                            <li ng-repeat="activity in vlCtl.mediaLicenses.mediaLicenseEconomicActivities">{{activity.economicActivity | localizeString}}</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-4">
+                        <pdf-render src="vlCtl.pdfUrl"></pdf-render>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="vlCtl.mediaLicenses.applicationDetail.certificates[0].certificateDetails">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="mediaLicense.activities"></h3>
+                            <div class="row">
+                                <div class="col-md-12" ng-if="vlCtl.teamMemberDt.dtOptions">
+                                    <table datatable="" class="row-border hover" dt-options="vlCtl.teamMemberDt.dtOptions" dt-columns="vlCtl.teamMemberDt.dtColumns"
+                                           dt-instance="vlCtl.teamMemberDt.dtInstance" width="100%"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group" ng-if="vlCtl.mediaLicenses.applicationDetail.certificates[0].certificateDetails && !vlCtl.isIndividual">
+                    <service-fee ng-model="vlCtl.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+
+            </uib-accordion-group>
+            <div ng-if="vlCtl.applicationDetatils && vlCtl.mediaLicenses"> <br /> </div>
+            <uib-accordion-group is-open="vlCtl.visitdetail" panel-class="panel-primary" ng-if="vlCtl.visitListDetails.visitViolations.length > 0 ||vlCtl.visitListDetails.note!=null ||vlCtl.visitListDetails.visitPhotos.length > 0 ||vlCtl.visitListDetails.vistitReportUrl!=null ||vlCtl.visitListDetails.entranceUrl!=null" ng-hide="vlCtl.visitStatusId===15">
+                <uib-accordion-heading>
+                    {{'visit.visitDet' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlCtl.visitdetail, 'glyphicon-chevron-right': !vlCtl.visitdetail}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="row form-group" ng-if="vlCtl.visitListDetails.visitViolations.length > 0">
+                                <label class="col-md-3 control-label"><span>{{'visit.violationDetails' | translate}}</span></label>
+                                <div class="col-md-7 form-control-static">
+                                    <ul>
+                                        <li ng-repeat="visitViolation in vlCtl.visitListDetails.visitViolations">{{visitViolation.violation | localizeString}}</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vlCtl.visitListDetails.note">
+                                <label class="col-md-3 control-label"><span>{{'workflow.notes' | translate}}</span></label>
+                                <div class="col-md-7 form-control-static">
+                                    <span ng-bind-html="vlCtl.visitListDetails.note"></span>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vlCtl.visitListDetails.visitPhotos.length > 0">
+                                <label class="col-md-3 control-label"><span>{{'visit.reviewViolationPhotos' | translate}}</span></label>
+                                <div class="col-md-9 form-control-static" ng-if="vlCtl.visitListDetails.visitPhotos">
+                                    <div class="col-sm-6" ng-repeat="p in vlCtl.visitListDetails.visitPhotos track by $index" style="padding-bottom:10px;">
+                                        <div chained-animation="fadeInUp" class="panel  panel-card-image  animated fadeInUp text-center"
+                                             style="animation-delay: 0.76s;background-color:transparent;">
+                                            <div class="row" style="padding:0; margin:0; height:268px;">
+                                                <a href="{{p.visitPhotoUrlFullPath}}" data-gallery title="Unsplash images">
+                                                    <img src="{{p.visitPhotoUrlFullPath}}" style="margin-left: auto; margin-right: auto;height:268px;" alt="thumb" class="img-responsive" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vlCtl.visitListDetails.vistitReportUrl">
+                                <label class="col-md-3 control-label"><span>{{'inspection.inspectionReport' | translate}}</span></label>
+                                <div class="col-md-7 form-control-static">
+                                    <div ng-if="vlCtl.visitListDetails.vistitReportUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                        <a ng-href="{{vlCtl.visitListDetails.vistitReportUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                            <img ng-src="{{vlCtl.visitListDetails.vistitReportUrlFullPath}}" alt="thumb" />
+                                        </a>
+                                    </div>
+                                    <a ng-if="vlCtl.visitListDetails.vistitReportUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vlCtl.visitListDetails.vistitReportUrlFullPath}}">
+                                        <em class="fa fa-5x fa-file-pdf-o"></em>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vlCtl.visitListDetails.entranceUrl">
+                                <label class="col-md-3 control-label"><span>{{'visit.reviewestablishmentEntrance' | translate}}</span></label>
+                                <div class="col-md-7 form-control-static">
+                                    <div ng-if="vlCtl.visitListDetails.entranceUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-9">
+                                        <a ng-href="{{vlCtl.visitListDetails.entranceUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                            <img ng-src="{{vlCtl.visitListDetails.entranceUrlFullPath}}" alt="thumb" />
+                                        </a>
+                                    </div>
+                                    <a ng-if="vlCtl.visitListDetails.entranceUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vlCtl.visitListDetails.entranceUrlFullPath}}">
+                                        <em class="fa fa-5x fa-file-pdf-o"></em>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row form-group" ng-if="vlCtl.mediaLicenses.applicationDetail.certificates[0].certificateDetails && vlCtl.isIndividual">
+                            <service-fee ng-model="vlCtl.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                        </div>
+                    </div>
+                </div>
+            </uib-accordion-group>
+            <div ng-if="vlCtl.visitListDetails.visitBooks.length > 0"> <br /> </div>
+            <uib-accordion-group is-open="vlDetails.bookDetail" panel-class="panel-primary" ng-if="vlCtl.visitListDetails.visitBooks.length > 0" ng-hide="vlCtl.visitStatusId===15">
+                <uib-accordion-heading>
+                    {{'visit.bookList' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.bookDetail, 'glyphicon-chevron-right': !vlDetails.bookDetail}"></i>
+                </uib-accordion-heading>
+                <br />
+                <book-scanner ng-model="vlCtl.visitListDetails.visitBooks" is-review="true"></book-scanner>
+            </uib-accordion-group>
+            <div ng-if="vlCtl.visitListDetails.visitRetainedMaterials.length > 0"> <br /> </div>
+            <uib-accordion-group is-open="vlDetails.retaindetail" panel-class="panel-primary" ng-if="vlCtl.visitListDetails.visitRetainedMaterials.length > 0" ng-hide="vlCtl.visitStatusId===15">
+                <uib-accordion-heading>
+                    {{'visit.retainedMaterials' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.retaindetail, 'glyphicon-chevron-right': !vlDetails.retaindetail}"></i>
+                </uib-accordion-heading>
+                <br />
+                <retained-materials ng-model="vlCtl.visitListDetails.visitRetainedMaterials" is-review="true"></retained-materials>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group is-open="vlDetails.contactPersonDetail" panel-class="panel-primary" ng-if="vlCtl.visitListDetails.contactEmail!=null ||vlCtl.visitListDetails.contactPhone!=null ||vlCtl.visitListDetails.contactName!=null ||vlCtl.visitListDetails.contactSignatureUrl!=null" ng-hide="vlCtl.visitStatusId===15">
+                <uib-accordion-heading>
+                    {{'visit.contactPerson' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vlDetails.contactPersonDetail, 'glyphicon-chevron-right': !vlDetails.contactPersonDetail}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="row form-group" ng-if="vlCtl.visitListDetails.contactName">
+                            <label class="col-sm-5 control-label">{{'visit.contactPersonName' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                {{vlCtl.visitListDetails.contactName}}
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="vlCtl.visitListDetails.contactEmail">
+                            <label class="col-sm-5 control-label">{{'visit.contactPersonEmail' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                {{vlCtl.visitListDetails.contactEmail}}
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="vlCtl.visitListDetails.contactPhone">
+                            <label class="col-sm-5 control-label">{{'visit.contactPersonPhone' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                {{vlCtl.visitListDetails.contactPhone}}
+                            </div>
+                        </div>
+                        <div class="row form-group" ng-if="vlCtl.visitListDetails.contactSignatureUrlFullPath">
+                            <label class="col-sm-5 control-label">{{'visit.contactPersonSignature' | translate}}</label>
+                            <div class="col-sm-7 form-control-static">
+                                <img ng-src="{{vlCtl.visitListDetails.contactSignatureUrlFullPath}}" style="border:1px solid" class="img-responsive" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="vlCtl.visitListDetails"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+    </div>
+</div>
+<div id="blueimp-gallery" class="blueimp-gallery" data-hide-page-scrollbars="false">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

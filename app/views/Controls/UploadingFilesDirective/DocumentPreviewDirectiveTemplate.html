@@ -1,0 +1,48 @@
+﻿
+<style>
+    .pdficon {
+        color: #3f51b5;
+        cursor: pointer;
+    }
+
+        .pdficon:hover {
+            color: #3f51ff;
+            cursor: pointer;
+        }
+
+    .red {
+        border-style: solid;
+        border-color: red;
+        border-width: 1px;
+    }
+</style>
+
+
+
+
+
+<div ng-if="!isEditMode">
+    <span ng-if="fullUrl == '' || fullUrl == null">
+        <em class="fa fa-5x fa-file-text-o"></em>
+    </span>
+    <span ng-if="fullUrl != '' && fullUrl != null">
+        <em ng-if="extension == 'pdf'" class="pdficon fa fa-5x fa-file-pdf-o" ng-click="openfile()"></em>
+        <em ng-if="extension !== 'pdf'" class="pdficon fa fa-5x fa-file-image-o" ng-click="openfile()"></em>
+    </span>
+</div>
+
+<div ng-if="isEditMode">
+    <div>
+        <span ng-if="fullUrl == '' || fullUrl == null">
+            <em class="fa fa-5x fa-file-text-o"></em>
+        </span>
+        <span ng-if="fullUrl != '' && fullUrl != null">
+            <em ng-if="extension == 'pdf'" class="pdficon fa fa-5x fa-file-pdf-o" ng-click="openfile()"></em>
+            <em ng-if="extension !== 'pdf'" class="pdficon fa fa-5x fa-file-image-o" ng-click="openfile()"></em>
+        </span>
+        <span style="vertical-align:bottom;">
+            <em class="fa fa-check-circle" style="font-size:1.5em;color:#4caf50;" ng-if="isApproved" ng-click="check(false)"></em>
+            <em class="fa fa-times-circle" style="font-size:1.5em;color:#f34235;" ng-if="!isApproved" ng-click="check(true)"></em>
+        </span>
+    </div>
+</div>

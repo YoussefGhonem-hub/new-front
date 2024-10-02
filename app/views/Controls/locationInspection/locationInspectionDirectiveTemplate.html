@@ -1,0 +1,54 @@
+﻿<div class="row form-group">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'address.Emirate' | translate}}</span></label>
+    <div class="col-sm-4">
+        <ui-select ng-model="addressControl.emirate" validator="required" ng-disabled="isPreview || addressControl.disabled" name="emirate" theme="bootstrap" class="text-left">
+            <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <div class="row" style="font-size: 1.25em">
+                    <div class="col-md-8">
+                        <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="label pull-left label-warning">{{emirate.numberOfEstablishments}}</div>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+<div class="row form-group" ng-if="addressControl.emirate.id == 1">
+    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'address.Region' | translate}}</span></label>
+    <div class="col-sm-4">
+        <ui-select ng-model="addressControl.region" validator="required" ng-disabled="isPreview" name="region" theme="bootstrap" class="text-left">
+            <ui-select-match placeholder="{{'completeProfile.selectRegion' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="region in addressControl.emirate.regions | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <div class="row" style="font-size: 1.25em">
+                    <div class="col-md-8">
+                        <span ng-bind-html="region | localizeString | highlight: $select.search"></span>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="label pull-left label-warning">{{region.numberOfEstablishments}}</div>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>
+<div class="row form-group">
+    <label class="col-sm-3 control-label"><span>{{'address.Community' | translate}}</span></label>
+    <div class="col-sm-4">
+        <ui-select ng-model="addressControl.communities" ng-disabled="isPreview" theme="bootstrap" class="text-left" name="Community" multiple>
+            <ui-select-match placeholder="{{'completeProfile.selectCommunity' | translate}}">{{$item | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="community in (addressControl.emirate.id == 1? addressControl.region.communities: addressControl.emirate.regions[0].communities) | filter: $select.search">
+                <div class="row" style="font-size: 1.25em">
+                    <div class="col-md-9">
+                        <span ng-bind-html="community | localizeString | highlight: $select.search"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="label pull-left label-warning">{{community.numberOfEstablishments}}</div>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+</div>

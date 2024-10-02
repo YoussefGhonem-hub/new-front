@@ -1,0 +1,13 @@
+<div class="app-view-header">{{'dashboard.home' | translate}}
+   <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+<div ng-controller="RolesController as roles">
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-10">
+            <table datatable="" class="row-border hover" dt-options="roles.dtRolesOptions" dt-columns="roles.dtRolesColumns"
+                   dt-instance="roles.dtRolesInstance" width="100%"></table>
+        </div>
+        <div class="col-md-1"></div>
+    </div>
+</div>

@@ -1,0 +1,125 @@
+﻿<div ng-controller="ReportListController as vm">
+    <div class="app-view-header">
+        {{'reports.reports' | translate}}
+        <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+    </div>
+
+    <div class="container-fluid" ng-init="vm.init();">
+        <br /> <br />
+        <div class="row">
+            <div class="col-md-7">
+
+            </div>
+            <div class="col-md-5">
+                <div uib-dropdown="dropdown" class="btn-group mb mr pull-right">
+                    <button type="button" class="btn btn-primary">{{vm.selectedReportGroup | localizeString}}</button>
+                    <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
+                        <span class="caret"></span>
+                        <span class="sr-only">primary</span>
+                    </button>
+                    <ul role="menu" class="dropdown-menu">
+                        <li ng-repeat="rg in vm.reportGroups">
+                            <a href="" ng-click="vm.selectedReportGroup = rg; vm.GetReportDefinitions();"> {{rg | localizeString}}</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row">
+            <div class="col-md-12">
+                <uib-accordion close-others="true">
+                    <uib-accordion-group ng-repeat="r in vm.ReportsData" is-open="r.isopen">
+                        <uib-accordion-heading>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    {{r | localizeString}}
+                                </div>
+                                <div class="col-md-7">
+                                    <small>{{r | localizeDescString}}</small>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <small> {{'reports.currentversion' | translate}}  {{r.version}}</small>
+                                </div>
+                                <div class="col-md-1 text-center">
+                                    <em class="fa fa-plus-square fa-1x" style="color:#3f51b5;" ng-click="$event.preventDefault(); $event.stopPropagation(); vm.newReport(r.id);" uib-tooltip="{{'reports.addnewreport' | translate}}"></em>
+                                    &nbsp;
+                                    <em class="fa fa-refresh fa-1x" style="color:#2095f2;" ng-click="$event.preventDefault(); $event.stopPropagation(); vm.refreshReport(r);" uib-tooltip="{{'reports.refresh' | translate}}"></em>
+                                </div>
+                            </div>
+                        </uib-accordion-heading>
+
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>{{'reports.name' | translate}} </th>
+                                        <th>{{'reports.status' | translate}}</th>
+                                        <th>{{'reports.version' | translate}}</th>
+                                        <th>{{'reports.requestdon' | translate}}</th>
+                                        <th>{{'reports.generatedon' | translate}}  </th>
+                                        <th>{{'reports.actions' | translate}}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="ri in r.reportInstance">
+                                        <td>
+                                            <span ng-if="ri.nameEn != ''"> {{ ri | localizeString}}</span>
+                                            <span ng-if="ri.nameEn == '' || ri.nameEn == null" style="color:#a0aab2;"> {{'reports.notavailablenow' | translate}}</span>
+                                        </td>
+                                        <td>
+                                            <div class="label label-default text-bold" ng-if="ri.statusId == 1">
+                                                {{ 'reports.reportstatus_' + ri.statusId | translate }}
+                                            </div>
+                                            <div class="label label-warning text-bold" ng-if="ri.statusId == 2">
+                                                {{ 'reports.reportstatus_' + ri.statusId | translate }}
+                                            </div>
+                                            <div class="label label-success text-bold" ng-if="ri.statusId == 3">
+                                                {{ 'reports.reportstatus_' + ri.statusId | translate }}
+                                            </div>
+                                            <div class="label label-danger text-bold" ng-if="ri.statusId == 4">
+                                                {{ 'reports.reportstatus_' + ri.statusId | translate }}
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span ng-if="ri.version != null">{{ ri.version }}</span>
+                                            <span ng-if="ri.version == null">{{ r.version }}</span>
+                                        </td>
+                                        <td>{{ ri.createdOn | date: 'dd-MMMM-yyyy  h:mma'}}</td>
+                                        <td>{{ ri.generatedOn  | date: 'dd-MMMM-yyyy  h:mma'}}</td>
+                                        <td ng-disabled="ri.statusId != 3">
+                                            <div style="display:inline-block;" class="list-icon">
+                                                <div uib-tooltip="{{'reports.download' | translate}}">
+                                                    <a href="{{vm.UserGeneratedReportsPath + ri.fileName}}" target="_blank">
+                                                        <em class="fa fa-download" style="color:#585f69;"> </em>
+                                                    </a>
+                                                </div>
+                                                <div uib-tooltip="{{'reports.delete' | translate}}">
+                                                    <a>
+                                                        <em class="fa fa-trash" style="color:#585f69;cursor:pointer;"> </em>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </uib-accordion-group>
+                </uib-accordion>
+            </div>
+        </div>
+
+
+        <div ng-if="vm.isBusy" style="background-color:#80808080; position:absolute; top:25%; height:100%;width:100%; z-index:9999">
+            <div style="position:fixed; top: 50%; right:50%; z-index:9999">
+                <h1> Loading .....</h1>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</div>

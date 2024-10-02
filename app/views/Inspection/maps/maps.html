@@ -1,0 +1,29 @@
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()" > x </button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="general.mapLocation"></h4>
+</div>
+<div class="modal-body bg-gray-lighter" style="height:750px; overflow-y: auto">
+    <form role="form" class="mb-lg form-horizontal" name="addPartnerForm">
+        <div class="well mt text-center text-md">
+            <span>{{establishment.nameEn}}</span>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="height:500px">
+                <section id="map" style="height:500px">
+                    <div map-lazy-load="https://maps.google.com/maps/api/js" map-lazy-load-params="{{googleMapsUrl}}" style="height:500px" lazy-init="true">
+                        <ng-map center="{{establishment.address.latitude}},{{establishment.address.longitude}}" zoom="17" style="height:500px">
+                            <marker draggable={{isDraggable}} position="{{establishment.address.latitude}}, {{establishment.address.longitude}}" on-dragend="dragEnd($event)"></marker>
+                        </ng-map>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" ng-if="establishment.address.latitude" ng-click="mapsSelector()"
+        data-translate="general.startNavigation">
+        <span class="fa fa-location-arrow"></span>
+    </button>
+    <button ng-click="closeModal()" class="btn btn-primary" data-translate="general.ok"></button>
+</div>

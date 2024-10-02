@@ -1,0 +1,398 @@
+﻿<div class="app-view-header">
+    {{'visit.service' | translate}}
+</div>
+<div class="container-fluid" ng-controller="visitController as vm">
+    <!-- START panel-->
+    <div class="panel panel-primary">
+
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <br /><br />
+                  <div class="wizard">
+                      <ul class="steps-bar">
+                          <li ng-class="{'active':vm.activeStep >= 1}">
+                              <label ng-if="!vm.isIndividual">{{'establishment.address' | translate}}</label>
+                              <label ng-if="vm.isIndividual">{{'visit.userProfile' | translate}}</label>
+                          </li>
+                          <li ng-class="{'active':vm.activeStep >= 2}">
+                              <label>{{'visit.violationDetails' | translate}}</label>
+                          </li>
+                          <li ng-class="{'active':vm.activeStep >= 3}" ng-if="!vm.isIndividual">
+                              <label>{{'visit.bookDetails' | translate}}</label>
+                          </li>
+                          <li ng-class="{'active':vm.activeStep >= 4}" ng-if="!vm.isIndividual">
+                              <label>{{'visit.retainedMaterials' | translate}}</label>
+                          </li>
+                          <li ng-class="{'active':vm.activeStep >= 5}" ng-if="!vm.isIndividual">
+                              <label>{{'visit.contactPerson' | translate}}</label>
+                          </li>
+                      </ul>
+                      <hr />
+
+                      <div ng-if="vm.activeStep==1" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                              <applicant-establishment ng-if="!vm.isIndividual" ng-model="vm.establishment"></applicant-establishment>
+                              <applicant ng-if="vm.isIndividual" ng-model="vm.individualUser" applicant-user="vm.individualUser.user"></applicant>
+                              <hr />
+                              <div class="row form-group" ng-if="!vm.isIndividual">
+                                  <div class="col-sm-3"></div>
+                                  <div class="col-sm-2">
+                                      <button type="button" class="btn btn-primary" data-translate="visit.geoLocationUpdate" ng-click="vm.changeGeoLocation()">
+                                      </button>
+                                  </div>
+                              </div>
+                              <hr />
+                              <div class="row form-group">
+                                  <div class="col-sm-3"></div>
+                                  <div class="col-sm-4">
+                                      <button type="button" class="btn btn-primary" data-translate="general.startNavigation" ng-if="vm.establishment.address.latitude" ng-click="vm.mapsSelector()">
+                                          <span class="fa fa-location-arrow"></span>
+                                      </button>
+                                  </div>
+                              </div>
+                              <div class="row form-group" ng-disabled="vm.visit.visitStatusId != 15">
+                                  <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'visit.notFoundReason' | translate}}</span></label>
+                                  <div class="col-sm-4">
+                                      <ui-select ng-model="vm.visit.establishmentVisitStatus" validator="required" name="establishmentVisitStatus" theme="bootstrap" class="text-left" ng-disabled="vm.iseditoradd">
+                                          <ui-select-match placeholder="{{'visit.notFoundReason' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                          <ui-select-choices repeat="estvs in vm.establishmentVisitStatuses | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                              <span ng-bind-html="estvs | localizeString | highlight: $select.search"></span>
+                                          </ui-select-choices>
+                                      </ui-select>
+                                  </div>
+                              </div>
+                              <div class="row form-group" ng-if="vm.visit.establishmentVisitStatus.id == 1 || vm.visit.establishmentVisitStatus.id == 2">
+                                  <label class="col-sm-3 control-label">
+                                      <span>{{'workflow.notes' | translate}}</span>
+                                  </label>
+                                  <div class="col-md-9">
+                                      <textarea name="notes" ng-model="vm.visit.note" ckeditor></textarea>
+                                  </div>
+                              </div>
+                              <div class="row form-group" ng-if="vm.visit.establishmentVisitStatus.id == 2">
+                                  <label class="col-sm-3 control-label">
+                                      <span class="text-danger">* </span>
+                                      <span>{{'visit.captureEstablishmentEntrance' | translate}}</span>
+                                  </label>
+                                  <div class="col-sm-9">
+                                      <uploading-files copyUrl="vm.visit.entranceUrl" copyUrlFullPath="vm.visit.entranceUrlFullPath"
+                                                       url="vm.uploadEstablishmentEntranceUrl" isrequired="true"></uploading-files>
+                                  </div>
+                              </div>
+                              <div class="row form-group" ng-if="vm.visit.establishmentVisitStatus.id != 1">
+                                  <div class="col-sm-3"></div>
+                                  <div class="col-sm-9">
+                                      <button type="button" class="btn btn-primary" ng-click="vm.getLocation()" ng-disabled="vm.iseditoradd" ng-if="!vm.isIndividual">
+                                          {{'visit.getLocation' | translate}}&nbsp;
+                                          <span class="fa fa-location-arrow"></span>
+                                      </button>
+                                  </div>
+                                  <div class="row">
+                                      <span class="col-sm-3 control-label" ng-if="vm.showRequiredError">
+                                          <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                                      </span>
+                                  </div>
+                              </div>
+
+                              <div class="row" ng-if="vm.visit.establishmentVisitStatus.id == 3">
+                                  <div class="col-md-12">
+                                      <button type="submit" ripple="" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goToSecondStep()"
+                                              validation-submit="stepOneForm">
+                                          {{'general.next' | translate}}<span class="ripple"></span>
+                                      </button>
+                                  </div>
+                              </div>
+                              <div class="row" ng-if="vm.visit.establishmentVisitStatus.id != 3">
+                                  <div class="col-md-12">
+                                      <button type="submit" ripple="" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goToSecondStep()"
+                                              validation-submit="stepOneForm">
+                                          {{'general.save' | translate}}<span class="ripple"></span>
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                      <div ng-if="vm.activeStep==2" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                              <uib-accordion close-others="oneAtATime">
+                                  <!--<uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary">
+                    <uib-accordion-heading>
+                        {{'completeProfile.partnerDetails' | translate}}
+                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                    </uib-accordion-heading>
+                    <partners-list establishment-id="vm.establishment.id" is-viewonly="true"></partners-list>
+                </uib-accordion-group>
+                <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                    <uib-accordion-heading>
+                        {{'mediaLicense.stepTwo' | translate}}
+                        <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                    </uib-accordion-heading>
+                    <br />
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <div class="box-placeholder b0 bg-gray-lighter" ng-if="vm.applicationDetail.certificates.length > 0">
+                                <h3 data-translate="mediaLicense.activities"></h3>
+                                <div class="row">
+                                    <div class="col-md-12" ng-if="vm.teamMemberDt.dtOptions">
+                                        <table datatable="" class="row-border hover" dt-options="vm.teamMemberDt.dtOptions" dt-columns="vm.teamMemberDt.dtColumns"
+                                               dt-instance="vm.teamMemberDt.dtInstance" width="100%"></table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <uib-alert type="danger" ng-if="vm.applicationDetail.certificates.length < 1">
+                            <div class="row">
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            {{'mediaLicense.NoMediaLicenseFound' | translate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </uib-alert>
+                    </div>
+                </uib-accordion-group>-->
+                                  <uib-accordion-group is-open="vm.visitDetOpen" panel-class="panel-primary" class="form-horizontal">
+                                      <uib-accordion-heading>
+                                          {{'visit.visitDet' | translate}}
+                                          <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.visitDetOpen, 'glyphicon-chevron-right': !vm.visitDetOpen}"></i>
+                                      </uib-accordion-heading>
+                                      <div class="row form-group">
+                                          <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'visit.typesofviolation' | translate}}</span></label>
+                                          <div class="col-sm-9">
+                                              <div class="checkbox c-checkbox" ng-repeat="vr in vm.visit.selectedvisitViolations track by $index">
+                                                  <label>
+                                                      <input type="checkbox" ng-model="vm.visit.selectedvisitViolations[$index].selected" ng-true-value="true"
+                                                             ng-change="vm.changeViolations(vm.visit.selectedvisitViolations[$index])" />
+                                                      <span class="fa fa-check"></span>{{vr | localizeString}}
+                                                  </label>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <br />
+                                      <div class="row form-group">
+                                          <label class="col-sm-3 control-label">{{'workflow.notes' | translate}}</label>
+                                          <div class="col-md-9">
+                                              <textarea name="notes" ng-model="vm.visit.note" ckeditor></textarea>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="box-placeholder b0 bg-gray-lighter">
+                                              <div class="row col-md-12">
+                                                  <div class="col-md-6 text-left">
+                                                      <h3 data-translate="visit.violationphoto"></h3>
+                                                  </div>
+                                                  <div class="col-md-6 text-right">
+                                                      <button type="button" ng-click="vm.addvisitphotos('lg')" btn-layer-morph="" ripple="" class="btn btn-info btn-circle btn-lg shadow-z1">
+                                                          <em class="fa fa-plus"></em>
+                                                          <span class="ripple"></span>
+                                                      </button>
+                                                  </div>
+                                              </div>
+                                              <div class="row col-md-12">
+                                                  <hr />
+                                              </div>
+                                              <div class="col-md-12 row" ng-if="vm.visit.visitPhotos">
+                                                  <div class="col-lg-3 col-md-4 col-sm-6" ng-repeat="p in vm.visit.visitPhotos track by $index" style="padding-bottom:10px;">
+                                                      <div chained-animation="fadeInUp" class="panel  panel-card-image  animated fadeInUp text-center"
+                                                           style="animation-delay: 0.76s;background-color:transparent;">
+                                                          <div class="row" style="padding:0; margin:0; height:268px;">
+                                                              <a href="{{p.visitPhotoUrlFullPath}}" data-gallery title="Unsplash images">
+                                                                  <img src="{{p.visitPhotoUrlFullPath}}" style="margin-left: auto; margin-right: auto;height:268px;" alt="thumb" class="img-responsive" />
+                                                              </a>
+                                                          </div>
+                                                          <div class="row" style="padding:0; margin:0">
+                                                              <a ng-click="vm.deleteVisitPhotos($index)" class="dropdown-toggle bottom">
+                                                                  <i class="fa fa-3x fa-trash"></i>
+                                                              </a>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                              <div class="row"><br /></div>
+                                          </div>
+                                      </div>
+                                      <div class="row">
+                                          <div class="col-md-12">
+                                              <service-fee ng-model="vm.serviceFeesObj"></service-fee>
+                                          </div>
+                                      </div>
+                                  </uib-accordion-group>
+                              </uib-accordion>
+                              <br />
+                              <div class="row" ng-if="!vm.isIndividual">
+                                  <div class="col-md-12">
+                                      <div class="col-md-12">
+                                          <button type="submit" ripple="" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goToThirdStep()"
+                                                  validation-submit="stepTwoForm">
+                                              {{'general.next' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="vm.previousToFirstStep()">
+                                              {{'general.previous' | translate}}<span class="ripple"></span>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+
+                              <div class="row" ng-if="vm.isIndividual">
+                                  <div class="col-md-12">
+                                      <div class="col-md-12">
+                                          <button type="button" ripple="" validation-submit="stepTwoForm" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right"
+                                                  ng-click="vm.save(1)">
+                                              {{'general.apply' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <button type="button" ripple="" validation-submit="stepTwoForm" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-default pull-right"
+                                                  ng-click="vm.save(2)">
+                                              {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="vm.previousToFirstStep()">
+
+                                              {{'general.previous' | translate}}<span class="ripple"></span>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                      <div ng-if="vm.activeStep==3 && !vm.isIndividual" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <book-scanner ng-model="vm.visit.visitBooks"></book-scanner>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <button type="submit" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goToFourthStep()"
+                                              validation-submit="stepThreeForm">
+                                          {{'general.next' | translate}}<span class="ripple"></span>
+                                      </button>
+                                      <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="vm.previousToSecondStep()">
+                                          {{'general.previous' | translate}}<span class="ripple"></span>
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                      <div ng-if="vm.activeStep==4 && !vm.isIndividual" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepFourForm">
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <retained-materials ng-model="vm.visit.visitRetainedMaterials"></retained-materials>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <button type="submit" ng-disabled="schedule.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goToFifthStep()"
+                                              validation-submit="stepFourForm">
+                                          {{'general.next' | translate}}<span class="ripple"></span>
+                                      </button>
+                                      <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="vm.previousToThirdStep()">
+                                          {{'general.previous' | translate}}<span class="ripple"></span>
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+
+                      <div ng-if="vm.activeStep==5 && !vm.isIndividual" class="wizard-step">
+                          <form role="form" class="mb-lg form-horizontal" name="stepFiveForm">
+                              <div class="row form-group">
+                                  <label class="col-sm-4 control-label">{{'visit.contactPersonName' | translate}}</label>
+                                  <div class="col-sm-8">
+                                      <input type="text" ng-model="vm.visit.contactName" placeholder="{{'visit.contactPersonName' | translate}}" class="form-control" />
+                                  </div>
+                              </div>
+                              <div class="row form-group">
+                                  <label class="col-sm-4 control-label">{{'visit.contactPersonEmail' | translate}}</label>
+                                  <div class="col-sm-8">
+                                      <input type="email" ng-model="vm.visit.contactEmail" placeholder="{{'visit.contactPersonEmail' | translate}}" class="form-control" />
+                                  </div>
+                              </div>
+                              <div class="row form-group">
+                                  <label class="col-sm-4 control-label">{{'visit.contactPersonPhone' | translate}}</label>
+                                  <div class="col-sm-8">
+                                      <input type="tel" ng-model="vm.visit.contactPhone" ng-keypress="vm.preventLeadingZero()" placeholder="{{'visit.contactPersonPhone' | translate}}" class="form-control" />
+                                  </div>
+                              </div>
+                              <div class="row form-group">
+                                  <label class="col-sm-4 control-label">{{'visit.contactPersonSignature' | translate}}</label>
+                                  <div class="col-sm-8">
+                                      <signature ng-model="vm.visit.contactSignatureUrl" signature-full-url="vm.visit.contactSignatureUrlFullPath"></signature>
+                                  </div>
+                              </div>
+                              <div class="row form-group">
+                                  <div class="col-sm-2"></div>
+                                  <div class="col-sm-8">
+                                      <img ng-src="{{vm.visit.contactSignatureUrlFullPath}}" style="border:1px solid" class="img-responsive" />
+                                  </div>
+                                  <div class="col-sm-2"></div>
+                              </div>
+
+                              <div class="row">
+                                  <span class="col-sm-3 control-label" ng-if="vm.showRequiredError">
+                                      <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                                  </span>
+                              </div>
+
+                              <div class="row">
+                                  <div class="col-md-12">
+                                      <div class="col-md-12">
+                                          <button type="button" ripple="" validation-submit="stepFiveForm" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right"
+                                                  ng-click="vm.save(1)">
+                                              {{'general.apply' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <button type="button" ripple="" validation-submit="stepFiveForm" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-default pull-right"
+                                                  ng-click="vm.save(2)">
+                                              {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                          </button>
+                                          <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="vm.previousToFourthStep()">
+
+                                              {{'general.previous' | translate}}<span class="ripple"></span>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+        </div>
+    </div>
+    <!-- END panel-->
+    <uib-accordion ng-if="!vm.isIndividual">
+        <uib-accordion-group is-open="vm.estDetisOpen" panel-class="panel-info" class="form-horizontal">
+            <uib-accordion-heading>
+                بيانات المنشأه والترخيص
+                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.estDetisOpen, 'glyphicon-chevron-right': !vm.estDetisOpen}"></i>
+            </uib-accordion-heading>
+            <license-summary ng-model="vm.establishment.id" full-details="true"></license-summary>
+        </uib-accordion-group>
+        <uib-accordion-group is-open="vm.estMlOpen" panel-class="panel-warning" class="form-horizontal">
+            <uib-accordion-heading>
+                زيارات التفتيش السابقة
+                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.estMlOpen, 'glyphicon-chevron-right': !vm.estMlOpen}"></i>
+            </uib-accordion-heading>
+            <div ng-if="vm.establishmentHasPrevVists">
+                <inspection-history ng-model="vm.establishment.id" has-vists="vm.establishmentHasPrevVists" full-details="true"></inspection-history>
+            </div>
+            <div ng-if="!vm.establishmentHasPrevVists">
+                <div class="alert alert-info">
+                    <p>
+                        <em class="fa fa-info-circle"></em>
+                        لا يوجد زيارات سابقة
+                    </p>
+                </div>
+            </div>
+        </uib-accordion-group>
+    </uib-accordion>
+</div>
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

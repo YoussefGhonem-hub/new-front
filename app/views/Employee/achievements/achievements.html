@@ -1,0 +1,410 @@
+<div ng-controller="AchievementsController as achievements">
+    <div class="app-view-header">
+        {{'profile.achievements' | translate}}
+        <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+    </div>
+    <div class="row form-horizontal form-group">
+        <div class="col-md-4" ng-if="achievements.showEmployee">
+            <label class="col-sm-4 control-label"><span data-translate="achievements.employeeName"></span></label>
+            <div class="col-sm-8">
+                <ui-select ng-model="achievements.filter.userId" theme="bootstrap" class="text-left" name="employee">
+                    <ui-select-match placeholder="{{'achievements.selectEmployee' | translate}}">{{$select.selected.firstName + ' ' + $select.selected.lastName}}</ui-select-match>
+                    <ui-select-choices repeat="employee.id as employee in achievements.employees | propsFilter: {firstName: $select.search, lastName: $select.search}">
+                        <span ng-bind-html="employee.firstName + ' ' + employee.lastName | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="col-sm-3 control-label"><span>{{'achievements.fromDate' | translate}}</span></label>
+            <div class="col-sm-9">
+                <p class="input-group hackyhack">
+                    <input type="text" uib-datepicker-popup="{{format}}" ng-model="achievements.filter.fromCreatedOn" name="startingDate" is-open="opened" min-date="false" max-date="false"
+                           uib-datepicker-options="dateOptions" show-weeks="false" date-disabled="disabled(date, mode)"
+                           close-text="{{'datePicker.close' | translate}}" class="form-control" current-text="{{'datePicker.today' | translate}}"
+                           clear-text="{{'datePicker.clear' | translate}}" placeholder="dd/MM/yyyy" disabled />
+                    <span class="input-group-btn">
+                        <button type="button" ng-click="open($event)" class="btn btn-default">
+                            <em class="fa fa-calendar"></em>
+                        </button>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label class="col-sm-3 control-label"><span>{{'achievements.toDate' | translate}}</span></label>
+            <div class="col-sm-9">
+                <p class="input-group hackyhack">
+                    <input type="text" uib-datepicker-popup="{{format}}" ng-model="achievements.filter.toCreatedOn" name="endingDate" is-open="endopened" min-date="false" max-date="false"
+                           show-weeks="false" show-button-bar="false" uib-datepicker-options="enddateOptions" date-disabled="enddisabled(date, mode)"
+                           close-text="{{'datePicker.close' | translate}}" class="form-control" current-text="{{'datePicker.today' | translate}}"
+                           clear-text="{{'datePicker.clear' | translate}}" disabled />
+                    <span class="input-group-btn">
+                        <button type="button" ng-click="endopen($event)" class="btn btn-default">
+                            <em class="fa fa-calendar"></em>
+                        </button>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <a class="btn btn-primary btn-sm" ng-click="achievements.search()">
+                <i class="fa fa-search"></i> <span data-translate="mediaMaterial.search"></span>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <!-- START achievements content-->
+        <div class="col-lg-9 fw-boxed">
+            <!-- START Tabbed panel-->
+            <div ng-init="hpanel = [true, false, false, false]" class="panel panel-default">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="row row-flush text-center text-muted m0">
+                            <div ripple="" ng-click="hpanel = [true, false, false, false]" ng-class="{'bg-primary': hpanel[0]}" class="col-xs-3 col-md-6 bb br pv-xxl clickable">
+                                <em class="icon-pie-graph fa-2x mv"></em>
+                            </div>
+                            <div ripple="" ng-click="hpanel = [false, true, false, false]" ng-class="{'bg-purple': hpanel[1]}" class="col-xs-3 col-md-6 bb br pv-xxl clickable">
+                                <em class="icon-head fa-2x mv"></em>
+                            </div>
+                            <div ripple="" ng-click="hpanel = [false, false, true, false]" ng-class="{'bg-pink': hpanel[2]}" class="col-xs-3 col-md-6 bb-lg br pv-xxl clickable">
+                                <em class="fa fa-smile-o fa-2x mv"></em>
+                            </div>
+                            <div ripple="" ng-click="hpanel = [false, false, false, true]" ng-class="{'bg-amber': hpanel[3]}" class="col-xs-3 col-md-6 bb-lg br pv-xxl clickable">
+                                <em class="icon-briefcase fa-2x mv"></em>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="hpanel[0]" class="col-md-8">
+                        <div class="row row-table">
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="p">
+                                    <div class="row row-flush text-center">
+                                        <div class="col-xs-4">
+                                            <p class="mt-lg">
+                                                <span data-translate="achievements.correctionRate"></span>
+                                                <div easypiechart="" options="achievements.pieOptions" percent="achievements.piePercent1" class="easypie">
+                                                    <span>{{achievements.piePercent1}}</span>
+                                                </div>
+                                            </p>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <p class="mt-lg" data-translate="achievements.withinRange"></p>
+                                            <div easypiechart="" options="achievements.pieOptions" percent="achievements.piePercent2" class="easypie">
+                                                <span>{{achievements.piePercent2}}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <br /><br />
+                                            <p class="text-muted" data-translate="achievements.pendingActions"></p>
+                                            <h1 class="text-lg m0 mb-lg">N/A</h1>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="hpanel[1]" class="col-md-8">
+                        <div class="row row-table">
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="p">
+                                    <h4 data-translate="achievements.totalActionsPerMonth"></h4>
+                                    <sparkline options="achievements.sparkOptionsLine" values="achievements.sparkValuesLine" class="mb"></sparkline>
+                                    <small data-translate="achievements.totalActionsDesc"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="hpanel[2]" ng-init="achievements.loadProgressValues()" class="col-md-8">
+                        <div class="row row-table">
+                            <div class="col-sm-12 col-xs-12">
+                                <div class="p">
+                                    <h3><span data-translate="achievements.happinessRate"></span>&nbsp;<span ng-bind="achievements.happinessRate"></span>%</h3>
+                                    <uib-progressbar value="achievements.happinessRate" type="info" class="progress-xs"></uib-progressbar>
+                                    <em data-translate="achievements.happinessRateDesc"></em>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div ng-if="hpanel[3]" class="col-md-8">
+                        <div class="p pv-xxl">
+                            <div class="row row-table text-center">
+                                <div class="col-sm-4 col-xs-12">
+                                    <p class="text-muted" data-translate="achievements.actionRate"></p>
+                                    <h1 class="text-lg m0 mb-lg"><span ng-bind="achievements.actionRate"></span></h1>
+                                    <p class="text-muted m0" data-translate="achievements.totalHours"></p>
+                                    <p class="m0"><span ng-bind="achievements.achievement.numberOfWorkingHours"></span></p>
+                                </div>
+                                <div class="col-sm-4 col-xs-12">
+                                    <p class="text-muted" data-translate="achievements.wrongActions"></p>
+                                    <h1 class="text-lg m0 mb-lg"><span ng-bind="achievements.achievement.employeeWrongActions.length"></span></h1>
+                                    <p class="text-muted m0" data-translate="achievements.lastWrongAction"></p>
+                                    <p class="m0"><span ng-bind="achievements.achievement.lastWrongActionDtae"></span></p>
+                                </div>
+                                <div class="col-sm-4 col-xs-12">
+                                    <p class="text-muted" data-translate="achievements.totalActions"></p>
+                                    <h1 class="text-lg m0 mb-lg"><span ng-bind="achievements.achievement.allActions"></span></h1>
+                                    <p class="text-muted m0" data-translate="achievements.lastAction"></p>
+                                    <p class="m0"><span ng-bind="achievements.achievement.lastActionMoment"></span></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END Tabbed panel-->
+            <!-- START Panel-->
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div class="icon-signal fa-lg text-muted pull-right"></div>
+                        <ui-select ng-model="achievements.selectedYear" theme="bootstrap" class="col-md-2 pull-right text-left" name="year"
+                                   ng-change="achievements.Update()">
+                            <ui-select-match placeholder="{{'achievements.selectYear' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="year in achievements.yearsData | propsFilter: {nameEn: $select.search, nameAr: $select.search}">
+                                <span ng-bind-html="year | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <ui-select ng-model="achievements.selectedMonth" theme="bootstrap" class="col-md-2 pull-right text-left" name="month"
+                                   ng-change="achievements.Update()">
+                            <ui-select-match placeholder="{{'achievements.selectMonth' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="month in achievements.selectedYear.months | propsFilter: {nameEn: $select.search, nameAr: $select.search}">
+                                <span ng-bind-html="month | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span data-translate="achievements.actionsPerService"></span>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <p class="text-center">
+                                <em data-translate="achievements.chartDesc"></em><em>{{achievements.selectedMonth | localizeString}}</em><em data-translate="achievements.chartDescFilter"></em>
+                            </p>
+                            <flot options="achievements.splineChartOpts" dataset="achievements.splineData" height="400px"></flot>
+                        </div>
+                        <div class="col-md-3">
+                            <table class="table table-hover mb-lg">
+                                <thead>
+                                    <tr>
+                                        <th data-translate="achievements.serviceName"></th>
+                                        <th class="text-right" data-translate="achievements.show"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="service in achievements.achievement.servicesList">
+                                        <td>{{service.name}}</td>
+                                        <td class="text-right">
+                                            <label ng-class="'switch-' + app.theme.name" class="switch m0">
+                                                <input type="checkbox" ng-model="service.show" ng-change="achievements.Update()" />
+                                                <span></span>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <p>
+                                <em data-translate="achievements.showHideDesc"></em>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- START Panel-->
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            <em class="pull-right icon-bar-graph-2 text-muted"></em>
+                            <div class="text-center">
+                                <div class="text-lg"><span ng-bind="achievements.achievement.averageActionInMinutes"></span></div>
+                                <p class="text-muted" data-translate="achievements.averageResponse"></p>
+                                <div class="label label-success">
+                                    20%
+                                    <em class="fa fa-angle-up"></em>
+                                </div>
+                            </div>
+                            <flot options="achievements.smallChartOpts" dataset="achievements.smallChartData1" height="110px" class="mt-lg"></flot>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <!-- START Panel-->
+                    <div class="panel bg-purple">
+                        <div class="panel-body">
+                            <em class="pull-right icon-thermometer text-muted"></em>
+                            <div class="text-center">
+                                <div class="text-lg"><span ng-bind="achievements.achievement.totalApplications"></span></div>
+                                <p class="text-muted" data-translate="achievements.totalApplications"></p>
+                            </div>
+                        </div>
+                        <div class="lead text-center mb" data-translate="achievements.devices"></div>
+                        <div class="list-group">
+                            <a href="" class="bg-purple list-group-item clearfix bg-light b0">
+                                <div class="pull-left">
+                                    <em class="fa fa-fw fa-desktop mr"></em><span data-translate="achievements.desktop"></span>
+                                </div>
+                                <div class="pull-right"><span ng-bind="achievements.achievement.totalDesktopApplications"></span></div>
+                            </a>
+                            <a href="" class="bg-purple list-group-item clearfix b0">
+                                <div class="pull-left">
+                                    <em class="fa fa-fw fa-tablet mr"></em><span data-translate="achievements.tablet"></span>
+                                </div>
+                                <div class="pull-right"><span ng-bind="achievements.achievement.totalTabletApplications"></span></div>
+                            </a>
+                            <a href="" class="bg-purple list-group-item clearfix bg-light b0">
+                                <div class="pull-left">
+                                    <em class="fa fa-fw fa-mobile mr"></em><span data-translate="achievements.mobile"></span>
+                                </div>
+                                <div class="pull-right"><span ng-bind="achievements.achievement.totalMobileApplications"></span></div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END achievements content-->
+        <!-- START achievements sidebar-->
+        <aside class="col-lg-3 fw-boxed">
+            <div class="row">
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-amber bg-dark">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.approveApplicationDataActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.approveApplicationData"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-amber bg-light">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.sendBackToCustomerActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.sendBackToCustomer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-success bg-dark">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.externalPartyApproveActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.externalPartyApprove"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-success bg-light">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.externalPartyRejectActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.externalPartyReject"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-warning bg-dark">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.rejectActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.reject"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-warning bg-light">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.approveActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.approve"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-info bg-dark">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.mediaMaterialApproveActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.mediaMaterialApprove"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-info bg-light">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.mediaMaterialRejectActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.mediaMaterialReject"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-orange bg-dark">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.sendBackForEmployeeReviewActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.sendBackForEmployeeReview"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-orange bg-light">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.assignMaterialToSupervisorActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.assignMaterialToSupervisor"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-pink bg-dark">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.sendBackToEmployeeForReviewActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.sendBackToSupervisorForReview"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-3 col-xs-6">
+                    <div ripple="" class="panel panel-default">
+                        <div class="panel-body bg-pink bg-light">
+                            <h1 class="text-thin mt"><span ng-bind="achievements.achievement.sendBackToSupervisorForReviewActions"></span></h1>
+                            <div class="text-right text-sm text-muted" data-translate="achievements.submitMaterial"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-6">
+                    <div ng-class="'panel-' + app.theme.name" class="panel">
+                        <div class="panel-heading">
+                            <div ng-class="'bg-' + app.theme.name" class="panel-title">
+                                <em class="icon-clock fa-lg pull-right text-muted"></em><span data-translate="achievements.lastFiveActions"></span>
+                            </div>
+                        </div>
+                        <div class="panel-body pt0">
+                            <div class="smoothy">
+                                <scrollable class="pt">
+                                    <!-- START timeline-->
+                                    <ul class="timeline-alt">
+                                        <br />
+                                        <!-- START timeline item-->
+                                        <li ng-repeat="action in achievements.achievement.lastFiveActions">
+                                            <div class="timeline-badge timeline-badge-sm bg-amber">
+                                                <em class="fa fa-users"></em>
+                                            </div>
+                                            <div class="timeline-date">
+                                                <time>{{action.actionDate}}</time>
+                                            </div>
+                                            <div class="timeline-panel">
+                                                <strong>{{action.applicationNumber}}</strong>
+                                                <div class="text-muted text-sm">{{action | localizeString}}</div>
+                                            </div>
+                                        </li>
+                                        <!-- END timeline item-->
+                                    </ul>
+                                    <!-- END timeline-->
+                                </scrollable>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <!-- END achievements sidebar-->
+    </div>
+</div>

@@ -1,0 +1,546 @@
+﻿<!DOCTYPE html>
+<!--[if IE 9 ]>    <html class="ie9" lang="en" ng-app="naut"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html lang="en" ng-app="eServices">
+<!--<![endif]-->
+<head>
+    <script type="text/javascript">
+        //osalameh:solve caching issue
+        function NoneCahedURL(__URL) {
+            try {
+                var lastPart = __URL.substr(__URL.lastIndexOf('/') + 1);
+                if (lastPart.indexOf("?") == -1 && (lastPart.indexOf(".html") >= 0 || lastPart.indexOf(".js") >= 0)) {
+                    if (document.URL.indexOf("localhost") >= 0) {
+                        var __d = new Date();
+                        __URL = __URL + '?' + __d.getMinutes() + __d.getSeconds() + __d.getMilliseconds();
+                    } else {
+                        __URL = __URL + '?Release-4.0';
+                    }
+                }
+            }
+            catch (e) { }
+            return __URL;
+        }
+        function NoneCahedAPIURL(__URL) {
+            try {
+                if (__URL.indexOf("?") == -1) {
+                    if (__URL.indexOf("api/UserProfile") >= 0) {
+                        var __d = new Date();
+                        __URL = __URL + '?' + __d.getMinutes() + __d.getSeconds() + __d.getMilliseconds();
+                    }
+                }
+            }
+            catch (e) { }
+            return __URL;
+        }
+    </script>
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!--<script async src="https://www.googletagmanager.com/gtag/js?id=UA-110854682-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-110854682-1');
+    </script>-->
+    <script>
+        window.ga = window.ga || function () { (ga.q = ga.q || []).push(arguments) }; ga.l = +new Date;
+        ga('create', 'UA-110854682-1', 'auto');
+
+        // Replace the following lines with the plugins you want to use.
+        ga('require', 'eventTracker');
+        ga('require', 'outboundLinkTracker');
+        ga('require', 'urlChangeTracker');
+        // ...
+
+        ga('send', 'pageview');
+    </script>
+    <script async src="https://www.google-analytics.com/analytics.js"></script>
+    <script async src="vendor/autotrack/autotrack.js?Release-4.0"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="description" content="{{app.description}}">
+    <meta name="keywords" content="app, responsive, angular, bootstrap, dashboard, admin">
+    <title data-ng-bind="pageTitle()">UAE Media Council</title>
+    <!-- build:css app/css/application.css-->
+    <link rel="stylesheet" href="app/css/bootstrap.css?Release-4.0">
+    <link rel="stylesheet" data-ng-href="app/css/{{(app.layout.isRTL === true? 'bootstrap-rtl': 'bootstrap')}}.css?Release-4.0">
+    <link rel="text/javascript" data-ng-href="app/views/Account/recover/{{(app.layout.isRTL === true? 'recoverController': 'recoverController')}}.js?Release-4.0">
+    <link id="mainstyles" rel="stylesheet" data-ng-href="app/css/{{(app.layout.isRTL === true? 'styles-ar': 'styles')}}.css?Release-4.0">
+    <link href="vendor/ui-grid/ui-grid.min.css?Release-4.0" rel="stylesheet" />
+    <link href="app/css/barScanner.css?Release-4.0" rel="stylesheet" />
+    <link href="vendor/passwordstrengthmeter/assets/css/main.css?Release-4.0" rel="stylesheet" />
+    <link rel="stylesheet" href="vendor/ng-toast/dist/ngToast.min.css?Release-4.0" />
+    <link rel="stylesheet" href="vendor/ng-toast/dist/ngToast-animations.min.css?Release-4.0" />
+    <!-- endbuild-->
+    <!--Start of Zendesk Chat Script-->
+    <!--<script type="text/javascript">
+        window.$zopim || (function (d, s) {
+            var z = $zopim = function (c) { z._.push(c) }, $ = z.s =
+                d.createElement(s), e = d.getElementsByTagName(s)[0]; z.set = function (o) {
+                    z.set.
+                        _.push(o)
+                }; z._ = []; z.set._ = []; $.async = !0; $.setAttribute("charset", "utf-8");
+            $.src = "https://v2.zopim.com/?4QmUeaANVm1l0Q1OeEpQAWCDu5uNLozO"; z.t = +new Date; $.
+                type = "text/javascript"; e.parentNode.insertBefore($, e)
+        })(document, "script");
+    </script>-->
+    <!--End of Zendesk Chat Script-->
+    <!-- Start of LiveChat (www.livechatinc.com) code -->
+    <!--<script>
+        window.__lc = window.__lc || {};
+        window.__lc.license = 11486923;
+        ; (function (n, t, c) { function i(n) { return e._h ? e._h.apply(null, n) : e._q.push(n) } var e = { _q: [], _h: null, _v: "2.0", on: function () { i(["on", c.call(arguments)]) }, once: function () { i(["once", c.call(arguments)]) }, off: function () { i(["off", c.call(arguments)]) }, get: function () { if (!e._h) throw new Error("[LiveChatWidget] You can't use getters before load."); return i(["get", c.call(arguments)]) }, call: function () { i(["call", c.call(arguments)]) }, init: function () { var n = t.createElement("script"); n.async = !0, n.type = "text/javascript", n.src = "https://cdn.livechatinc.com/tracking.js", t.head.appendChild(n) } }; !n.__lc.asyncInit && e.init(), n.LiveChatWidget = n.LiveChatWidget || e }(window, document, [].slice))
+    </script>-->
+    <!--<noscript>
+        <a href="https://www.livechat.com/chat-with/<LICENSE_NUMBER>/" rel="nofollow">Chat with us</a>, powered by
+        <a href="https://www.livechat.com/?welcome"
+           rel="noopener nofollow"
+           target="_blank">LiveChat</a>
+    </noscript>-->
+    <!-- End of LiveChat code -->
+
+
+</head>
+<body ng-cloak ng-class="{ 'color-blind' : app.layout.isColorBlind, 'layout-fixed' : app.layout.isFixed, 'layout-boxed' : app.layout.isBoxed, 'layout-dock' : app.layout.isDocked, 'layout-material': app.layout.isMaterial, 'aside-offscreen' : app.sidebar.isOffscreen, 'aside-mini' : app.sidebar.isMini, 'aside-right' : app.sidebar.isRight, 'footer-hidden': app.footer.hidden, 'in-app': !$state.includes('page')}">
+    <div data-ui-view="" data-autoscroll="false" ng-controller="CoreController" class="app-container"></div>
+
+    <!-- Settings-->
+    <div ng-include="'templates/settings.html'" ng-class="{'visible': showSettings}" ng-init="showSettings = false" class="settings-wrapper"></div>
+    <toast></toast>
+
+    <!-- End Settings-->
+    <!-- build:vendor app/js/vendor.js-->
+    <script src="vendor/modernizr/modernizr.custom.js?Release-4.0"></script>
+    <script src="vendor/jquery/dist/jquery.js?Release-4.0"></script>
+    <script src="vendor/angular/angular.js?Release-4.0"></script>
+    <script src="src/js/bootstrap.js?Release-4.0"></script>
+    <script src="vendor/angular-route/angular-route.js?Release-4.0"></script>
+    <script src="vendor/angular-cookies/angular-cookies.js?Release-4.0"></script>
+    <script src="vendor/angular-animate/angular-animate.js?Release-4.0"></script>
+    <script src="vendor/angular-touch/angular-touch.js?Release-4.0"></script>
+    <script src="vendor/angular-sanitize/angular-sanitize.js?Release-4.0"></script>
+    <script src="vendor/angular-resource/angular-resource.js?Release-4.0"></script>
+    <script src="vendor/angular-translate/angular-translate.js?Release-4.0"></script>
+    <script src="vendor/angular-aria/angular-aria.js?Release-4.0"></script>
+    <script src="vendor/ngstorage/ngStorage.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-router/release/angular-ui-router.js?Release-4.0"></script>
+    <script src="vendor/moment/min/moment-with-locales.min.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-utils/index.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-mask/dist/mask.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-event/dist/event.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-validate/dist/validate.js?Release-4.0"></script>
+    <script src="vendor/angular-validation/angular-validation.js?Release-4.0"></script>
+    <script src="vendor/angular-validation/angular-validation-rule.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-indeterminate/dist/indeterminate.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-scrollpoint/dist/scrollpoint.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-scroll/dist/ui-scroll.js?Release-4.0"></script>
+    <script src="vendor/angular-ui-uploader/dist/uploader.js?Release-4.0"></script>
+    <script src="vendor/angular-file-upload/dist/angular-file-upload.js?Release-4.0"></script>
+    <script src="vendor/angular-translate-loader-url/angular-translate-loader-url.js?Release-4.0"></script>
+    <script src="vendor/angular-translate-loader-static-files/angular-translate-loader-static-files.js?Release-4.0"></script>
+    <script src="vendor/angular-translate-storage-local/angular-translate-storage-local.js?Release-4.0"></script>
+    <script src="vendor/angular-translate-storage-cookie/angular-translate-storage-cookie.js?Release-4.0"></script>
+    <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js?Release-4.0"></script>
+    <script src="vendor/angular-dynamic-locale/dist/tmhDynamicLocale.js?Release-4.0"></script>
+    <script src="vendor/oclazyload/dist/ocLazyLoad.js?Release-4.0"></script>
+    <script src="vendor/angular-loading-bar/build/loading-bar.js?Release-4.0"></script>
+    <script src="vendor/angular-recaptcha/release/angular-recaptcha.js?Release-4.0"></script>
+    <script src="vendor/ckeditor/ckeditor.js?Release-4.0"></script>
+    <script src="vendor/ckeditor/styles.js?Release-4.0"></script>
+    <script src="vendor/ckeditor/config.js?Release-4.0"></script>
+    <script src="vendor/ckeditor/adapters/jquery.js?Release-4.0"></script>
+    <script src="vendor/pdfmake/pdfmake.min.js?Release-4.0"></script>
+    <script src="vendor/pdfmake/vfs_fonts.js?Release-4.0"></script>
+    <script src="vendor/angular-base64/angular-base64.js?Release-4.0"></script>
+    <script src="vendor/html2canvas/html2canvas.js?Release-4.0"></script>
+    <script src="vendor/angular-qrcode/angular-qrcode.js?Release-4.0"></script>
+    <script src="vendor/angular-qrcode/qrcode.js?Release-4.0"></script>
+    <script src="vendor/angular-qrcode/qrcode_UTF8.js?Release-4.0"></script>
+    <script src="vendor/FileSaver/FileSaver.js?Release-4.0"></script>
+    <script src="vendor/FileSaver/FileSaver.min.js?Release-4.0"></script>
+    <script src="vendor/ui-grid/csv.js?Release-4.0"></script>
+    <script src="vendor/ui-grid/xlsx.min.js?Release-4.0"></script>
+    <script src="vendor/ui-grid/ui-grid.js?Release-4.0"></script>
+    <script src="vendor/quagga/dist/quagga.min.js?Release-4.0"></script>
+    <script src="vendor/signature/signature_pad/dist/signature_pad.min.js?Release-4.0"></script>
+    <script src="vendor/signature/angular-signature/src/signature.js?Release-4.0"></script>
+    <script src="vendor/pdfjs/js/pdf.js?Release-4.0"></script>
+    <script src="vendor/pdfjs/js/pdf.worker.js?Release-4.0"></script>
+    <script src="vendor/pdfjs/js/angular-pdf.js?Release-4.0"></script>
+    <script src="vendor/ng-mask/dist/ngMask.min.js?Release-4.0"></script>
+    <script src="vendor/angular-signalr-hub/jquery.signalR.min.js?Release-4.0"></script>
+    <script src="vendor/angular-signalr-hub/signalr-hub.js?Release-4.0"></script>
+    <script src="vendor/ng-toast/dist/ngToast.min.js?Release-4.0"></script>
+    <script src="vendor/angular-file-manager/node_modules/ng-file-upload/dist/ng-file-upload.min.js?Release-4.0"></script>
+    <script src="vendor/renderjson-master/renderjson.js?Release-4.0"></script>
+    <!-- endbuild
+    <!-- build:js app/js/application.js-->
+    <script src="src/js/app.module.js?Release-4.0"></script>
+    <script src="src/js/modules/apps/calendar.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/apps/chat.controller.js?Release-4.0"></script>
+
+    <!-- File Manager Start -->
+    <link href="vendor/angular-file-manager/dist/angular-filemanager.css" rel="stylesheet" />
+    <script src="vendor/angular-file-manager/dist/angular-filemanager.js?Release-4.0"></script>
+    <!-- File Manager Ends -->
+    <!-- ACCOUNT Start -->
+    <script src="app/views/Account/login/loginController.js?Release-4.0"></script>
+    <script src="app/views/Account/login/loginService.js?Release-4.0"></script>
+    <script src="app/views/Account/login/OTP/verifyOTPController.js?Release-4.0"></script>
+    <script src="src/js/modules/authentication/rememberMeService.js?Release-4.0"></script>
+    <script src="app/views/Account/login/userProfile.js?Release-4.0"></script>
+    <script src="app/views/Account/login/smartpassloginController.js?Release-4.0"></script>
+    <script src="app/views/Account/register/registerController.js?Release-4.0"></script>
+    <script src="app/views/Account/register/registerService.js?Release-4.0"></script>
+    <script src="app/views/Account/confirmEmail/confirmEmailController.js?Release-4.0"></script>
+    <script src="app/views/Account/confirmPhone/confirmPhoneController.js?Release-4.0"></script>
+    <script src="app/views/Account/recover/recoverController.js?Release-4.0"></script>
+    <script src="app/views/Account/recover/resetPasswordController.js?Release-4.0"></script>
+    <script src="app/views/Account/completeProfile/completeProfileController.js?Release-4.0"></script>
+    <script src="app/views/Account/completeProfile/establishmentBranch/establishmentBranchController.js?Release-4.0"></script>
+    <script src="app/views/Account/completeProfile/establishmentPartner/establishmentPartnerController.js?Release-4.0"></script>
+    <script src="app/views/Account/profile/profileController.js?Release-4.0"></script>
+    <script src="app/views/Account/profile/changePassword/changePasswordController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/RolesController.js?Release-4.0"></script>
+    <script src="app/views/Account/employees/EmployeesController.js?Release-4.0"></script>
+    <script src="app/views/Account/customers/CustomersController.js?Release-4.0"></script>
+    <script src="app/views/Account/customers/Timeline/timelineController.js?Release-4.0"></script>
+    <script src="app/views/Account/customers/filter/filterCustomersController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/Send Email/sendEmailController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/Send SMS/sendSMSController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/LockUser/lockUserController.js?Release-4.0"></script>
+    <script src="app/views/Account/qrCode/foreignPressCardQRCodeController.js?Release-4.0"></script>
+    <!-- ACCOUNT Start -->
+    <!-- Employee Start -->
+    <script src="app/views/Employee/Timeline/timelineController.js?Release-4.0"></script>
+    <script src="app/views/Employee/approval/approvalController.js?Release-4.0"></script>
+    <script src="app/views/Employee/managerApproval/managerApprovalController.js?Release-4.0"></script>
+    <script src="app/views/Employee/supervisorApproval/supervisorApproveController.js?Release-4.0"></script>
+    <script src="app/views/Employee/thirdPartyApproval/thirdPartyApproveController.js?Release-4.0"></script>
+    <script src="app/views/Employee/urgent/urgentController.js?Release-4.0"></script>
+    <script src="app/views/Employee/payment/PaymentsController.js?Release-4.0"></script>
+    <script src="app/views/Employee/payment/filter/filterPaymentController.js?Release-4.0"></script>
+    <script src="app/views/Employee/newspaper/NewspaperController.js?Release-4.0"></script>
+    <script src="app/views/Employee/newspaper/filter/filterNewspaperController.js?Release-4.0"></script>
+    <script src="app/views/Employee//newspaper/NewspaperCardController.js?Release-4.0"></script>
+    <!-- Employee Start -->
+    <!-- Dashboard Start -->
+    <script src="app/views/Dashboard/dashboard.controller.js?Release-4.0"></script>
+    <script src="app/views/Dashboard/filter/filterDashboardController.js?Release-4.0"></script>
+    <script src="app/views/Employee/achievements/AchievementsController.js?Release-4.0"></script>
+    <!-- Dashboard End -->
+    <!-- Applications: Start  -->
+    <script src="app/views/Application/CirculationMediaMaterialPermit/circulationMediaMaterialPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/MediaLicense/mediaLicenseController.js?Release-4.0"></script>
+    <script src="app/views/Application/RadioTvBroadcasting/radioTvBroadcastingController.js?Release-4.0"></script>
+    <script src="app/views/Application/GroundPhotographyPermit/filmingTeam/filmingTeamController.js?Release-4.0"></script>
+    <script src="app/views/Application/GroundPhotographyPermit/filmingTeam/ExistingMember/existingFilmingTeamController.js?Release-4.0"></script>
+    <script src="app/views/Application/GroundPhotographyPermit/filmingLocation/filmingLocationController.js?Release-4.0"></script>
+    <script src="app/views/Application/AerialPhotographyPermit/filmingTeam/filmingTeamController.js?Release-4.0"></script>
+    <script src="app/views/Application/AerialPhotographyPermit/filmingLocation/filmingLocationController.js?Release-4.0"></script>
+    <script src="app/views/Application/ForeignJournalists/foreignJournalistController.js?Release-4.0"></script>
+    <script src="app/views/Application/JournalistsAppointment/journalistsAppointmentController.js?Release-4.0"></script>
+    <script src="app/views/Application/RegulateMediaMaterial/regulateMediaMaterialController.js?Release-4.0"></script>
+    <script src="app/views/Application/printingPermit/printingPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/newspaperMagazineLicense/newspaperMagazineLicenseController.js?Release-4.0"></script>
+    <script src="app/views/Application/newspaperMagazineLicense/languageItems/languageItemsController.js?Release-4.0"></script>
+    <script src="app/views/Application/CirculationNewspaperMagazine/circulationNewspaperMagazineController.js?Release-4.0"></script>
+    <script src="app/views/Application/GroundPhotographyPermit/groundPhotographyPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/AerialPhotographyPermit/aerialPhotographyPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/RegulateMediaMaterial/regulateItems/regulateItemsController.js?Release-4.0"></script>
+    <script src="app/views/Application/NewspaperNameBooking/newspaperNameBookingController.js?Release-4.0"></script>
+    <script src="app/views/Application/PhotoEquipmentPermit/photoEquipmentPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/PhotoEquipmentPermit/equipmentList/equipmentListController.js?Release-4.0"></script>
+    <script src="app/views/Application/PhotoEquipmentPermit/equipmentTeam/equipmentTeamController.js?Release-4.0"></script>
+    <script src="app/views/Application/RepresentativeOffice/representativeOfficeController.js?Release-4.0"></script>
+    <script src="app/views/Application/MediaLicense/ChangePartners/changePartnersController.js?Release-4.0"></script>
+    <script src="app/views/Application/ForeignMediaPressCard/foreignMediaIssuePressCardController.js?Release-4.0"></script>
+    <script src="app/views/Application/Sponsorship/issueSponsorshipController.js?Release-4.0"></script>
+    <script src="app/views/Application/SocialMediaLicense/socialMediaLicenseController.js?Release-4.0"></script>
+
+    <!-- Applications: End  -->
+    <!-- Controller: Start  -->
+    <script src="app/views/Controller/mediaMaterialApprovalController.js?Release-4.0"></script>
+    <script src="app/views/Controller/actionList/actionListController.js?Release-4.0"></script>
+    <script src="app/views/Application/MediaLicense/ChangePartners/ExistingPartner/existingPartnersController.js?Release-4.0"></script>
+    <!-- Controller: End  -->
+    <!-- Controls: Start  -->
+    <script src="app/views/Controls/establishment/establishmentDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/urgentService/urgentServiceDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/serviceFee/serviceFeeDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/address/profileAddressDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/workflowAction/workflowActionDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/workflowAction/workflowPopup/workflowPopupController.js?Release-4.0"></script>
+    <script src="app/views/Controls/uiMultipleDirective/uiMultipleDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/happinessRating/happinessRatingController.js?Release-4.0"></script>
+    <script src="app/views/Controls/cropImg/cropController.js?Release-4.0"></script>
+    <script src="app/views/Controls/person/profileNationalityDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/terms/termsDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/uiSelectRequiredDirective/uiSelectRequiredDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/ckeditorDirective/ckeditorDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/ChooseEstablishment/chooseEstablishmentController.js?Release-4.0"></script>
+    <script src="app/views/Controls/UploadingFilesDirective/UploadingFilesDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/establishment/partnersListDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/applicant/applicantDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/applicantEstablishment/applicantEstablishmentDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/FileRead/FileRead.js?Release-4.0"></script>
+    <script src="app/views/Controls/inspectionReport/inspectionReportDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/inspectionReport/inspectionTaskDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/inspectionReport/inspectionHistoryDirective.js"></script>
+    <script src="app/views/Controls/inspectionReport/licenseSummaryDirective.js"></script>
+    <script src="app/views/Controls/bookScanner/bookScannerDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/RetainedMaterials/retainedMaterialsDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/Signature/signatureDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/Signature/VisitContactPerson/signatureController.js?Release-4.0"></script>
+    <script src="app/views/Controls/PDFRender/pdfRenderDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/PDFRender/MediaLicenseCertificate/certificateController.js?Release-4.0"></script>
+    <script src="app/views/Controls/happinessRating/PMOHappinessMeterDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/externalMediaAccount/externalMediaAccountDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/externalMediaAccount/externalMediaAccountPopup/externalMediaAccountPopupController.js?Release-4.0"></script>
+    <script src="app/views/Controls/externalMediaAccount/externalMediaAccountPopup/Review/reviewExternalMediaAccountPopupController.js?Release-4.0"></script>
+    <script src="app/views/Controls/externalMediaAccount/socialAuthenticationPopup/oAuthPopupController.js?Release-4.0"></script>
+    <script src="app/views/Controls/EstablishmentPartners/establishmentPartnersDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/EstablishmentPartners/establishmentPartnersListDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/ExtraHelp/extraHelpDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/PasswordStrengthMeter/passwordCheck.js?Release-4.0"></script>
+    <script src="app/views/Controls/ISBNValidator/isbnValidatorDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/ISBNValidator/BookDetails/fetchBookController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/SystemManagement/Lookup/OffDays/dayOffDirective.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/SystemManagement/Lookup/Offices/officeDirective.js?Release-4.0"></script>
+    <script src="app/views/Controls/happinessRating/CustomerPulseDirective.js?Release-4.0"></script>
+    <!-- Controls End -->
+    <!-- Review Start -->
+    <script src="app/views/Application/MediaLicense/Review/reviewMediaLicenseController.js?Release-4.0"></script>
+    <script src="app/views/Application/RadioTvBroadcasting/Review/reviewRadioTvBroadcastingController.js?Release-4.0"></script>
+    <script src="app/views/Application/GroundPhotographyPermit/Review/reviewGroundPhotographyPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/GroundPhotographyPermit/filmingLocation/Review/reviewFilmingLocationController.js?Release-4.0"></script>
+    <script src="app/views/Application/GroundPhotographyPermit/filmingTeam/Review/reviewFilmingTeamController.js?Release-4.0"></script>
+    <script src="app/views/Application/AerialPhotographyPermit/Review/reviewAerialPhotographyPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/AerialPhotographyPermit/filmingLocation/Review/reviewFilmingLocationController.js?Release-4.0"></script>
+    <script src="app/views/Application/AerialPhotographyPermit/filmingTeam/Review/reviewFilmingTeamController.js?Release-4.0"></script>
+    <script src="app/views/Application/newspaperMagazineLicense/Review/reviewNewspaperMagazineLicenseController.js?Release-4.0"></script>
+    <script src="app/views/Application/JournalistsAppointment/Review/reviewJournalistsAppointmentController.js?Release-4.0"></script>
+    <script src="app/views/Application/CirculationNewspaperMagazine/Review/reviewCirculationNewspaperMagazineController.js?Release-4.0"></script>
+    <script src="app/views/Application/printingPermit/Review/reviewPrintingPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/RegulateMediaMaterial/Review/reviewRegulateMediaMaterialController.js?Release-4.0"></script>
+    <script src="app/views/Application/ForeignJournalists/Review/reviewForeignJournalistsController.js?Release-4.0"></script>
+    <script src="app/views/Application/CirculationMediaMaterialPermit/Review/reviewCirculationMediaMaterialController.js?Release-4.0"></script>
+    <script src="app/views/Account/completeProfile/establishmentPartner/Review/reviewEstablishmentPartnerController.js?Release-4.0"></script>
+    <script src="app/views/Application/NewspaperNameBooking/Review/reviewNewspaperNameBookingController.js?Release-4.0"></script>
+    <script src="app/views/Application/PhotoEquipmentPermit/Review/reviewPhotoEquipmentPermitController.js?Release-4.0"></script>
+    <script src="app/views/Application/PhotoEquipmentPermit/equipmentList/Review/reviewEquipmentListController.js?Release-4.0"></script>
+    <script src="app/views/Application/RepresentativeOffice/Review/reviewRepresentativeOfficeController.js?Release-4.0"></script>
+    <script src="app/views/Application/ForeignMediaPressCard/Review/reviewForeignMediaIssuePressCardController.js?Release-4.0"></script>
+    <script src="app/views/Application/Sponsorship/Review/reviewSponsorshipController.js?Release-4.0"></script>
+    <!-- Review End -->
+    <!-- Renew Start -->
+    <script src="app/views/Application/MediaLicense/Renew/mediaLicenseRenewController.js?Release-4.0"></script>
+    <script src="app/views/Application/newspaperMagazineLicense/Renew/renewNewspaperMagazineLicenseController.js?Release-4.0"></script>
+    <script src="app/views/Application/RadioTvBroadcasting/Renew/renewRadioTvBroadcastingController.js?Release-4.0"></script>
+    <script src="app/views/Application/MediaLicense/AddActivity/addMediaActivityController.js?Release-4.0"></script>
+    <script src="app/views/Application/MediaLicense/CancelActivity/cancelMediaActivityController.js?Release-4.0"></script>
+    <script src="app/views/Application/ForeignMediaPressCard/Renew/renewForeignMediaIssuePressCardController.js?Release-4.0"></script>
+    <script src="app/views/Application/Sponsorship/Renew/renewSponsorshipController.js?Release-4.0"></script>
+    <!-- Renew End -->
+    <!-- Payment Start -->
+    <script src="app/views/Payment/verifyPayment/verifyPaymentController.js?Release-4.0"></script>
+    <script src="app/views/Payment/paymentReceipt/paymentReceiptController.js?Release-4.0"></script>
+    <script src="app/views/Payment/transactionResponse/transactionResponseController.js?Release-4.0"></script>
+    <script src="app/views/Payment/transactionRequest/transactionRequestController.js?Release-4.0"></script>
+    <script src="app/views/Payment/fakePayment/fakePaymentController.js?Release-4.0"></script>
+    <script src="app/views/Payment/otherChannels/otherChannelsController.js?Release-4.0"></script>
+    <script src="app/views/Payment/transactionResponse/purchaseResponseController.js?Release-4.0"></script>
+    <!-- Payment End -->
+    <!-- Book Start -->
+    <script src="app/views/Employee/book/BooksController.js?Release-4.0"></script>
+    <script src="app/views/Employee/book/filter/filterBookController.js?Release-4.0"></script>
+    <script src="app/views/Employee/book/BookCardController.js?Release-4.0"></script>
+    <script src="app/views/Employee/regulate/RegulateEntryItemsController.js?Release-4.0"></script>
+    <script src="app/views/Employee/regulate/filter/filterRegulateItemController.js?Release-4.0"></script>
+    <script src="app/views/Employee/book/AddBook/addBookController.js?Release-4.0"></script>
+    <script src="app/views/Master/header/NewHeaderController.js?Release-4.0"></script>
+    <!-- <script src="app/views/Master/menu/NewMenuController.js?Release-4.0"></script> -->
+    <script src="app/views/Master/footer/NewFooterController.js?Release-4.0"></script>
+
+    <!-- Book End -->
+    <!--<script src="src/js/custom/ZopimChat.js?Release-4.0"></script>-->
+    <script src="src/js/modules/apps/checkboxGroup.js?Release-4.0"></script>
+    <script src="src/js/modules/apps/checklist-model.js?Release-4.0"></script>
+    <script src="src/js/modules/apps/mailbox.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/apps/tasks.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/cards/cards.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/authentication/authentication.service.js?Release-4.0"></script>
+    <script src="src/js/modules/authentication/flash.service.js?Release-4.0"></script>
+    <script src="src/js/modules/authentication/user.service.local-storage.js?Release-4.0"></script>
+    <script src="src/js/modules/charts/flot-chart-options.services.js?Release-4.0"></script>
+    <script src="src/js/modules/charts/flot-chart.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/charts/flot-chart.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/charts/pie-charts.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/charts/sparklines.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/colors/colors.constant.js?Release-4.0"></script>
+    <script src="src/js/modules/colors/colors.run.js?Release-4.0"></script>
+    <script src="src/js/modules/colors/colors.service.js?Release-4.0"></script>
+    <script src="src/js/modules/common/directives/animate-enabled.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/common/directives/chained-animation.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/common/directives/check-all-table.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/common/directives/fullscreen.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/common/directives/reset-key.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/common/filters/title-case.filter.js?Release-4.0"></script>
+    <script src="src/js/modules/common/filters/localizeString.js?Release-4.0"></script>
+    <script src="src/js/modules/common/services/browser-detection.service.js?Release-4.0"></script>
+    <script src="src/js/modules/common/services/support.service.js?Release-4.0"></script>
+    <script src="src/js/modules/common/services/touch-drag.service.js?Release-4.0"></script>
+    <script src="src/js/modules/core/config.js?Release-4.0"></script>
+    <script src="src/js/modules/core/constants.js?Release-4.0"></script>
+    <script src="src/js/modules/core/core.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/core/core.run.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/file-style.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/file-upload.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/form-input.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/form-validation.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/form-xeditable.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/image-crop.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/slider.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/forms/ui-select.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/icons/climacon.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/layout/header-nav.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/layout/ui-sidebar.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/loadingbar/loadingbar.config.js?Release-4.0"></script>
+    <script src="src/js/modules/loadingbar/loadingbar.run.js?Release-4.0"></script>
+    <script src="src/js/modules/ripple/ripple.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/routes/routes.config.js?Release-4.0"></script>
+    <script src="src/js/modules/routes/routes.provider.js?Release-4.0"></script>
+    <script src="src/js/modules/routes/routes.run.js?Release-4.0"></script>
+    <script src="src/js/modules/routes/vendor.constants.js?Release-4.0"></script>
+    <script src="src/js/modules/settings/settings.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/settings/setlocalization.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/settings/settings.service.js?Release-4.0"></script>
+    <script src="src/js/modules/tables/angular-table.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/tables/datatables.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/tables/responsive-table.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/tables/table-xeditable.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/translator/localization.config.js?Release-4.0"></script>
+    <script src="src/js/modules/translator/localization.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/translator/translator.config.js?Release-4.0"></script>
+    <script src="src/js/modules/translator/translator.service.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/alerts.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/buttons.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/carousel.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/datepicker.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/modal.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/nav-tree.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/nestable.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/nestable.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/notification.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/pagination.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/popover.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/portlets.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/progress.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/rating.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/scrollable.directive.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/sortable.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/sweetalert.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/timepicker.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/toaster.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/tooltip.config.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/tooltip.controller.js?Release-4.0"></script>
+    <script src="src/js/modules/ui/typeahead.controller.js?Release-4.0"></script>
+    <script src="app/js/templates.js?Release-4.0"></script>
+    <script src="app/views/Migration/MigrateOldLicensController.js?Release-4.0"></script>
+    <script src="vendor/angular-text-slider/angular-text-slider.js?Release-4.0"></script>
+    <script src="vendor/Angular-Paging-master/dist/paging.js?Release-4.0"></script>
+    <script src="//f1-eu.readspeaker.com/script/9104/ReadSpeaker.js?pids=embhl" type="text/javascript"></script>
+    <script src="app/views/Controls/bookScanner/book/bookController.js?Release-4.0"></script>
+    <script src="vendor/angularjs-google-maps-master/build/scripts/ng-map.min.js?Release-4.0"></script>
+    <script src="src/js/modules/pushNotification/pushNotification.js?Release-4.0"></script>
+
+
+    <script src="app/views/Controls/UploadingFilesDirective/DocumentPreviewDirective.js"></script>
+
+
+    <!-- Inspection Start -->
+    <script src="app/views/Inspection/establishments/EstablishmentsController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/establishmentsFines/establishmentsFinesController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/maps/mapsController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/schedule/scheduleInspectorController.js?Release-4.0"></script>
+    <script src="app/views/Controls/locationInspection/locationInspectionDirective.js?Release-4.0"></script>
+    <script src="app/views/Inspection/visit/visitController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/visit/unscheduledvisitController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/task/taskController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/scheduledTables/ScheduledTablesController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/visitList/visitListController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/visitList/filter/filterVisitListController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/visitList/Review/reviewVisitListController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/establishments/Review/reviewEstablishmentController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/establishments/AddEstablishment/addEstablishmentController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/task/Review/reviewTaskController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/visit/VisitPhotos/VisitPhotoController.js?Release-4.0"></script>
+    <script src="app/views/Controls/bookScanner/book/bookController.js?Release-4.0"></script>
+    <script src="app/views/Controls/RetainedMaterials/VisitRetainedMaterial/visitRetainedMaterialController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/Timeline/timelineController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/SystemManagement/systemManagementController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/SystemManagement/Lookup/OffDays/dayoffController.js?Release-4.0"></script>
+    <script src="app/views/Account/admin/SystemManagement/Lookup/Offices/officeController.js?Release-4.0"></script>
+    <script src="app/views/Inspection/payFines/payFinesController.js?Release-4.0"></script>
+
+    <script src="app/views/Account/login/uaepassloginController.js?Release-4.0"></script>
+    <script src="app/views/Report/reports/reportListController.js?Release-4.0"></script>
+    <script src="app/views/Report/reports/newReportController.js?Release-4.0"></script>
+    <!-- Inspection End -->
+    <!-- Enquiry Start -->
+    <script src="app/views/Enquiry/enquiries/EnquiriesController.js?Release-4.0"></script>
+    <script src="app/views/Enquiry/enquiries/AddEnquiry/addEnquiryController.js?Release-4.0"></script>
+    <script src="app/views/Enquiry/enquiries/Review/reviewEnquiryController.js?Release-4.0"></script>
+    <script src="app/views/Enquiry/filter/filterEnquiriesController.js?Release-4.0"></script>
+    <!-- Enquiry End -->
+    <script src="app/views/Tools/techsupport.js"></script>
+
+
+    <!-- UI Calendar Start -->
+    <link href="vendor/angular-bootstrap-calendar-master/dist/css/angular-bootstrap-calendar.min.css?Release-4.0" rel="stylesheet" />
+    <script src="vendor/angular-bootstrap-calendar-master/dist/js/interact.min.js?Release-4.0"></script>
+    <script src="vendor/angular-bootstrap-calendar-master/dist/js/angular-bootstrap-calendar-tpls.js?Release-4.0"></script>
+    <!--<link href="vendor/fullcalendar/dist/fullcalendar.css" rel="stylesheet" />
+    <script src="vendor/ui-calendar-master/src/calendar.js?Release-4.0"></script>
+    <script src="vendor/fullcalendar/dist/fullcalendar.min.js?Release-4.0"></script>
+    <script src="vendor/fullcalendar/dist/gcal.js?Release-4.0"></script>-->
+    <!-- UI Calendar End -->
+    <!-- endbuild-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wicket/1.3.2/wicket.js?Release-4.0"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wicket/1.3.2/wicket-gmap3.js?Release-4.0"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/wicket/1.3.2/wicket-leaflet.js?Release-4.0"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/wicket/1.3.2/wicket-arcgis.js?Release-4.0"></script>-->
+
+    <div id="pulse-happiness-meter-widget-container"></div>
+    <script src="https://survey.customerpulse.gov.ae/destination/index.js" id="pulse-happiness-meter-widget-container">
+    </script>
+
+    <script>
+        angular.element(document).ready(function () {
+            var injector = angular.element(document).injector();
+            var $rootScope = injector.get('$rootScope');
+         
+            $rootScope.$watch(function () {
+                return $rootScope.app.layout.isRTL;
+            }, function (newValue, oldValue) {
+                if (newValue !== oldValue) {
+                    window.location.reload();
+                }
+            });
+            var isRTLValue = $rootScope.app.layout.isRTL;
+            if (isRTLValue) {
+                var _opts = { url: 'https://onecontact3xg.itmaxglobal.com/clicktointeractarb/', bodyBackground: '#b68a34', headerBackground: '#b08b43', headerTitle: 'دردشة مباشرة', instance: 'uaemc', mediaType: 'chat', service: 'IM', language: 'en', headerColor: '#FFFFFF' }; (function () { var n = document.createElement('script'), t; n.setAttribute('id', 'preview-widget'); n.setAttribute('opts', JSON.stringify(_opts)); n.type = 'text/javascript'; n.async = !0; n.src = 'https://onecontact3xg.itmaxglobal.com/clicktointeractarb/widget/widget.js?time=' + (new Date).getTime(); document.body.appendChild(n); t = document.getElementById('preview-widget'); t.parentNode.insertBefore(n, t) })();
+            } else {
+                var _opts = { url: 'https://onecontact3xg.itmaxglobal.com/clicktointeract/', bodyBackground: '#b68a34', headerBackground: '#b08b43', headerTitle: 'Live Chat', instance: 'uaemc', mediaType: 'chat', service: 'IME', language: 'en', headerColor: '#FFFFFF' }; (function () { var n = document.createElement('script'), t; n.setAttribute('id', 'preview-widget'); n.setAttribute('opts', JSON.stringify(_opts)); n.type = 'text/javascript'; n.async = !0; n.src = 'https://onecontact3xg.itmaxglobal.com/clicktointeract/widget/widget.js?time=' + (new Date).getTime(); document.body.appendChild(n); t = document.getElementById('preview-widget'); t.parentNode.insertBefore(n, t) })();
+            }
+        });
+    </script>
+    <!--<script>
+        var _opts = { url: 'https://onecontact3xg.itmaxglobal.com:8366/clicktointeract/', bodyBackground: '#FFFFFF', headerBackground: '#FF0000', headerTitle: 'Live Chat', instance: 'uaemc', mediaType: 'chat', service: 'IME', language: 'en', headerColor: '#FFFFFF' }; (function () { var n = document.createElement('script'), t; n.setAttribute('id', 'preview-widget'); n.setAttribute('opts', JSON.stringify(_opts)); n.type = 'text/javascript'; n.async = !0; n.src = 'https://onecontact3xg.itmaxglobal.com:8366/clicktointeract/widget/widget.js?time=' + (new Date).getTime(); document.body.appendChild(n); t = document.getElementById('preview-widget'); t.parentNode.insertBefore(n, t) })();
+    </script>-->
+    <!--<script>var _opts = { url: 'https://onecontact3xg.itmaxglobal.com/clicktointeractarb/', bodyBackground: '#b68a34', headerBackground: '#b08b43', headerTitle: 'دردشة مباشرة', instance: 'uaemc', mediaType: 'chat', service: 'IM', language: 'en', headerColor: '#FFFFFF' }; (function () { var n = document.createElement('script'), t; n.setAttribute('id', 'preview-widget'); n.setAttribute('opts', JSON.stringify(_opts)); n.type = 'text/javascript'; n.async = !0; n.src = 'https://onecontact3xg.itmaxglobal.com/clicktointeractarb/widget/widget.js?time=' + (new Date).getTime(); document.body.appendChild(n); t = document.getElementById('preview-widget'); t.parentNode.insertBefore(n, t) })();</script>-->
+
+
+</body>
+</html>

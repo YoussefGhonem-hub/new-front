@@ -1,0 +1,168 @@
+﻿
+<div class="row" ng-init="init">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>الرخصة التجارية</h4>
+            </div>
+            <hr />
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label">جهة الترخيص</label>
+                        <div class="col-md-9 form-control-static">{{licenseSummary.establishment.authority.nameAr}}</div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label">رقم الرخصة التجارية</label>
+                        <div class="col-md-9 form-control-static">{{licenseSummary.establishment.licenseNumber}}</div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label">الاسم التجاري</label>
+                        <div class="col-md-9 form-control-static">{{licenseSummary.establishment.nameAr}}</div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label"> الرخصة التجارية</label>
+                        <div class="col-md-9 form-control-static">
+                            <em class="fa fa-5x fa-file-pdf-o" style="cursor:pointer;color:#3f51b5;" ng-click="openIframe('صورة الرخصة التجارية',licenseSummary.establishment.licenseCopyUrl);" "></em>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label"> عقد الايجار</label>
+                        <div class="col-md-9 form-control-static">
+                            <em class="fa fa-5x fa-file-pdf-o" style="cursor:pointer;color:#3f51b5;" ng-click="openIframe('صورة عقد الايجار',licenseSummary.establishment.tenancyContractCopyUrl);"></em>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label">العنوان</label>
+                        <div class="col-md-9 form-control-static">{{licenseSummary.establishment.address.nameAr}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>الرخصة الاعلامية</h4>
+            </div>
+            <hr />
+            <div class="panel-body" ng-if="licenseSummary.mediaLicens != null">
+                <div class="col-md-12">
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label">الرخصة الاعلامية</label>
+                        <div class="col-md-9 form-control-static">{{licenseSummary.mediaLicens.mediaLicenseNumber}}</div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label">رقم الطلب</label>
+                        <div class="col-md-9 form-control-static">{{licenseSummary.mediaLicens.applicationNumber}}</div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-md-3 control-label">  الرخصة الاعلامية </label>
+                        <div class="col-md-9 form-control-static">
+                            <em class="fa fa-5x fa-file-pdf-o" style="cursor:pointer;color:#3f51b5;" ng-click="openIframe('الرخصة الاعلامية',licenseSummary.mediaLicens.certificateUrl);"></em>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label>الانشطة الاعلامية</label>
+                        <hr />
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-9 form-control-static">
+                            <div>
+                                <div ng-repeat="a in licenseSummary.mediaLicens.activities" style="line-height:30px;">
+                                    {{a.nameAr}}
+                                    <label>ينتهي في</label>:
+                                    <div class="label label-{{a.lableColor}} text-bold">{{a.expiryDate | amDateFormat:'dddd, Do MMMM YYYY'}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label>الشركاء</label>
+                        <hr />
+                    </div>
+                    <div class="row form-group">
+                        <div class="row" ng-repeat="p in licenseSummary.establishmentPartners">
+                            <div class="col-xs-1 form-control-static">
+                                <span ng-if="p.isEstablishment">
+                                    <em class="fa fa-building-o" style="color:#000000;font-size:20px;"></em>
+                                </span>
+                                <span ng-if="!p.isEstablishment">
+                                    <em class="fa fa-user-o" style="color:#000000;font-size:20px;"></em>
+                                </span>
+                            </div>
+                            <div class="col-xs-7 form-control-static">
+                                <span class="small">{{p.name}}</span>
+                            </div>
+                            <div class="col-xs-1 form-contrssssol-static">
+                                <img class="img-responsive" uib-tooltip="{{p.country.nameAr}}" style="display:inline-block; max-height:25px" src="../src/imgs/Countries/{{p.country.isoCode2}}.png">
+                            </div>
+                            <div class="col-xs-3 form-control-static">
+                                <span class="small">{{p.emirateId}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body" ng-if="licenseSummary.mediaLicens == null">
+                <div class="col-md-12">
+                    <div class="alert alert-danger alert-dismissible">  لاتوجد رخصة اعلامية </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>الشركاء</h4>
+            </div>
+            <hr />
+            <div class="panel-body">
+                <ul>
+                    <li ng-repeat="p in licenseSummary.establishmentPartners">
+                        <div class="col-xs-1">
+                            <span ng-if="p.isEstablishment">
+                                <em class="fa fa-building-o" style="color:#000000;font-size:20px;"></em>
+                            </span>
+                            <span ng-if="!p.isEstablishment">
+                                <em class="fa fa-user-o" style="color:#000000;font-size:20px;"></em>
+                            </span>
+                        </div>
+                        <div class="col-xs-7">
+                            <span style="line-height:30px;">{{p.name}}</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <img class="img-responsive" uib-tooltip="{{p.country.nameAr}}" style="display:inline-block; max-height:25px" src="../src/imgs/Countries/{{p.country.isoCode2}}.png">
+                        </div>
+                        <div class="col-md-3">
+                            <span style="line-height:30px;">{{p.emirateId}}</span>
+                        </div>
+                    </li>
+                </ul>
+
+                    <div class="col-md-12" ng-repeat="p in licenseSummary.establishmentPartners">
+                        <div class="col-xs-1">
+                            <span ng-if="p.isEstablishment">
+                                <em class="fa fa-building-o" style="color:#000000;font-size:20px;"></em>
+                            </span>
+                            <span ng-if="!p.isEstablishment">
+                                <em class="fa fa-user-o" style="color:#000000;font-size:20px;"></em>
+                            </span>
+                        </div>
+                        <div class="col-xs-7">
+                            <span style="line-height:30px;">{{p.name}}</span>
+                        </div>
+                        <div class="col-xs-1">
+                            <img class="img-responsive" uib-tooltip="{{p.country.nameAr}}" style="display:inline-block; max-height:25px" src="../src/imgs/Countries/{{p.country.isoCode2}}.png">
+                        </div>
+                        <div class="col-md-3">
+                            <span style="line-height:30px;">{{p.emirateId}}</span>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>-->

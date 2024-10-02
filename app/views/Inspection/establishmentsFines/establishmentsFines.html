@@ -1,0 +1,58 @@
+﻿<div class="app-view-header">
+    {{'dashboard.home' | translate}}
+    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+<div ng-controller="establishmentsFinesController as vm">
+
+
+    <div class="panel panel-default">
+        <div class="panel-body" ng-if="vm.AllVisits.length < 1">
+            <h2 data-translate="establishmentsFines.nofinesfound">No Fines Found</h2>
+        </div>
+        <div class="panel-body" ng-if="vm.AllVisits.length > 0">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr ng-if="vm.user.userTypeCode == '01'">
+                            <th data-translate="establishmentsFines.mediaFileNo"></th>
+                            <th data-translate="establishmentsFines.personname"></th>
+                            <th data-translate="establishmentsFines.finenumber"></th>
+                            <th data-translate="establishmentsFines.finedate"></th>
+                            <th data-translate="establishmentsFines.amountdue"></th>
+                            <th data-translate="payment.paymentStatus"></th>
+                            <th data-translate="establishmentsFines.actions"></th>
+                        </tr>
+                        <tr ng-if="vm.user.userTypeCode != '01'">
+                            <th data-translate="establishmentsFines.tradelicensenumber"></th>
+                            <th data-translate="establishmentsFines.establishmentname"></th>
+                            <th data-translate="establishmentsFines.finenumber"></th>
+                            <th data-translate="establishmentsFines.finedate"></th>
+                            <th data-translate="establishmentsFines.amountdue"></th>
+                            <th data-translate="payment.paymentStatus"></th>
+                            <th data-translate="establishmentsFines.actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="v in vm.AllVisits">
+                            <td>{{v.establishment.licenseNumber}}</td>
+                            <td>{{v.establishment.nameEn}}</td>
+                            <td>{{v.visitNumber}}</td>
+                            <td>{{v.createdOnTxt}}</td>
+                            <td>{{v.totalFee}}</td>
+                            <td>{{v.payment.paymentStatusId == 3? ('reports.reportstatus_33' | translate):('reports.reportstatus_11' | translate)}}</td>
+                            <td>
+                                <button ng-if="v.payment.paymentStatusId==1" class="dropdown-toggle btn ng-binding btn-primary" ng-click="vm.payFine(v.id)" data-translate="establishmentsFines.paynow"></button>
+                                <button ng-if="v.payment.paymentStatusId==2" class="dropdown-toggle btn ng-binding btn-primary" ng-click="vm.verifyPayment(v.id)" data-translate="establishmentsFines.completepayment"></button>
+
+                                <em ng-if="v.payment.paymentStatusId==3" class="fa fa-print" style="cursor:pointer" uib-tooltip="طباعة الإيصال" ng-click="vm.printReceipt(v.payment);"></em>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

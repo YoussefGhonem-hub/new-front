@@ -1,0 +1,632 @@
+﻿<div class="d-flex loginComponent registerComponent" ng-controller="RegisterController as register">
+    <div class="loginImg">
+        <img src="app/img/registerImage.png" />
+    </div>
+
+    <div class="loginContainer">
+        <div class="loginHeader">
+            <div class="mediaLogo">
+                <img class="img" src="app/img/mediacouncil.png" />
+            </div>
+            <div class="loginActions">
+                <!-- <button class="btn">Pay Fines</button> -->
+                <a ui-sref="page.payFines/" class="btn" ng-disabled="login.isBusy" target="_blank"
+                   data-translate="inspection.payFine">
+                </a>
+                <div class="langDropdown">
+                    <select>
+                        <option>Ar</option>
+                        <option>En</option>
+                    </select>
+                </div>
+
+                <div class="uaeLogo">
+                    <img class="img" src="app/img/uaeLogo.png" />
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="loginForm">
+            <h1>Welcome back!</h1>
+
+            <div class="uaePassBtn">
+                <form role="form" name="loginSPForm">
+                    <div>
+                        <a ng-disabled="login.isBusy" ng-if="!app.layout.isRTL"
+                           ng-click="register.uaepassregister('en');" style="cursor:pointer;">
+                            <img ng-src="app/img/uaepass.png" alt="Cinque Terre" class="img-rounded" width="300">
+                        </a>
+                        <a ng-disabled="login.isBusy" ng-if="app.layout.isRTL"
+                           ng-click="register.uaepassregister('ar');" style="cursor:pointer;">
+                            <img ng-src="app/img/uaepass.png" alt="Cinque Terre" class="img-rounded" width="300">
+                        </a>
+                    </div>
+                </form>
+            </div>
+
+            <div class="loginSeparator">
+                <span data-translate="login.or"></span>
+            </div>
+
+
+
+
+
+
+
+
+        </div>
+
+        <form role="form" class="mb-lg" name="Form">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback formInput">
+                        <label>{{'register.firstName' | translate}}</label>
+                        <input ng-model="register.account.firstName" name="FirstName"
+                               placeholder="{{'register.firstName' | translate}}" autocomplete="off" class="form-control"
+                               validator="required" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group has-feedback formInput">
+                        <label>{{'register.lastName' | translate}}</label>
+                        <input ng-model="register.account.lastName" name="LastName"
+                               placeholder="{{'register.lastName' | translate}}" autocomplete="off" class="form-control"
+                               validator="required" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div class="form-group has-feedback formInput">
+                        <label>{{'register.mobile' | translate}}</label>
+
+                        <div class="mobileInput">
+                            <ui-select ng-model="register.account.country" theme="bootstrap" ng-disabled="register.disabled">
+                                <ui-select-match>
+                                    <div class="countryListSnip">
+                                        <div class="countryImg">
+                                            <img class="img-responsive"
+                                                 ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                        </div>
+                                        <div class="mobileHideName">
+                                            <span>{{$select.selected | localizeString}}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="mobileHideName countryCode">
+                                        <span>(+{{$select.selected.phoneCode}})</span>
+                                    </div>
+                                </ui-select-match>
+                                <ui-select-choices repeat="country in register.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search, phoneCode: $select.search}">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img class="img-responsive"
+                                                 ng-src="../src/imgs/Countries/{{country.isoCode2}}.png" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div ng-bind-html="country | localizeString | highlight: $select.search">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <small data-translate="country.countryCode"></small>: <small ng-bind-html="country.isoCode3 | highlight: $select.search"></small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <small data-translate="country.phoneCode"></small>: <small ng-bind-html="country.phoneCode | highlight: $select.search"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                            <input ng-model="register.account.phoneNumber" name="Mobile" type="tel"
+                                   placeholder="{{'register.mobile' | translate}}" autocomplete="off" class="form-control"
+                                   validator="required, phoneNumber" valid-callback="register.validMobileNumber()"
+                                   invalid-callback="register.invalidMobileNumber()" valid-method="blur"
+                                   ng-keypress="register.preventLeadingZero()" />
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group has-feedback formInput">
+                        <label>{{'register.email' | translate}}</label>
+                        <input ng-model="register.account.email" name="Email" type="email"
+                               placeholder="{{'register.email' | translate}}" autocomplete="off" class="form-control"
+                               validator="required, email" valid-method="blur" />
+                    </div>
+                    <div ng-if="register.emailAlreadyTaken" style="color: #f34235; font-size:11px"
+                         data-translate="register.emailTaken"></div>
+                    <!-- <span class="text-sm" data-translate="register.mobileHint"></span> -->
+                    <span class="inputHint">
+                        <i class="fa fa-info" aria-hidden="true" style="padding-top:3px"></i>
+                        <span>{{'register.emailHint' | translate}}</span>
+                    </span>
+                </div>
+            </div>
+            <!--
+                        <div class="row" ng-if="false">
+                            <div class="col-md-12">
+                                <span class="text-sm" data-translate="register.mobileHint"></span>
+                            </div>
+                        </div> -->
+            <!-- <div class="row">
+
+                <div class="col-md-6">
+                    <span class="text-sm" data-translate="register.emailHint"></span>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group has-feedback formInput">
+                        <label>{{'register.password' | translate}}</label>
+                        <input id="Password" ng-model="register.account.password" name="Password" type="password"
+                               placeholder="{{'register.password' | translate}}" autocomplete="off"
+                               class="form-control ok-password" valid-method="blur" validator="required, password"
+                               ng-class="(joinTeamForm.password.$dirty && joinTeamForm.password.$invalid) ? 'error' : ''" />
+
+                        <div id="meter" class="strength-meter">
+                            <div class="strength-meter-fill" data-strength="{{passwordStrength}}"></div>
+                        </div>
+
+                        <span class="inputHint">
+                            <i class="fa fa-info" aria-hidden="true" style="padding-top:3px"></i>
+                            <span>{{'register.passwordError' | translate}}</span>
+                        </span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group has-feedback formInput">
+                        <label>{{'register.passwordRetype' | translate}}</label>
+                        <input ng-model="register.account.confirmPassword" name="PasswordRetype" type="password"
+                               placeholder="{{'register.passwordRetype' | translate}}" autocomplete="off"
+                               class="form-control ok-password" validator="required"
+                               ng-class="(joinTeamForm.confirmPassword.$dirty && joinTeamForm.confirmPassword.$invalid) ? 'error' : ''" />
+                        <!-- <span class="fa fa-lock form-control-feedback text-muted"></span> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-xl">
+                <div class="col-md-6">
+                    <script type="text/ng-template" id="/terms.html">
+                        <div class="modal-header">
+                            <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                            <h4 id="myModalLabel" class="modal-title text-capitalize" data-translate="register.terms"></h4>
+                        </div>
+                        <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.intro"></h4>
+                                    <p data-translate="terms.introDesc"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.intellectualRights"></h4>
+                                    <ol>
+                                        <li data-translate="terms.intellectualRightsDesc1"></li>
+                                        <li data-translate="terms.intellectualRightsDesc2"></li>
+                                        <li data-translate="terms.intellectualRightsDesc3"></li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.gurantees"></h4>
+                                    <ol>
+                                        <li data-translate="terms.guranteesDesc1"></li>
+                                        <li data-translate="terms.guranteesDesc2"></li>
+                                        <li data-translate="terms.guranteesDesc3"></li>
+                                        <li data-translate="terms.guranteesDesc4"></li>
+                                        <li data-translate="terms.guranteesDesc5"></li>
+                                        <li data-translate="terms.guranteesDesc6"></li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.registration"></h4>
+                                    <ol>
+                                        <li data-translate="terms.registrationDesc1"></li>
+                                        <li data-translate="terms.registrationDesc2"></li>
+                                        <li data-translate="terms.registrationDesc3"></li>
+                                        <li data-translate="terms.registrationDesc4"></li>
+                                        <li data-translate="terms.registrationDesc5"></li>
+                                        <li data-translate="terms.registrationDesc6"></li>
+                                        <li data-translate="terms.registrationDesc7"></li>
+                                        <li data-translate="terms.registrationDesc8"></li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.links"></h4>
+                                    <ol>
+                                        <li data-translate="terms.linksDesc1"></li>
+                                        <li data-translate="terms.linksDesc2"></li>
+                                        <li data-translate="terms.linksDesc3"></li>
+                                    </ol>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.electronicCopies"></h4>
+                                    <p data-translate="terms.electronicCopiesDesc"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.versioning"></h4>
+                                    <p data-translate="terms.versioningDesc"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.laws"></h4>
+                                    <p data-translate="terms.lawsDesc"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.adjustments"></h4>
+                                    <p data-translate="terms.adjustmentsDesc"></p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <h4 data-translate="terms.responsibilities"></h4>
+                                    <ol>
+                                        <li data-translate="terms.responsibilitiesDesc1"></li>
+                                        <li data-translate="terms.responsibilitiesDesc2"></li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+                        </div>
+                    </script>
+                    <div class="clearfix">
+                        <div ng-model="register.account.response" vc-recaptcha
+                             data-key="'6Lf6fyYqAAAAANl0QqP_EpecFtFwJUnqNuBaW0d3'" lang="register.recaptchaLang"
+                             on-create="register.setWidgetId(widgetId)"></div>
+
+                        <div class="checkbox c-checkbox mt-lg">
+                            <label>
+                                <input type="checkbox" ng-model="register.account.isAgree" />
+                                <span class="fa fa-check"></span>{{'register.agree' | translate}} <a href=""
+                                                                                                     data-translate="register.terms" ng-click="register.openTerms('lg')"></a>
+                            </label>
+                        </div>
+                    </div>
+                    <div ng-if="!register.isAgreed" style="color: #f34235; font-size:11px"
+                         data-translate="register.notAgreed"></div>
+                </div>
+            </div>
+
+            <div class="row mt-xl">
+                <div class="col-md-6 formSubmit">
+                    <button class="btn btn-block btn-primary" type="submit" data-translate="register.createAccount"
+                            ng-click="register.submit()" validation-submit="Form" ng-disabled="register.isBusy"></button>
+
+                    <span class="mt-lg">
+                        <p class="text-muted mb0" data-translate="register.registered"></p>
+                        <a ui-sref="page.login" class="btn">
+                            <strong data-translate="register.login"></strong>
+                        </a>
+                    </span>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<div ng-if="false" class="container container-sm animated fadeInDown" ng-controller="RegisterController as register">
+    <!--ng-init="register.InitilizationComplted()"-->
+    <div class="center-block mt-xl">
+        <!-- START panel-->
+        <div class="panel">
+            <div class="panel-body">
+                <p class="pv text-bold">{{'register.newAccount' | translate}}</p>
+                <form role="form" class="mb-lg" name="Form">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <input ng-model="register.account.firstName" name="FirstName"
+                                       placeholder="{{'register.firstName' | translate}}" autocomplete="off"
+                                       class="form-control" validator="required" />
+                                <span class="fa fa-male form-control-feedback text-muted"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <input ng-model="register.account.lastName" name="LastName"
+                                       placeholder="{{'register.lastName' | translate}}" autocomplete="off"
+                                       class="form-control" validator="required" />
+                                <span class="fa fa-male form-control-feedback text-muted"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-xs-5" style="float:left !important;">
+                            <ui-select ng-model="register.account.country" theme="bootstrap"
+                                       ng-disabled="register.disabled">
+                                <ui-select-match>
+                                    <div class="col-md-4">
+                                        <img class="img-responsive" style="max-height:23px;"
+                                             ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                    </div>
+                                    <div class="col-md-5 mobileHideName" style="padding-top:3px;">
+                                        <span class="text-sm pull-right">{{$select.selected | localizeString}}</span>
+                                    </div>
+                                    <div class="col-md-3 mobileHideName">
+                                        <span style="direction:ltr !important; float:left !important">(+{{$select.selected.phoneCode}})</span>
+                                    </div>
+                                </ui-select-match>
+                                <ui-select-choices repeat="country in register.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search, phoneCode: $select.search}">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <img class="img-responsive"
+                                                 ng-src="../src/imgs/Countries/{{country.isoCode2}}.png" />
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div ng-bind-html="country | localizeString | highlight: $select.search">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <small data-translate="country.countryCode"></small>: <small ng-bind-html="country.isoCode3 | highlight: $select.search"></small>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <small data-translate="country.phoneCode"></small>: <small ng-bind-html="country.phoneCode | highlight: $select.search"></small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div class="col-md-6 col-xs-7" style="float:right !important;">
+                            <div class="form-group has-feedback">
+                                <input ng-model="register.account.phoneNumber" name="Mobile" type="tel"
+                                       placeholder="{{'register.mobile' | translate}}" autocomplete="off"
+                                       class="form-control" validator="required, phoneNumber"
+                                       valid-callback="register.validMobileNumber()"
+                                       invalid-callback="register.invalidMobileNumber()" valid-method="blur"
+                                       ng-keypress="register.preventLeadingZero()" />
+                                <span class="fa fa-phone form-control-feedback text-muted"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="false">
+                        <div class="col-md-12">
+                            <span class="text-sm" data-translate="register.mobileHint"></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <input ng-model="register.account.email" name="Email" type="email"
+                                       placeholder="{{'register.email' | translate}}" autocomplete="off"
+                                       class="form-control" validator="required, email" valid-method="blur" />
+                                <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                            </div>
+                            <div ng-if="register.emailAlreadyTaken" style="color: #f34235; font-size:11px"
+                                 data-translate="register.emailTaken"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="text-sm" data-translate="register.emailHint"></span>
+                        </div>
+                    </div>
+                    <div class="row" extra-help="register.passwordError">
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <input id="Password" ng-model="register.account.password" name="Password"
+                                       type="password" placeholder="{{'register.password' | translate}}" autocomplete="off"
+                                       class="form-control ok-password" valid-method="blur" validator="required, password"
+                                       ng-class="(joinTeamForm.password.$dirty && joinTeamForm.password.$invalid) ? 'error' : ''" />
+
+                                <div id="meter" class="strength-meter">
+                                    <div class="strength-meter-fill" data-strength="{{passwordStrength}}"></div>
+                                </div>
+
+                                <!-- <span class="fa fa-lock form-control-feedback text-muted"></span> -->
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <input ng-model="register.account.confirmPassword" name="PasswordRetype" type="password"
+                                       placeholder="{{'register.passwordRetype' | translate}}" autocomplete="off"
+                                       class="form-control ok-password" validator="required"
+                                       ng-class="(joinTeamForm.confirmPassword.$dirty && joinTeamForm.confirmPassword.$invalid) ? 'error' : ''" />
+                                <span class="fa fa-lock form-control-feedback text-muted"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- <script type="text/ng-template" id="/terms.html">
+                                <div class="modal-header">
+                                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close">×</button>
+                                    <h4 id="myModalLabel" class="modal-title text-capitalize" data-translate="register.terms"></h4>
+                                </div>
+                                <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.intro"></h4>
+                                            <p data-translate="terms.introDesc"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.intellectualRights"></h4>
+                                            <ol>
+                                                <li data-translate="terms.intellectualRightsDesc1"></li>
+                                                <li data-translate="terms.intellectualRightsDesc2"></li>
+                                                <li data-translate="terms.intellectualRightsDesc3"></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.gurantees"></h4>
+                                            <ol>
+                                                <li data-translate="terms.guranteesDesc1"></li>
+                                                <li data-translate="terms.guranteesDesc2"></li>
+                                                <li data-translate="terms.guranteesDesc3"></li>
+                                                <li data-translate="terms.guranteesDesc4"></li>
+                                                <li data-translate="terms.guranteesDesc5"></li>
+                                                <li data-translate="terms.guranteesDesc6"></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.registration"></h4>
+                                            <ol>
+                                                <li data-translate="terms.registrationDesc1"></li>
+                                                <li data-translate="terms.registrationDesc2"></li>
+                                                <li data-translate="terms.registrationDesc3"></li>
+                                                <li data-translate="terms.registrationDesc4"></li>
+                                                <li data-translate="terms.registrationDesc5"></li>
+                                                <li data-translate="terms.registrationDesc6"></li>
+                                                <li data-translate="terms.registrationDesc7"></li>
+                                                <li data-translate="terms.registrationDesc8"></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.links"></h4>
+                                            <ol>
+                                                <li data-translate="terms.linksDesc1"></li>
+                                                <li data-translate="terms.linksDesc2"></li>
+                                                <li data-translate="terms.linksDesc3"></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.electronicCopies"></h4>
+                                            <p data-translate="terms.electronicCopiesDesc"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.versioning"></h4>
+                                            <p data-translate="terms.versioningDesc"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.laws"></h4>
+                                            <p data-translate="terms.lawsDesc"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.adjustments"></h4>
+                                            <p data-translate="terms.adjustmentsDesc"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-12">
+                                            <h4 data-translate="terms.responsibilities"></h4>
+                                            <ol>
+                                                <li data-translate="terms.responsibilitiesDesc1"></li>
+                                                <li data-translate="terms.responsibilitiesDesc2"></li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+                                </div>
+                            </script>
+                            <div class="clearfix">
+                                <div class="checkbox c-checkbox mt0">
+                                    <label>
+                                        <input type="checkbox" ng-model="register.account.isAgree" />
+                                        <span class="fa fa-check"></span>{{'register.agree' | translate}} <a href="" data-translate="register.terms" ng-click="register.openTerms('lg')"></a>
+                                    </label>
+                                </div>
+                            </div> -->
+                            <div ng-if="!register.isAgreed" style="color: #f34235; font-size:11px"
+                                 data-translate="register.notAgreed"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 text-center">
+                            <div ng-model="register.account.response" vc-recaptcha
+                                 data-key="'6Lf6fyYqAAAAANl0QqP_EpecFtFwJUnqNuBaW0d3'" lang="register.recaptchaLang"
+                                 on-create="register.setWidgetId(widgetId)"></div>
+                        </div>
+                        <div class="col-md-2"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="pt-lg text-center mt-sm" data-translate="register.registered"></p>
+                            <a ui-sref="page.login" class="btn btn-block btn-default">
+                                <strong data-translate="register.login"></strong>
+                            </a>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="pt-lg text-center mt-sm">&nbsp;</p>
+                            <button class="btn btn-block btn-primary" type="submit"
+                                    data-translate="register.createAccount" ng-click="register.submit()"
+                                    validation-submit="Form" ng-disabled="register.isBusy"></button>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="text-center text-md" style="right: 50%">
+                            <div class="wordSP label label-warning" data-translate="login.or"></div>
+                        </div>
+                        <div style="border-bottom: 1px dashed lightgrey; margin:-20px 2% 20px 2%  ; width:96% ; height:10px">
+                        </div>
+                        <br /><br />
+                        <form class="row" role="form" name="loginSPForm">
+                            <div style="width:300px ; margin:auto">
+                                <a ng-disabled="login.isBusy" ng-if="!app.layout.isRTL"
+                                   ng-click="register.uaepassregister('en');" style="cursor:pointer;">
+                                    <img ng-src="app/img/UAEPass_SingupBtn_White-EN.png" alt="Cinque Terre"
+                                         class="img-rounded" width="300">
+                                </a>
+                                <a ng-disabled="login.isBusy" ng-if="app.layout.isRTL"
+                                   ng-click="register.uaepassregister('ar');" style="cursor:pointer;">
+                                    <img ng-src="app/img/UAEPass_SingupBtn_White-AR.png" alt="Cinque Terre"
+                                         class="img-rounded" width="300">
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- END panel-->
+    </div>
+</div>

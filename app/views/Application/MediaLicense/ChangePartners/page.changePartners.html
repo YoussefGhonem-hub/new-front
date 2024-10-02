@@ -1,0 +1,148 @@
+﻿<div class="app-view-header">
+    {{'changePartners.title' | translate}}
+</div>
+<div class="container-fluid" ng-controller="ChangePartnersController as ppCtl">
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row"><br /></div>
+                <div class="row" ng-if="ppCtl.user.userTypeCode != '01' && ppCtl.user.userTypeCode != '03'">
+                    <div class="col-md-3 col-xs-1"></div>
+                    <div class="col-md-6 col-xs-10">
+                        <div class="row">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.establishmentName' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.mediaLicenses.applicationDetail.application.establishment | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.TenancyContract' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.mediaLicenses.applicationDetail.application.establishment.tenancyContractEndDate | amDateFormat:'DD-MMMM-YYYY'}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.Authority' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.mediaLicenses.applicationDetail.application.establishment.authority | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.mediaLicenses.applicationDetail.application.establishment.licenseNumber}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-1"></div>
+                </div>
+                <div class="row"><br /></div>
+                <uib-alert type="info" ng-if="ppCtl.employeeNote">
+                    <div class="row text-bold">
+                        <div class="col-md-6"><span class="pull-left">{{'mediaLicense.employeeNote' | translate}}</span></div>
+                        <div class="col-md-6"><span class="pull-right">{{ppCtl.employeeNoteDate}}</span></div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12" ng-bind-html="ppCtl.employeeNote"></div>
+                    </div>
+                </uib-alert>
+                <uib-alert type="danger" ng-if="ppCtl.showOnePartner">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'changePartners.deleteAllPartners' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-alert>
+                <uib-alert type="danger" ng-if="ppCtl.showRequiredError">
+                    <div class="row">
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {{'changePartners.changeAnyPartner' | translate}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </uib-alert>
+                <hr ng-if="ppCtl.user.userTypeCode != '01' && ppCtl.user.userTypeCode != '03'" />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'changePartners.initialApproval' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="ppCtl.mediaLicenses.initialApprovalUrl" copyUrlFullPath="ppCtl.mediaLicenses.initialApprovalUrlFullPath"
+                                         url="ppCtl.uploadInitialApprovalUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="changePartners.partnerList"></h3>
+                            <p>
+                                <establishment-partners-list ng-if="ppCtl.mediaLicenses.applicationDetail.application.establishment.id && !ppCtl.editMode" for-service="true"
+                                                             establishment-partners="ppCtl.mediaLicenses.establishmentPartners"
+                                                             is-require-third-party="ppCtl.mediaLicenses.isRequireThirdPartyApproval"
+                                                             establishment-id=ppCtl.mediaLicenses.applicationDetail.application.establishment.id></establishment-partners-list>
+                                <establishment-partners-list ng-if="ppCtl.mediaLicenses.applicationDetail.application.establishment.id && ppCtl.editMode" for-service="false"
+                                                             media-license-partners="ppCtl.mediaLicenses.mediaLicensePartnerUpdates"
+                                                             establishment-id=ppCtl.mediaLicenses.applicationDetail.application.establishment.id></establishment-partners-list>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"><br /></div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <service-fee ng-model="ppCtl.serviceFeesObj"></service-fee>
+                    </div>
+                </div>
+
+                <!--<div class="row"><br /></div>
+                <terms ng-model="ppCtl.terms" name="terms" class="col-sm-12"></terms>
+
+                <customer-pulse ng-if="ppCtl.showHappinessMeter" ng-model="ppCtl.happinessMeterObj"></customer-pulse>
+                <hr />-->
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <terms ng-model="ppCtl.terms" ng-if="!ppCtl.editMode" name="terms"></terms>
+                    </div>
+                </div>
+                <customer-pulse ng-if="!ppCtl.editMode && ppCtl.showHappinessMeter" ng-model="ppCtl.happinessMeterObj"></customer-pulse>
+                <hr />
+
+
+                <div class="row" ng-if="!ppCtl.editMode">
+                    <div class="col-md-12">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="ppCtl.isBusy || !ppCtl.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="ppCtl.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-if="ppCtl.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                            <button uib-dropdown-toggle="" ng-disabled="ppCtl.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                            <ul role="menu" class="dropdown-menu animated zoomIn">
+                                <li ng-repeat="transition in ppCtl.mediaLicenses.applicationDetail.applicationState.transitions">
+                                    <a href="" ng-click="ppCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END panel-->
+</div>

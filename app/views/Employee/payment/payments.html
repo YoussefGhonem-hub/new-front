@@ -1,0 +1,59 @@
+<div class="app-view-header">{{'dashboard.home' | translate}}
+   <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+<div ng-controller="PaymentsController as payments">
+    <div class="row">
+        <div class="col-md-5">
+            <div ng-if="!payments.isObjectEmpty(payments.filterParams)">
+                <span class="col-md-1">
+                    <a ng-click="payments.exportExcel()" uib-tooltip="Excel">
+                        <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="payments.exportCSV()" uib-tooltip="CSV">
+                        <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="payments.exportPDF()" uib-tooltip="PDF">
+                        <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            <button class="btn btn-primary btn-md pull-right" btn-layer-morph="payments.click()" btn-layer="payments.filter" target="#layer-search"><span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em></button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <table datatable="" class="row-border hover" dt-options="payments.dtPaymentsOptions" dt-columns="payments.dtPaymentsColumns"
+                   dt-instance="payments.dtApplicationInstance" width="100%"></table>
+        </div>
+    </div>
+    <!-- Layer Morph-->
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Employee/payment/filter/filterPayment.html'" class="layer-morph"></div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="payments.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="payments.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Layer Morph-->
+</div>

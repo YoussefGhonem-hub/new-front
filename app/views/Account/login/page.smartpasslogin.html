@@ -1,0 +1,153 @@
+﻿<div class="container container-lg animated fadeInDown" ng-controller="SmartpassLoginController as vm" ng-init="init()">
+    <div class="center-block mt-xl">
+        <!-- START panel-->
+        <div class="row">
+            <div class="col-md-12">
+                <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+                    <div class="row text-center">
+                        <!--<img ng-if="app.layout.isRTL" ng-src="app/img/SmartPass_Ar.png" class="img-rounded" alt="Cinque Terre" width="200" />
+                        <img ng-if="!app.layout.isRTL" ng-src="app/img/SmartPass_En.png" class="img-rounded" alt="Cinque Terre" width="200" />-->
+                        <h4 data-translate="login.smartPass" ng-if="false"></h4>
+                    </div>
+                    <div class="col-md-12" ng-if="vm.unverifieduser == false">
+                        <div class="col-md-12" ng-if="vm.currentStep ==1">
+                            <h4 class="row text-center" data-translate="smartpass.SmartpassLinkAccountPageTitle"></h4>
+                            <h4 class="row text-center" data-translate="smartpass.SmartpassDoYouHaveAccountWithNMC"></h4>
+                            <br />
+                            <div class="col-md-4"></div>
+                            <div class="col-md-4">
+                                <div class="col-md-6 center text-center">
+                                    <button class="btn btn-info" data-translate="smartpass.SmartpassYes" ng-click="vm.LinkSmartpassYes()"></button>
+                                </div>
+                                <div class="col-md-6 center text-center">
+                                    <button class="btn btn-info" data-translate="smartpass.SmartpassNo" ng-click="vm.LinkSmartpassNo()" ng-disabled="(vm.emiratesIDUsed || vm.emailUsed)"></button>
+                                </div>
+                            </div>
+                            <div class="col-md-4"></div>
+                            <br />
+                            <br />
+                            <br />
+
+                            <!--<h4 ng-if="(!vm.emiratesIDUsed && !vm.emailUsed)" class="row text-center" style="color:red;" data-translate="smartpass.SmartpassLinkNote1"></h4>-->
+                            <h4 ng-if="(vm.emiratesIDUsed || vm.emailUsed)" class="row text-center" style="color:red;" data-translate="smartpass.SmartpassLinkNote5"></h4>
+                            <h4 class="row text-center" data-translate="smartpass.SmartpassLinkNote2"></h4>
+                            <h4 class="row text-center" data-translate="smartpass.SmartpassLinkNote3"></h4>
+                            <h5 class="row text-center" data-translate="smartpass.SmartpassLinkNote4"></h5>
+                        </div>
+                        <div class="col-md-12" ng-if="vm.currentStep ==2">
+
+
+                        </div>
+                        <div class="col-md-12 center" ng-if="vm.currentStep ==3">
+                            <div class="col-md-12 center">
+                                <h4 class="row text-center" data-translate="smartpass.SmartpassLinkAccountPageTitle"></h4>
+                                <div class="col-md-3"></div>
+                                <div class="col-md-6 panel">
+                                    <div class="panel-body">
+                                        <div class="row text-center">
+                                            <p class="pv text-bold" data-translate="smartpass.LogintoNMCAccount"></p>
+                                        </div>
+                                        <form role="form" class="mb-lg" name="smartpassloginForm">
+                                            <div class="col-md-12">
+
+                                                <div class="form-group has-feedback mb">
+                                                    <input id="exampleInputEmail1" type="email" placeholder="{{'register.email' | translate}}" name="inputEmail"
+                                                           autocomplete="off" class="form-control" ng-model="vm.linkuserEmail" validator="required, email" valid-method="blur" />
+                                                    <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                                                </div>
+                                                <br />
+                                                <div class="form-group has-feedback">
+                                                    <input id="exampleInputPassword1" type="password" placeholder="{{'register.password' | translate}}" name="inputPassword"
+                                                           class="form-control" ng-model="vm.linkuserPassword" validator="required" valid-method="blur" />
+                                                    <span class="fa fa-lock form-control-feedback text-muted"></span>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-2"></div>
+                                                <div class="form-group col-md-8">
+                                                    <button type="submit"
+                                                            class="btn btn-block btn-info mb"
+                                                            ng-click="vm.linkAccount()"
+                                                            ng-disabled="vm.isBusy"
+                                                            validation-submit="smartpassloginForm" data-translate="smartpass.LinkAboveAccountwithSmartPass"></button>
+                                                </div>
+                                                <div class="col-md-2"></div>
+                                            </div>
+                                            <div class="text-center mt">
+                                                <a ui-sref="page.recover" class="text-muted" data-translate="login.forgotPassword"></a>
+                                            </div>
+                                        </form>
+                                        <div class="row col-md-12">
+                                            <p class="text-sm warning text-center" data-translate="smartpass.linkAccountNote"></p>
+                                        </div>
+                                        <div class="row col-md-12" ng-if="vm.linkAccountError != ''">
+                                            <p class="text-sm warning text-center" style="color: #f34235; font-size:11px;">{{vm.linkAccountError}}</p>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+
+                            <div class="col-md-12 center">
+                                <h5 class="row text-center ng-scope"  data-translate="smartpass.SmartpassLinkNote4"></h5>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <div class="col-md-12 center" ng-if="vm.currentStep ==5">
+                            <div class="col-md-12 center">
+                                <h4 class="row text-center" style="color:red;" data-translate="smartpass.error"></h4>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="col-md-12" ng-if="vm.currentStep == 4">
+                            <br />
+                            <div class="col-md-3"></div>
+                            <div class="col-md-6 panel">
+                                <div class="panel-body">
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <p class="pv text-bold" data-translate="register.createAccount"></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <p class="text-sm warning" data-translate="smartpass.createAccountNote"></p>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group has-feedback mb">
+                                            <button type="submit"
+                                                    class="btn btn-block btn-info mb"
+                                                    ng-click="vm.createNew()"
+                                                    ng-disabled="vm.isBusy" data-translate="register.createAccount"></button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <br /><br /><br />
+                                    </div>
+                                    <div class="row col-md-12">
+                                        <p ng-if="vm.emailAlreadyTaken" class="row center text-center" style="color: #f34235;" data-translate="login.smartpassemailregisterd">
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12" ng-if="vm.unverifieduser == true">
+                        <br />
+                        <h4 class="text-center" style="color:red;line-height: 30px;" data-translate="smartpass.unverifiedusertitle"></h4>
+                        <h4 class="text-center" style="color:red;line-height: 30px;" data-translate="smartpass.unverifieduserbody"></h4>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

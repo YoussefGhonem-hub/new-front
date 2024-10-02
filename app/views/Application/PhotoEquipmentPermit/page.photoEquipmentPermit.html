@@ -1,0 +1,197 @@
+﻿<div class="app-view-header">
+    {{'photoEquipment.pageTitle' | translate}}
+</div>
+<div class="container-fluid" ng-controller="PhotoEquipmentPermitController as ppCtl">
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row"><br /></div>
+                <div class="row" ng-if="ppCtl.user.userTypeCode != '01' && ppCtl.user.userTypeCode != '03'">
+                    <div class="col-md-3 col-xs-1"></div>
+                    <div class="col-md-6 col-xs-10">
+                        <div class="row">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.establishmentName' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.photoEquipmentPermitModel.applicationDetail.application.establishment | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.TenancyContract' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.photoEquipmentPermitModel.applicationDetail.application.establishment.tenancyContractEndDate | amDateFormat:'DD-MMMM-YYYY'}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.Authority' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.photoEquipmentPermitModel.applicationDetail.application.establishment.authority | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{ppCtl.photoEquipmentPermitModel.applicationDetail.application.establishment.licenseNumber}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-1"></div>
+                </div>
+                <hr />
+                <uib-alert type="warning">
+                    <div class="row">
+                        <div class="col-md-9">
+                            {{'photoEquipment.photoDesc' | translate}}
+                        </div>
+                    </div>
+                </uib-alert>
+                <div class="row"><br /></div>
+                <uib-alert type="info" ng-if="ppCtl.employeeNote">
+                    <div class="row text-bold">
+                        <div class="col-md-6"><span class="pull-left">{{'mediaLicense.employeeNote' | translate}}</span></div>
+                        <div class="col-md-6"><span class="pull-right">{{ppCtl.employeeNoteDate}}</span></div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-md-12" ng-bind-html="ppCtl.employeeNote"></div>
+                    </div>
+                </uib-alert>
+                <div class="row"><br /></div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.Purpose' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <textarea ng-model="ppCtl.photoEquipmentPermitModel.purpose" validator="required" maxlength="1000"
+                                  placeholder="{{'photoEquipment.Purpose' | translate}}" autocomplete="off" class="form-control" name="souresOfFunding" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span>{{'photoEquipment.purposeRequest' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="ppCtl.photoEquipmentPermitModel.purposeUrl" copyUrlFullPath="ppCtl.photoEquipmentPermitModel.purposeUrlFullPath"
+                                         url="ppCtl.uploadPurposeUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="input-id-1" class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.ArrivalDate' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <p class="input-group hackyhack">
+                            <input type="text" uib-datepicker-popup="{{format}}" ng-model="ppCtl.photoEquipmentPermitModel.arrivalDate" name="startingDate" validator="required"
+                                   is-open="opened" min-date="false" max-date="false" uib-datepicker-options="dateOptions" show-weeks="false" date-disabled="disabled(date, mode)"
+                                   close-text="{{'datePicker.close' | translate}}" class="form-control" current-text="{{'datePicker.today' | translate}}"
+                                   clear-text="{{'datePicker.clear' | translate}}" placeholder="dd/MM/yyyy" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" ng-click="open($event)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.EmiratePort' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="ppCtl.photoEquipmentPermitModel.emirate" validator="required" name="emirate" theme="bootstrap" class="text-left">
+                            <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="emirate in ppCtl.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.Port' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="ppCtl.photoEquipmentPermitModel.port" validator="required" ng-disabled="isPreview" name="region" theme="bootstrap" class="text-left">
+                            <ui-select-match placeholder="{{'mediaMaterial.selectportOfArrival' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="region in ppCtl.photoEquipmentPermitModel.emirate.ports | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <span ng-bind-html="region | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'photoEquipment.customPaper' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="ppCtl.photoEquipmentPermitModel.requestUrl" copyUrlFullPath="ppCtl.photoEquipmentPermitModel.requestUrlFullPath"
+                                         url="ppCtl.uploadRequestUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="photoEquipment.equipmentList"></h3>
+                            <p>
+                                <div class="btn btn-warning pull-right" ng-click="ppCtl.equipmentDt.open('lg')">{{'photoEquipment.addNewEquipment' | translate}}</div>
+                                <div class="row">
+                                    <div class="col-md-12" ng-if="ppCtl.equipmentDt.dtOptions">
+                                        <table datatable="" class="row-border hover" dt-options="ppCtl.equipmentDt.dtOptions" dt-columns="ppCtl.equipmentDt.dtColumns" width="100%"
+                                               dt-instance="ppCtl.equipmentDt.dtInstance" ng-required="!ppCtl.photoEquipmentPermitModel.photographyPermitLocations.length"></table>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="photoEquipment.equipmentTeam"></h3>
+                            <p>
+                                <div class="btn btn-warning pull-right" ng-click="ppCtl.teamMemberDt.open('lg')">{{'photoEquipment.addNewMember' | translate}}</div>
+                                <div class="row">
+                                    <div class="col-md-12" ng-if="ppCtl.teamMemberDt.dtOptions">
+                                        <table datatable="" class="row-border hover" dt-options="ppCtl.teamMemberDt.dtOptions" dt-columns="ppCtl.teamMemberDt.dtColumns"
+                                               dt-instance="ppCtl.teamMemberDt.dtInstance" width="100%"></table>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row"><br /></div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <service-fee ng-model="ppCtl.serviceFeesObj"></service-fee>
+                    </div>
+                </div>
+                <br />
+                <terms ng-model="ppCtl.terms" ng-if="!ppCtl.editMode" name="terms" class="col-sm-12"></terms>
+                <customer-pulse ng-if="ppCtl.showHappinessMeter" ng-model="ppCtl.happinessMeterObj"></customer-pulse>
+                <hr />
+                <div class="row" ng-if="!ppCtl.editMode">
+                    <div class="col-md-12">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="ppCtl.isBusy || !ppCtl.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="ppCtl.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="ppCtl.isBusy|| !ppCtl.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="ppCtl.save(1)">
+                            {{'general.applyLater' | translate}}<span class="ripple"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-if="ppCtl.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                            <button uib-dropdown-toggle="" ng-disabled="ppCtl.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                            <ul role="menu" class="dropdown-menu animated zoomIn">
+                                <li ng-repeat="transition in ppCtl.photoEquipmentPermitModel.applicationDetail.applicationState.transitions">
+                                    <a href="" ng-click="ppCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- END panel-->
+</div>

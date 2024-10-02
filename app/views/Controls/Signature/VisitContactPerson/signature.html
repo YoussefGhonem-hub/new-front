@@ -1,0 +1,18 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h3 class="modal-title">{{'visit.signTitle' | translate}}</h3>
+</div>
+
+<div class="modal-body">
+    <div class="container" ng-style="{'max-width': boundingBox.width + 'px', 'max-height': boundingBox.height + 'px'}">
+        <signature-pad accept="accept" clear="clear" height="300" width="800"></signature-pad>
+        <div class="buttons">
+            <button class="btn btn-warning" ng-click="clear()">{{'visit.clear' | translate}}</button>
+            <button class="btn btn-primary" ng-click="closeModal()">{{'visit.sign' | translate}}</button>
+        </div>
+    </div>
+    <div class="result" ng-show="signature">
+        <img ng-src="{{ signature.dataUrl }}">
+    </div>
+</div>

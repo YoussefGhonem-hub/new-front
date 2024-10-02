@@ -1,0 +1,45 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="photographyPermit.reviewFilmingLocation"></h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div ng-class="setByLocation == 'byMap'?'col-md-6' : 'col-md-12'">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'address.Emirate' | translate}}</label>
+                <div class="col-sm-7">{{location.address.emirate | localizeString}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'address.Community' | translate}}</label>
+                <div class="col-sm-7">{{location.address.community | localizeString}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <label class="col-sm-3">{{'address.Street' | translate}}</label>
+                <div class="col-sm-7">{{location.address.street}}</div>
+                <div class="col-sm-1"></div>
+            </div>
+            <br />
+        </div>
+        <div class="col-md-6" ng-if="setByLocation == 'byMap' ? true : false">
+            <section style="height:500px;">
+                <div id="map" map-lazy-load="http://maps.googleapis.com/maps/api/js?libraries=drawing"
+                     map-lazy-load-params="{{googleMapsUrl}}" style="height:500px; position:relative;">
+                    <ng-map zoom="12" center="{{location.address.currentLocation}}" style="height:500px">
+             
+                    </ng-map>
+                </div>
+            </section>
+        </div>
+    </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="ok()" class="btn btn-primary">OK</button><button ng-click="closeModal()" class="btn btn-warning">Cancel</button>
+        </div>

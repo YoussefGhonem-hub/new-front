@@ -1,0 +1,147 @@
+﻿<div ng-controller="ReviewEnquiryController as vm">
+    <div class="app-view-header">
+        {{'enquiries.title' | translate}}<br /> <small>{{vm.enquiry.enquiryNumber}}</small>
+    </div>
+    <div class="container-fluid">
+        <uib-accordion close-others="oneAtATime">
+            <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <uib-accordion-heading>
+                    {{'general.applicationDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.enquirySource' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.enquirySource | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.enquiryType' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.enquiryType | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="enquiry.enquirySource.id == 2">
+                    <label class="col-sm-3 control-label">{{'enquiries.tokenNumber' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.tokenNumber}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.enquiry.applicationDetail != null">
+                    <label class="col-sm-3 control-label">{{'enquiries.applicationNumber' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.applicationDetail.application.applicationNumber}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.service' | translate}}</label>
+                    <div class="col-sm-7 form-control-static" ng-if="vm.enquiry.applicationDetail == null">{{vm.enquiry.service | localizeString}}</div>
+                    <div class="col-sm-7 form-control-static" ng-if="vm.enquiry.applicationDetail != null">{{vm.enquiry.applicationDetail.application.service | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.enquiry.name != null">
+                    <label class="col-sm-3 control-label">{{'enquiries.name' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.name}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.enquiry.phoneNumber != null">
+                    <label class="col-sm-3 control-label">{{'register.mobile' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.phoneNumber}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.enquiry.email != null">
+                    <label class="col-sm-3 control-label">{{'register.email' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.email}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.problemDesc' | translate}}</label>
+                    <div class="col-sm-7 form-control-static" ng-bind-html="vm.enquiry.description"></div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.enquiry.attachementUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'enquiries.attachements' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.enquiry.attachementUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.enquiry.attachementUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.enquiry.attachementUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.enquiry.attachementUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.enquiry.attachementUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+            </uib-accordion-group>
+            <br />
+            <uib-accordion-group panel-class="panel-primary" class="form-horizontal" ng-if='vm.user.userTypeCode =="06"'>
+                <uib-accordion-heading>
+                    {{'enquiries.enquiryDetails' | translate}}
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                </uib-accordion-heading>
+                <br />
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.priority' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.enquiryDetails[0].priority | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.department' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.enquiryDetails[0].department | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.selectProblemCause' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">{{vm.enquiry.enquiryDetails[0].problemCaus | localizeString}}</div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.resolutionDesc' | translate}}</label>
+                    <div class="col-sm-7 form-control-static" ng-bind-html="vm.enquiry.enquiryDetails[0].resolutionDesc"></div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">{{'enquiries.customerNote' | translate}}</label>
+                    <div class="col-sm-7 form-control-static" ng-bind-html="vm.enquiry.enquiryDetails[0].messageToCustomer"></div>
+                    <div class="col-sm-2"></div>
+                </div>
+                <div class="row form-group" ng-if="vm.enquiry.enquiryDetails[0].attachementUrlFullPath">
+                    <label class="col-sm-3 control-label">{{'enquiries.attachements' | translate}}</label>
+                    <div class="col-sm-7 form-control-static">
+                        <div ng-if="vm.enquiry.enquiryDetails[0].attachementUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a href="{{vm.enquiry.enquiryDetails[0].attachementUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{vm.enquiry.enquiryDetails[0].attachementUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="vm.enquiry.enquiryDetails[0].attachementUrl.split('.')[1] == 'pdf'" target="_blank" href="{{vm.enquiry.enquiryDetails[0].attachementUrlFullPath}}">
+                            <em class="fa fa-5x fa-file-pdf-o"></em>
+                        </a>
+                    </div>
+                    <div class="col-sm-2"></div>
+                </div>
+            </uib-accordion-group>
+        </uib-accordion>
+
+        <!-- START panel-->
+        <div class="panel panel-primary">
+            <div class="panel-body">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+                    <div class="row">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <workflow-action ng-model="vm.enquiry" is-enquiry-review="true"></workflow-action>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <!-- END panel-->
+
+    </div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+    <div id="blueimp-gallery" class="blueimp-gallery">
+        <div class="slides">
+            <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+            <a class="play-pause"></a>
+            <ol class="indicator"></ol>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,384 @@
+﻿
+<div class="formList" >
+    <div class="formInput" ng-if="isPartner">
+        <label>{{'profileNationalityDirective.Nationality' | translate}}</label>
+        <ui-select ng-model="establishmentControl.country" theme="bootstrap" validator="required" name="userCountry" ng-disabled="isPreview">
+            <ui-select-match class="flag-container">
+                {{$select.selected | localizeString}}
+            </ui-select-match>
+            <ui-select-choices repeat="country1 in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <div class="row">
+                    <div class="col-md-4 col-xs-5">
+                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                    </div>
+                    <div class="col-md-8 col-xs-7">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small data-translate="country.countryCode"></small>: <small ng-bind-html="country1.isoCode3"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="formInput">
+        <label>{{'completeProfile.establishmentNameAr' | translate}}</label>
+        <input ng-model="establishmentControl.nameAr" type="text" placeholder="{{'completeProfile.establishmentNameAr' | translate}}"
+               autocomplete="off" class="form-control" validator="required" name="estNameAr" ng-disabled="isPreview || isMediaLicenseStep" />
+    </div>
+
+    <div class="formInput">
+        <label>{{'completeProfile.establishmentNameEn' | translate}}</label>
+        <input ng-model="establishmentControl.nameEn" type="text" placeholder="{{'completeProfile.establishmentNameEn' | translate}}"
+               autocomplete="off" class="form-control" validator="required" name="establishmentNameEn" ng-disabled="isPreview || isMediaLicenseStep" />
+    </div>
+
+    <div class="formInput" ng-if="!isForeignjournalist && !isGovernment && !isForeigner && !isPartner">
+        <label>{{'address.Emirate' | translate}}</label>
+        <ui-select ng-model="establishmentEmirate" theme="bootstrap" class="text-left" ng-disabled="isPreview || isMediaLicenseStep">
+            <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="formInput" ng-if="!isForeignjournalist && !isGovernment && !isForeigner && !isPartner">
+        <label>{{'completeProfile.Authority' | translate}}</label>
+        <ui-select ng-model="establishmentControl.authority" theme="bootstrap" ng-disabled="isPreview || isMediaLicenseStep" class="text-left" validator="required" name="Authority">
+            <ui-select-match placeholder="Select">{{$select.selected | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="authority in authorities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="formInput" ng-if="!isForeignjournalist && !isGovernment && !isForeigner && !isFreeZone && !isPartner">
+        <label>{{'completeProfile.HasValidLicense' | translate}}</label>
+        
+        <div class="formGroup">
+            <div class="formRadio">
+                <input type="radio" name="residenceCheck" ng-disabled="isPreview && !isMediaLicenseStep"
+                    ng-model="establishmentControl.hasValidLicense" ng-value="true">
+                <span>Yes</span>
+            </div>
+            <div class="formRadio">
+                <input type="radio" name="residenceCheck" ng-disabled="isPreview && !isMediaLicenseStep"
+                    ng-model="establishmentControl.hasValidLicense" ng-value="false">
+                <span>No</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="formInput" ng-if="!isGovernment && !isPartner">
+        <label>{{(establishmentControl.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}</label>
+        
+        <input ng-model="establishmentControl.licenseNumber" type="text" ng-disabled="!isPreview && !isMediaLicenseStep && !isForeigner" placeholder="{{(establishmentControl.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}"
+               autocomplete="off" class="form-control" validator="required" name="licenseNumber" maxlength="20" />
+
+        <button type="button" ng-show="isRenew" ng-disabled="!isRenew" ng-click="updateLicenseNo(establishmentControl.licenseNumber)" class="btn btn-primary">{{'completeProfile.UpdateLicenseNumber' | translate}}</button>
+    </div>
+
+    <div class="formInput" ng-if="establishmentControl.hasValidLicense && !isFreeZone && !isPartner">
+        <label>{{'completeProfile.TenancyContract' | translate}} <span class="text-danger"> *</span></label>
+        
+        <div class="input-group">
+            <input type="text" uib-datepicker-popup="{{format}}" ng-disabled="isPreview && !isMediaLicenseStep"
+                ng-model="establishmentControl.tenancyContractEndDate" validator="required" name="tenancyContractEndDate"
+                is-open="tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                uib-datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+
+            <button type="button" ng-click="openTenancyContractDatePopup($event)" class="btn btn-default">
+                <em class="fa fa-calendar"></em>
+            </button>
+        </div>
+    </div>
+
+    <div class="formInput"  ng-if="isForeignjournalist">
+        <label>{{'establishment.CirculationorAudienceFigure' | translate}} <span class="text-danger"> *</span></label>
+        
+        <input ng-model="establishmentControl.circulationAudienceFigure" ng-disabled="isPreview" type="number" placeholder="{{'establishment.CirculationorAudienceFigure' | translate}}"
+               autocomplete="off" class="form-control" validator="required" name="circulationAudienceFigure" min="1" max="1000" />
+    </div>
+
+    <div class="formInput"  ng-if="isForeignjournalist">
+        <label>{{'establishment.EstablishmentType' | translate}} <span class="text-danger"> *</span></label>
+        
+        <ui-select ng-model="establishmentControl.establishmentType" ng-disabled="isPreview" theme="bootstrap" class="text-left" validator="required" name="EstablishmentType">
+            <ui-select-match placeholder="Select">{{$select.selected | localizeString}}</ui-select-match>
+            <ui-select-choices repeat="establishmentType in establishmentTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <span ng-bind-html="establishmentType | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="fw sectionTitle" ng-if="!isForeignjournalist && !isPartner">
+        <h4 data-translate="establishment.address" class="text-primary mb-sm"></h4>
+
+        <profile-address ng-model="establishmentControl.address" is-establishment="establishmentControl.forEstablishment" is-preview="isPreview  || isMediaLicenseStep"></profile-address>
+    </div>
+
+    <div class="fw" ng-if="isForeigner">
+        <h4 data-translate="representativeOffice.address" class="text-primary mb-sm"></h4>
+
+        <profile-address ng-model="establishmentControl.foreignAddress" is-foreigner="true" is-establishment="true" is-preview="isPreview"></profile-address>
+    </div>
+
+</div>
+
+<div class="formList" >
+    <div class="formInput" ng-if="!isGovernment && !isFreeZone && !isPartner">
+        <label>{{(establishmentControl.hasValidLicense? ('completeProfile.UploadLicenseCopy' | translate): ('completeProfile.UploadTradeNameCopy' | translate))}}<span class="text-danger"> *</span></label>
+        
+        <uploading-files copyUrl="establishmentControl.licenseCopyUrl" copyUrlFullPath="establishmentControl.licenseCopyUrlFullPath" url="uploadlicenseCopytUrl" isrequired="true"></uploading-files>
+    </div>
+
+    <div class="formInput" ng-if="establishmentControl.hasValidLicense && !isFreeZone">
+        <label>{{'completeProfile.UploadTenancyContract' | translate}}<span class="text-danger"> *</span></label>
+        
+        <div ng-if="tenancyContractUploader && establishmentControl.tenancyContractCopyUrlFullPath == undefined">
+            <input filestyle="" id="tenancyContractUrlId" ng-disabled="isPreview" type="file" data-icon-name="icon-upload" data-button-text="{{'profileNationalityDirective.UploadFile' | translate}}" data-class-button="btn btn-default"
+                   data-classinput="form-control inline" nv-file-select="" uploader="tenancyContractUploader" class="form-control" ng-model="establishmentControl.tenancyContractCopyUrl" validator="required" name="tenancyContractUrlId" />
+        </div>
+        <uploading-files copyUrl="establishmentControl.tenancyContractCopyUrl" copyUrlFullPath="establishmentControl.tenancyContractCopyUrlFullPath" url="uploadtenancyContractUrl" isrequired="true"></uploading-files>
+    </div>
+
+    <div class="formInput">
+        <label>{{'completeProfile.MemorandumOfAssociation' | translate}}</label>
+        
+        <uploading-files copyUrl="establishmentControl.memorandumOfAssociationCopyUrl" copyUrlFullPath="establishmentControl.memorandumOfAssociationCopyUrlFullPath" url="uploadlicenseCopytUrl"></uploading-files>
+    </div>
+
+    <div class="formInput">
+        <label>{{'completeProfile.PowerOfAttorney' | translate}}</label>
+        
+        <uploading-files copyUrl="establishmentControl.powerOfAttorneyCopyUrl" copyUrlFullPath="establishmentControl.powerOfAttorneyCopyUrlFullPath" url="uploadlicenseCopytUrl"></uploading-files>
+    </div>
+
+    <div class="formInput">
+        <label>{{'completeProfile.Statement' | translate}}</label>
+        
+        <uploading-files copyUrl="establishmentControl.statementCopyUrl" copyUrlFullPath="establishmentControl.statementCopyUrlFullPath" url="uploadlicenseCopytUrl"></uploading-files>
+    </div>
+</div>
+
+
+
+<div ng-if="false">
+    <div class="row form-group" ng-if="isPartner">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+        <div class="col-sm-9">
+            <ui-select ng-model="establishmentControl.country" theme="bootstrap" validator="required" name="userCountry" ng-disabled="isPreview">
+                <ui-select-match class="flag-container">
+                    <div class="col-md-4 flag-style">
+                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                    </div>
+                    <div class="col-md-4">
+                        <span>{{$select.selected | localizeString}}</span>
+                    </div>
+                </ui-select-match>
+                <ui-select-choices repeat="country1 in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div class="row">
+                        <div class="col-md-4 col-xs-5">
+                            <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                        </div>
+                        <div class="col-md-8 col-xs-7">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <small data-translate="country.countryCode"></small>: <small ng-bind-html="country1.isoCode3"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'completeProfile.establishmentNameAr' | translate}}</label>
+        <div class="col-sm-9">
+            <input ng-model="establishmentControl.nameAr" type="text" placeholder="{{'completeProfile.establishmentNameAr' | translate}}"
+                   autocomplete="off" class="form-control" validator="required" name="estNameAr" ng-disabled="isPreview || isMediaLicenseStep" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'completeProfile.establishmentNameEn' | translate}}</span></label>
+        <div class="col-sm-9">
+            <input ng-model="establishmentControl.nameEn" type="text" placeholder="{{'completeProfile.establishmentNameEn' | translate}}"
+                   autocomplete="off" class="form-control" validator="required" name="establishmentNameEn" ng-disabled="isPreview || isMediaLicenseStep" />
+        </div>
+    </div>
+    <div class="row form-group" ng-if="!isForeignjournalist && !isGovernment && !isForeigner && !isPartner">
+        <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+        <div class="col-sm-9">
+            <ui-select ng-model="establishmentEmirate" theme="bootstrap" class="text-left" ng-disabled="isPreview || isMediaLicenseStep">
+                <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                <ui-select-choices repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row form-group" ng-if="!isForeignjournalist && !isGovernment && !isForeigner && !isPartner">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'completeProfile.Authority' | translate}}</span></label>
+        <div class="col-sm-9">
+            <ui-select ng-model="establishmentControl.authority" theme="bootstrap" ng-disabled="isPreview || isMediaLicenseStep" class="text-left" validator="required" name="Authority">
+                <ui-select-match placeholder="Select">{{$select.selected | localizeString}}</ui-select-match>
+                <ui-select-choices repeat="authority in authorities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row form-group" ng-if="!isForeignjournalist && !isGovernment && !isForeigner && !isFreeZone && !isPartner">
+        <label class="col-sm-3 control-label">{{'completeProfile.HasValidLicense' | translate}}</label>
+        <div class="col-sm-2">
+            <label class="switch switch-lg">
+                <input type="checkbox" ng-model="establishmentControl.hasValidLicense" ng-disabled="isPreview && !isMediaLicenseStep" placeholder="Emirates Id"
+                       ng-checked="establishmentControl.hasValidLicense">
+                <span></span>
+            </label>
+        </div>
+    </div>
+    <div class="row form-group" ng-if="!isGovernment && !isPartner">
+        <label class="col-sm-3 control-label">
+            <span class="text-danger">* </span>
+            <span>{{(establishmentControl.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}</span>
+        </label>
+        <div class="col-sm-6">
+            <input ng-model="establishmentControl.licenseNumber" type="text" ng-disabled="!isPreview && !isMediaLicenseStep && !isForeigner" placeholder="{{(establishmentControl.hasValidLicense? ('completeProfile.LicenseNumber' | translate): ('completeProfile.ReserveNameNumber' | translate))}}"
+                   autocomplete="off" class="form-control" validator="required" name="licenseNumber" maxlength="20" />
+        </div>
+        <div class="col-sm-3" ng-show="isRenew">
+            <button type="button" ng-disabled="!isRenew" ng-click="updateLicenseNo(establishmentControl.licenseNumber)" class="btn btn-primary">{{'completeProfile.UpdateLicenseNumber' | translate}}</button>
+        </div>
+    </div>
+    <div class="row form-group" ng-if="!isGovernment && !isFreeZone && !isPartner">
+        <label class="col-sm-3 control-label">
+            <span class="text-danger">* </span>
+            <span>{{(establishmentControl.hasValidLicense? ('completeProfile.UploadLicenseCopy' | translate): ('completeProfile.UploadTradeNameCopy' | translate))}}</span>
+        </label>
+        <div class="col-sm-9">
+            <uploading-files copyUrl="establishmentControl.licenseCopyUrl" copyUrlFullPath="establishmentControl.licenseCopyUrlFullPath" url="uploadlicenseCopytUrl" isrequired="true"></uploading-files>
+        </div>
+    </div>
+    <div class="row form-group" ng-if="establishmentControl.hasValidLicense && !isFreeZone && !isPartner">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'completeProfile.TenancyContract' | translate}}</span></label>
+        <div class="col-sm-9">
+            <p class="input-group hackyhack">
+                <input type="text" uib-datepicker-popup="{{format}}" ng-disabled="isPreview && !isMediaLicenseStep" ng-model="establishmentControl.tenancyContractEndDate" validator="required"
+                       name="tenancyContractEndDate" is-open="tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                       uib-datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+                <span class="input-group-btn">
+                    <button type="button" ng-click="openTenancyContractDatePopup($event)" class="btn btn-default">
+                        <em class="fa fa-calendar"></em>
+                    </button>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="row form-group" ng-if="establishmentControl.hasValidLicense && !isFreeZone">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'completeProfile.UploadTenancyContract' | translate}}</span></label>
+        <div class="col-sm-9">
+            <div ng-if="tenancyContractUploader && establishmentControl.tenancyContractCopyUrlFullPath == undefined">
+                <input filestyle="" id="tenancyContractUrlId" ng-disabled="isPreview" type="file" data-icon-name="icon-upload" data-button-text="{{'profileNationalityDirective.UploadFile' | translate}}" data-class-button="btn btn-default"
+                       data-classinput="form-control inline" nv-file-select="" uploader="tenancyContractUploader" class="form-control" ng-model="establishmentControl.tenancyContractCopyUrl" validator="required" name="tenancyContractUrlId" />
+            </div>
+            <uploading-files copyUrl="establishmentControl.tenancyContractCopyUrl" copyUrlFullPath="establishmentControl.tenancyContractCopyUrlFullPath" url="uploadtenancyContractUrl" isrequired="true"></uploading-files>
+        </div>
+    </div>
+    
+    <div class="row form-group">
+        <label class="col-sm-3 control-label">
+            <span>{{'completeProfile.MemorandumOfAssociation' | translate}}</span>
+        </label>
+        <div class="col-sm-9">
+            <uploading-files copyUrl="establishmentControl.memorandumOfAssociationCopyUrl" copyUrlFullPath="establishmentControl.memorandumOfAssociationCopyUrlFullPath" url="uploadlicenseCopytUrl"></uploading-files>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label">
+            <span>{{'completeProfile.PowerOfAttorney' | translate}}</span>
+        </label>
+        <div class="col-sm-9">
+            <uploading-files copyUrl="establishmentControl.powerOfAttorneyCopyUrl" copyUrlFullPath="establishmentControl.powerOfAttorneyCopyUrlFullPath" url="uploadlicenseCopytUrl"></uploading-files>
+        </div>
+    </div>
+    
+    <div class="row form-group">
+        <label class="col-sm-3 control-label">
+            <span>{{'completeProfile.Statement' | translate}}</span>
+        </label>
+        <div class="col-sm-9">
+            <uploading-files copyUrl="establishmentControl.statementCopyUrl" copyUrlFullPath="establishmentControl.statementCopyUrlFullPath" url="uploadlicenseCopytUrl"></uploading-files>
+        </div>
+    </div>
+    
+    
+    <hr ng-if="isForeignjournalist" />
+    <div class="row form-group" ng-if="isForeignjournalist">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'establishment.CirculationorAudienceFigure' | translate}}</span></label>
+        <div class="col-sm-9">
+            <input ng-model="establishmentControl.circulationAudienceFigure" ng-disabled="isPreview" type="number" placeholder="{{'establishment.CirculationorAudienceFigure' | translate}}"
+                   autocomplete="off" class="form-control" validator="required" name="circulationAudienceFigure" min="1" max="1000" />
+        </div>
+    </div>
+    <hr ng-if="isForeignjournalist" />
+    <div class="row form-group" ng-if="isForeignjournalist">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'establishment.EstablishmentType' | translate}}</span></label>
+        <div class="col-sm-9">
+            <ui-select ng-model="establishmentControl.establishmentType" ng-disabled="isPreview" theme="bootstrap" class="text-left" validator="required" name="EstablishmentType">
+                <ui-select-match placeholder="Select">{{$select.selected | localizeString}}</ui-select-match>
+                <ui-select-choices repeat="establishmentType in establishmentTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="establishmentType | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <hr />
+    <div ng-if="!isForeignjournalist && !isPartner">
+        <div class="row form-group">
+            <div class="col-sm-offset-1">
+                <h4 data-translate="establishment.address" class="text-primary"></h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <profile-address ng-model="establishmentControl.address" is-establishment="establishmentControl.forEstablishment" is-preview="isPreview  || isMediaLicenseStep"></profile-address>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-if="isForeigner">
+        <hr />
+        <div class="row form-group">
+            <div class="col-sm-offset-1">
+                <h4 data-translate="representativeOffice.address" class="text-primary"></h4>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-12">
+                <profile-address ng-model="establishmentControl.foreignAddress" is-foreigner="true" is-establishment="true" is-preview="isPreview"></profile-address>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

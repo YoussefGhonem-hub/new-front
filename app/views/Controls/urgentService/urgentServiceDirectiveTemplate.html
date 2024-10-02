@@ -1,0 +1,21 @@
+﻿<div ng-if="isUrgentAllowed" class="box-placeholder b0 bg-gray-lighter">
+    <h3 data-translate="urgentServices.pageTitle"></h3>
+    <p>
+        <br />
+        <span data-translate="urgentServices.condition"></span>
+        <div class="clearfix">
+            <div class="checkbox c-checkbox mt0">
+                <label>
+                    <input type="checkbox" ng-model="urgentServiceControl.confirmFlag" ng-click="urgentServiceControl.checked()" />
+                    <span class="fa fa-check"></span>{{'urgentServices.confirmMsg' | translate}}
+                </label>
+            </div>
+        </div>
+        <br />
+    </p>
+</div>
+<div ng-if="!isUrgentAllowed" class="box-placeholder b0 bg-warning bg-light">
+    <h3 data-translate="urgentServices.pageTitle"></h3>
+    <br />
+    <span data-translate="urgentServices.notAvailable"></span>
+</div>

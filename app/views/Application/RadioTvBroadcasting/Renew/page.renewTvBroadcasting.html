@@ -1,0 +1,283 @@
+﻿<div class="app-view-header">
+    {{'mediaLicense.newMediaLicense' | translate}}
+</div>
+<div class="container-fluid" ng-controller="RenewRadioTvBroadcastingController as radioCtl">
+
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <div class="row"><br /></div>
+            <div class="wizard">
+                <ul class="steps-bar">
+                    <li ng-class="{'active':radioCtl.activeStep >= 1}">
+                        <label>{{'mediaLicense.stepOne' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':radioCtl.activeStep >= 2}">
+                        <label>{{'radioTvBroadCasting.stepTwo' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':radioCtl.activeStep >= 3}">
+                        <label>{{'radioTvBroadCasting.stepThree' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':radioCtl.activeStep >= 4}">
+                        <label>{{'radioTvBroadCasting.stepFour' | translate}}</label>
+                    </li>
+                </ul>
+                <br />
+            </div>
+            <hr />
+            <div ng-if="radioCtl.activeStep==1" class="wizard-step">
+                <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                    <div class="row form-group">
+                        <div class="col-md-12">
+                            <establishment ng-model="radioCtl.mediaLicenses.applicationDetail.application.establishment" is-preview="true" is-renew="true"></establishment>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" ripple="" ng-disabled="radioCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="radioCtl.goToSecondStep()"
+                                    validation-submit="stepOneForm">
+                                {{'general.next' | translate}}<span class="ripple"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div ng-if="radioCtl.activeStep==2" class="wizard-step">
+                <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.type' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <div class="radio-inline c-radio">
+                                <label>
+                                    <input ng-disabled="true" type="radio" name="licenseType" ng-value="true" ng-model="radioCtl.mediaLicenses.tVs[0].isRadio" ng-checked="radioCtl.mediaLicenses.tVs[0].isRadio"
+                                           ng-required="true">
+                                    <span class="fa fa-circle"></span>{{'radioTvBroadCasting.radioOption' | translate}}
+                                </label>
+                            </div>
+                            <div class="radio-inline c-radio">
+                                <label>
+                                    <input ng-disabled="true" type="radio" name="licenseType" ng-value="false" ng-model="radioCtl.mediaLicenses.tVs[0].isRadio"
+                                           ng-checked="!radioCtl.mediaLicenses.tVs[0].isRadio">
+                                    <span class="fa fa-circle"></span>{{'radioTvBroadCasting.tvOption' | translate}}
+                                </label>
+                            </div>
+                        </div>
+                        <span class="col-sm-3 control-label" ng-if="!stepTwoForm.licenseType.$valid && stepTwoForm.licenseType.$touched">
+                            <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                        </span>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'radioTvBroadCasting.encryptionType' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <div class="radio-inline c-radio">
+                                <label>
+                                    <input ng-disabled="true" type="radio" name="encryptionType" ng-value="true" ng-model="radioCtl.mediaLicenses.tVs[0].isEncrypted"
+                                           ng-checked="radioCtl.mediaLicenses.tVs[0].isEncrypted" ng-required="true">
+                                    <span class="fa fa-circle"></span>{{'radioTvBroadCasting.encrypted' | translate}}
+                                </label>
+                            </div>
+                            <div class="radio-inline c-radio">
+                                <label>
+                                    <input ng-disabled="true" type="radio" name="encryptionType" ng-value="false" ng-model="radioCtl.mediaLicenses.tVs[0].isEncrypted"
+                                           ng-checked="!radioCtl.mediaLicenses.tVs[0].isEncrypted">
+                                    <span class="fa fa-circle"></span>{{'radioTvBroadCasting.notEncrypted' | translate}}
+                                </label>
+                            </div>
+                        </div>
+                        <span class="col-sm-3 control-label" ng-if="!stepTwoForm.encryptionType.$valid && stepTwoForm.encryptionType.$touched">
+                            <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                        </span>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaper.languages' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <ui-select ng-disabled="true" ng-model="radioCtl.mediaLicenses.tVs[0].selectedLangauges" ui-select-required name="language" theme="bootstrap" class="text-left" ng-required="true" multiple>
+                                <ui-select-match placeholder="{{'newspaper.selectLanguage' | translate}}">{{$item| localizeString}}</ui-select-match>
+                                <ui-select-choices repeat="language in radioCtl.mediaLicenses.tVs[0].languages | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                    <div ng-bind-html="language| localizeString | highlight: $select.search"></div>
+                                </ui-select-choices>
+                            </ui-select>
+                            <span ui-multiple item="'language'" frommodel="radioCtl.mediaLicenses.tVs[0].selectedLangauges" tomodel="radioCtl.mediaLicenses.tVs[0].tVLanguages"
+                                  editmode="radioCtl.editMode"></span>
+                            <span ng-if="!stepTwoForm.language.$valid && stepTwoForm.language.$touched">
+                                <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'radioTvBroadCasting.capital' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <input ng-disabled="true" ng-model="radioCtl.mediaLicenses.tVs[0].capital" type="number" placeholder="{{'radioTvBroadCasting.capital' | translate}}"
+                                   autocomplete="off" class="form-control" validator="required" max="1000000000" name="capital" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'radioTvBroadCasting.souresOfFunding' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <textarea ng-disabled="true" ng-model="radioCtl.mediaLicenses.tVs[0].fundingSources" validator="required" maxlength="300" placeholder="{{'radioTvBroadCasting.souresOfFunding' | translate}}"
+                                      autocomplete="off" class="form-control" name="souresOfFunding" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'radioTvBroadCasting.suggestedTvName' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <input ng-disabled="true" ng-model="radioCtl.mediaLicenses.tVs[0].name" validator="required" type="text" maxlength="100" placeholder="{{'radioTvBroadCasting.suggestedTvName' | translate}}"
+                                   autocomplete="off" class="form-control" name="name" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'radioTvBroadCasting.programsOffered' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <textarea ng-disabled="true" ng-model="radioCtl.mediaLicenses.tVs[0].programsCategory" validator="required" placeholder="{{'radioTvBroadCasting.programsOffered' | translate}}"
+                                      autocomplete="off" class="form-control" name="programsCategory" />
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'radioTvBroadCasting.companysObjective' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <uploading-files copyUrl="radioCtl.mediaLicenses.tVs[0].objectivesUrl" copyUrlFullPath="radioCtl.mediaLicenses.tVs[0].objectivesUrlFullPath"
+                                             url="radioCtl.uploadcompanysObjectiveUrl" isrequired="true"></uploading-files>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'radioTvBroadCasting.feasibilityStudy' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <uploading-files copyurl="radioCtl.mediaLicenses.tVs[0].feasibilityStudyUrl" copyurlFullPath="radioCtl.mediaLicenses.tVs[0].feasibilityStudyUrlFullPath"
+                                             url="radioCtl.uploadfeasibilityStudyUrl"></uploading-files>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <service-fee ng-model="radioCtl.serviceFeesObj" class="col-sm-12"></service-fee>
+                    </div>
+                    <div class="row" ng-if="!radioCtl.editMode">
+                        <div class="col-md-12">
+                            <button type="submit" ripple="" ng-disabled="radioCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="radioCtl.goToThirdStep()"
+                                    validation-submit="stepTwoForm">
+                                {{'general.next' | translate}}<span class="ripple"></span>
+                            </button>
+                            <button type="button" ripple="" validation-submit="stepTwoForm"
+                                    ng-disabled="radioCtl.isBusy" class="mr mb-sm btn btn-default pull-right" ng-click="radioCtl.save(1)">
+                                {{'general.applyLater' | translate}}<span class="ripple"></span>
+                            </button>
+                            <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="radioCtl.previousToFirstStep()">
+                                {{'general.previous' | translate}}<span class="ripple"></span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row" ng-if="radioCtl.editMode">
+                        <div class="col-md-8"></div>
+                        <div class="col-md-4">
+                            <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                                <button uib-dropdown-toggle="" ng-disabled="radioCtl.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                <ul role="menu" class="dropdown-menu animated zoomIn">
+                                    <li ng-repeat="transition in radioCtl.mediaLicenses.applicationDetail.applicationState.transitions">
+                                        <a href="" ng-click="radioCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div ng-if="radioCtl.activeStep==3" class="wizard-step">
+                <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                    <div class="row">
+                        <br />
+                    </div>
+                    <uib-alert type="danger" ng-if="radioCtl.EmritIdRepeated">
+                        <div class="row">
+                            <div class="col-md-12">
+                                {{'photographyPermit.EmritIdIsRepeated' | translate}}
+                            </div>
+                        </div>
+                    </uib-alert>
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <profile-nationality is-require-third-party="true" ng-model="radioCtl.mediaLicenses.chiefEditors[0].person"></profile-nationality>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="row form-group">
+                        <div class="col-sm-12">
+                            <profile-address ng-model="radioCtl.mediaLicenses.chiefEditors[0].address" is-preview="true"></profile-address>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" ripple="" ng-disabled="radioCtl.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="radioCtl.goToFourthStep()" validation-submit="stepThreeForm">
+                                {{'general.next' | translate}}<span class="ripple"></span>
+                            </button>
+                            <button type="button" class="mr mb-sm btn btn-primary pull-right" ng-click="radioCtl.previousToSecondStep()">
+                                {{'general.previous' | translate}}<span class="ripple"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div ng-if="radioCtl.activeStep==4" class="wizard-step">
+                <form role="form" class="mb-lg form-horizontal" name="stepFourForm">
+                    <div class="row form-group" ng-if="radioCtl.requireAquitanceForm == true">
+                        <div class="col-md-12">
+                            <div class="alert alert-warning" data-translate="general.requireAquitance"></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <br />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box-placeholder b0 bg-gray-lighter">
+                                <h3 data-translate="general.licenseOwners"></h3>
+                                <div class="row">
+                                    <div class="col-md-12" ng-if="radioCtl.dtPartnerOptions">
+                                        <table datatable="" class="row-border hover" dt-options="radioCtl.dtPartnerOptions" dt-columns="radioCtl.dtPartnerColumns"
+                                               dt-instance="radioCtl.dtPartnerInstance" width="100%"></table>
+                                    </div>
+                                </div>
+                                <div class="row"><br /></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <terms ng-model="radioCtl.terms" ng-if="!radioCtl.editMode" name="terms"></terms>
+                        </div>
+                    </div>
+                    <customer-pulse ng-if="radioCtl.showHappinessMeter" ng-model="radioCtl.happinessMeterObj"></customer-pulse>
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="button" ripple="" validation-submit="stepFourForm" ng-if="!radioCtl.editMode"
+                                    ng-disabled="radioCtl.isBusy || !radioCtl.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="radioCtl.save(2)">
+                                {{'general.apply' | translate}}<span class="ripple"></span>
+                            </button>
+                            <button type="button" ripple="" validation-submit="stepFourForm" ng-if="!radioCtl.editMode"
+                                    ng-disabled="radioCtl.isBusy|| !radioCtl.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="radioCtl.save(1)">
+                                {{'general.applyLater' | translate}}<span class="ripple"></span>
+                            </button>
+                            <div uib-dropdown="dropdown" class="btn-group mr pull-right" ng-if="radioCtl.editMode">
+                                <button uib-dropdown-toggle="" ng-disabled="mediaCtl.isBusy" class="btn btn-primary dropdown-toggle">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                                <ul role="menu" class="dropdown-menu animated zoomIn">
+                                    <li ng-repeat="transition in radioCtl.mediaLicenses.applicationDetail.applicationState.transitions">
+                                        <a href="" ng-click="radioCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="radioCtl.previousToThirdStep()">
+                                {{'general.previous' | translate}}<span class="ripple"></span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

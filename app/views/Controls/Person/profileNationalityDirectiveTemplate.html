@@ -1,0 +1,570 @@
+﻿<div ng-show="isReadingEId">Reading ID data please be patiant........</div>
+<div class="formList">
+
+    <div class="formInput">
+        <label>{{'profileNationalityDirective.Nationality' | translate}}</label>
+        <ui-select ng-disabled="passModel.isSmartpass" ng-model="passModel.country" theme="bootstrap"
+            validator="required" name="userCountry">
+            <ui-select-match class="flag-container">
+                <!-- <div class="col-md-4 flag-style">
+                    <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                </div> -->
+                <span>{{$select.selected | localizeString}}</span>
+            </ui-select-match>
+            <ui-select-choices
+                repeat="country1 in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <div class="row">
+                    <div class="col-md-4 col-xs-5">
+                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                    </div>
+                    <div class="col-md-8 col-xs-7">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small data-translate="country.countryCode"></small>: <small
+                                    ng-bind-html="country1.isoCode3"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+    <div class="formInput" ng-show="passModel.country.isoCode2 !== 'AE'">
+        <label>{{'profileNationalityDirective.HaveValidVisa' | translate}}</label>
+        <!-- <input type="checkbox" ng-disabled="passModel.isSmartpass" ng-init="isValidResidence = true"
+            ng-model="isValidResidence" placeholder="Emirates Id"
+            ng-checked="((passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null) ||passModel.isSmartpass)"> -->
+            <div class="formGroup">
+                <div class="formRadio">
+                    <input type="radio" 
+                               name="residenceCheck" 
+                               ng-disabled="passModel.isSmartpass" 
+                               ng-model="isValidResidence" 
+                               ng-value="true">
+                        <span>Yes</span>
+                </div>
+                <div class="formRadio">
+                    <input type="radio" 
+                               name="residenceCheck" 
+                               ng-disabled="passModel.isSmartpass" 
+                               ng-model="isValidResidence" 
+                               ng-value="false">
+                        <span>No</span>
+                </div>
+            </div>
+            
+            
+    </div>
+
+    <div class="formInput"
+        ng-if="(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) || isValidResidence">
+        <label>{{'profileNationalityDirective.EmiratesId' | translate}}</label>
+        <input ng-disabled="passModel.isSmartpass" ng-model="passModel.emiratesId" type="text"
+            placeholder="784-9999-9999999-9" autocomplete="off" class="form-control" validator="required"
+            name="emiratesId" restrict="reject" mask="784-9999-9999999-9" />
+    </div>
+
+    <div class="formInput">
+        <label
+            ng-show="(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) || isValidResidence">
+            {{'profileNationalityDirective.fullNameIsResident' | translate}}
+            <span class="text-danger">*</span>
+        </label>
+        <label
+            ng-show="!(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) && !isValidResidence">
+            {{'profileNationalityDirective.fullNameIsNotResident' | translate}}
+            <span class="text-danger">*</span>
+        </label>
+        <input ng-disabled="passModel.isSmartpass" ng-model="passModel.name" type="text"
+            placeholder="{{'profileNationalityDirective.fullName' | translate}}" autocomplete="off" class="form-control"
+            validator="required" name="fullName" maxlength="256" />
+    </div>
+
+    <div class="formInput"
+        ng-if="!(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) && !isValidResidence">
+        <label>
+            {{'profileNationalityDirective.PassportNumber' | translate}}<span class="text-danger">* </span>
+        </label>
+
+        <input ng-model="passModel.passportNumber"
+            placeholder="{{'profileNationalityDirective.PassportNumber' | translate}}" autocomplete="off"
+            class="form-control" name="passportNumber" validator="required" />
+    </div>
+
+    <div class="formInput">
+        <label>{{'profileNationalityDirective.Occupation' | translate}}<span class="text-danger">* </span></label>
+        <input ng-disabled="passModel.isSmartpass" ng-model="passModel.title" type="text"
+            placeholder="{{'profileNationalityDirective.Occupation' | translate}}" autocomplete="off"
+            class="form-control" validator="required" name="fullName" maxlength="256" />
+    </div>
+
+    <div class="formInput">
+        <label>{{'profileNationalityDirective.Gender' | translate}}<span class="text-danger">* </span></label>
+        <select id="genderSelect" class="form-control"
+            placeholder="{{'profileNationalityDirective.Gender' | translate}}" ng-model="passModel.genderId"
+            ng-disabled="passModel.isSmartpass" ng-required="!passModel.genderId">
+            <option value="1">{{'profileNationalityDirective.GenderMale' | translate}}</option>
+            <option value="2">{{'profileNationalityDirective.GenderFemale' | translate}}</option>
+        </select>
+
+    </div>
+
+    <div class="formInput">
+        <label>{{'profileNationalityDirective.DateOfBirth' | translate}}<span class="text-danger">* </span></label>
+
+        <div class="input-group">
+            <input type="text" uib-datepicker-popup="{{format}}" ng-model="passModel.dateOfBirth"
+                is-open="dateOfBirthPopup.opened" uib-datepicker-options="dateOptions" close-text="Close"
+                class="form-control" name="dateOfBirth" validator="required" init-date="dateOptions.maxDate"
+                min-date="dateOptions.minDate" max-date="dateOptions.maxDate" show-weeks="false" show-button-bar="false"
+                disabled />
+
+            <button type="button" ng-click="opendateOfBirthDatePopup($event)" class="btn btn-default">
+                <em class="fa fa-calendar"></em>
+            </button>
+        </div>
+
+    </div>
+
+    <div class="formInput">
+        <label>{{'profileNationalityDirective.UploadYourPhoto' | translate}}<span class="text-danger">* </span></label>
+        <uploading-files copyUrl="passModel.photoUrl" copyUrlFullPath="passModel.photoUrlFullPath" url="uploadPhotoUrl"
+            isrequired="true"></uploading-files>
+
+    </div>
+
+    <div class="formInput"
+        ng-if="(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) || isValidResidence">
+        <label>{{'profileNationalityDirective.UploadEmiratesId' | translate}}<span class="text-danger">* </span></label>
+        <uploading-files copyUrl="passModel.emiratesIdCopyUrl" copyUrlFullPath="passModel.emiratesIdCopyUrlFullPath"
+            url="uploadEmiratesIdUrl" isrequired="true"></uploading-files>
+
+    </div>
+
+    <div class="formInput"
+        ng-if="!(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) && !isValidResidence">
+        <label>{{'profileNationalityDirective.UploadPassport' | translate}}<span class="text-danger">* </span></label>
+        <uploading-files copyUrl="passModel.passportCopyUrl" copyUrlFullPath="passModel.passportCopyUrlFullPath"
+            url="uploadPassportUrl" isrequired="true"></uploading-files>
+
+    </div>
+
+</div>
+
+<div ng-if="isRequireThirdParty" class="formList">
+
+    <div class="formInput" ng-if="isValidResidence">
+        <label class="col-sm-3 control-label">{{'profileNationalityDirective.UploadPassport' | translate}}<span
+                class="text-danger">* </span></label>
+        <uploading-files copyUrl="passModel.passportCopyUrl" copyUrlFullPath="passModel.passportCopyUrlFullPath"
+            url="uploadPassportUrl" isrequired="true"></uploading-files>
+
+    </div>
+
+    <div class="formInput">
+        <label ng-if="passModel.country.isoCode2 !== 'AE'">{{'profileNationalityDirective.UploadVisa' | translate}}<span
+                class="text-danger">* </span></label>
+        <label ng-if="passModel.country.isoCode2 == 'AE'">{{'profileNationalityDirective.UploadKholasa' |
+            translate}}<span class="text-danger">* </span></label>
+        <uploading-files copyUrl="passModel.iqamaUrl" copyUrlFullPath="passModel.iqamaUrlFullPath" url="uploadIqamaUrl"
+            isrequired="true"></uploading-files>
+
+    </div>
+
+    <div class="formInput">
+        <label>{{'journalists.UploadAcquaintanceForm' | translate}}<span class="text-danger">*
+            </span></label>
+        <uploading-files copyUrl="passModel.acquitanceFormUrl"
+            copyUrlFullPath="passModel.acquaintanceFormCopyUrlFullPath" url="uploadAcquaintanceFormUrl"
+            isrequired="true"></uploading-files>
+        <p ng-if="!passModel.acquitanceFormUrl" style="color: lightcoral; font-size:12px">
+            {{'profileNationalityDirective.aquiantanceNote' | translate}}
+            <a ng-if="!passModel.acquitanceFormUrl" target="_blank"
+                href="sharedFiles/aquitanceForm.pdf">{{'profileNationalityDirective.link' | translate}}</a>
+            <a ng-if="!isForShooting" target="_blank" href="sharedFiles/aquitanceForm.pdf"
+                uib-tooltip="{{'journalists.UploadAcquaintanceForm' | translate}}">
+                <em class="fa fa-3x fa-file-pdf-o"></em>
+            </a>
+            <a ng-if="isForShooting" target="_blank" href="sharedFiles/newAqu.pdf"
+                uib-tooltip="{{'journalists.UploadAcquaintanceForm' | translate}}">
+                <em class="fa fa-3x fa-file-pdf-o"></em>
+            </a>
+        </p>
+    </div>
+
+    <div class="formList" ng-if="isForSocialMedia">
+        <div class="formInput">
+            <label>
+                {{'profileNationalityDirective.tradeLicenseNo' | translate}}><span class="text-danger">*</span>
+            </label>
+            <input ng-model="passModel.tradeLicenseNo" type="text"
+                placeholder="{{'profileNationalityDirective.tradeLicenseNo' | translate}}" autocomplete="off"
+                class="form-control" ng-trim="false" validator="required" name="tradeLicenseNo" maxlength="256"
+                ng-blur="checkerLicenseNumber()" />
+            <p ng-if="licenseNumberValidChecker" style="color: #f34235; font-size:11px">
+                {{'profileNationalityDirective.invalidTradeLicenseNo' | translate}}</p>
+        </div>
+
+        <div class="formInput" ng-if="!passModel.authority.emirate">
+            <label>
+                {{'profileNationalityDirective.Emirate' | translate}}<span class="text-danger">*</span>
+            </label>
+            <ui-select ng-model="passModel.establishmentEmirate" theme="bootstrap" class="text-left"
+                validator="required" name="emirate">
+                <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="formInput" ng-if="passModel.authority.emirate">
+            <label>
+                {{'address.Emirate' | translate}}><span class="text-danger">*</span>
+            </label>
+            <ui-select ng-model="passModel.authority.emirate" theme="bootstrap" class="text-left" validator="required"
+                name="emirate">
+                <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="formInput">
+            <label>{{'completeProfile.Authority' | translate}}<span class="text-danger">* </span></label>
+            <ui-select ng-model="passModel.authority" theme="bootstrap" class="text-left" validator="required"
+                name="Authority">
+                <ui-select-match placeholder="{{'completeProfile.SelectAuthority' | translate}}">{{$select.selected |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="authority in passModel.establishmentEmirate.authorities | filter:{isShown: true} | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+
+        <div class="formInput">
+            <label>{{'profileNationalityDirective.uploadTradeLicense' | translate}}<span class="text-danger">*
+                </span></label>
+            <uploading-files copyUrl="passModel.tradeLicenseCopyUrl"
+                copyUrlFullPath="passModel.tradeLicenseCopyUrlFullPath" url="tradeLicenseCopyUrl"
+                isrequired="true"></uploading-files>
+
+        </div>
+
+    </div>
+</div>
+
+<div ng-if="false">
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+        <div class="col-sm-9">
+            <ui-select ng-disabled="passModel.isSmartpass" ng-model="passModel.country" theme="bootstrap"
+                validator="required" name="userCountry">
+                <ui-select-match class="flag-container">
+                    <div class="col-md-4 flag-style">
+                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                    </div>
+                    <div class="col-md-4">
+                        <span>{{$select.selected | localizeString}}</span>
+                    </div>
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="country1 in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div class="row">
+                        <div class="col-md-4 col-xs-5">
+                            <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                        </div>
+                        <div class="col-md-8 col-xs-7">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <small data-translate="country.countryCode"></small>: <small
+                                        ng-bind-html="country1.isoCode3"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+    <div class="row form-group" ng-show="passModel.country.isoCode2 !== 'AE'">
+        <label class="col-sm-3 control-label">{{'profileNationalityDirective.HaveValidVisa' | translate}}</label>
+        <div class="col-sm-2">
+            <label class="switch switch-lg">
+                <input type="checkbox" ng-disabled="passModel.isSmartpass" ng-init="isValidResidence = true"
+                    ng-model="isValidResidence" placeholder="Emirates Id"
+                    ng-checked="((passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null) ||passModel.isSmartpass)">
+                <span></span>
+            </label>
+        </div>
+    </div>
+    <div class="row form-group"
+        ng-if="(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) || isValidResidence">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.EmiratesId' | translate}}</span></label>
+        <div class="col-sm-9">
+            <input ng-disabled="passModel.isSmartpass" ng-model="passModel.emiratesId" type="text"
+                placeholder="784-9999-9999999-9" autocomplete="off" class="form-control" validator="required"
+                name="emiratesId" restrict="reject" mask="784-9999-9999999-9" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <label
+            ng-show="(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) || isValidResidence"
+            class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.fullNameIsResident' | translate}}</span></label>
+        <label
+            ng-show="!(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) && !isValidResidence"
+            class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</span></label>
+        <div class="col-sm-9">
+            <input ng-disabled="passModel.isSmartpass" ng-model="passModel.name" type="text"
+                placeholder="{{'profileNationalityDirective.fullName' | translate}}" autocomplete="off"
+                class="form-control" validator="required" name="fullName" maxlength="256" />
+        </div>
+    </div>
+    <div class="row form-group"
+        ng-if="!(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) && !isValidResidence">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span>{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+        <div class="col-sm-9">
+            <input ng-model="passModel.passportNumber"
+                placeholder="{{'profileNationalityDirective.PassportNumber' | translate}}" autocomplete="off"
+                class="form-control" name="passportNumber" validator="required" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.Occupation' | translate}}</span></label>
+        <div class="col-sm-9">
+            <input ng-disabled="passModel.isSmartpass" ng-model="passModel.title" type="text"
+                placeholder="{{'profileNationalityDirective.Occupation' | translate}}" autocomplete="off"
+                class="form-control" validator="required" name="fullName" maxlength="256" />
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.Gender' | translate}}</span></label>
+        <div class="col-sm-9">
+            <div class="radio-inline c-radio">
+                <label>
+                    <input ng-disabled="passModel.isSmartpass" id="inlineradio1" type="radio" name="i-radio" value="1"
+                        ng-model="passModel.genderId" ng-required="!passModel.genderId" />
+                    <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderMale' | translate}}
+                </label>
+            </div>
+            <div class="radio-inline c-radio">
+                <label>
+                    <input ng-disabled="passModel.isSmartpass" id="inlineradio2" type="radio" name="i-radio" value="2"
+                        ng-model="passModel.genderId" ng-required="!passModel.genderId" />
+                    <span class="fa fa-circle"></span>{{'profileNationalityDirective.GenderFemale' | translate}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.DateOfBirth' | translate}}</span></label>
+        <div class="col-sm-9">
+            <p class="input-group hackyhack">
+                <input type="text" uib-datepicker-popup="{{format}}" ng-model="passModel.dateOfBirth"
+                    is-open="dateOfBirthPopup.opened" uib-datepicker-options="dateOptions" close-text="Close"
+                    class="form-control" name="dateOfBirth" validator="required" init-date="dateOptions.maxDate"
+                    min-date="dateOptions.minDate" max-date="dateOptions.maxDate" show-weeks="false"
+                    show-button-bar="false" disabled />
+                <span class="input-group-btn">
+                    <button type="button" ng-click="opendateOfBirthDatePopup($event)" class="btn btn-default">
+                        <em class="fa fa-calendar"></em>
+                    </button>
+                </span>
+            </p>
+        </div>
+    </div>
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.UploadYourPhoto' | translate}}</span></label>
+        <div class="col-sm-9">
+            <uploading-files copyUrl="passModel.photoUrl" copyUrlFullPath="passModel.photoUrlFullPath"
+                url="uploadPhotoUrl" isrequired="true"></uploading-files>
+        </div>
+    </div>
+    <div class="row form-group"
+        ng-if="(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) || isValidResidence">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.UploadEmiratesId' | translate}}</span></label>
+        <div class="col-sm-9">
+            <uploading-files copyUrl="passModel.emiratesIdCopyUrl" copyUrlFullPath="passModel.emiratesIdCopyUrlFullPath"
+                url="uploadEmiratesIdUrl" isrequired="true"></uploading-files>
+        </div>
+    </div>
+    <div class="row form-group"
+        ng-if="!(passModel.country.isoCode2 !== undefined && passModel.country.isoCode2 !== 'AE' && passModel.passportNumber == null && isValidResidence) && !isValidResidence">
+        <label class="col-sm-3 control-label"><span class="text-danger">*
+            </span><span>{{'profileNationalityDirective.UploadPassport' | translate}}</span></label>
+        <div class="col-sm-9">
+            <uploading-files copyUrl="passModel.passportCopyUrl" copyUrlFullPath="passModel.passportCopyUrlFullPath"
+                url="uploadPassportUrl" isrequired="true"></uploading-files>
+        </div>
+    </div>
+    <div ng-if="isRequireThirdParty">
+        <div class="row form-group" ng-if="isValidResidence">
+            <label class="col-sm-3 control-label"><span class="text-danger">*
+                </span><span>{{'profileNationalityDirective.UploadPassport' | translate}}</span></label>
+            <div class="col-sm-9">
+                <uploading-files copyUrl="passModel.passportCopyUrl" copyUrlFullPath="passModel.passportCopyUrlFullPath"
+                    url="uploadPassportUrl" isrequired="true"></uploading-files>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label" ng-if="passModel.country.isoCode2 !== 'AE'"><span
+                    class="text-danger">* </span><span>{{'profileNationalityDirective.UploadVisa' |
+                    translate}}</span></label>
+            <label class="col-sm-3 control-label" ng-if="passModel.country.isoCode2 == 'AE'"><span class="text-danger">*
+                </span><span>{{'profileNationalityDirective.UploadKholasa' | translate}}</span></label>
+            <div class="col-sm-9">
+                <uploading-files copyUrl="passModel.iqamaUrl" copyUrlFullPath="passModel.iqamaUrlFullPath"
+                    url="uploadIqamaUrl" isrequired="true"></uploading-files>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">*
+                </span><span>{{'journalists.UploadAcquaintanceForm' | translate}}</span></label>
+            <div class="col-sm-8">
+                <uploading-files copyUrl="passModel.acquitanceFormUrl"
+                    copyUrlFullPath="passModel.acquaintanceFormCopyUrlFullPath" url="uploadAcquaintanceFormUrl"
+                    isrequired="true"></uploading-files>
+                <p ng-if="!passModel.acquitanceFormUrl" style="color: lightcoral; font-size:12px">
+                    {{'profileNationalityDirective.aquiantanceNote' | translate}}
+                    <a ng-if="!passModel.acquitanceFormUrl" target="_blank"
+                        href="sharedFiles/aquitanceForm.pdf">{{'profileNationalityDirective.link' | translate}}</a>
+                </p>
+            </div>
+            <div class="col-sm-1">
+                <a ng-if="!isForShooting" target="_blank" href="sharedFiles/aquitanceForm.pdf"
+                    uib-tooltip="{{'journalists.UploadAcquaintanceForm' | translate}}">
+                    <em class="fa fa-3x fa-file-pdf-o"></em>
+                </a>
+                <a ng-if="isForShooting" target="_blank" href="sharedFiles/newAqu.pdf"
+                    uib-tooltip="{{'journalists.UploadAcquaintanceForm' | translate}}">
+                    <em class="fa fa-3x fa-file-pdf-o"></em>
+                </a>
+            </div>
+        </div>
+        <div ng-if="isForSocialMedia">
+            <div class="row form-group">
+                <label class="col-sm-3 control-label"><span class="text-danger">*
+                    </span><span>{{'profileNationalityDirective.tradeLicenseNo' | translate}}</span></label>
+                <div class="col-sm-9">
+                    <input ng-model="passModel.tradeLicenseNo" type="text"
+                        placeholder="{{'profileNationalityDirective.tradeLicenseNo' | translate}}" autocomplete="off"
+                        class="form-control" ng-trim="false" validator="required" name="tradeLicenseNo" maxlength="256"
+                        ng-blur="checkerLicenseNumber()" />
+                    <p ng-if="licenseNumberValidChecker" style="color: #f34235; font-size:11px">
+                        {{'profileNationalityDirective.invalidTradeLicenseNo' | translate}}</p>
+                </div>
+            </div>
+            <div ng-if="!passModel.authority.emirate">
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'address.Emirate' |
+                        translate}}</label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="passModel.establishmentEmirate" theme="bootstrap" class="text-left"
+                            validator="required" name="emirate">
+                            <ui-select-match
+                                placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected |
+                                localizeString}}</ui-select-match>
+                            <ui-select-choices
+                                repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="passModel.authority.emirate">
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'address.Emirate' |
+                        translate}}</label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="passModel.authority.emirate" theme="bootstrap" class="text-left"
+                            validator="required" name="emirate">
+                            <ui-select-match
+                                placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected |
+                                localizeString}}</ui-select-match>
+                            <ui-select-choices
+                                repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-sm-3 control-label"><span class="text-danger">* </span>{{'completeProfile.Authority' |
+                    translate}}</label>
+                <div class="col-sm-9">
+                    <ui-select ng-model="passModel.authority" theme="bootstrap" class="text-left" validator="required"
+                        name="Authority">
+                        <ui-select-match
+                            placeholder="{{'completeProfile.SelectAuthority' | translate}}">{{$select.selected |
+                            localizeString}}</ui-select-match>
+                        <ui-select-choices
+                            repeat="authority in passModel.establishmentEmirate.authorities | filter:{isShown: true} | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <!--<div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'completeProfile.TenancyContract' | translate}}</span></label>
+            <div class="col-sm-9">
+                <p class="input-group hackyhack">
+                    <input type="text" uib-datepicker-popup="{{format}}" ng-model="passModel.tradeLicenseEndDate" validator="required"
+                           name="tenancyContractEndDate" is-open="tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                           uib-datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="button" ng-click="openTenancyContractDatePopup($event)" class="btn btn-default">
+                            <em class="fa fa-calendar"></em>
+                        </button>
+                    </span>
+                </p>
+            </div>
+        </div>-->
+            <div class="row form-group">
+                <label class="col-sm-3 control-label"><span class="text-danger">*
+                    </span><span>{{'profileNationalityDirective.uploadTradeLicense' | translate}}</span></label>
+                <div class="col-sm-9">
+                    <uploading-files copyUrl="passModel.tradeLicenseCopyUrl"
+                        copyUrlFullPath="passModel.tradeLicenseCopyUrlFullPath" url="tradeLicenseCopyUrl"
+                        isrequired="true"></uploading-files>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- The Gallery as inline carousel, can be positioned anywhere on the page -->
+<div id="blueimp-image-carousel" class="blueimp-gallery">
+    <div class="slides"></div>
+    <h3 class="title"></h3>
+    <a class="prev">‹</a>
+    <a class="next">›</a>
+    <a class="play-pause"></a>
+</div>

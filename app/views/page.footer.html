@@ -1,0 +1,196 @@
+﻿<hr />
+<div ng-controller="SettingsController as config" class="row col-md-12 text-center">
+    <script type="text/ng-template" id="/terms1.html">
+        <div class="modal-header">
+            <button type="button"  ng-click="cancel()" data-dismiss="modal" aria-hidden="true" class="close">x</button>
+            <h4 id="myModalLabel" class="modal-title text-capitalize" data-translate="register.terms"></h4>
+        </div>
+        <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.intro"></h4><p data-translate="terms.introDesc"></p>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.intellectualRights"></h4><ol>
+                        <li data-translate="terms.intellectualRightsDesc1"></li>
+                        <li data-translate="terms.intellectualRightsDesc2"></li>
+                        <li data-translate="terms.intellectualRightsDesc3">
+                        </li>
+                    </ol>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.gurantees"></h4><ol>
+                        <li data-translate="terms.guranteesDesc1"></li>
+                        <li data-translate="terms.guranteesDesc2"></li>
+                        <li data-translate="terms.guranteesDesc3"></li>
+                        <li data-translate="terms.guranteesDesc4"></li>
+                        <li data-translate="terms.guranteesDesc5"></li>
+                        <li data-translate="terms.guranteesDesc6"></li>
+                    </ol>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.registration"></h4><ol>
+                        <li data-translate="terms.registrationDesc1"></li>
+                        <li data-translate="terms.registrationDesc2"></li>
+                        <li data-translate="terms.registrationDesc3"></li>
+                        <li data-translate="terms.registrationDesc4"></li>
+                        <li data-translate="terms.registrationDesc5"></li>
+                        <li data-translate="terms.registrationDesc6"></li>
+                        <li data-translate="terms.registrationDesc7"></li>
+                        <li data-translate="terms.registrationDesc8"></li>
+                    </ol>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.links"></h4><ol>
+                        <li data-translate="terms.linksDesc1"></li>
+                        <li data-translate="terms.linksDesc2"></li>
+                        <li data-translate="terms.linksDesc3"></li>
+                    </ol>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.electronicCopies"></h4><p data-translate="terms.electronicCopiesDesc"></p>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.versioning"></h4><p data-translate="terms.versioningDesc"></p>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.laws"></h4><p data-translate="terms.lawsDesc"></p>
+                </div>
+            </div><div class="row"><div class="col-lg-12"><h4 data-translate="terms.adjustments"></h4><p data-translate="terms.adjustmentsDesc"></p></div></div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.responsibilities"></h4><ol>
+                        <li data-translate="terms.responsibilitiesDesc1"></li>
+                        <li data-translate="terms.responsibilitiesDesc2"></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="/privacy.html">
+        <div class="modal-header">
+            <button type="button" ng-click="cancel()" data-dismiss="modal" aria-hidden="true" class="close">
+                x
+            </button><h4 id="myModalLabel" class="modal-title text-capitalize" data-translate="register.privacy"></h4>
+        </div>
+        <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+            <div class="row">
+                <div class="col-lg-12"><h4 data-translate="terms.intro"></h4><p data-translate="terms.introDesc"></p></div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.intellectualRights"></h4><ol>
+                        <li data-translate="terms.intellectualRightsDesc1"></li>
+                        <li data-translate="terms.intellectualRightsDesc2"></li>
+                        <li data-translate="terms.intellectualRightsDesc3"></li>
+                    </ol>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.gurantees"></h4><ol>
+                        <li data-translate="terms.guranteesDesc1"></li>
+                        <li data-translate="terms.guranteesDesc2"></li>
+                        <li data-translate="terms.guranteesDesc3"></li>
+                        <li data-translate="terms.guranteesDesc4"></li>
+                        <li data-translate="terms.guranteesDesc5"></li>
+                        <li data-translate="terms.guranteesDesc6"></li>
+                    </ol>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.registration"></h4><ol>
+                        <li data-translate="terms.registrationDesc1"></li>
+                        <li data-translate="terms.registrationDesc2"></li>
+                        <li data-translate="terms.registrationDesc3"></li>
+                        <li data-translate="terms.registrationDesc4"></li>
+                        <li data-translate="terms.registrationDesc5"></li>
+                        <li data-translate="terms.registrationDesc6"></li>
+                        <li data-translate="terms.registrationDesc7"></li>
+                        <li data-translate="terms.registrationDesc8"></li>
+                    </ol>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.links"></h4><ol><li data-translate="terms.linksDesc1"></li><li data-translate="terms.linksDesc2"></li><li data-translate="terms.linksDesc3"></li></ol>
+                </div>
+            </div><div class="row"><div class="col-lg-12"><h4 data-translate="terms.electronicCopies"></h4><p data-translate="terms.electronicCopiesDesc"></p></div></div><div class="row"><div class="col-lg-12"><h4 data-translate="terms.versioning"></h4><p data-translate="terms.versioningDesc"></p></div></div><div class="row">
+                <div class="col-lg-12"><h4 data-translate="terms.laws"></h4><p data-translate="terms.lawsDesc"></p></div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.adjustments"></h4><p data-translate="terms.adjustmentsDesc"></p>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="terms.responsibilities"></h4><ol><li data-translate="terms.responsibilitiesDesc1"></li><li data-translate="terms.responsibilitiesDesc2"></li></ol>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer"><button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button></div>
+    </script>
+    <script type="text/ng-template" id="/accessibility.html">
+        <div class="modal-header">
+            <button type="button" ng-click="cancel()" data-dismiss="modal" aria-hidden="true" class="close">x</button><h4 id="myModalLabel" class="modal-title text-capitalize" data-translate="register.accessibility"></h4>
+        </div>
+        <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+            <div class="row">
+                <div class="col-lg-12"><p data-translate="accessibility.introDesc"></p></div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="accessibility.zoomScreen"></h4><p data-translate="accessibility.zoomScreenDesc"></p>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="accessibility.textSize"></h4><p data-translate="accessibility.textSizeDesc"></p>
+                </div>
+            </div><div class="row">
+                <div class="col-lg-12">
+                    <h4 data-translate="accessibility.color"></h4><p data-translate="accessibility.colorDesc"></p>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+        </div>
+    </script>
+    <script type="text/ng-template" id="/happiness.html">
+        <div class="modal-header">
+            <button type="button" ng-click="cancel()" data-dismiss="modal" aria-hidden="true" class="close">x</button><h4 class="modal-title text-capitalize" data-translate="register.happiness"></h4>
+        </div>
+        <div class="modal-body" style="max-height:600px; overflow-y: auto;">
+            <div class="row">
+                <div class="col-lg-12">
+                    <img class="img-responsive" ng-src="{{charterUrl}}" />
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+        </div>
+    </script>
+    <div class="row col-md-12">
+        <a href="" data-translate="register.accessibility" ng-click="config.openAccessibility('lg')"></a>&nbsp;|&nbsp;
+        <a href="" data-translate="register.happiness" ng-click="config.openHappiness1s('lg')"></a>&nbsp;|&nbsp;
+        <a href="" data-translate="register.privacy" ng-click="config.openPrivacy('lg')"></a>&nbsp;|&nbsp;
+        <a href="" data-translate="register.terms" ng-click="config.openTerms('lg')"></a>&nbsp;|&nbsp;
+        <a href="{{config.faqUrl}}" data-translate="register.faqs" target="_blank"></a>&nbsp;|&nbsp;
+        <a href="tel:80082362" title="80082362">
+            <i style="font-size: 1.12em;" class="fa fa-2x fa-phone"></i> <span style="font-family: 'Droid Arabic Kufi', Roboto"> 80082362</span>
+        </a>
+    </div>
+    <div class="row col-md-12" style="padding-top:10px;padding-bottom:20px;">
+        <span ng-if="!app.layout.isRTL">
+            {{ "general.allRights" | translate }} &copy; {{ app.year }} - UAE Media Council
+        </span>
+        <span ng-if="app.layout.isRTL">
+            {{ "general.allRights" | translate }} &copy; {{ app.year }} - مجلس الإمارات للإعلام
+        </span>
+    </div>
+</div>

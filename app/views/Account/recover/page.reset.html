@@ -1,0 +1,32 @@
+<div class="container container-sm animated fadeInDown" ng-controller="ResetPasswordController as reset">
+   <div class="center-block mt-xl">
+      <!-- START panel-->
+      <div class="panel">
+         <div class="panel-body">
+            <p class="pv">
+               <strong data-translate="recover.reset"></strong>
+               <br/>{{'recover.resetInstruction' | translate}}</p>
+            <form role="form">
+               <div class="row" extra-help="register.passwordError">
+                  <div class="col-md-8">
+                      <div class="form-group has-feedback">
+                          <input id="resetInputEmail1" type="password" placeholder="{{'recover.newPassword' | translate}}" autocomplete="off"
+                                 class="form-control ok-password" ng-model="reset.passwordObj.password"
+                                 ng-class="(joinTeamForm.password.$dirty && joinTeamForm.password.$invalid) ? 'error' : ''" />
+                          <div class="strength-meter">
+                              <div class="strength-meter-fill" data-strength="{{passwordStrength}}"></div>
+                          </div>
+                          <span class="fa fa-lock form-control-feedback text-muted"></span>
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                     <button type="submit" class="btn btn-danger btn-block" data-translate="general.send"
+                             ng-click="reset.resetPassword()"></button>
+                  </div>
+               </div>
+            </form>
+         </div>
+      </div>
+      <!-- END panel-->
+   </div>
+</div>

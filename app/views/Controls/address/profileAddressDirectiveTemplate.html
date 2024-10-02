@@ -1,0 +1,215 @@
+﻿<div class="formList" ng-if="!isForeigner">
+
+    <div class="formInput">
+        <label>{{'address.Emirate' | translate}}<span class="text-danger"> *</span></label>
+        <ui-select ng-model="addressControl.emirate" validator="required" ng-disabled="isPreview" name="emirate"
+            theme="bootstrap" class="text-left" ng-disabled="addressControl.disabled">
+            <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected |
+                localizeString}}</ui-select-match>
+            <ui-select-choices
+                repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+    </div>
+
+    <div class="formInput" ng-if="addressControl.emirate.id == 1">
+        <label>{{'address.Region' | translate}}<span class="text-danger"> *</span></label>
+        <ui-select ng-model="addressControl.region" validator="required" ng-disabled="isPreview" name="region"
+            theme="bootstrap" class="text-left">
+            <ui-select-match placeholder="{{'completeProfile.selectRegion' | translate}}">{{$select.selected |
+                localizeString}}</ui-select-match>
+            <ui-select-choices
+                repeat="region in addressControl.emirate.regions | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                <span ng-bind-html="region | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+    </div>
+
+    <div class="formInput">
+        <label>{{'address.Community' | translate}}<span class="text-danger"> *</span></label>
+        <ui-select ng-model="addressControl.community" validator="required" ng-disabled="isPreview" theme="bootstrap"
+            class="text-left" name="Community">
+            <ui-select-match placeholder="{{'completeProfile.selectCommunity' | translate}}">{{$select.selected |
+                localizeString}}</ui-select-match>
+            <ui-select-choices
+                repeat="community in (addressControl.emirate.id == 1? addressControl.region.communities: addressControl.emirate.regions[0].communities) | filter: $select.search">
+                <span ng-bind-html="community | localizeString | highlight: $select.search"></span>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+</div>
+
+<div class="formList" ng-if="isForeigner">
+
+    <div class="formInput">
+        <label>{{'address.country' | translate}}<span class="text-danger"> *</span></label>
+        <ui-select ng-model="addressControl.country" theme="bootstrap" validator="required" name="userCountry"
+            ng-disabled="addressControl.disabled || isPreview">
+            <ui-select-match class="flag-container">
+                {{$select.selected | localizeString}}
+            </ui-select-match>
+            <ui-select-choices
+                repeat="country1 in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                <div class="row">
+                    <div class="col-md-4 col-xs-5">
+                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                    </div>
+                    <div class="col-md-8 col-xs-7">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <small data-translate="country.countryCode"></small>: <small
+                                    ng-bind-html="country1.isoCode3"></small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ui-select-choices>
+        </ui-select>
+    </div>
+
+</div>
+
+<div class="formList">
+
+    <div class="formInput formTextArea">
+        <label>{{'address.Street' | translate}}<span class="text-danger"> *</span></label>
+        <textarea id="input-id-1" type="text" class="form-control" ng-disabled="isPreview"
+            ng-model="addressControl.street" validator="required" name="Street" rows="3"></textarea>
+    </div>
+
+    <div class="formInput" ng-if="isEstablishment">
+        <label>{{'completeProfile.PhoneNumber' | translate}}<span class="text-danger"> *</span></label>
+        <input ng-model="addressControl.phoneNumber" name="Mobile" type="tel"
+            placeholder="{{'completeProfile.PhoneNumber' | translate}}" autocomplete="off" class="form-control"
+            validator="required, workPhone" style="unicode-bidi:embed;" valid-callback="register.validMobileNumber()"
+            invalid-callback="register.invalidMobileNumber()" valid-method="blur" />
+        <span class="fa fa-phone form-control-feedback text-muted"></span>
+        <span class="help-block m-b-none">04XXXXXXX OR 05XXXXXXXX</span>
+    </div>
+
+</div>
+
+<div ng-if="false">
+
+    <div ng-if="!isForeigner">
+        <h1>hey</h1>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'address.Emirate' |
+                    translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="addressControl.emirate" validator="required" ng-disabled="isPreview" name="emirate"
+                    theme="bootstrap" class="text-left" ng-disabled="addressControl.disabled">
+                    <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected |
+                        localizeString}}</ui-select-match>
+                    <ui-select-choices
+                        repeat="emirate in emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                        <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="addressControl.emirate.id == 1">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'address.Region' |
+                    translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="addressControl.region" validator="required" ng-disabled="isPreview" name="region"
+                    theme="bootstrap" class="text-left">
+                    <ui-select-match placeholder="{{'completeProfile.selectRegion' | translate}}">{{$select.selected |
+                        localizeString}}</ui-select-match>
+                    <ui-select-choices
+                        repeat="region in addressControl.emirate.regions | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                        <span ng-bind-html="region | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'address.Community' |
+                    translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="addressControl.community" validator="required" ng-disabled="isPreview"
+                    theme="bootstrap" class="text-left" name="Community">
+                    <ui-select-match placeholder="{{'completeProfile.selectCommunity' | translate}}">{{$select.selected
+                        | localizeString}}</ui-select-match>
+                    <ui-select-choices
+                        repeat="community in (addressControl.emirate.id == 1? addressControl.region.communities: addressControl.emirate.regions[0].communities) | filter: $select.search">
+                        <span ng-bind-html="community | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+    <div ng-if="isForeigner">
+        <h1>hey2</h1>
+
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'address.country' |
+                    translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="addressControl.country" theme="bootstrap" validator="required" name="userCountry"
+                    ng-disabled="addressControl.disabled || isPreview">
+                    <ui-select-match class="flag-container">
+                        <div class="col-md-4 flag-style">
+                            <img class="img-responsive"
+                                ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                        </div>
+                        <div class="col-md-4">
+                            <span>{{$select.selected | localizeString}}</span>
+                        </div>
+                    </ui-select-match>
+                    <ui-select-choices
+                        repeat="country1 in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <div class="row">
+                            <div class="col-md-4 col-xs-5">
+                                <img class="img-responsive" ng-src="../src/imgs/Countries/{{country1.isoCode2}}.png" />
+                            </div>
+                            <div class="col-md-8 col-xs-7">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <h4 ng-bind-html="country1 | localizeString | highlight: $select.search"></h4>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <small data-translate="country.countryCode"></small>: <small
+                                            ng-bind-html="country1.isoCode3"></small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row form-group">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'address.Street' |
+                translate}}</span></label>
+        <div class="col-sm-9">
+            <textarea id="input-id-1" type="text" class="form-control" ng-disabled="isPreview"
+                ng-model="addressControl.street" validator="required" name="Street" rows="3"></textarea>
+        </div>
+    </div>
+    <div class="row form-group" ng-if="isEstablishment">
+        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'completeProfile.PhoneNumber' |
+                translate}}</span></label>
+        <div class="col-sm-9">
+            <div class="has-feedback">
+                <input ng-model="addressControl.phoneNumber" name="Mobile" type="tel"
+                    placeholder="{{'completeProfile.PhoneNumber' | translate}}" autocomplete="off" class="form-control"
+                    validator="required, workPhone" style="unicode-bidi:embed;"
+                    valid-callback="register.validMobileNumber()" invalid-callback="register.invalidMobileNumber()"
+                    valid-method="blur" />
+                <span class="fa fa-phone form-control-feedback text-muted"></span>
+                <span class="help-block m-b-none">04XXXXXXX OR 05XXXXXXXX</span>
+            </div>
+        </div>
+    </div>
+
+</div>

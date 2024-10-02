@@ -1,0 +1,86 @@
+﻿<div class="app-view-header">
+    {{'journalists.foreignJournalist' | translate}}
+</div>
+<div class="container-fluid" ng-controller="ForeignJournalistController as journalists">
+
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+                <div class="row"><br /></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <establishment ng-model="journalists.foreignJournalists.applicationDetail.application.establishment" is-foreignjournalist="true"></establishment>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'journalists.dateofassignment' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <p class="input-group">
+                            <input type="text" uib-datepicker-popup="{{journalists.format}}" ng-model="journalists.foreignJournalists.dateOfAssignment" validator="required" name="dateOfAssignment"
+                                   is-open="journalists.dateOfAssignmentPopup.opened" min-date="false" max-date="false"
+                                   uib-datepicker-options="journalists.dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+                            <span class="input-group-btn">
+                                <button type="button" ng-click="journalists.opendateOfAssignmentPopup($event)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'journalists.UploadAcquaintanceForm' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="journalists.foreignJournalists.acquitanceFormUrl" copyUrlFullPath="journalists.foreignJournalists.acquaintanceFormCopyUrlFullPath" url="journalists.uploadAcquaintanceFormUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+
+                <service-fee ng-model="journalists.serviceFees" class="col-sm-12"></service-fee>
+
+                <div class="row"><br /></div>
+                <terms ng-model="journalists.terms" ng-if="!journalists.editMode" name="terms" class="col-sm-12"></terms>
+                <hr />
+                <div class="row" ng-if="!journalists.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="journalists.isBusy|| !journalists.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="journalists.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="journalists.isBusy|| !journalists.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="journalists.save(1)">
+                            {{'general.applyLater' | translate}}<span class="ripple"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-if="journalists.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                            <button uib-dropdown-toggle="" ng-disabled="journalists.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                            <ul role="menu" class="dropdown-menu animated zoomIn">
+                                <li ng-repeat="transition in journalists.foreignJournalists.applicationDetail.applicationState.transitions">
+                                    <a href="" ng-click="journalists.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div>
+<!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

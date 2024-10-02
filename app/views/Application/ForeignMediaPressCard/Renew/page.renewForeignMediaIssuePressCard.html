@@ -1,0 +1,479 @@
+﻿<div class="app-view-header">
+    {{'foreignMedia.renewPressCard' | translate}}
+</div>
+<div class="container-fluid" ng-controller="RenewFMIsuuePressCardController as vm">
+    <!--<div class="app-view-header">
+        <small>{{vm.pressCard.applicationDetail.application.applicationNumber}}</small>
+    </div>-->
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <br /><br />
+            <uib-alert type="info" ng-if="vm.employeeNote">
+                <div class="row text-bold">
+                    <div class="col-md-6"><span class="pull-left">{{'mediaLicense.employeeNote' | translate}}</span></div>
+                    <div class="col-md-6"><span class="pull-right">{{vm.employeeNoteDate}}</span></div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-12" ng-bind-html="vm.employeeNote"></div>
+                </div>
+            </uib-alert>
+            <br />
+            <div class="wizard">
+                <ul class="steps-bar">
+                    <li ng-class="{'active':vm.activeStep >= 1}">
+                        <label>{{'foreignMedia.pressCardAppDetails' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':vm.activeStep >= 2}">
+                        <label>{{'foreignMedia.foreignEntityDetails' | translate}}</label>
+                    </li>
+                    <li ng-class="{'active':vm.activeStep >= 3}">
+                        <label>{{'foreignMedia.personDetails' | translate}}</label>
+                    </li>
+                </ul>
+                <br />
+
+                <div ng-if="vm.activeStep==1" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                        <div class="row"><br /></div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span>{{'foreignMedia.pressCardType' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input type="radio" name="pressCardType" ng-value="true" ng-model="vm.pressCardData.isTemporaryCard"
+                                               ng-checked="vm.pressCardData.isTemporaryCard" disabled>
+                                        <span class="fa fa-circle"></span>{{'foreignMedia.temporaryCard' | translate}}
+                                    </label>
+                                </div>
+                                <div class="radio-inline c-radio">
+                                    <label>
+                                        <input type="radio" name="pressCardType" ng-value="false" ng-model="vm.pressCardData.isTemporaryCard"
+                                               ng-checked="!vm.pressCardData.isTemporaryCard" disabled>
+                                        <span class="fa fa-circle"></span>{{'foreignMedia.permenantCard' | translate}}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'foreignMedia.businessType' | translate}}</label>
+                            <div class="col-sm-9">
+                                <ui-select ng-model="vm.selectedBusinessType" theme="bootstrap" class="text-left" ng-disabled="true">
+                                    <ui-select-match placeholder="{{'foreignMedia.selectBusinessType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="businessType in businessTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                        <span ng-bind-html="businessType | localizeString | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <!--<div class="row form-group">
+                        <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.deliveryOption' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <div class="radio-inline c-radio">
+                                <label>
+                                    <input type="radio" name="deliveryOption" ng-value="true" ng-model="vm.pressCardData.deliveryType"
+                                           ng-checked="vm.pressCardData.deliveryType" disabled>
+                                    <span class="fa fa-circle"></span>{{'foreignMedia.shippingToAddress' | translate}}
+                                </label>
+                            </div>
+                            <div class="radio-inline c-radio">
+                                <label>
+                                    <input type="radio" name="deliveryOption" ng-value="false" ng-model="vm.pressCardData.deliveryType"
+                                           ng-checked="!vm.pressCardData.deliveryType" disabled>
+                                    <span class="fa fa-circle"></span>{{'foreignMedia.collectFromMinistry' | translate}}
+                                </label>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row form-group" ng-if="vm.pressCardData.deliveryType">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.shippingAddress' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <textarea ng-model="vm.pressCardData.address" maxlength="1000"
+                                          placeholder="{{'foreignMedia.shippingAddress' | translate}}" autocomplete="off" class="form-control" name="shippingAddress" disabled />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.preferedCollectionPoint' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <ui-select ng-model="fm.mediaLicenses.pressCard[0].office" placeholder="{{'general.selectOffice' | translate}}" validator="required" name="businessType" theme="bootstrap" class="text-left" ng-disabled="uiselect.disabled">
+                                    <ui-select-match placeholder="{{'general.selectOffice' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="office in fm.offices | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                        <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div> -->
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.assignmentLetter' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <uploading-files copyUrl="vm.pressCardData.assignmentLetterUrl" copyUrlFullPath="vm.pressCardData.assignmentLetterUrlFullPath"
+                                                 url="vm.uploadAssignmentLetterUrl"></uploading-files>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row form-group">
+                            <div class="col-md-12">
+                                <div class="box-placeholder b0 bg-gray-lighter">
+                                    <h3 data-translate="mediaLicense.activities"></h3>
+                                    <div class="row">
+                                        <div class="col-md-12" ng-if="vm.teamMemberDt.dtOptions">
+                                            <table datatable="" class="row-border hover" dt-options="vm.teamMemberDt.dtOptions" dt-columns="vm.teamMemberDt.dtColumns"
+                                                   dt-instance="vm.teamMemberDt.dtInstance" width="100%"></table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <service-fee ng-model="vm.serviceFeesObj" is-renew="true"></service-fee>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <button type="submit" ripple="" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goToSecondStep()"
+                                        validation-submit="stepOneForm">
+                                    {{'general.next' | translate}}<span class="ripple"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div ng-if="vm.activeStep==2" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityName' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input ng-model="vm.pressCardData.foreignEntity.nameEn" type="text" placeholder="{{'foreignMedia.foreignEntityName' | translate}}"
+                                       class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{'foreignMedia.foreignEntityHQ' | translate}}</label>
+                            <div class="col-sm-9">
+                                <ui-select ng-model="vm.selectedCountry" theme="bootstrap" class="text-left" ng-disabled="true">
+                                    <ui-select-match placeholder="{{'foreignMedia.selectBusinessType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                    <ui-select-choices repeat="country in countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                        <span ng-bind-html="country | localizeString | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityWebsite' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input ng-model="vm.pressCardData.foreignEntity.website" type="text" placeholder="{{'foreignMedia.foreignEntityWebsite' | translate}}"
+                                       class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityEmail' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input ng-model="vm.pressCardData.foreignEntity.email" type="email" placeholder="{{'foreignMedia.foreignEntityEmail' | translate}}"
+                                       class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.foreignEntityPhone' | translate}}</span></label>
+                            <div class="col-sm-9">
+                                <input ng-model="vm.pressCardData.foreignEntity.phoneNumber" type="text" placeholder="{{'foreignMedia.foreignEntityPhone' | translate}}"
+                                       class="form-control" disabled />
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div class="row form-group" ng-repeat="socialMediaAccount in vm.foreignPressCardModel.pressCards.foreignEntity.foreignEntitySocialMedias">
+                            <external-media-account ng-model="socialMediaAccount" is-review="true"></external-media-account><!--is-review="true" edit-mode="vm.editMode"-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <button type="submit" ripple="" ng-disabled="vm.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="vm.goToThirdStep()"
+                                            validation-submit="stepTwoForm">
+                                        {{'general.next' | translate}}<span class="ripple"></span>
+                                    </button>
+                                    <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="vm.activeStep = 1">
+                                        {{'general.previous' | translate}}<span class="ripple"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div ng-if="vm.activeStep==3" class="wizard-step">
+                    <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
+                        <div ng-if="vm.user.userTypeCode == 01">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.fullName' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.name" type="text" class="form-control" readonly disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.DateOfBirth' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <p class="input-group hackyhack">
+                                        <input type="text" uib-datepicker-popup="{{vm.format}}" ng-disabled=true ng-model="vm.pressCard.person.dateOfBirth"
+                                               name="tenancyContractEndDate" is-open="tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                                               uib-datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+                                        <span class="input-group-btn">
+                                            <button type="button" ng-click="openTenancyContractDatePopup($event)" class="btn btn-default">
+                                                <em class="fa fa-calendar"></em>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Gender' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="gender1" ng-value="true" ng-model="vm.genderValue"
+                                                   ng-checked="vm.genderValue" disabled>
+                                            <span class="fa fa-circle"></span>{{'foreignMedia.genderMale' | translate}}
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="gender1" ng-value="false" ng-model="vm.genderValue"
+                                                   ng-checked="!vm.genderValue" disabled>
+                                            <span class="fa fa-circle"></span>{{'foreignMedia.genderfemale' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.email' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.user.email" type="text" class="form-control" readonly disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.mobileNumber' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.user.phoneNumber" type="text" class="form-control" readonly disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <ui-select ng-model="vm.pressCard.person.country" theme="bootstrap" ng-disabled=true class="text-left" name="Authority">
+                                        <ui-select-match placeholder="Select">{{$select.selected | localizeString}}</ui-select-match>
+                                        <ui-select-choices repeat="authority in authorities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                            <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Occupation' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.title" type="text" class="form-control" readonly disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.previousJob' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.previousJob" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span>{{'foreignMedia.twitterAccount' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.twitterAccount" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.academicQualification' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.academicQualificationUrl" copyUrlFullPath="vm.pressCard.person.academicQualificationUrlFullPath"
+                                                     url="vm.uploadAcademicQualificationUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.personalPhoto' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.photoUrl" copyUrlFullPath="vm.pressCard.person.photoUrlFullPath"
+                                                     url="vm.photoUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.passportCopy' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.passportCopyUrl" copyUrlFullPath="vm.pressCard.person.passportCopyUrlFullPath"
+                                                     url="vm.passportCopyUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.acquaintanceDoc' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.acquitanceFormUrl" copyUrlFullPath="vm.pressCard.person.acquaintanceFormCopyUrlFullPath"
+                                                     url="vm.acquitanceFormUrl"></uploading-files>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"><br /></div>
+                        <div ng-if="vm.user.userTypeCode == 05">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.fullName' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.name" type="text" class="form-control" readonly disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.DateOfBirth' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <p class="input-group hackyhack">
+                                        <input type="text" uib-datepicker-popup="{{vm.format}}" ng-disabled=true ng-model="vm.pressCard.person.dateOfBirth"
+                                               name="tenancyContractEndDate" is-open="tenancyContractDatePopup.opened" min-date="false" max-date="false" disabled
+                                               uib-datepicker-options="dateOptions" date-disabled="disabled(date, mode)" close-text="Close" class="form-control" />
+                                        <span class="input-group-btn">
+                                            <button type="button" ng-click="openTenancyContractDatePopup($event)" class="btn btn-default">
+                                                <em class="fa fa-calendar"></em>
+                                            </button>
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Gender' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="gender1" ng-value="true" ng-model="vm.genderValue"
+                                                   ng-checked="vm.genderValue" disabled>
+                                            <span class="fa fa-circle"></span>{{'foreignMedia.genderMale' | translate}}
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="gender1" ng-value="false" ng-model="vm.genderValue"
+                                                   ng-checked="!vm.genderValue" disabled>
+                                            <span class="fa fa-circle"></span>{{'foreignMedia.genderfemale' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--<div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.email' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="vm.pressCard.person.user.email" type="text" class="form-control" readonly disabled />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'newspaperMagazineLicense.mobileNumber' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="vm.pressCard.person.user.phoneNumber" type="text" class="form-control" readonly disabled />
+            </div>
+        </div>-->
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Nationality' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <ui-select ng-model="vm.pressCard.person.country" theme="bootstrap" ng-disabled=true class="text-left" name="Authority">
+                                        <ui-select-match placeholder="Select">{{$select.selected | localizeString}}</ui-select-match>
+                                        <ui-select-choices repeat="authority in authorities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                            <span ng-bind-html="authority | localizeString | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'profileNationalityDirective.Occupation' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.title" type="text" class="form-control" readonly disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.previousJob' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.previousJob" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span>{{'foreignMedia.twitterAccount' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <input ng-model="vm.pressCard.person.twitterAccount" type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.academicQualification' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.academicQualificationUrl" copyUrlFullPath="vm.pressCard.person.academicQualificationUrlFullPath"
+                                                     url="vm.uploadAcademicQualificationUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.personalPhoto' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.photoUrl" copyUrlFullPath="vm.pressCard.person.photoUrlFullPath"
+                                                     url="vm.photoUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.passportCopy' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.passportCopyUrl" copyUrlFullPath="vm.pressCard.person.passportCopyUrlFullPath"
+                                                     url="vm.passportCopyUrl"></uploading-files>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'foreignMedia.acquaintanceDoc' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <uploading-files copyUrl="vm.pressCard.person.acquitanceFormUrl" copyUrlFullPath="vm.pressCard.person.acquaintanceFormCopyUrlFullPath"
+                                                     url="vm.acquitanceFormUrl"></uploading-files>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <terms ng-model="vm.terms" ng-if="!vm.editMode" name="terms"></terms>
+                            </div>
+                        </div>
+
+                        <customer-pulse ng-if="vm.showHappinessMeter" ng-model="vm.happinessMeterObj"></customer-pulse>
+                        <hr />
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-12">
+                                    <button type="button" ripple="" ng-disabled="vm.isBusy || !vm.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right"
+                                            ng-click="vm.save(2)">
+                                        {{'general.apply' | translate}}<span class="ripple"></span>
+                                    </button>
+                                    <button type="button" ripple="" validation-submit="stepThreeForm" ng-disabled="vm.isBusy || !vm.terms.isAgreed" class="mr mb-sm btn btn-default pull-right"
+                                            ng-click="vm.save(1)">
+                                        {{'general.applyLater' | translate}}<span class="ripple"></span>
+                                    </button>
+                                    <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="vm.activeStep = 2">
+                                        {{'general.previous' | translate}}<span class="ripple"></span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div><!-- The Gallery as lightbox dialog, should be a child element of the document body-->
+<div id="blueimp-gallery" class="blueimp-gallery">
+    <div class="slides">
+        <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+        <a class="play-pause"></a>
+        <ol class="indicator"></ol>
+    </div>
+</div>

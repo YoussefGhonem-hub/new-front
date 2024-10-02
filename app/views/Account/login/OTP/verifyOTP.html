@@ -1,0 +1,29 @@
+﻿<div class="modal-body" ng-init="start()">
+    <form role="form" class="mb-lg form-horizontal" name="verifyOTPForm">
+        <uib-alert type="danger" ng-if="passwordCompare">
+            <div class="row">
+                <div class="col-md-12">
+                    {{'profile.comparePassword' | translate}}
+                </div>
+            </div>
+        </uib-alert>
+        <div class="row form-group">
+            <br />
+        </div>
+        <div class="text-center">
+            <div id="countdown"></div>
+        </div>
+        <div class="row form-group">
+            <br />
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-12">
+                <input id="otpToken" type="text" placeholder="{{'profile.verifyOTPToken' | translate}}" autocomplete="off" class="form-control" ng-model="otpToken"
+                       validator="required" ng-disabled="isBusy" />
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer text-center">
+    <button ng-click="ok()" class="btn btn-primary" type="submit" validation-submit="verifyOTPForm" data-translate="general.ok"></button>
+</div>

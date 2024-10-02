@@ -1,0 +1,142 @@
+﻿<div class="container form-horizontal" ng-controller="filterNewsPaperController as filterCtrl">
+    <label class="text-hg text-white" data-translate="dashboard.lookingFor"></label>
+    <br /><br /><br /><br />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'printingPermit.languages' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.languages" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'printingPermit.languages' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="office in filterCtrl.languages | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'newspaper.periodicalType' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.periodicalTypes" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'newspaper.periodicalType' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="periodicalType in filterCtrl.periodicalTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="periodicalType | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'printingPermit.subject' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.newspaperCategorys" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'printingPermit.subject' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="newspaperCategory in filterCtrl.newspaperCategorys | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="newspaperCategory | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'newspaper.isMagazineNewspaper' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.NewsPaperMagazines" theme="bootstrap" name="office" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'newspaper.isMagazineNewspaper' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="NewsPaperMagazine in filterCtrl.NewsPaperMagazines | propsFilter: {nameAr: $select.search,nameEn: $select.search}">
+                            <span ng-bind-html="NewsPaperMagazine | localizeString | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+                <!---->
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'newspaperMagazineLicense.reasonType' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.releaseTypes" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'newspaperMagazineLicense.reasonType' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="releaseType in filterCtrl.releaseTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="releaseType | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'newspaper.isPrintElectronic' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.ElectronicPrinteds" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'newspaper.isPrintElectronic' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="ElectronicPrinted in filterCtrl.PrintElectronics | propsFilter: {nameAr: $select.search,nameEn: $select.search}">
+                            <div ng-bind-html="ElectronicPrinted | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'completeProfile.customerType' | translate}}</label>
+                <div class="col-sm-8">
+                    <ui-select ng-model="filterCtrl.filter.userTypes" name="office" theme="bootstrap" class="text-left" multiple>
+                        <ui-select-match placeholder="{{'completeProfile.customerType' | translate}}">{{$item | localizeString}}</ui-select-match>
+                        <ui-select-choices repeat="customerType in filterCtrl.customerTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div ng-bind-html="customerType | localizeString | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'newspaperMagazineLicense.fromCreatedOn' | translate}}</label>
+                <div class="col-sm-8">
+                    <p class="input-group hackyhack">
+                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.FromCreatedOn"
+                               is-open="filterCtrl.fromCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
+                        <span class="input-group-btn">
+                            <button type="button" ng-click="filterCtrl.openFromCreatedOn($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="row">
+                <label class="col-sm-4 control-label text-white">{{'newspaperMagazineLicense.toCreatedOn' | translate}}</label>
+                <div class="col-sm-8">
+                    <p class="input-group hackyhack">
+                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.ToCreatedOn"
+                               is-open="filterCtrl.toCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
+                        <span class="input-group-btn">
+                            <button type="button" ng-click="filterCtrl.openToCreatedOn($event)" class="btn btn-default">
+                                <em class="fa fa-calendar"></em>
+                            </button>
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

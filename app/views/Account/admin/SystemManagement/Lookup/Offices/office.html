@@ -1,0 +1,41 @@
+﻿
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="systemManagement.addNewOffice"></h4>
+</div>
+
+<div class="modal-body">
+    <form role="form" class="mb-lg form-horizontal" name="addOfficeForm">
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'systemManagement.officeNameEn' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="office.nameEn" type="text" placeholder="{{'systemManagement.officeNameEn' | translate}}" autocomplete="off" class="form-control"
+                       validator="required" name="nameEn" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'systemManagement.officeNameAr' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="office.nameAr" type="text" placeholder="{{'systemManagement.officeNameAr' | translate}}" autocomplete="off" class="form-control"
+                       validator="required" name="nameAr" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'systemManagement.officeCode' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="office.code" type="text" placeholder="{{'systemManagement.officeCode' | translate}}" autocomplete="off" class="form-control"
+                       validator="required" name="code" maxlength="3" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <profile-address establishment-emirate="establishment.establishmentEmirate" ng-model="office.address" is-establishment="true"></profile-address>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" type="submit" validation-submit="addOfficeForm" data-translate="general.ok"></button>
+    <button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

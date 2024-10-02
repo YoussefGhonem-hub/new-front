@@ -1,0 +1,11 @@
+﻿<div class="row">
+    <div class="col-md-12">
+        <div class="btn btn-warning pull-right" ng-click="open('lg')">{{'completeProfile.addNewEstablishment' | translate}}</div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" ng-if="dtEstablishmentOptions">
+        <table datatable="" ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"  id="establishmentDatatable"
+               dt-options="dtEstablishmentOptions" dt-columns="dtEstablishmentColumns" dt-instance="dt.dtEstablishmentInstance" width="100%"></table>
+    </div>
+</div>

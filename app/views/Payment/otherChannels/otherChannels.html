@@ -1,0 +1,37 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="transactionRequest.payByOtherChannels"></h4>
+</div>
+<div class="modal-body">
+    <form role="form" class="form-horizontal">
+        <service-fee ng-model="serviceFees" is-review="true"></service-fee>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'transactionRequest.paymentChannel' | translate}}</span></label>
+            <div class="col-sm-9">
+                <div class="radio c-radio" ng-repeat="paymentChannel in paymentChannels | filter: { id: '!1' }">
+                    <label>
+                        <input type="radio" name="customerTypeRadio" ng-value="paymentChannel.id" ng-model="paymentChannelModel.paymentChannelId" />
+                        <span class="fa fa-circle"></span>{{paymentChannel | localizeString}}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'transactionRequest.paymentChannelUpload' | translate}}</span></label>
+            <div class="col-sm-9">
+                <uploading-files copyUrl="paymentChannelModel.paymentChannelUrl" copyUrlFullPath="paymentChannelModel.paymentChannelUrlFullPath"
+                                 url="uploadPaymentChannelUrl" isrequired="true"></uploading-files>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <div class="pull-left">
+        <img src="app/img/edirhamlogo.png" style="vertical-align: bottom;width: 100px;" />
+        <img src="app/img/Visa.jpg" style="vertical-align: bottom;width: 50px;" />
+        <img src="app/img/Master.jpg" style="vertical-align: bottom;width: 50px;" />
+    </div>
+    <button ng-click="clickToPay()" ng-disabled="!paymentChannelModel.paymentChannelId || isBusy || !paymentChannelModel.paymentChannelUrlFullPath" class="btn btn-primary"
+            data-translate="transactionRequest.clickToPay"></button>
+    <button ng-click="closeModal()" ng-if="!redirectEDirham" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

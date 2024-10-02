@@ -1,0 +1,67 @@
+﻿<div ng-if="forService">
+    <div class="mct-sectionTitle" data-translate="changePartners.partnerList"></div>
+    <button class="mct-form-button mct-primary-button" ng-click="openPartner('lg')">{{'changePartners.addNewMember' | translate}}</button>
+    <button class="mct-form-button mct-secondary-button" ng-click="existingPartnerList('lg')" ng-disabled="allPartners.length == 0">{{'changePartners.addExistingMember' | translate}}</button>
+    
+    
+</div>
+<!-- Section subtitle -->
+<div class="mct-sectionSubtitle" ng-if="paginatedPartners.length > 0">Partners list</div>
+<!-- End Section subtitle -->
+<!-- Cards List -->
+<div class="formCard" ng-if="paginatedPartners.length > 0">
+
+    <div class="mct-cardsListContainer">
+
+        <!-- Card -->
+        <div class="mct-card" ng-repeat="partner in paginatedPartners track by $index">
+            <div class="mct-cardAvatar">
+                <img ng-src="{{partner.person ? '../app/img/user.svg' : '../app/img/building-2.svg'}}" alt="">
+            </div>
+            <h5 class="mct-CardName">{{ partner.person ? partner.person.name : partner.partnerEstablishment.nameEn }}</h5>
+            <div class="mct-cardInfo">
+                <ul>
+                    <li ng-if="partner.person">
+                        <img src="../app/img/id-card.svg" alt="">
+                        <p>{{partner.person.name}}</p>
+                    </li>
+                    <li ng-if="partner.person">
+                        <img src="../app/img/flag.svg" alt="">
+                        <p>{{partner.person.country.nameEn}}</p>
+                    </li>
+                    <li ng-if="partner.person == null">
+                        <img src="../app/img/certificate.svg" alt="">
+                        <p>254879254879</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="mct-cardActions">
+                <button class="mct-cardSecondaryBtn" ng-click="deletePartner($index, $event)">Delete</button>
+                <button class="mct-cardPrimaryBtn" ng-click="editPartner('lg',$index, $event)">Edit</button>
+            </div>
+        </div>
+        <!-- End card -->
+
+    </div>
+    <!-- End cards List container -->
+    <!-- Pagination -->
+    <div ng-if="params.totalRecords > params.pageSize" class="mct-pagination" paging page="params.page" page-size="params.pageSize" total="params.totalRecords" paging-action="DoPaging(page, pageSize, total)"></div>
+    <!-- End Pagination -->
+
+</div>
+<!-- End cards List -->
+
+<div ng-if="dtPartnerOptions" class="ng-hide">
+    <table datatable="" class="row-border hover" dt-options="dtPartnerOptions" dt-columns="dtPartnerColumns" dt-instance="dtPartnerInstanceCallback" width="100%"></table>
+</div>
+
+<div ng-if="false">
+<div ng-if="forService">
+    <div style="margin-left:7px; margin-right:7px" class="btn btn-warning pull-right" ng-click="openPartner('lg')">{{'changePartners.addNewMember' | translate}}</div>
+    <div class="btn btn-primary pull-right" ng-click="existingPartnerList('lg')" ng-disabled="allPartners.length == 0">{{'changePartners.addExistingMember' | translate}}</div>
+</div>
+<div ng-if="dtPartnerOptions">
+    <table datatable="" class="row-border hover" dt-options="dtPartnerOptions" dt-columns="dtPartnerColumns" dt-instance="dtPartnerInstanceCallback" width="100%"></table>
+</div>
+
+</div>

@@ -1,0 +1,54 @@
+﻿<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="cancel()">x</button>
+    <h4 class="modal-title">{{'profile.changeImage' | translate}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="panel">
+                        <div class="panel-heading no-shadow">
+                            <a href="" ng-click="reset()" class="pull-right">
+                                <small class="fa fa-refresh text-muted"></small>
+                            </a>{{'profile.selectImage' | translate}}
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <input id="fileInput" filestyle="" type="file" data-class-button="btn btn-default" data-class-input="form-control" data-button-text="" data-icon-name="fa fa-upload" class="form-control" />
+                            </div>
+                            <p class="pv">{{'profile.cropType' | translate}}:</p>
+                            <div class="btn-group btn-group-justified mb">
+                                <label ng-model="imgcropType" uib-btn-radio="'square'" class="btn btn-default" data-translate="profile.square"></label>
+                                <label ng-model="imgcropType" uib-btn-radio="'circle'" class="btn btn-default" data-translate="profile.circle"></label>
+                            </div>
+                            <br />
+                            <div data-text="{{'profile.croppedImage' | translate}}" class="imgcrop-preview">
+                                <img ng-src="{{myCroppedImage}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="panel">
+                        <div class="panel-body">
+                            <div class="imgcrop-area">
+                                <img-crop image="myImage" result-image="myCroppedImage" area-type="{{imgcropType}}"></img-crop>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <span class="col-sm-3 control-label" ng-if="showRequiredError">
+                    <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" data-translate="general.ok"></button>
+    <button ng-click="cancel()" class="btn btn-warning">{{'general.cancel' | translate}}</button>
+</div>

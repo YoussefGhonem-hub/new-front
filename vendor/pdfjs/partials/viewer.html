@@ -1,0 +1,19 @@
+
+
+<nav ng-class="getNavStyle(scroll)">
+
+    <!--Next & Previous-->
+    <div ng-show="pageCount > 1">
+        <button class="btn btn-primary" ng-click="goPrevious()"><span>&lt;</span></button>
+        <button class="btn btn-primary" ng-click="goNext()"><span>&gt;</span></button>
+    </div>
+
+    <!--Zoom Functionality-->
+    <!--<button ng-click="zoomIn()"><span>+</span></button>
+    <button ng-click="zoomOut()"><span>-</span></button>
+    <button ng-click="fit()"><span>100%</span></button>-->
+
+    <!--Show PageNumber-->
+    <!--<span>Page: </span><input type="text" min=1 ng-model="pageNum"><span> / {{pageCount}}</span>-->
+</nav>
+

@@ -1,0 +1,237 @@
+﻿
+<div class="container container-lg animated fadeInDown" ng-controller="payFinesController as vm">
+    <div class="center-block mt-xl">
+        <div class="panel panel-primary">
+            <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+                <form role="form" class="mb-lg form-horizontal" name="Form">
+
+                    <div class="row form-group">
+                        <label class="col-sm-3 control-label"><span>{{'inspection.doHaveFineNo' | translate}}</span></label>
+                        <div class="col-sm-9">
+                            <label class="switch switch-lg">
+                                <input type="checkbox" ng-init="vm.hasFineNo = false" ng-checked="vm.hasFineNo" ng-model="vm.hasFineNo" isrequired="true"
+                                       ng-change="vm.closeModal()">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div ng-if="vm.hasFineNo">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">{{('inspection.FineNo' | translate)}}</label>
+                            <div class="col-md-5">
+                                <input ng-model="vm.FineNo" autocomplete="off" class="form-control" validator="required" name="fineNo"
+                                       placeholder="{{('inspection.FineNo' | translate)}}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-if="!vm.hasFineNo">
+                        <!-------EXISING-------->
+                        <div ng-if="!vm.isResponse">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span>{{'inspection.userType' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="rdbookType" ng-value="true" ng-model="vm.isCommercial"
+                                                   ng-checked="vm.isCommercial" ng-required="true" ng-click="vm.closeModal()">
+                                            <span class="fa fa-circle"></span>{{'inspection.userType1' | translate}}
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="rdbookType" ng-value="false" ng-model="vm.isCommercial"
+                                                   ng-checked="!vm.isCommercial" ng-click="vm.closeModal()">
+                                            <span class="fa fa-circle"></span>{{'inspection.userType2' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row form-group" ng-if="vm.isCommercial">
+                                <label class="col-sm-3 control-label">{{('users.email' | translate)}}</label>
+                                <div class="col-md-5">
+                                    <input ng-model="vm.email" type="email" autocomplete="off" class="form-control" validator="required, email" name="email"
+                                           placeholder="{{('users.email' | translate)}}" />
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="vm.isCommercial">
+                                <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.EmiratesId' | translate}}</span></label>
+                                <div class="col-sm-5">
+                                    <input ng-model="vm.emiratesId" type="text" placeholder="784-9999-9999999-9"
+                                           autocomplete="off" class="form-control" validator="required" name="emiratesId" restrict="reject" mask="784-9999-9999999-9" />
+                                </div>
+                            </div>
+
+                            <div class="row form-group" ng-if="!vm.isCommercial">
+                                <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                                <div class="col-md-5">
+                                    <ui-select ng-model="vm.establishmentEmirate" theme="bootstrap" validator="required" name="establishmentEmirate" class="text-left">
+                                        <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                        <ui-select-choices repeat="emirate in vm.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                            <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="!vm.isCommercial">
+                                <label class="col-sm-3 control-label">{{('completeProfile.LicenseNumber' | translate)}}</label>
+                                <div class="col-md-5">
+                                    <input ng-model="vm.licenseNumber" type="text" autocomplete="off" class="form-control" validator="required" name="licenseNumber" maxlength="12"
+                                           placeholder="{{('completeProfile.LicenseNumber' | translate)}}" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-------NEW-------->
+                        <div ng-if="vm.isResponse">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label"><span>{{'inspection.userType' | translate}}</span></label>
+                                <div class="col-sm-9">
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="rdbookType" ng-value="true" ng-model="vm.purchaseResponse.isIndividual"
+                                                   ng-checked="vm.purchaseResponse.isIndividual" ng-required="true" ng-click="vm.closeModal()">
+                                            <span class="fa fa-circle"></span>{{'inspection.userType1' | translate}}
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline c-radio">
+                                        <label>
+                                            <input type="radio" name="rdbookType" ng-value="false" ng-model="vm.purchaseResponse.isIndividual"
+                                                   ng-checked="!vm.purchaseResponse.isIndividual" ng-click="vm.closeModal()">
+                                            <span class="fa fa-circle"></span>{{'inspection.userType2' | translate}}
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="(vm.isInd || !vm.isCom)">
+                                <label class="col-sm-3 control-label">{{('users.email' | translate)}}</label>
+                                <div class="col-md-5">
+                                    <input ng-model="vm.email" type="email" autocomplete="off" class="form-control" validator="required, email" name="email"
+                                           placeholder="{{('users.email' | translate)}}" />
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="(vm.isInd || !vm.isCom)">
+                                <label class="col-sm-3 control-label"><span>{{'profileNationalityDirective.EmiratesId' | translate}}</span></label>
+                                <div class="col-sm-5">
+                                    <input ng-model="vm.emiratesId" type="text" placeholder="784-9999-9999999-9"
+                                           autocomplete="off" class="form-control" validator="required" name="emiratesId" restrict="reject" mask="784-9999-9999999-9" />
+                                </div>
+                            </div>
+
+                            <div class="row form-group" ng-if="(vm.isCom || !vm.isInd)">
+                                <label class="col-sm-3 control-label">{{'address.Emirate' | translate}}</label>
+                                <div class="col-md-5">
+                                    <ui-select ng-model="vm.establishmentEmirate" theme="bootstrap" validator="required" name="establishmentEmirate" class="text-left">
+                                        <ui-select-match placeholder="{{'completeProfile.selectEmirate' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                                        <ui-select-choices repeat="emirate in vm.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                            <span ng-bind-html="emirate | localizeString | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                            <div class="row form-group" ng-if="(vm.isCom || !vm.isInd)">
+                                <label class="col-sm-3 control-label">{{('completeProfile.LicenseNumber' | translate)}}</label>
+                                <div class="col-md-5">
+                                    <input ng-model="vm.licenseNumber" type="text" autocomplete="off" class="form-control" validator="required" name="licenseNumber" maxlength="12"
+                                           placeholder="{{('completeProfile.LicenseNumber' | translate)}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row form-group">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-5">
+                            <div ng-model="vm.response" vc-recaptcha data-key="'6Lf6fyYqAAAAANl0QqP_EpecFtFwJUnqNuBaW0d3'" lang="vm.recaptchaLang"
+                                 on-create="vm.setWidgetId(widgetId)"></div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer" ng-if="vm.hasFineNo">
+                        <button type="button" ripple="" validation-submit="Form" class="btn btn-primary" ng-click="vm.checkFineByFineNo()">
+                            {{'inspection.search' | translate}}
+                        </button>
+                        <button ng-click="vm.closeModal()" class="btn btn-warning" data-translate="inspection.clear"></button>
+                    </div>
+                    <div class="modal-footer" ng-if="!vm.hasFineNo">
+                        <button type="button" ripple="" validation-submit="Form" class="btn btn-primary" ng-click="vm.checkFine(vm.isCommercial)">
+                            {{'inspection.search' | translate}}
+                        </button>
+                        <button ng-click="vm.closeModal()" class="btn btn-warning" data-translate="inspection.clear"></button>
+                    </div>
+
+
+                </form>
+            </div>
+        </div>
+
+        <div class="sk-cube-grid" ng-if="vm.loading" style="position:fixed; top: 45%; right:47%; z-index:9999">
+            <div class="sk-cube sk-cube1"></div>
+            <div class="sk-cube sk-cube2"></div>
+            <div class="sk-cube sk-cube3"></div>
+            <div class="sk-cube sk-cube4"></div>
+            <div class="sk-cube sk-cube5"></div>
+            <div class="sk-cube sk-cube6"></div>
+            <div class="sk-cube sk-cube7"></div>
+            <div class="sk-cube sk-cube8"></div>
+            <div class="sk-cube sk-cube9"></div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body" ng-if="vm.HasNoFine">
+                <h3 data-translate="establishmentsFines.nofinesfound">No Fines Found</h3>
+            </div>
+            <div class="panel-body" ng-if="vm.NoMatchFound">
+                <h3 data-translate="inspection.noMatch"></h3>
+            </div>
+            <div class="panel-body" ng-if="vm.AllVisits.length > 0">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr ng-if="vm.isCommercial">
+                                <th data-translate="establishmentsFines.mediaFileNo"></th>
+                                <th data-translate="establishmentsFines.personname"></th>
+                                <th data-translate="establishmentsFines.finenumber"></th>
+                                <th data-translate="establishmentsFines.finedate"></th>
+                                <th data-translate="establishmentsFines.amountdue"></th>
+                                <th data-translate="payment.paymentStatus"></th>
+                                <th data-translate="establishmentsFines.actions"></th>
+                            </tr>
+                            <tr ng-if="!vm.isCommercial">
+                                <th data-translate="establishmentsFines.tradelicensenumber"></th>
+                                <th data-translate="establishmentsFines.establishmentname"></th>
+                                <th data-translate="establishmentsFines.finenumber"></th>
+                                <th data-translate="establishmentsFines.finedate"></th>
+                                <th data-translate="establishmentsFines.amountdue"></th>
+                                <th data-translate="payment.paymentStatus"></th>
+                                <th data-translate="establishmentsFines.actions"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="v in vm.AllVisits">
+                                <td>{{v.establishment.licenseNumber}}</td>
+                                <td>{{v.establishment.nameEn}}</td>
+                                <td>{{v.visitNumber}}</td>
+                                <td>{{v.createdOnTxt}}</td>
+                                <td>{{v.totalFee}}</td>
+                                <td>{{v.payment.paymentStatusId == 3? ('reports.reportstatus_33' | translate):('reports.reportstatus_11' | translate)}}</td>
+                                <td>
+                                    <button ng-if="v.payment.paymentStatusId==1" class="dropdown-toggle btn ng-binding btn-primary" ng-click="vm.payFine(v.id)" data-translate="establishmentsFines.paynow"></button>
+                                    <button ng-if="v.payment.paymentStatusId==2" class="dropdown-toggle btn ng-binding btn-primary" ng-click="vm.verifyPayment(v.id)" data-translate="establishmentsFines.completepayment"></button>
+
+                                    <em ng-if="v.payment.paymentStatusId==3" class="fa fa-print" style="cursor:pointer" uib-tooltip="طباعة الإيصال" ng-click="vm.printReceipt(v.payment);"></em>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>

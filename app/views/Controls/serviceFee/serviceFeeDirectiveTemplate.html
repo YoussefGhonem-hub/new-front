@@ -1,0 +1,38 @@
+﻿<section class="mct-section-fields" ng-show="!noFees">
+    <!-- <span class="mct-title-form">Fees List</span> -->
+    <div class="formTitle">
+        <h4 data-translate="serviceFee.pageTitle" class="text-primary"></h4>
+    </div>
+    <div class="mct-container-media">
+        <div class="mct-table-container">
+            <div class="mct-table">
+                <table ng-if="authorized" datatable="" class="row-border hover" dt-options="grid.dtOptions" dt-columns="grid.dtColumns"
+                       dt-instance="grid.dtInstance" id="test" width="100%"></table>
+            </div>
+        </div>
+        <div class="mct-table-total">{{'serviceFee.totalFees' | translate}} {{ serviceFeeControl.total }}</div>
+    </div>
+</section>
+
+
+<!-- <div class="box-placeholder b0 bg-gray-lighter" ng-show="!noFees">
+    <h3 data-translate="serviceFee.pageTitle"></h3>
+    <p>
+        <div class="row">
+            <div class="col-md-12">
+                <table ng-if="authorized" datatable="" class="row-border hover" dt-options="grid.dtOptions" dt-columns="grid.dtColumns"
+                       dt-instance="grid.dtInstance" id="test" width="100%"></table>
+            </div>
+        </div>
+        <div class="row"><br /></div>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="text-md pull-right bg-gray-dark rounded" style="padding:10px;">
+                    <span class="pull-left">{{'serviceFee.totalFees' | translate}}: </span>
+                    {{ serviceFeeControl.total }}
+                </span>
+            </div>
+        </div>
+        <div class="row"><br /></div>
+    </p>
+</div> -->

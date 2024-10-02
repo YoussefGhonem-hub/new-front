@@ -1,0 +1,54 @@
+<!-- START Top Navbar-->
+<nav role="navigation" ng-controller="HeaderNewNavController as header" class="mediaHeader">
+    <!-- START navbar header-->
+    <div class="container">
+        <div class="headerContainer">
+            <div class="mainLogo">
+                <a>
+                    <img src="app/img/mediacouncil.png" />
+                </a>
+            </div>
+
+            <div class="menuSide">
+                <div class="accesbility">
+                    <img src="app/img/accesbility.png" />
+                </div>
+
+                <div class="langDropdown">
+                    <select>
+                        <option>عربي</option>
+                        <option>Enlish</option>
+                    </select>
+                </div>
+
+                <div class="userContainer" ng-click="header.toggleHeaderMenu()"
+                    ng-class="{openMenu: !header.headerMenuCollapsed}">
+                    <span class="userImg">
+                        <img src="{{header.user.userPhotoUrl}}" />
+                    </span>
+
+                    <h1 title="{{header.user.firstName}} {{header.user.lastName}}">{{header.user.firstName}}
+                        {{header.user.lastName}}</h1>
+                    <i class="fa fa-angle-down"></i>
+
+
+                    <div class="userDropdownMenu" uib-collapse="header.headerMenuCollapsed">
+                        <a ui-sref="app.profile" title="{{'navbar.profile' | translate}}">
+                            <span data-translate="navbar.profile"></span>
+                        </a>
+                        <i></i>
+                        <a ng-click="header.logOut()" title="{{'navbar.signOut' | translate}}">
+                            <em class="fa fa-sign-out fa-fw"></em>
+                            <span data-translate="navbar.signOut"></span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="uaeLogo">
+                    <img class="img" src="app/img/uaeLogo.png" />
+                </div>
+            </div>
+        </div>
+        <!-- END Nav wrapper-->
+</nav>
+<!-- END Top Navbar-->

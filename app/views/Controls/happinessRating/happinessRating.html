@@ -1,0 +1,23 @@
+﻿
+<div class="modal-header">
+    <h4 id="myModalLabel" class="modal-title text-capitalize">{{'rate.happinessMeter' | translate}}</h4>
+</div>
+<div class="modal-body">
+    <form role="form" name="addPartnerForm">
+        <div class="row">
+            <div class="col-md-4" ng-repeat="rate in HappinesRates" style="color:#782C46;">
+                <div class="row">
+                    <div class="col-md-12 text-center happinessRateHover" ng-click="submit(rate)">
+                        <em class="fa fa-12x {{rate.fontName}}"></em>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h4>{{rate | localizeString }}</h4>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,156 @@
+﻿
+
+<div class="modal-header">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
+    <h4 id="myModalLabel" class="modal-title" data-translate="enquiries.title"></h4>
+</div>
+
+<div class="modal-body">
+    <form role="form" class="mb-lg form-horizontal" name="addEnquiryForm">
+        <div class="row form-group" ng-if="userType == '06'">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'enquiries.enquirySource' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="enquiry.enquirySource" theme="bootstrap" class="text-left" validator="required" name="EnquirySource">
+                    <ui-select-match placeholder="{{'enquiries.selectEnquirySource' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="enquirySource in enquirySources | filter:{isShown: true} | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="enquirySource | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'enquiries.enquiryType' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="enquiry.enquiryType" theme="bootstrap" class="text-left" validator="required" name="EnquiryType">
+                    <ui-select-match placeholder="{{'enquiries.selectEnquiryType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="enquiryType in enquiryTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="enquiryType | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="enquiry.enquirySource.id == 2">
+            <label class="col-sm-3 control-label">
+                <span class="text-danger">* </span>
+                <span>{{('enquiries.tokenNumber' | translate)}}</span>
+            </label>
+            <div class="col-sm-9">
+                <input ng-model="enquiry.tokenNumber" type="text" autocomplete="off" class="form-control" validator="required" name="tokenNumber" maxlength="20"
+                       placeholder="{{('enquiries.tokenNumber' | translate)}}" />
+            </div>
+        </div>
+        <div class="row form-group" ng-if="enquiry.enquiryType.id != 5">
+            <label class="col-sm-3 control-label">{{'enquiries.hasApplicationNumber' | translate}}</label>
+            <div class="col-sm-2">
+                <label class="switch switch-lg">
+                    <input type="checkbox" ng-init="enquiry.hasApplicationNumber = true" ng-model="enquiry.hasApplicationNumber" placeholder="Application Number">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="enquiry.hasApplicationNumber && enquiry.enquiryType.id != 5">
+            <label class="col-sm-3 control-label">
+                <span class="text-danger">* </span>
+                <span>{{('enquiries.applicationNumber' | translate)}}</span>
+            </label>
+            <div class="col-sm-9">
+                <input ng-model="enquiry.applicationNumber" type="text" autocomplete="off" class="form-control" validator="required" name="applicationNumber" maxlength="20"
+                       placeholder="{{('enquiries.applicationNumber' | translate)}}" />
+            </div>
+        </div>
+        <div class="row form-group" ng-if="enquiry.enquiryType.id == 5">
+            <label class="col-sm-3 control-label">
+                <span class="text-danger">* </span>
+                <span>{{('enquiries.employeeName' | translate)}}</span>
+            </label>
+            <div class="col-sm-9">
+                <input ng-model="enquiry.employeeName" type="text" autocomplete="off" class="form-control" validator="required" name="applicationNumber" maxlength="20"
+                       placeholder="{{('enquiries.employeeName' | translate)}}" />
+            </div>
+        </div>
+        <div class="row form-group" ng-if="!enquiry.hasApplicationNumber">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'enquiries.service' | translate}}</span></label>
+            <div class="col-sm-9">
+                <ui-select ng-model="enquiry.service" theme="bootstrap" class="text-left" validator="required" name="Service">
+                    <ui-select-match placeholder="{{'enquiries.selectService' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                    <ui-select-choices repeat="service in services | filter:{id: '!15', id: '!16'} | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                        <span ng-bind-html="service | localizeString | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="!enquiry.hasApplicationNumber && userType == '06'">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'enquiries.name' | translate}}</span></label>
+            <div class="col-sm-9">
+                <input ng-model="enquiry.name" type="text" placeholder="{{'enquiries.name' | translate}}" autocomplete="off" class="form-control" validator="required" name="name"
+                       maxlength="256" />
+            </div>
+        </div>
+        <div class="row form-group" ng-if="!enquiry.hasApplicationNumber && userType == '06'">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.mobile' | translate}}</span></label>
+            <div class="col-sm-9 has-feedback" style="float:right !important;">
+                <input ng-model="enquiry.phoneNumber" name="Mobile" type="tel" placeholder="{{'register.mobile' | translate}}" autocomplete="off" class="form-control"
+                       validator="required, phoneNumber" valid-callback="validMobileNumber()" invalid-callback="invalidMobileNumber()" valid-method="blur"
+                       ng-keypress="preventLeadingZero()" />
+                <span class="fa fa-phone form-control-feedback text-muted"></span>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="!enquiry.hasApplicationNumber && userType == '06'">
+            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'register.email' | translate}}</span></label>
+            <div class="col-sm-9 ">
+                <div class="has-feedback">
+                    <input ng-model="enquiry.email" name="Email" type="email" placeholder="{{'register.email' | translate}}" autocomplete="off" class="form-control"
+                           validator="required, email" valid-method="blur" />
+                    <span class="fa fa-envelope form-control-feedback text-muted"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label">
+                <span class="text-danger">* </span>
+                <span>{{('enquiries.problemDesc' | translate)}}</span>
+            </label>
+            <div class="col-md-9">
+                <textarea name="notes" ng-model="enquiry.description" ckeditor></textarea>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label class="col-sm-3 control-label"><span>{{'enquiries.attachements' | translate}}</span></label>
+            <div class="col-sm-9">
+                <uploading-files copyUrl="enquiry.attachementUrl" copyUrlFullPath="enquiry.attachementUrlFullPath" url="uploadAttachmentUrl" isrequired="false"></uploading-files>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="userType == '06'">
+            <label class="col-sm-3 control-label">{{'enquiries.hasBeenResolved' | translate}}</label>
+            <div class="col-sm-2">
+                <label class="switch switch-lg">
+                    <input type="checkbox" ng-init="enquiry.hasBeenResolved = false" ng-model="enquiry.hasBeenResolved" placeholder="hasBeenResolved">
+                    <span></span>
+                </label>
+            </div>
+        </div>
+        <hr ng-if="userType == '06'" />
+        <div class="row form-group" ng-if="userType == '06' && enquiry.hasBeenResolved">
+            <label class="col-sm-3 control-label">
+                <span class="text-danger">* </span>
+                <label data-translate="enquiries.resolutionDesc"></label><br />
+            </label>
+            <div class="col-md-9">
+                <textarea name="resolutionDesc" ng-model="enquiry.resolutionDesc" ckeditor></textarea>
+            </div>
+        </div>
+        <div class="row form-group" ng-if="userType == '06' && enquiry.hasBeenResolved">
+            <label class="col-sm-3 control-label">
+                <label>{{'enquiries.attachements' | translate}}</label>
+            </label>
+            <div class="col-sm-9">
+                <uploading-files copyUrl="enquiry.attachementUrl2" copyUrlFullPath="enquiry.attachementUrlFullPath2" url="uploadAttachmentUrl" isrequired="false"></uploading-files>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="modal-footer">
+    <button ng-click="ok()" class="btn btn-primary" type="submit" validation-submit="addEnquiryForm" data-translate="general.ok"></button>
+    <button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
+</div>

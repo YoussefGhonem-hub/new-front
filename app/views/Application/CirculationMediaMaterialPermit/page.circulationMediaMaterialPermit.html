@@ -1,0 +1,232 @@
+﻿<div class="app-view-header">
+    {{'CirculationMediaMaterial.pageTitle' | translate}}
+</div>
+<div class="container-fluid app-container" ng-controller="CirculationMediaMaterialPermitController as circulationCtl">
+
+    <!-- START panel-->
+    <div class="panel panel-primary">
+        <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
+            <form role="form" class="mb-lg form-horizontal" name="Form">
+
+                <div class="row"><br /></div>
+
+                <div class="row" ng-if="circulationCtl.user.userTypeCode != '01'">
+                    <div class="col-md-3 col-xs-1"></div>
+                    <div class="col-md-6 col-xs-10">
+                        <div class="row">
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.establishmentName' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{circulationCtl.CirculationMediaMaterial.applicationDetail.application.establishment | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.TenancyContract' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{circulationCtl.CirculationMediaMaterial.applicationDetail.application.establishment.tenancyContractEndDate | amDateFormat:'DD-MMMM-YYYY'}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.Authority' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{circulationCtl.CirculationMediaMaterial.applicationDetail.application.establishment.authority | localizeString}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <label class="col-sm-3 control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                                <div class="col-md-6">
+                                    <input value="{{circulationCtl.CirculationMediaMaterial.applicationDetail.application.establishment.licenseNumber}}" type="text" class="form-control" disabled />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 col-xs-1"></div>
+                </div>
+                <hr ng-if="circulationCtl.user.userTypeCode != '01'" />
+                <div class="row"><br /></div>
+                <div class="row">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.title' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input ng-model="circulationCtl.CirculationMediaMaterial.title" type="text" placeholder="{{'CirculationMediaMaterial.title' | translate}}"
+                               autocomplete="off" class="form-control" validator="required" name="title" maxlength="128" />
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.mediaMaterialType' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="circulationCtl.mediaMaterialType" ng-change="" validator="required" name="mediaMaterialType" theme="bootstrap" class="text-left" ng-disabled="uiselect.disabled">
+                            <ui-select-match placeholder="{{'CirculationMediaMaterial.selectMediaMaterialType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="mediaMaterialType in circulationCtl.mediaMaterialTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search} | filter:{isShown:true}">
+                                <div ng-bind-html="mediaMaterialType | localizeString | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.type' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="circulationCtl.CirculationMediaMaterial.artistWorkType" validator="required" name="type" theme="bootstrap" class="text-left" ng-disabled="uiselect.disabled">
+                            <ui-select-match placeholder="{{'CirculationMediaMaterial.selecttype' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="artistWorkType in circulationCtl.mediaMaterialType.artistWorkTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <div ng-bind-html="artistWorkType | localizeString | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.language' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="circulationCtl.CirculationMediaMaterial.language" validator="required" name="language" theme="bootstrap" class="text-left" ng-disabled="uiselect.disabled">
+                            <ui-select-match placeholder="{{'CirculationMediaMaterial.selectLanguage' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="language in circulationCtl.languages | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                <div ng-bind-html="language | localizeString | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.duration' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <input ng-model="circulationCtl.CirculationMediaMaterial.durationInMinutes" type="number" placeholder="{{'CirculationMediaMaterial.duration' | translate}}"
+                               autocomplete="off" class="form-control" validator="required" name="durationInMinutes" min="1" />
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.source' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="circulationCtl.CirculationMediaMaterial.country" theme="bootstrap" validator="required" name="source">
+                            <ui-select-match placeholder="{{'CirculationMediaMaterial.selectsource' | translate}}" class="flag-container">
+                                <div class="col-md-4 flag-style">
+                                    <img class="img-responsive" ng-src="../src/imgs/Countries/{{$select.selected.isoCode2}}.png" />
+                                </div>
+                                <div class="col-md-4">
+                                    <span>{{$select.selected | localizeString}}</span>
+                                </div>
+                            </ui-select-match>
+                            <ui-select-choices repeat="country in circulationCtl.countries | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <div class="row">
+                                    <div class="col-md-4 col-xs-5">
+                                        <img class="img-responsive" ng-src="../src/imgs/Countries/{{country.isoCode2}}.png" />
+                                    </div>
+                                    <div class="col-md-8 col-xs-7">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4 ng-bind-html="country | localizeString | highlight: $select.search"></h4>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <small data-translate="country.countryCode"></small>: <small ng-bind-html="country.isoCode3"></small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.copyrightsType' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <ui-select ng-model="circulationCtl.CirculationMediaMaterial.copyrightsType" theme="bootstrap" class="text-left" validator="required" name="copyrightsType">
+                            <ui-select-match placeholder="{{'CirculationMediaMaterial.selectcopyrightsType' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
+                            <ui-select-choices repeat="copyrightsType in circulationCtl.copyrightsTypes | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                <span ng-bind-html="copyrightsType | localizeString | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.copyrightsStartingDate' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <p class="input-group hackyhack">
+                            <input type="text" name="copyrightsStartDate" placeholder="{{'CirculationMediaMaterial.copyrightsStartingDate' | translate}}" uib-datepicker-popup="{{startformat}}"
+                                   ng-model="circulationCtl.CirculationMediaMaterial.copyrightsStartDate" validator="required" is-open="startopened" min-date="false" max-date="false"
+                                   close-text="{{'datePicker.close' | translate}}" current-text="{{'datePicker.today' | translate}}" clear-text="{{'datePicker.clear' | translate}}"
+                                   class="form-control" show-weeks="false" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" ng-click="startopen($event)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.copyrightsEndingDate' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <p class="input-group hackyhack">
+                            <input type="text" name="copyrightsEndDate" placeholder="{{'CirculationMediaMaterial.copyrightsEndingDate' | translate}}" uib-datepicker-popup="{{endformat}}"
+                                   ng-model="circulationCtl.CirculationMediaMaterial.copyrightsEndDate" validator="required" is-open="endopened" min-date="false" max-date="false"
+                                   date-disabled="enddisabled(date, mode)" class="form-control" show-weeks="false" show-button-bar="false" disabled />
+                            <span class="input-group-btn">
+                                <button type="button" ng-click="endopen($event)" class="btn btn-default">
+                                    <em class="fa fa-calendar"></em>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'CirculationMediaMaterial.copyrights' | translate}}</span></label>
+                    <div class="col-sm-9">
+                        <uploading-files copyUrl="circulationCtl.CirculationMediaMaterial.copyrightsCopyUrl" copyUrlFullPath="circulationCtl.CirculationMediaMaterial.copyrightsCopyUrlFullPath"
+                                         url="circulationCtl.uploadCopyrightsCopyUrl" isrequired="true"></uploading-files>
+                    </div>
+                </div>
+                <div class="row" ng-if="circulationCtl.mediaMaterialType.canBeUrgent">
+                    <div class="col-md-12">
+                        <urgent-service ng-model="circulationCtl.urgentServices"></urgent-service>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <service-fee ng-model="circulationCtl.serviceFeesObj"></service-fee>
+                    </div>
+                </div>
+                <div class="row"><br /></div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <terms ng-model="circulationCtl.terms" ng-if="!circulationCtl.editMode" name="terms"></terms>
+                    </div>
+                </div>
+                <customer-pulse ng-if="circulationCtl.showHappinessMeter" ng-model="circulationCtl.happinessMeterObj"></customer-pulse>
+                <hr />
+                <div class="row" ng-if="!circulationCtl.editMode">
+                    <div class="col-md-12">
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="circulationCtl.isBusy || !circulationCtl.terms.isAgreed" class="mr mb-sm btn btn-primary pull-right" ng-click="circulationCtl.save(2)">
+                            {{'general.apply' | translate}}<span class="ripple"></span>
+                        </button>
+                        <button type="button" ripple="" validation-submit="Form"
+                                ng-disabled="circulationCtl.isBusy|| !circulationCtl.terms.isAgreed" class="mr mb-sm btn btn-default pull-right" ng-click="circulationCtl.save(1)">
+                            {{'general.applyLater' | translate}}<span class="ripple"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row" ng-if="circulationCtl.editMode">
+                    <div class="col-md-8"></div>
+                    <div class="col-md-4">
+                        <div uib-dropdown="dropdown" class="btn-group mr pull-right">
+                            <button uib-dropdown-toggle="" ng-disabled="circulationCtl.isBusy" class="btn btn-primary dropdown-toggle btn-sm">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+                            <ul role="menu" class="dropdown-menu animated zoomIn">
+                                <li ng-repeat="transition in circulationCtl.CirculationMediaMaterial.applicationDetail.applicationState.transitions">
+                                    <a href="" ng-click="circulationCtl.workflowClick(transition.action.id)">{{transition.action | localizeString}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    <!-- END panel-->
+
+</div>
