@@ -9,9 +9,9 @@
         .module('eServices')
         .controller('CustomersController', CustomersController);
 
-    CustomersController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$timeout'];
+    CustomersController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$timeout', '$compile'];
 
-    function CustomersController($rootScope, $scope, $http, $filter, $timeout) {
+    function CustomersController($rootScope, $scope, $http, $filter, $timeout, $compile) {
         var vm = this;
 
         // Initialize variables
@@ -26,9 +26,34 @@
         vm.entries = [5, 10, 20, 30, 50];
         vm.selectedEntries = vm.entries[1];
         vm.totalCustomers = 0;
+        vm.isLoading = false; // Loader flag
+
+        // Loader function
+        function loader() {
+            vm.isLoading = true;
+            var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
+                '<div class="sk-cube sk-cube1"></div>' +
+                '<div class="sk-cube sk-cube2"></div>' +
+                '<div class="sk-cube sk-cube3"></div>' +
+                '<div class="sk-cube sk-cube4"></div>' +
+                '<div class="sk-cube sk-cube5"></div>' +
+                '<div class="sk-cube sk-cube6"></div>' +
+                '<div class="sk-cube sk-cube7"></div>' +
+                '<div class="sk-cube sk-cube8"></div>' +
+                '<div class="sk-cube sk-cube9"></div>' +
+                '</div>';
+            angular.element('body').append($compile(htmlSectionLoader)($scope));
+        }
+
+        function removeLoader() {
+            angular.element('.sk-cube-grid').remove();
+            vm.isLoading = false;
+        }
 
         // Load customers
         vm.loadCustomers = function () {
+            loader(); // Show loader while fetching data
+
             var params = {
                 page: vm.pageIndex + 1,  // API is 1-based, while pageIndex is 0-based
                 pageSize: vm.selectedEntries,
@@ -42,8 +67,10 @@
                     vm.customers = response.data.content;
                     vm.totalCustomers = response.data.totalRecords || 0;
                     vm.totalPages = Math.ceil(vm.totalCustomers / vm.selectedEntries);
+                    removeLoader(); // Remove loader after fetching data
                 }, function (error) {
                     console.error('Error loading customers', error);
+                    removeLoader(); // Remove loader in case of error
                 });
         };
 
@@ -86,6 +113,8 @@
             start = Math.max(0, end - 5);
             return Array.from({ length: end - start }, (_, i) => start + i);
         };
+
+        // Export functionality
         vm.exportExcel = function () {
             $http.post($rootScope.app.httpSource + 'api/Roles/ExportExcel', vm.params, { responseType: 'arraybuffer' })
                 .then(function (resp) {
@@ -96,67 +125,42 @@
                     });
         };
 
-                vm.isObjectEmpty = function (card) {
+        vm.isObjectEmpty = function (card) {
             if (card) {
                 return Object.keys(card).length === 0;
             }
-            else {
-                return true;
-            }
+            return true;
         };
 
-                vm.removeFilter = function ($scope) {
+        vm.removeFilter = function ($scope) {
             if ($scope.filterParams) {
                 $scope.filterParams.minAge = 18;
                 $scope.filterParams.maxAge = 70;
-                if ($scope.filterParams.nationalities) {
-                    $scope.filterParams.nationalities = null;
-                }
-                if ($scope.filterParams.customerTypes) {
-                    $scope.filterParams.customerTypes = null;
-                }
-                if ($scope.filterParams.userTypes) {
-                    $scope.filterParams.userTypes = null;
-                }
-                if ($scope.filterParams.fromCreatedOn) {
-                    $scope.filterParams.fromCreatedOn = null;
-                }
-                if ($scope.filterParams.toCreatedOn) {
-                    $scope.filterParams.toCreatedOn = null;
-                }
-                if ($scope.filterParams.genders) {
-                    $scope.filterParams.genders = null;
-                }
-                if ($scope.filterParams.titles) {
-                    $scope.filterParams.titles = null;
-                }
+                $scope.filterParams.nationalities = null;
+                $scope.filterParams.customerTypes = null;
+                $scope.filterParams.userTypes = null;
+                $scope.filterParams.fromCreatedOn = null;
+                $scope.filterParams.toCreatedOn = null;
+                $scope.filterParams.genders = null;
+                $scope.filterParams.titles = null;
             }
-        }
+        };
 
         vm.hasFilter = function ($scope) {
             if (this.filterParams) {
-                if (this.filterParams.minAge != 18)
-                    return true;
-                if (this.filterParams.maxAge != 70)
-                    return true;
-                if (this.filterParams.nationalities != null)
-                    return true;
-                if (this.filterParams.customerTypes != null)
-                    return true;
-                if (this.filterParams.userTypes != null)
-                    return true;
-                if (this.filterParams.fromCreatedOn != null)
-                    return true;
-                if (this.filterParams.toCreatedOn != null)
-                    return true;
-                if (this.filterParams.genders != null)
-                    return true;
-                if (this.filterParams.titles != null)
-                    return true;
-                if (this.filterParams.economicActivities != null)
-                    return true;
+                if (this.filterParams.minAge != 18) return true;
+                if (this.filterParams.maxAge != 70) return true;
+                if (this.filterParams.nationalities != null) return true;
+                if (this.filterParams.customerTypes != null) return true;
+                if (this.filterParams.userTypes != null) return true;
+                if (this.filterParams.fromCreatedOn != null) return true;
+                if (this.filterParams.toCreatedOn != null) return true;
+                if (this.filterParams.genders != null) return true;
+                if (this.filterParams.titles != null) return true;
+                if (this.filterParams.economicActivities != null) return true;
             }
-            }
+            return false;
+        };
 
         // Initialize load
         vm.loadCustomers();
