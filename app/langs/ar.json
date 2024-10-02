@@ -961,6 +961,7 @@
     "acquaintanceForm": "وثيقة التعارف"
   },
   "establishment": {
+    "title": "جدول التاسيسات",
     "establishmentName": "اسم المنشأة",
     "establishmentDetails": "تفاصيل المنشأة",
     "Authority": "جهة الترخيص",
