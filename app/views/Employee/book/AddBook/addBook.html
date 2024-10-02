@@ -1,79 +1,107 @@
-﻿
-<div class="modal-header">
+﻿<!-- <div class="modal-header">
     <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">×</button>
     <h4 id="myModalLabel" class="modal-title" data-translate="bookCard.addBook"></h4>
     <p extra-help="bookCard.bookNote"></p>
+</div> -->
+<!-- <div class="modal-header" style="border-bottom: 0px;">
+    <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">X</button>
+    <h2 id="myModalLabel" class="modal-header font-weight-bold text-center p-0" data-translate="bookCard.addBook" style="border-bottom: none;
+                font-weight: 600;">
+    </h2>
 </div>
+
 
 <div>
     <div class="modal-body">
-        <form role="form" class="mb-lg form-horizontal" name="addBookForm">
-            <div class="row form-group">
-                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'printingPermit.isbn' | translate}}</span></label>
-                <div class="col-sm-9">
-                    <input id="isbnThirteen" ng-if="book.isbn == null || book.isbn.length >10" ng-model="book.isbn" ng-change="onISBNChange()" mask="999-9-99999-999-9" mask-restrict='reject' mask-validate='false' mask-clean='true' type="text" placeholder="{{'printingPermit.isbn' | translate}}"
-                           autocomplete="off" class="form-control" name="isbnThirteen" validator="required"/>
-                    <input id="isbnTen" ng-if="book.isbn != null && book.isbn.length <=10" ng-model="book.isbn" ng-change="onISBNChange()" mask="9-99999-999-99" mask-restrict='reject' mask-validate='false' mask-clean='true' type="text" placeholder="{{'printingPermit.isbn' | translate}}"
-                           autocomplete="off" class="form-control" name="isbnTen" validator="required"/>
-                    <span style="color:red" ng-if="!book.isValidISBN">ISBN is not valid. It should be 10 or 13 digit.</span>
+        <form role="form" class="mb-lg ml-xl mr-xl" name="addBookForm">
+            <div class="row ">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label class="control-label"><span class="text-danger">*
+                            </span><span>{{'printingPermit.isbn' | translate}}</span></label>
+
+                        <input id="isbnThirteen" ng-if="book.isbn == null || book.isbn.length >10" ng-model="book.isbn"
+                            ng-change="onISBNChange()" mask="999-9-99999-999-9" mask-restrict='reject'
+                            mask-validate='false' mask-clean='true' type="text"
+                            placeholder="{{'printingPermit.isbn' | translate}}" autocomplete="off" class="form-control"
+                            name="isbnThirteen" validator="required" />
+                        <input id="isbnTen" ng-if="book.isbn != null && book.isbn.length <=10" ng-model="book.isbn"
+                            ng-change="onISBNChange()" mask="9-99999-999-99" mask-restrict='reject'
+                            mask-validate='false' mask-clean='true' type="text"
+                            placeholder="{{'printingPermit.isbn' | translate}}" autocomplete="off" class="form-control"
+                            name="isbnTen" validator="required" />
+                        <span style="color:red; font-size:12px" ng-if="!book.isValidISBN">ISBN is not valid. It should
+                            be 10 or 13
+                            digit.</span>
+
+                    </div>
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'printingPermit.bookTitle' | translate}}</span></label>
-                <div class="col-sm-9">
-                    <input ng-model="book.title" type="text" placeholder="{{'printingPermit.bookTitle' | translate}}" autocomplete="off" class="form-control"
-                           validator="required" name="title" maxlength="256" />
-                </div>
+                <label class=" control-label"><span class="text-danger">*
+                    </span><span>{{'printingPermit.bookTitle' | translate}}</span></label>
+
+                <input ng-model="book.title" type="text" placeholder="{{'printingPermit.bookTitle' | translate}}"
+                    autocomplete="off" class="form-control" validator="required" name="title" maxlength="256" />
+
             </div>
             <div class="row form-group">
-                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'printingPermit.authorName' | translate}}</span></label>
+                <label class="col-sm-3 control-label"><span class="text-danger">*
+                    </span><span>{{'printingPermit.authorName' | translate}}</span></label>
                 <div class="col-sm-9">
-                    <input ng-model="book.authorName" type="text" placeholder="{{'printingPermit.authorName' | translate}}" autocomplete="off" class="form-control"
-                           validator="required" name="authorName" maxlength="256" />
+                    <input ng-model="book.authorName" type="text"
+                        placeholder="{{'printingPermit.authorName' | translate}}" autocomplete="off"
+                        class="form-control" validator="required" name="authorName" maxlength="256" />
                 </div>
             </div>
-            <!--<div class="row form-group">
-                <label class="col-sm-3 control-label"><span>{{'printingPermit.nationalDepositoryNo' | translate}}</span></label>
-                <div class="col-sm-9">
-                    <input ng-model="book.nationalDepositoryNo" type="text" placeholder="{{'printingPermit.nationalDepositoryNo' | translate}}" autocomplete="off" class="form-control"
-                           name="nationalDepositoryNo" maxlength="256" />
-                </div>
-            </div>-->
             <div class="row form-group">
                 <label class="col-sm-3 control-label"><span>{{'printingPermit.printYear' | translate}}</span></label>
                 <div class="col-sm-9">
-                    <input ng-model="book.printYear" type="number" placeholder="{{'printingPermit.printYear' | translate}}"
-                           autocomplete="off" class="form-control" name="printYear" />
+                    <input ng-model="book.printYear" type="number"
+                        placeholder="{{'printingPermit.printYear' | translate}}" autocomplete="off" class="form-control"
+                        name="printYear" />
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-sm-3 control-label"><span>{{'printingPermit.versionNumber' | translate}}</span></label>
+                <label class="col-sm-3 control-label"><span>{{'printingPermit.versionNumber' |
+                        translate}}</span></label>
                 <div class="col-sm-9">
-                    <input ng-model="book.versionNumber" type="number" placeholder="{{'printingPermit.versionNumber' | translate}}"
-                           autocomplete="off" class="form-control" ng-pattern="/(^[0-9]{1,2})+(\.[0-9]{1,2})?$/" step="0.01" max="99.99" min="0.01" name="versionNumber" />
+                    <input ng-model="book.versionNumber" type="number"
+                        placeholder="{{'printingPermit.versionNumber' | translate}}" autocomplete="off"
+                        class="form-control" ng-pattern="/(^[0-9]{1,2})+(\.[0-9]{1,2})?$/" step="0.01" max="99.99"
+                        min="0.01" name="versionNumber" />
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'printingPermit.languages' | translate}}</span></label>
+                <label class="col-sm-3 control-label"><span class="text-danger">*
+                    </span><span>{{'printingPermit.languages' | translate}}</span></label>
                 <div class="col-sm-9">
-                    <ui-select ng-model="book.selectedLangauges" ui-select-required name="language" theme="bootstrap" class="text-left" multiple ng-required="true">
-                        <ui-select-match placeholder="{{'printingPermit.selectLanguage' | translate}}">{{$item| localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="language in languages | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                    <ui-select ng-model="book.selectedLangauges" ui-select-required name="language" theme="bootstrap"
+                        class="text-left" multiple ng-required="true">
+                        <ui-select-match placeholder="{{'printingPermit.selectLanguage' | translate}}">{{$item|
+                            localizeString}}</ui-select-match>
+                        <ui-select-choices
+                            repeat="language in languages | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
                             <div ng-bind-html="language| localizeString | highlight: $select.search"></div>
                         </ui-select-choices>
                     </ui-select>
-                    <span ui-multiple item="'language'" frommodel="book.selectedLangauges" tomodel="book.bookLanguages"></span>
+                    <span ui-multiple item="'language'" frommodel="book.selectedLangauges"
+                        tomodel="book.bookLanguages"></span>
                     <span ng-if="!Form.language.$valid && Form.language.$touched">
                         <p style="color: #f34235; font-size:11px">This should be Required!</p>
                     </span>
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'printingPermit.subject' | translate}}</span></label>
+                <label class="col-sm-3 control-label"><span class="text-danger">*
+                    </span><span>{{'printingPermit.subject' | translate}}</span></label>
                 <div class="col-sm-9">
-                    <ui-select ng-model="book.subjectCategory" theme="bootstrap" class="text-left" validator="required" name="subject">
-                        <ui-select-match placeholder="{{'printingPermit.selectSubject' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="subject in subjects | propsFilter: {nameAr: $select.search, nameEn: $select.search, descEn: $select.search, descAr: $select.search}">
+                    <ui-select ng-model="book.subjectCategory" theme="bootstrap" class="text-left" validator="required"
+                        name="subject">
+                        <ui-select-match placeholder="{{'printingPermit.selectSubject' | translate}}">{{$select.selected
+                            | localizeString}}</ui-select-match>
+                        <ui-select-choices
+                            repeat="subject in subjects | propsFilter: {nameAr: $select.search, nameEn: $select.search, descEn: $select.search, descAr: $select.search}">
                             <div class="row">
                                 <div class="col-md-12">
                                     <span ng-bind-html="subject | localizeString | highlight: $select.search"></span>
@@ -81,7 +109,8 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <span class="text-sm" style="white-space:normal" ng-bind-html="subject | localizeDescString | highlight: $select.search"></span>
+                                    <span class="text-sm" style="white-space:normal"
+                                        ng-bind-html="subject | localizeDescString | highlight: $select.search"></span>
                                 </div>
                             </div>
                         </ui-select-choices>
@@ -89,11 +118,16 @@
                 </div>
             </div>
             <div class="row form-group">
-                <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'printingPermit.subjectSubCategory' | translate}}</span></label>
+                <label class="col-sm-3 control-label"><span class="text-danger">*
+                    </span><span>{{'printingPermit.subjectSubCategory' | translate}}</span></label>
                 <div class="col-sm-9">
-                    <ui-select ng-model="book.subjectSubCategory" theme="bootstrap" class="text-left" validator="required" name="subjectSub">
-                        <ui-select-match placeholder="{{'printingPermit.selectSubjectSubCategory' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="subjectSub in book.subjectCategory.subjectSubCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search, descEn: $select.search, descAr: $select.search}">
+                    <ui-select ng-model="book.subjectSubCategory" theme="bootstrap" class="text-left"
+                        validator="required" name="subjectSub">
+                        <ui-select-match
+                            placeholder="{{'printingPermit.selectSubjectSubCategory' | translate}}">{{$select.selected |
+                            localizeString}}</ui-select-match>
+                        <ui-select-choices
+                            repeat="subjectSub in book.subjectCategory.subjectSubCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search, descEn: $select.search, descAr: $select.search}">
                             <div class="row">
                                 <div class="col-md-12">
                                     <span ng-bind-html="subjectSub | localizeString | highlight: $select.search"></span>
@@ -107,10 +141,171 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button ng-click="ok()" class="btn btn-primary" type="submit" validation-submit="addBookForm" ng-disabled="!book.isValidISBN" data-translate="general.ok"></button>
+        <button ng-click="ok()" class="btn btn-primary" type="submit" validation-submit="addBookForm"
+            ng-disabled="!book.isValidISBN" data-translate="general.ok"></button>
         <button ng-click="closeModal()" class="btn btn-warning" data-translate="general.cancel"></button>
     </div>
 
+</div> -->
+
+<!-- /////////////////////////////////////////////////////////////// -->
+<div class="modal-content" style="border-radius: 3px !important;">
+    <div class="modal-header" style="border-bottom: 0px;">
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="close" ng-click="closeModal()">X</button>
+        <h2 id="myModalLabel" class="modal-header font-weight-bold text-center p-0" data-translate="bookCard.addBook"
+            style="border-bottom: none;
+                    font-weight: 600;">
+        </h2>
+    </div>
+
+
+    <div>
+        <div class="modal-body mb-5">
+            <form role="form" class="mb-lg ml-lg mr-lg" name="addBookForm">
+                <div class="row form-group mb-2">
+                    <div class="col-sm-6">
+                        <label class="control-label"><span style="font-weight: 300;">{{'printingPermit.isbn' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+
+                        <input id="isbnThirteen" ng-if="book.isbn == null || book.isbn.length >10" ng-model="book.isbn"
+                            ng-change="onISBNChange()" mask="999-9-99999-999-9" mask-restrict='reject'
+                            mask-validate='false' mask-clean='true' type="text"
+                            placeholder="{{'printingPermit.isbn' | translate}}" autocomplete="off" class="form-control"
+                            name="isbnThirteen" validator="required" />
+                        <input id="isbnTen" ng-if="book.isbn != null && book.isbn.length <=10" ng-model="book.isbn"
+                            ng-change="onISBNChange()" mask="9-99999-999-99" mask-restrict='reject'
+                            mask-validate='false' mask-clean='true' type="text"
+                            placeholder="{{'printingPermit.isbn' | translate}}" autocomplete="off" class="form-control"
+                            name="isbnTen" validator="required" />
+                        <span style="color:red; font-size:12px" ng-if="!book.isValidISBN">ISBN is not valid. It should
+                            be 10 or 13
+                            digit.</span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label"><span style="font-weight: 300;">{{'printingPermit.bookTitle' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+
+                        <input ng-model="book.title" type="text"
+                            placeholder="{{'printingPermit.bookTitle' | translate}}" autocomplete="off"
+                            class="form-control" validator="required" name="title" maxlength="256" />
+                    </div>
+                </div>
+
+                <div class="row form-group mb-2">
+                    <div class="col-sm-6">
+                        <label class="control-label"><span style="font-weight: 300;">{{'printingPermit.authorName' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+
+                        <input ng-model="book.authorName" type="text"
+                            placeholder="{{'printingPermit.authorName' | translate}}" autocomplete="off"
+                            class="form-control" validator="required" name="authorName" maxlength="256" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label"><span style="font-weight: 300;">{{'printingPermit.printYear' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+                        <input ng-model="book.printYear" type="number"
+                            placeholder="{{'printingPermit.printYear' | translate}}" autocomplete="off"
+                            class="form-control" name="printYear" />
+                    </div>
+                </div>
+
+
+                <div class="row form-group mb-2">
+                    <div class="col-sm-6">
+                        <label class="control-label"><span style="font-weight: 300;">{{'printingPermit.versionNumber' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+
+                        <input ng-model="book.versionNumber" type="number"
+                            placeholder="{{'printingPermit.versionNumber' | translate}}" autocomplete="off"
+                            class="form-control" ng-pattern="/(^[0-9]{1,2})+(\.[0-9]{1,2})?$/" step="0.01" max="99.99"
+                            min="0.01" name="versionNumber" />
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label"><span style="font-weight: 300;">{{'printingPermit.languages' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+                        <ui-select style="height: 37px; padding-left: 18px;" ng-model="book.selectedLangauges"
+                            ui-select-required name="language" theme="bootstrap" class="text-left" multiple
+                            ng-required="true">
+                            <ui-select-match placeholder="{{'printingPermit.selectLanguage' | translate}}">{{$item|
+                                localizeString}}</ui-select-match>
+                            <ui-select-choices
+                                repeat="language in languages | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                <div ng-bind-html="language| localizeString | highlight: $select.search"></div>
+                            </ui-select-choices>
+                        </ui-select>
+                        <span ui-multiple item="'language'" frommodel="book.selectedLangauges"
+                            tomodel="book.bookLanguages"></span>
+                        <span ng-if="!Form.language.$valid && Form.language.$touched">
+                            <p style="color: #f34235; font-size:11px">This should be Required!</p>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-6">
+                        <label class="control-label"><span style="font-weight: 300;">{{'printingPermit.subject' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+
+                        <ui-select ng-model="book.subjectCategory" theme="bootstrap" class="text-left"
+                            validator="required" name="subject">
+                            <ui-select-match
+                                placeholder="{{'printingPermit.selectSubject' | translate}}">{{$select.selected
+                                | localizeString}}</ui-select-match>
+                            <ui-select-choices
+                                repeat="subject in subjects | propsFilter: {nameAr: $select.search, nameEn: $select.search, descEn: $select.search, descAr: $select.search}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span
+                                            ng-bind-html="subject | localizeString | highlight: $select.search"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span class="text-sm" style="white-space:normal"
+                                            ng-bind-html="subject | localizeDescString | highlight: $select.search"></span>
+                                    </div>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="control-label"><span
+                                style="font-weight: 300;">{{'printingPermit.subjectSubCategory' |
+                                translate}}</span><span class="text-danger"> *
+                            </span></label>
+                        <ui-select ng-model="book.subjectSubCategory" theme="bootstrap" class="text-left"
+                            validator="required" name="subjectSub">
+                            <ui-select-match
+                                placeholder="{{'printingPermit.selectSubjectSubCategory' | translate}}">{{$select.selected
+                                |
+                                localizeString}}</ui-select-match>
+                            <ui-select-choices
+                                repeat="subjectSub in book.subjectCategory.subjectSubCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search, descEn: $select.search, descAr: $select.search}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <span
+                                            ng-bind-html="subjectSub | localizeString | highlight: $select.search"></span>
+                                    </div>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer" style="border-top: 0px;">
+            <button ng-click="closeModal()" class="btn" style="color: #997133;
+        border: 1px solid #997133;" data-translate="general.cancel"></button>
+            <button ng-click="ok()" class="btn" style="background-color: #997133; color: white;" type="submit"
+                validation-submit="addBookForm" ng-disabled="!book.isValidISBN" data-translate="general.ok"></button>
+        </div>
+
+    </div>
 </div>
-
-
