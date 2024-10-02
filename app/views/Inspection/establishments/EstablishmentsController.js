@@ -1,157 +1,159 @@
-    (function () {
-        'use strict';
+(function () {
+    'use strict';
 
-        angular
-            .module('eServices')
-            .controller('EstablishmentsController', EstablishmentsController);
+    angular
+        .module('eServices')
+        .controller('EstablishmentsController', EstablishmentsController);
 
-        EstablishmentsController.$inject = ['$rootScope', '$scope', '$http', '$timeout', '$uibModal', 'SweetAlert', 'UserProfile', '$filter', '$compile'];
+    EstablishmentsController.$inject = ['$rootScope', '$scope', '$http', '$timeout', '$uibModal', 'SweetAlert', 'UserProfile', '$filter', '$compile', '$window'];
 
-        function EstablishmentsController($rootScope, $scope, $http, $timeout, $uibModal, SweetAlert, UserProfile, $filter, $compile) {
-            var vm = this;
+    function EstablishmentsController($rootScope, $scope, $http, $timeout, $uibModal, SweetAlert, UserProfile, $filter, $compile, $window) {
+        var vm = this;
 
-            // Initialize variables
-            vm.user = UserProfile.getProfile();
-            vm.pageIndex = 0;
-            vm.pageSize = 10;
-            vm.totalPages = 0;
-            vm.entries = [5, 10, 20, 30, 50];
-            vm.selectedEntries = vm.entries[1];
-            vm.searchText = '';
-            vm.establishments = [];
-            vm.emirates = [];
-            vm.communities = [];
-            var searchTimeout;
-            // Set up translation filter
-            vm.translateFilter = $filter('translate');
-            vm.language = $rootScope.language.selected; // Assuming this holds current language ('en' or 'ar')
-            vm.isObjectEmpty = function (card) {
-                if (card) {
-                    return Object.keys(card).length === 0;
-                }
-                else {
-                    return true;
-                }
-            }
+        // Initialize variables
+        vm.user = UserProfile.getProfile();
+        vm.pageIndex = 0;
+        vm.pageSize = 10;
+        vm.totalPages = 0;
+        vm.entries = [5, 10, 20, 30, 50];
+        vm.selectedEntries = vm.entries[1];
+        vm.searchText = '';
+        vm.establishments = [];
+        vm.emirates = [];
+        vm.communities = [];
+        var searchTimeout;
+        
+        // Set up translation filter
+        vm.translateFilter = $filter('translate');
+        vm.language = $rootScope.language.selected; // Assuming this holds current language ('en' or 'ar')
 
-            // Loader function from old code
-            function loader() {
-                var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
-                    '<div class="sk-cube sk-cube1"></div>' +
-                    '<div class="sk-cube sk-cube2"></div>' +
-                    '<div class="sk-cube sk-cube3"></div>' +
-                    '<div class="sk-cube sk-cube4"></div>' +
-                    '<div class="sk-cube sk-cube5"></div>' +
-                    '<div class="sk-cube sk-cube6"></div>' +
-                    '<div class="sk-cube sk-cube7"></div>' +
-                    '<div class="sk-cube sk-cube8"></div>' +
-                    '<div class="sk-cube sk-cube9"></div>' +
-                    '</div>';
-                angular.element('body').append($compile(htmlSectionLoader)($scope));
-            }
+        vm.isObjectEmpty = function (card) {
+            return card ? Object.keys(card).length === 0 : true;
+        };
 
-            function removeLoader() {
-                angular.element('.sk-cube-grid').remove();
-            }
-
-            // Fetch emirates and communities for translation
-            $http.get($rootScope.app.httpSource + 'api/Emirate')
-                .then(function (response) {
-                    vm.emirates = response.data;
-                }, function (error) {
-                    console.error('Error fetching emirates', error);
-                });
-
-            $http.get($rootScope.app.httpSource + 'api/Community/GetCommunities')
-                .then(function (response) {
-                    vm.communities = response.data;
-                }, function (error) {
-                    console.error('Error fetching communities', error);
-                });
-
-            // Function to get translated establishment name
-            vm.getEstablishmentName = function (establishment) {
-                return vm.language === 'ar' ? establishment.nameAr : establishment.nameEn;
-            };
-
-            // Function to get translated emirate name
-            vm.getTranslatedEmirate = function (emirateId) {
-                var emirate = $filter('filter')(vm.emirates, { id: emirateId }, true)[0];
-                return emirate ? (vm.language === 'ar' ? emirate.nameAr : emirate.nameEn) : '';
-            };
-
-            // Function to get translated community name
-            vm.getTranslatedCommunity = function (communityId) {
-                var community = $filter('filter')(vm.communities, { id: communityId }, true)[0];
-                return community ? (vm.language === 'ar' ? community.nameAr : community.nameEn) : '';
-            };
-
-            // Load establishments for the table with loader implementation
-            vm.loadTaskGroups = function () {
-                loader(); // Show loader
-
-                var params = {
-                    page: vm.pageIndex + 1,
-                    pageSize: vm.selectedEntries,
-                    searchtext: vm.searchText || null
-                };
-
-                $http.post($rootScope.app.httpSource + 'api/Establishment/GetEstablishments', params)
-                    .then(function (response) {
-                        vm.establishments = response.data.content;
-                        var totalRecords = response.data.totalRecords || 0;
-                        vm.totalPages = totalRecords > 0 ? Math.ceil(totalRecords / vm.selectedEntries) : 1;
-                        removeLoader(); // Remove loader
-                    }, function (error) {
-                        console.error('Error loading establishments', error);
-                        removeLoader(); // Remove loader in case of error
-                    });
-            };
-
-            // Pagination control functions
-            vm.previousPage = function () {
-                if (vm.pageIndex > 0) {
-                    vm.pageIndex--;
-                    vm.loadTaskGroups();
-                }
-            };
-
-            vm.nextPage = function () {
-                if (vm.pageIndex < vm.totalPages - 1) {
-                    vm.pageIndex++;
-                    vm.loadTaskGroups();
-                }
-            };
-
-            vm.goToPage = function (pageIndex) {
-                if (pageIndex >= 0 && pageIndex < vm.totalPages) {
-                    vm.pageIndex = pageIndex;
-                    vm.loadTaskGroups();
-                }
-            };
-
-            vm.getPageRange = function () {
-                var start = Math.max(0, vm.pageIndex - Math.floor(5 / 2));
-                var end = Math.min(vm.totalPages, start + 5);
-                start = Math.max(0, end - 5);
-                return Array.from({ length: end - start }, (_, i) => start + i);
-            };
-
-            // Search functionality with debounce
-            vm.filterData = function () {
-                if (searchTimeout) {
-                    $timeout.cancel(searchTimeout);
-                }
-                searchTimeout = $timeout(function () {
-                    vm.pageIndex = 0;
-                    vm.loadTaskGroups();
-                }, 2000);  // 2 seconds debounce time
-            };
-
-            // Initial load
-            vm.loadTaskGroups();
+        // Loader function from old code
+        function loader() {
+            var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
+                '<div class="sk-cube sk-cube1"></div>' +
+                '<div class="sk-cube sk-cube2"></div>' +
+                '<div class="sk-cube sk-cube3"></div>' +
+                '<div class="sk-cube sk-cube4"></div>' +
+                '<div class="sk-cube sk-cube5"></div>' +
+                '<div class="sk-cube sk-cube6"></div>' +
+                '<div class="sk-cube sk-cube7"></div>' +
+                '<div class="sk-cube sk-cube8"></div>' +
+                '<div class="sk-cube sk-cube9"></div>' +
+                '</div>';
+            angular.element('body').append($compile(htmlSectionLoader)($scope));
         }
-    })();
+
+        function removeLoader() {
+            angular.element('.sk-cube-grid').remove();
+        }
+
+        // Fetch emirates and communities for translation
+        $http.get($rootScope.app.httpSource + 'api/Emirate')
+            .then(function (response) {
+                vm.emirates = response.data;
+            }, function (error) {
+                console.error('Error fetching emirates', error);
+            });
+
+        $http.get($rootScope.app.httpSource + 'api/Community/GetCommunities')
+            .then(function (response) {
+                vm.communities = response.data;
+            }, function (error) {
+                console.error('Error fetching communities', error);
+            });
+
+        // Function to get translated establishment name
+        vm.getEstablishmentName = function (establishment) {
+            return vm.language === 'ar' ? establishment.nameAr : establishment.nameEn;
+        };
+
+        // Function to get translated emirate name
+        vm.getTranslatedEmirate = function (emirateId) {
+            var emirate = $filter('filter')(vm.emirates, { id: emirateId }, true)[0];
+            return emirate ? (vm.language === 'ar' ? emirate.nameAr : emirate.nameEn) : '';
+        };
+
+        // Function to get translated community name
+        vm.getTranslatedCommunity = function (communityId) {
+            var community = $filter('filter')(vm.communities, { id: communityId }, true)[0];
+            return community ? (vm.language === 'ar' ? community.nameAr : community.nameEn) : '';
+        };
+
+        // Load establishments for the table with loader implementation
+        vm.loadTaskGroups = function () {
+            loader(); // Show loader
+
+            var params = {
+                page: vm.pageIndex + 1,
+                pageSize: vm.selectedEntries,
+                searchtext: vm.searchText || null
+            };
+
+            $http.post($rootScope.app.httpSource + 'api/Establishment/GetEstablishments', params)
+                .then(function (response) {
+                    vm.establishments = response.data.content;
+                    var totalRecords = response.data.totalRecords || 0;
+                    vm.totalPages = totalRecords > 0 ? Math.ceil(totalRecords / vm.selectedEntries) : 1;
+                    removeLoader(); // Remove loader
+                }, function (error) {
+                    console.error('Error loading establishments', error);
+                    removeLoader(); // Remove loader in case of error
+                });
+        };
+
+        // Pagination control functions
+        vm.previousPage = function () {
+            if (vm.pageIndex > 0) {
+                vm.pageIndex--;
+                vm.loadTaskGroups();
+            }
+        };
+
+        vm.nextPage = function () {
+            if (vm.pageIndex < vm.totalPages - 1) {
+                vm.pageIndex++;
+                vm.loadTaskGroups();
+            }
+        };
+
+        vm.goToPage = function (pageIndex) {
+            if (pageIndex >= 0 && pageIndex < vm.totalPages) {
+                vm.pageIndex = pageIndex;
+                vm.loadTaskGroups();
+            }
+        };
+
+        vm.getPageRange = function () {
+            var start = Math.max(0, vm.pageIndex - Math.floor(5 / 2));
+            var end = Math.min(vm.totalPages, start + 5);
+            start = Math.max(0, end - 5);
+            return Array.from({ length: end - start }, (_, i) => start + i);
+        };
+
+        // **Fixed checkFine Function**
+        vm.checkFine = function () {
+            $window.open('/#/page/payFines/', '_blank');
+        };
+
+        // Search functionality with debounce
+        vm.filterData = function () {
+            if (searchTimeout) {
+                $timeout.cancel(searchTimeout);
+            }
+            searchTimeout = $timeout(function () {
+                vm.pageIndex = 0;
+                vm.loadTaskGroups();
+            }, 2000);  // 2 seconds debounce time
+        };
+
+        // Initial load
+        vm.loadTaskGroups();
+    }
+})();
 
 
 
