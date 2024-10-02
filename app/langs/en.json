@@ -560,6 +560,7 @@
   },
   "bookCard": {
     "review": "Book Card Review",
+    "title": "Books List",
     "header": "Book Card",
     "number_of_pages": "Number Of Pages",
     "publishers": "Publishers",
