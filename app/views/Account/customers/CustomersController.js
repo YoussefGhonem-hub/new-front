@@ -27,7 +27,9 @@
         vm.selectedEntries = vm.entries[1];
         vm.totalCustomers = 0;
         vm.isLoading = false; // Loader flag
+        vm.click = function () {
 
+        };
         // Loader function
         function loader() {
             vm.isLoading = true;

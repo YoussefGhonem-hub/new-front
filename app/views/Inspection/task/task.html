@@ -141,4 +141,136 @@
             </li>
         </ul>
     </nav>
+
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Inspection/task/filter/filterDashboard.html'"
+                class="layer-morph">
+            </div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close=""
+                        ng-click="task.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter=""
+                        ng-click="task.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+            <br /><br />
+        </div>
+    </div>
 </div>
+
+
+<!-- 
+
+
+<div class="app-view-header">
+    {{'dashboard.home' | translate}}
+    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+
+<div ng-controller="taskController as task">
+
+    <div class="row" ng-if="task.user.userTypeCode == '06'">
+        <div class="col-md-5">
+            <div ng-if="!task.isObjectEmpty(task.filterParams)">
+                <span class="col-md-1">
+                    <a ng-click="task.exportExcel()" uib-tooltip="Excel">
+                        <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="task.exportCSV()" uib-tooltip="CSV">
+                        <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="task.exportPDF()" uib-tooltip="PDF">
+                        <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-5">
+            <button ng-if="task.userFilters == null || task.userFilters.length == 0" class="btn btn-primary btn-md pull-right" btn-layer-morph="task.click()"
+                    btn-layer="task.filter" target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+            </button>
+            <div ng-if="task.userFilters.length > 0" uib-dropdown="dropdown" class="btn-group mb-sm mr dropdown open pull-right">
+                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
+                    <span ng-if="task.filterParams.userFilterId == undefined">{{'general.filter' | translate}}</span>
+                    <span ng-if="task.filterParams.userFilterId != undefined && task.filterParams.userFilterId == task.defaultUserFilter.id">{{task.defaultUserFilter.name}}</span>
+                    <span ng-if="task.filterParams.userFilterId != undefined && task.filterParams.userFilterId != task.defaultUserFilter.id">{{task.selectedUserFilter.name}}</span>&nbsp;
+                    <span class="caret"></span>
+                    <span class="ripple"><span class="angular-ripple"></span></span>
+                </button>
+                <ul role="menu" class="dropdown-menu">
+                    <li>
+                        <a href="" btn-layer-morph="task.click()" btn-layer="task.filter" target="#layer-search">
+                            {{'dashboard.newFilter' | translate}}
+                        </a>
+                    </li>
+                    <li ng-repeat="userFilter in task.userFilters">
+                        <a href="" ng-click="task.userFilterData(userFilter)">{{userFilter.name}}</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table datatable="" ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"
+                   dt-options="task.dtApplicationOptions" dt-columns="task.dtApplicationColumns"
+                   dt-instance="task.dtApplicationInstance" width="100%" id="taskDatatable"></table>
+        </div>
+    </div>
+
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Inspection/task/filter/filterDashboard.html'" class="layer-morph"></div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="task.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="task.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+            <br /><br />
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+-->

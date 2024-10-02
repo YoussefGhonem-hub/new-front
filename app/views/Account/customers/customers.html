@@ -58,11 +58,9 @@
         </div>
 
         <div class="col-md-2 inspector">
-            <!-- Dropdown to select number of rows per page -->
-            <button class="btn btn-primary btn-md pull-right" ng-click="users.filter()">
-                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
-                    aria-hidden="true"></em>
-            </button>
+            <button class="btn btn-primary btn-md pull-right" btn-layer-morph="users.click()" btn-layer="users.filter"
+                target="#layer-search"><span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
+                    aria-hidden="true"></em></button>
         </div>
     </div>
 
@@ -225,6 +223,31 @@
             </li>
         </ul>
     </nav>
+
+    <div class="layer-morph-overlay">
+        <div class="layer-morph-inner bg-primary"></div>
+    </div>
+    <div layer-morph-close="" class="layer-morph-close">
+        <em class="fa fa-close"></em>
+    </div>
+    <div class="layer-morph-container bg-primary">
+        <div class="layer-morph-wrapper">
+            <div id="layer-search" ng-include="'app/views/Account/customers/filter/filterCustomers.html'"
+                class="layer-morph"></div>
+            <div class="row">
+                <div class="col-md-4 pull-right">
+                    <button class="btn btn-warning btn-md" btn-layer="customerFilter"
+                        ng-click="users.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter=""
+                        ng-click="users.filter(this)">
+                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 
