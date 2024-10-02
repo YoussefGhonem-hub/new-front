@@ -706,6 +706,8 @@
     "menu": "Menu"
   },
   "dashboard": {
+    "applications": "Applications",
+    "newApplication": "New Application",
     "home": "Home",
     "applicationNumber": "Application Number",
     "service": "Service",

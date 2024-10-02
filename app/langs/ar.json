@@ -808,6 +808,8 @@
   },
   "dashboard": {
     "home": "الصفحة الرئيسية",
+    "newApplication": "تطبيق جديب",
+    "applications": "التطبيقات",
     "applicationNumber": "رقم الطلب",
     "service": "الخدمة المقدمة",
     "emirate": "الإمارة",
