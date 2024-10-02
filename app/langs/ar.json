@@ -946,6 +946,9 @@
     "chartDesc": "البيانات الظاهرة هي لشهر ",
     "chartDescFilter": " ضمن خصائص البحث المحددة في الأعلى"
   },
+  "task": {
+    "title": "قائمه المهام"
+  },
   "journalists": {
     "office": "المكتب",
     "selectOffice": "اختر مكتب المجلس",

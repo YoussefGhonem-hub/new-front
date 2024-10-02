@@ -52,7 +52,14 @@
         function removeLoader() {
             angular.element('.sk-cube-grid').remove();
         }
- 
+         vm.isObjectEmpty = function (card) {
+            if (card) {
+                return Object.keys(card).length === 0;
+            }
+            else {
+                return true;
+            }
+        }
         // Fetch data for task groups with pagination, page size, and search filter
         vm.loadTaskGroups = function () {
             loader();  // Show loader
@@ -162,6 +169,41 @@
             var end = Math.min(vm.totalPages, start + vm.visiblePages);
             start = Math.max(0, end - vm.visiblePages);
             return Array.from({ length: end - start }, (_, i) => start + i);
+        };
+
+                vm.exportExcel = function () {
+            $http.post($rootScope.app.httpSource + 'api/Application/ExportExcel', vm.params, { responseType: 'arraybuffer' })
+                .then(function (resp) {
+                    var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
+                    saveAs(data, "Applications.xlsx");
+                },
+                function (response) {
+                });
+        };
+        vm.exportPDF = function () {
+            $http.post($rootScope.app.httpSource + 'api/Application/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
+                .then(function (resp) {
+                    var data = new Blob([resp.data], { type: 'application/pdf' });
+                    saveAs(data, "Applications.pdf");
+                },
+                function (response) {
+                });
+        };
+        vm.exportCSV = function () {
+
+            $http.post($rootScope.app.httpSource + 'api/Application/ExportCSV', vm.params)
+                .then(function (resp) {
+                    var myBlob = new Blob([resp.data], { type: 'text/html' });
+                    var url = window.URL.createObjectURL(myBlob);
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.href = url;
+                    a.download = "Applications.csv";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+                function (response) {
+                });
         };
     }
 })();

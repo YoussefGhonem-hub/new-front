@@ -270,6 +270,9 @@
     "address": "Address",
     "establishmentCount": "Number Of Establishments"
   },
+  "task": {
+    "title": "Tasks List"
+  },
   "inspection": {
     "regionData": "Community Details",
     "inspectionData": "Inspection Details",
