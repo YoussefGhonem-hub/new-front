@@ -23,18 +23,179 @@
         </div>
         <div class="col-md-8"></div>
         <div class="col-md-2">
-            <button class="btn btn-primary btn-md pull-right" btn-layer-morph="newspaper.click()" btn-layer="newspaper.filter" target="#layer-search">
-                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+            <button class="btn btn-primary btn-md pull-right" ng-click="newspaper.toggleFilter()">
+                <span>{{'general.filter' | translate}}</span>&nbsp;&nbsp;<em class="fa fa-filter"
+                    aria-hidden="true"></em>
+            </button>
+        </div>
+    </div>
+
+    <!-- Search Filter Section -->
+    <div class="row" ng-if="newspaper.showFilter">
+        <div class="col-md-12">
+            <input type="text" class="form-control" placeholder="Search" ng-model="newspaper.searchText" />
+            <button class="btn btn-primary btn-md mt-2" ng-click="newspaper.applyFilter()">Apply Filter</button>
+            <button class="btn btn-default btn-md mt-2" ng-click="newspaper.clearFilter()">Clear Filter</button>
+        </div>
+    </div>
+
+    <!-- Newspaper Table -->
+    <div class="row mt-3">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th ng-click="newspaper.sortColumn('type')">Type
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': newspaper.sortBy === 'type' && newspaper.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': newspaper.sortBy === 'type' && newspaper.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="newspaper.sortColumn('releaseType')">Release Type
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': newspaper.sortBy === 'releaseType' && newspaper.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': newspaper.sortBy === 'releaseType' && newspaper.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="newspaper.sortColumn('issuanceFormat')">Issuance Format
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': newspaper.sortBy === 'issuanceFormat' && newspaper.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': newspaper.sortBy === 'issuanceFormat' && newspaper.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="newspaper.sortColumn('periodicalType')">Periodical Type
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': newspaper.sortBy === 'periodicalType' && newspaper.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': newspaper.sortBy === 'periodicalType' && newspaper.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="newspaper.sortColumn('languages')">Languages & Name
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': newspaper.sortBy === 'languages' && newspaper.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': newspaper.sortBy === 'languages' && newspaper.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="newspaper.sortColumn('subjectCategory')">Subject Category
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': newspaper.sortBy === 'subjectCategory' && newspaper.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': newspaper.sortBy === 'subjectCategory' && newspaper.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="newspaper.sortColumn('createdOn')">Created On
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': newspaper.sortBy === 'createdOn' && newspaper.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': newspaper.sortBy === 'createdOn' && newspaper.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in newspaper.newspapers">
+                        <td>{{ newspaper.getNewspaperType(item) }}</td>
+                        <td>{{ item.releaseType | localizeString }}</td>
+                        <td>{{ newspaper.getIssuanceFormat(item) }}</td>
+                        <td>{{ item.periodicalType | localizeString }}</td>
+                        <td>{{ newspaper.formatLanguages(item.newspaperLanguages) }}</td>
+                        <td>{{ newspaper.getSubjectCategories(item.newspaperCategory) }}</td>
+                        <td>{{ item.createdOn | date:'dd-MMMM-yyyy' }}</td>
+
+
+                        <td>
+                            <button class="btn btn-sm btn-info" ng-click="newspaper.review(item.id)">Review</button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination Section -->
+    <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center custom-pagination">
+            <li class="page-item" ng-class="{disabled: newspaper.pageIndex === 0}" ng-click="newspaper.previousPage()">
+                <a class="page-link"><span aria-hidden="true">&lsaquo;</span></a>
+            </li>
+            <li class="page-item" ng-if="newspaper.pageIndex > 2" ng-click="newspaper.goToPage(0)">
+                <a class="page-link">1</a>
+            </li>
+            <li class="page-item" ng-if="newspaper.pageIndex > 2"><span class="page-link">...</span></li>
+            <li class="page-item" ng-repeat="page in newspaper.getPageRange()"
+                ng-class="{active: page === newspaper.pageIndex}" ng-click="newspaper.goToPage(page)">
+                <a class="page-link">{{ page + 1 }}</a>
+            </li>
+            <li class="page-item" ng-if="newspaper.pageIndex < newspaper.totalPages - 3"><span
+                    class="page-link">...</span></li>
+            <li class="page-item" ng-if="newspaper.pageIndex < newspaper.totalPages - 3"
+                ng-click="newspaper.goToPage(newspaper.totalPages - 1)">
+                <a class="page-link">{{ newspaper.totalPages }}</a>
+            </li>
+            <li class="page-item" ng-class="{disabled: newspaper.pageIndex === newspaper.totalPages - 1}"
+                ng-click="newspaper.nextPage()">
+                <a class="page-link"><span aria-hidden="true">&rsaquo;</span></a>
+            </li>
+        </ul>
+    </nav>
+
+
+</div>
+
+
+<!-- <div class="app-view-header">
+    {{'dashboard.home' | translate}}
+    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
+</div>
+<div ng-controller="NewspaperController as newspaper">
+    <div class="row">
+        <div class="col-md-2">
+            <span class="col-md-2">
+                <a ng-click="newspaper.exportExcel()" uib-tooltip="Excel">
+                    <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+            <span class="col-md-2">
+                <a ng-click="newspaper.exportCSV()" uib-tooltip="CSV">
+                    <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+            <span class="col-md-2">
+                <a ng-click="newspaper.exportPDF()" uib-tooltip="PDF">
+                    <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                </a>
+            </span>
+        </div>
+        <div class="col-md-8"></div>
+        <div class="col-md-2">
+            <button class="btn btn-primary btn-md pull-right" btn-layer-morph="newspaper.click()"
+                btn-layer="newspaper.filter" target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
+                    aria-hidden="true"></em>
             </button>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <table datatable="" class="row-border hover" dt-options="newspaper.dtNewspaperOptions" dt-columns="newspaper.dtNewspaperColumns"
-                   dt-instance="newspaper.dtNewspaperInstance" width="100%"></table>
+            <table datatable="" class="row-border hover" dt-options="newspaper.dtNewspaperOptions"
+                dt-columns="newspaper.dtNewspaperColumns" dt-instance="newspaper.dtNewspaperInstance" width="100%">
+            </table>
         </div>
     </div>
-    <!-- Layer Morph-->
+
     <div class="layer-morph-overlay">
         <div class="layer-morph-inner bg-primary"></div>
     </div>
@@ -43,18 +204,21 @@
     </div>
     <div class="layer-morph-container bg-primary">
         <div class="layer-morph-wrapper">
-            <div id="layer-search" ng-include="'app/views/Employee/newspaper/filter/filterNewspaper.html'" class="layer-morph"></div>
+            <div id="layer-search" ng-include="'app/views/Employee/newspaper/filter/filterNewspaper.html'"
+                class="layer-morph"></div>
             <div class="row">
                 <div class="col-md-4 pull-right">
-                    <button class="btn btn-warning btn-md" btn-layer="bookFilter" layer-morph-close="" ng-click="newspaper.removeFilter(this)">
+                    <button class="btn btn-warning btn-md" btn-layer="bookFilter" layer-morph-close=""
+                        ng-click="newspaper.removeFilter(this)">
                         {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
                     </button>
-                    <button class="btn btn-default btn-md" btn-layer="bookFilter" layer-morph-filter="" ng-click="newspaper.filter(this)">
+                    <button class="btn btn-default btn-md" btn-layer="bookFilter" layer-morph-filter=""
+                        ng-click="newspaper.filter(this)">
                         {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
                     </button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- End Layer Morph-->
-</div>
+
+</div> -->
