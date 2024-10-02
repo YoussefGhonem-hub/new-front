@@ -31,7 +31,7 @@
             return card ? Object.keys(card).length === 0 : true;
         };
 
-        // Loader function from old code
+        // Loader function
         function loader() {
             var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
                 '<div class="sk-cube sk-cube1"></div>' +
@@ -105,6 +105,73 @@
                 });
         };
 
+        vm.open = function (size) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/Inspection/establishments/AddEstablishment/addEstablishmnet.html',
+                controller: 'AddEstablishmentController',
+                size: size,
+                resolve: {
+                    emirates: function () {
+                        return vm.emirates;
+                    },
+                    communities: function () {
+                        return vm.communities;
+                    },
+                    establishment: function () {
+                        return null;
+                    },
+                    userType: function () {
+                        return vm.userProfile.userType;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (establishmentBranch) {
+                //vm.CheckLicenseNumber(establishmentBranch);
+                vm.insertEstablishment(establishmentBranch);
+            },
+                function () {
+                });
+        };
+
+        ///Insert Establishment
+        vm.insertEstablishment = function (establishmentBranch) {
+            $http.post($rootScope.app.httpSource + 'api/Establishment/SaveEstablishment', inputRequest(establishmentBranch))
+                .then(
+                function (response) {
+                    var translate = $filter('translate');
+                    if(response.data == true){
+                        SweetAlert.swal(translate('establishment.success'), translate('establishment.dataAdded'), "success");
+                        vm.dtApplicationInstance.reloadData();
+                    }
+                    else{
+                        SweetAlert.swal(translate('establishment.error'), translate('establishment.alreadyExist'), "error");
+                    }
+                },
+                function (error) {
+                });
+        }
+        function inputRequest(establishmentBranch) {
+            return {
+                "address": {
+                    "communityId": establishmentBranch.address.community.id,
+                    "phoneNumber": establishmentBranch.address.phoneNumber,
+                    "street": establishmentBranch.address.street,
+                    "longitude": establishmentBranch.address.longitude,
+                    "latitude": establishmentBranch.address.latitude
+                },
+                "nameEn": establishmentBranch.nameEn,
+                "licenseCopyUrl": establishmentBranch.licenseCopyUrl,
+                "licenseNumber": establishmentBranch.licenseNumber,
+                "AuthorityId": establishmentBranch.authority.id,
+                "memorandumOfAssociationCopyUrl": establishmentBranch.memorandumOfAssociationCopyUrl,
+                "powerOfAttorneyCopyUrl": establishmentBranch.powerOfAttorneyCopyUrl,
+                "statementCopyUrl": establishmentBranch.statementCopyUrl,
+                "tenancyContractCopyUrl": establishmentBranch.tenancyContractCopyUrl,
+                "tenancyContractEndDate": moment(establishmentBranch.tenancyContractEndDate).format('YYYY-MM-DD')
+            }
+        }
+
         // Pagination control functions
         vm.previousPage = function () {
             if (vm.pageIndex > 0) {
@@ -134,7 +201,7 @@
             return Array.from({ length: end - start }, (_, i) => start + i);
         };
 
-        // **Fixed checkFine Function**
+        // **Fixed checkFine function**
         vm.checkFine = function () {
             $window.open('/#/page/payFines/', '_blank');
         };
@@ -154,6 +221,7 @@
         vm.loadTaskGroups();
     }
 })();
+
 
 
 
