@@ -1,107 +1,158 @@
-<div class="app-view-header">
-    {{'dashboard.home' | translate}}
-    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
-</div>
 <div ng-controller="ScheduledTablesController as scheduledTables">
-    <tour step="currentStep">
-        <p tourtip="Hey! I'd like to walk you through our site, it's great"
-           tourtip-next-label="Hmmm, okay sure!"
-           tourtip-placement="top"
-           tourtip-margin="10"
-           tourtip-step="0">
-        </p>
-        <p ng-show="currentStep === 1"
-           tourtip="Behold! I am now explaining the feature..."
-           tourtip-next-label="Wow, Amazing!"
-           tourtip-placement="right"
-           tourtip-offset-vertical="-300"
-           tourtip-offset-horizontal="-26"
-           tourtip-step="1">
-        </p>
-    </tour>
-    <div class="row">
-        <div class="col-md-4 pull-left">
-            <button type="submit" ripple="" class="mr mb-sm btn btn-warning pull-left" ng-click="scheduledTables.addScheduleTable()">
-                {{'inspection.addScheduleTable' | translate}}<span class="ripple"></span>
-            </button>
-        </div>
-    </div>
-    <div class="row" ng-if="scheduledTables.user.userTypeCode == '06'">
-        <div class="col-md-5">
-            <div ng-if="!scheduledTables.isObjectEmpty(dashboard.filterParams)">
-                <span class="col-md-1">
-                    <a ng-click="scheduledTables.exportExcel()" uib-tooltip="Excel">
-                        <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
-                    </a>
-                </span>
-                <span class="col-md-1">
-                    <a ng-click="scheduledTables.exportCSV()" uib-tooltip="CSV">
-                        <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
-                    </a>
-                </span>
-                <span class="col-md-1">
-                    <a ng-click="scheduledTables.exportPDF()" uib-tooltip="PDF">
-                        <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
-                    </a>
-                </span>
+    <div class=" mt-4">
+        <p>{{app | localizeString}} > {{app.description | localizeString}}</p>
+
+        <!-- Flex container for header and button -->
+        <div class="row">
+            <div class="col-md-4">
+                <h2 class="app-view-header" style="font-weight: bold;">
+                    <span class="back-arrow">
+                        <em class="fa fa-chevron-left"></em>
+                    </span>
+                    {{'inspection.title' | translate}}
+                </h2>
             </div>
-        </div>
-        <div class="col-md-2"></div>
-        <div class="col-md-5">
-            <button ng-if="scheduledTables.userFilters == null || scheduledTables.userFilters.length == 0" class="btn btn-primary btn-md pull-right" btn-layer-morph="scheduledTables.click()"
-                    btn-layer="establishment.filter" target="#layer-search">
-                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
-            </button>
-            <div ng-if="scheduledTables.userFilters.length > 0" uib-dropdown="dropdown" class="btn-group mb-sm mr dropdown open pull-right">
-                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
-                    <span ng-if="scheduledTables.filterParams.userFilterId == undefined">{{'general.filter' | translate}}</span>
-                    <span ng-if="scheduledTables.filterParams.userFilterId != undefined && scheduledTables.filterParams.userFilterId == dashboard.defaultUserFilter.id">{{establishment.defaultUserFilter.name}}</span>
-                    <span ng-if="scheduledTables.filterParams.userFilterId != undefined && scheduledTables.filterParams.userFilterId != dashboard.defaultUserFilter.id">{{establishment.selectedUserFilter.name}}</span>&nbsp;
-                    <span class="caret"></span>
-                    <span class="ripple"><span class="angular-ripple"></span></span>
+            <div class="col-md-8 text-right formSubmit">
+                <button type="submit" class="btn btn-primary" ng-click="scheduledTables.addScheduleTable()" ng-disabled="scheduledTables.isLoading">
+                    &nbsp;&nbsp;<em class="fa fa-plus" aria-hidden="true"></em> {{'inspection.addScheduleTable' | translate}}
                 </button>
-                <ul role="menu" class="dropdown-menu">
-                    <li>
-                        <a href="" btn-layer-morph="scheduledTables.click()" btn-layer="establishment.filter" target="#layer-search">
-                            {{'dashboard.newFilter' | translate}}
-                        </a>
-                    </li>
-                    <li ng-repeat="userFilter in scheduledTables.userFilters">
-                        <a href="" ng-click="scheduledTables.userFilterData(userFilter)">{{userFilter.name}}</a>
-                    </li>
-                </ul>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <table datatable="" ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"
-                   dt-options="scheduledTables.dtApplicationOptions" dt-columns="scheduledTables.dtApplicationColumns"
-                   dt-instance="scheduledTables.dtApplicationInstance" width="100%" id="scheduledDataTable"></table>
-        </div>
-    </div>
-    <!-- Layer Morph-->
-    <div class="layer-morph-overlay">
-        <div class="layer-morph-inner bg-primary"></div>
-    </div>
-    <div layer-morph-close="" class="layer-morph-close">
-        <em class="fa fa-close"></em>
-    </div>
-    <div class="layer-morph-container bg-primary">
-        <div class="layer-morph-wrapper">
-            <div id="layer-search" ng-include="'app/views/Dashboard/filter/filterDashboard.html'" class="layer-morph"></div>
-            <div class="row">
-                <div class="col-md-4 pull-right">
-                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="scheduledTables.removeFilter(this)">
-                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
-                    </button>
-                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="scheduledTables.filter(this)">
-                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+
+        <div class="container">
+            <!-- Search Bar and Filter -->
+            <div class="row d-flex align-items-center" style="margin-bottom: 5px;">
+                <div class="col-md-8">
+                    <!-- Search Bar -->
+                    <input type="text" class="form-control" placeholder="Search" ng-model="scheduledTables.searchText">
+                </div>
+                <div class="col-md-2">
+                    <!-- Dropdown to select number of rows per page -->
+                    <select class="form-control" ng-model="scheduledTables.selectedEntries" ng-change="scheduledTables.loadTaskGroups()" ng-init="scheduledTables.selectedEntries = null">
+                        <!-- Placeholder option that is disabled and selected -->
+                        <option value="" disabled selected>Entries</option>
+                        <!-- Options for number of entries -->
+                        <option ng-repeat="entry in scheduledTables.entries" value="{{entry}}">{{entry}}</option>
+                    </select>
+                </div>
+                <div class="col-md-2 inspector">
+                    <!-- Button to open the filter modal -->
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
+                        <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
                     </button>
                 </div>
             </div>
-            <br /><br />
         </div>
+
+        <!-- Table Section -->
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>{{'inspection.scheduleName' | translate}}</th>
+                    <th>{{'address.Emirate' | translate}}</th>
+                    <th>{{'inspection.inspectionReason' | translate}}</th>
+                    <th>{{'inspection.inspectionReason' | translate}}</th>
+                    <th>{{'inspection.ScheduleEndingDate' | translate}}</th>
+                    <th>{{'address.establishmentCount' | translate}}</th>
+                    <th>{{'general.actions' | translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="task in scheduledTables.taskGroups">
+                    <td>{{task.name}}</td>
+                    <td>{{task.region.emirate.nameEn}} <span ng-if="task.region.emirateId == 1"> - {{task.region.name}}</span></td>
+                    <td>{{task.inspectionReason.nameEn}}</td>
+                    <td>{{task.startDate | date:'dd-MMMM-yyyy'}}</td>
+                    <td>{{task.endDate | date:'dd-MMMM-yyyy'}}</td>
+                    <td>{{scheduledTables.getEstablishmentCount(task)}}</td>
+                    <td class="action-icons">
+                        <div class="dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="actionMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <em class="fa fa-ellipsis-v" aria-hidden="true"></em>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actionMenu">
+                                <a class="dropdown-item" href="#" ng-click="scheduledTables.review(task.id)">
+                                    <em class="fa fa-eye" aria-hidden="true"></em> Details
+                                </a>
+                                <a class="dropdown-item" href="#" ng-click="scheduledTables.edit(task.id)">
+                                    <em class="fa fa-pencil" aria-hidden="true"></em> Edit
+                                </a>
+                                <a class="dropdown-item" href="#" ng-click="scheduledTables.delete(task.id)">
+                                    <em class="fa fa-trash" aria-hidden="true"></em> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Pagination Section -->
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center custom-pagination">
+                <!-- Previous Button -->
+                <li class="page-item" ng-class="{disabled: scheduledTables.pageIndex === 0}" ng-click="scheduledTables.previousPage()">
+                    <a class="page-link">
+                        <span aria-hidden="true">&lsaquo;</span>
+                    </a>
+                </li>
+
+                <!-- First Page -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex > 2" ng-click="scheduledTables.goToPage(0)">
+                    <a class="page-link">1</a>
+                </li>
+
+                <!-- Ellipsis for Pages Skipped -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex > 2">
+                    <span class="page-link">...</span>
+                </li>
+
+                <!-- Page Numbers Range -->
+                <li class="page-item" ng-repeat="page in scheduledTables.getPageRange()" ng-class="{active: page === scheduledTables.pageIndex}" ng-click="scheduledTables.goToPage(page)">
+                    <a class="page-link">{{ page + 1 }}</a>
+                </li>
+
+                <!-- Ellipsis for Skipped Pages After -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex < scheduledTables.totalPages - 3">
+                    <span class="page-link">...</span>
+                </li>
+
+                <!-- Last Page -->
+                <!-- Last Page -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex < scheduledTables.totalPages - 3" ng-click="scheduledTables.goToPage(scheduledTables.totalPages - 1)">
+                    <a class="page-link">{{ scheduledTables.totalPages }}</a>
+                </li>
+
+                <!-- Next Button -->
+                <li class="page-item" ng-class="{disabled: scheduledTables.pageIndex === scheduledTables.totalPages - 1}" ng-click="scheduledTables.nextPage()">
+                    <a class="page-link">
+                        <span aria-hidden="true">&rsaquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <!-- Layer Morph-->
+        <div class="layer-morph-overlay">
+            <div class="layer-morph-inner bg-primary"></div>
+        </div>
+        <div layer-morph-close="" class="layer-morph-close">
+            <em class="fa fa-close"></em>
+        </div>
+        <div class="layer-morph-container bg-primary">
+            <div class="layer-morph-wrapper">
+                <div id="layer-search" ng-include="'app/views/Dashboard/filter/filterDashboard.html'" class="layer-morph"></div>
+                <div class="row">
+                    <div class="col-md-4 pull-right">
+                        <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="scheduledTables.removeFilter(this)">
+                            {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                        </button>
+                        <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="scheduledTables.filter(this)">
+                            {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+                        </button>
+                    </div>
+                </div>
+                <br /><br />
+            </div>
+        </div>
+        <!-- End Layer Morph-->
     </div>
-    <!-- End Layer Morph-->
-</div>
