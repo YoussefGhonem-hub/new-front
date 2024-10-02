@@ -480,10 +480,6 @@
     <Content Include="app\views\Inspection\visit\page.visit.html" />
     <Content Include="app\views\Inspection\visit\unscheduledvisitController.js" />
     <Content Include="app\views\Inspection\visit\visitController.js" />
-    <Content Include="app\views\Inspection\scheduledTables\scheduledTables.html" />
-    <Content Include="app\views\Inspection\scheduledTables\ScheduledTablesController.js" />
-    <Content Include="app\views\Inspection\scheduledTables\filter\filterDashboard.html" />
-    <Content Include="app\views\Inspection\scheduledTables\filter\filterDashboardController.js" />
     <Content Include="app\views\Inspection\schedule\calendarControls.html" />
     <Content Include="app\views\Inspection\schedule\scheduleInspectorController.js" />
     <Content Include="app\views\Inspection\schedule\page.scheduleInspector.html" />
