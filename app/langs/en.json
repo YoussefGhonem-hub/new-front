@@ -900,6 +900,7 @@
   },
   "users": {
     "email": "Email",
+    "ManageUsers": "Manage Users",
     "phoneNumber": "Phone Number",
     "isActive": "Is Active",
     "createdOn": "Created On",

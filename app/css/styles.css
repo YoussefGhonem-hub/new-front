@@ -12582,7 +12582,7 @@ footer.newFooter {
 }
 
 .table tbody tr:nth-child(odd) {
-    background-color: #efede8;
+    background-color: rgba(241, 236, 229, 1);
 
 }
 
@@ -12990,7 +12990,6 @@ html[lang="ar"] .menuList li.active a span::after {
 .fa-caret-down {
     font-size: 10px;
     color: #ccc;
-    /* Default color for unsorted columns */
     cursor: pointer;
     margin-left: 3px;
 }
@@ -12998,17 +12997,36 @@ html[lang="ar"] .menuList li.active a span::after {
 .fa-caret-up.active,
 .fa-caret-down.active {
     color: #000;
-    /* Color for active sort icon */
 }
 
 .fa-caret-up.active {
     border-bottom: 2px solid #000;
-    /* Underline for up arrow */
 }
 
 th {
     white-space: nowrap;
-    /* Prevent column titles from breaking */
     padding-right: 10px;
     position: relative;
+    text-align: left;
+}
+
+/* Make table scrollable horizontally */
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+@media (max-width: 768px) {
+
+    /* Adjust icon size for smaller screens */
+    .fa-caret-up,
+    .fa-caret-down {
+        font-size: 8px;
+    }
+
+    /* Adjust padding for smaller screens */
+    th,
+    td {
+        padding: 0.5rem;
+    }
 }
