@@ -19,15 +19,15 @@
         vm.sortBy = '';
         vm.sortDirection = 'asc';
 
-        vm.entries = [5, 10, 20, 30, 50];
-        vm.selectedEntries = vm.entries[1];
+        vm.entries = [5, 10, 20, 30, 50];  // Options for entries per page
+        vm.selectedEntries = vm.entries[1];  // Default selected entry size (10)
         vm.totalUsers = 0;
 
-        // Load employees
+        // Load employees based on current page, search, and entry settings
         vm.loadEmployees = function () {
             var params = {
                 page: vm.pageIndex + 1,  // API is 1-based, while pageIndex is 0-based
-                pageSize: vm.selectedEntries,
+                pageSize: vm.selectedEntries,  // Number of entries per page
                 searchText: vm.searchText || null,
                 sortBy: vm.sortBy || 'user.firstName',
                 sortDirection: vm.sortDirection || 'asc'
@@ -37,7 +37,7 @@
                 .then(function (response) {
                     vm.users = response.data.content;
                     vm.totalUsers = response.data.totalRecords || 0;
-                    vm.totalPages = Math.ceil(vm.totalUsers / vm.selectedEntries);
+                    vm.totalPages = Math.ceil(vm.totalUsers / vm.selectedEntries);  // Update total pages based on the selected entry size
                 }, function (error) {
                     console.error('Error loading employees', error);
                 });
@@ -87,6 +87,7 @@
         vm.loadEmployees();
     }
 })();
+
 
 
 

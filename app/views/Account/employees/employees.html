@@ -24,16 +24,11 @@
 
     <div class="row mb-2" style="margin-bottom: 1%;">
         <!-- Search Bar -->
-        <div class="col-md-8">
+        <div class="col-md-10">
             <input type="text" class="form-control" placeholder="Search" ng-model="users.searchText"
                 ng-change="users.loadEmployees()">
         </div>
-        <div class="col-md-2">
-            <!-- Dropdown for entries per page -->
-            <select class="form-control" ng-model="users.selectedEntries" ng-options="entry for entry in users.entries"
-                ng-change="users.loadEmployees()">
-            </select>
-        </div>
+
         <div class="col-md-2">
             <!-- Dropdown to select number of rows per page -->
             <select class="form-control" ng-model="users.selectedEntries" ng-options="entry for entry in users.entries"
