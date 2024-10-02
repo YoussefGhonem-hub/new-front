@@ -5,9 +5,9 @@
         .module('eServices')
         .controller('EstablishmentsController', EstablishmentsController);
 
-    EstablishmentsController.$inject = ['$rootScope', '$scope', '$http', '$timeout', '$uibModal', 'SweetAlert', 'UserProfile', '$filter'];
+    EstablishmentsController.$inject = ['$rootScope', '$scope', '$http', '$timeout', '$uibModal', 'SweetAlert', 'UserProfile', '$filter', '$compile'];
 
-    function EstablishmentsController($rootScope, $scope, $http, $timeout, $uibModal, SweetAlert, UserProfile, $filter) {
+    function EstablishmentsController($rootScope, $scope, $http, $timeout, $uibModal, SweetAlert, UserProfile, $filter, $compile) {
         var vm = this;
 
         // Initialize variables
@@ -26,6 +26,34 @@
         // Set up translation filter
         vm.translateFilter = $filter('translate');
         vm.language = $rootScope.language.selected; // Assuming this holds current language ('en' or 'ar')
+        vm.isObjectEmpty = function (card) {
+            if (card) {
+                return Object.keys(card).length === 0;
+            }
+            else {
+                return true;
+            }
+        }
+
+        // Loader function from old code
+        function loader() {
+            var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
+                '<div class="sk-cube sk-cube1"></div>' +
+                '<div class="sk-cube sk-cube2"></div>' +
+                '<div class="sk-cube sk-cube3"></div>' +
+                '<div class="sk-cube sk-cube4"></div>' +
+                '<div class="sk-cube sk-cube5"></div>' +
+                '<div class="sk-cube sk-cube6"></div>' +
+                '<div class="sk-cube sk-cube7"></div>' +
+                '<div class="sk-cube sk-cube8"></div>' +
+                '<div class="sk-cube sk-cube9"></div>' +
+                '</div>';
+            angular.element('body').append($compile(htmlSectionLoader)($scope));
+        }
+
+        function removeLoader() {
+            angular.element('.sk-cube-grid').remove();
+        }
 
         // Fetch emirates and communities for translation
         $http.get($rootScope.app.httpSource + 'api/Emirate')
@@ -59,8 +87,10 @@
             return community ? (vm.language === 'ar' ? community.nameAr : community.nameEn) : '';
         };
 
-        // Load establishments for the table
+        // Load establishments for the table with loader implementation
         vm.loadTaskGroups = function () {
+            loader(); // Show loader
+
             var params = {
                 page: vm.pageIndex + 1,
                 pageSize: vm.selectedEntries,
@@ -72,8 +102,10 @@
                     vm.establishments = response.data.content;
                     var totalRecords = response.data.totalRecords || 0;
                     vm.totalPages = totalRecords > 0 ? Math.ceil(totalRecords / vm.selectedEntries) : 1;
+                    removeLoader(); // Remove loader
                 }, function (error) {
                     console.error('Error loading establishments', error);
+                    removeLoader(); // Remove loader in case of error
                 });
         };
 
