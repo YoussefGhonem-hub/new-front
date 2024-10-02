@@ -1,11 +1,178 @@
-<div class="app-view-header">{{'dashboard.home' | translate}}
-   <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
-</div>
 <div ng-controller="EmployeesController as users">
-    <div class="row">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" >
-            <table datatable="" class="row-border hover" dt-options="users.dtUsersOptions" dt-columns="users.dtUsersColumns"
-                   dt-instance="users.dtUsersInstance" width="100%"></table>
+    <div class="row mb-2">
+        <!-- Search Bar -->
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search" ng-model="users.searchText"
+                ng-change="users.loadEmployees()">
+        </div>
+        <div class="col-md-2">
+            <!-- Dropdown to select number of rows per page -->
+            <select class="form-control" ng-model="users.selectedEntries" ng-options="entry for entry in users.entries"
+                ng-change="users.loadEmployees()">
+            </select>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th ng-click="users.sortColumn('user.firstName')">
+                            First name
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'user.firstName' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'user.firstName' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('user.lastName')">
+                            Last name
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'user.lastName' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'user.lastName' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('user.isActive')">
+                            Is Active
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'user.isActive' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'user.isActive' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('person.emiratesId')">
+                            Emirates Id
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'person.emiratesId' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'person.emiratesId' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('person.country')">
+                            Nationality
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'person.country' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'person.country' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('user.lastLoginDate')">
+                            Last Login Date
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'user.lastLoginDate' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'user.lastLoginDate' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('group')">
+                            Role Group
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'group' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'group' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('user.email')">
+                            Email
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'user.email' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'user.email' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th ng-click="users.sortColumn('user.phoneNumber')">
+                            Phone Number
+                            <span class="sort-icons">
+                                <i class="fa fa-caret-up"
+                                    ng-class="{'active': users.sortBy === 'user.phoneNumber' && users.sortDirection === 'asc'}"></i>
+                                <i class="fa fa-caret-down"
+                                    ng-class="{'active': users.sortBy === 'user.phoneNumber' && users.sortDirection === 'desc'}"></i>
+                            </span>
+                        </th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+
+
+                <tbody>
+                    <tr ng-repeat="user in users.users">
+                        <td>{{ user.user.firstName }}</td>
+                        <td>{{ user.user.lastName }}</td>
+                        <td>{{ user.user.isActive ? 'Yes' : 'No' }}</td>
+                        <td>{{ user.person.emiratesId }}</td>
+                        <td>{{ user.person.country | localizeString }}</td>
+                        <td>{{ user.user.lastLoginDate | date:'dd-MMMM-yyyy' }}</td>
+                        <td>{{ user.group | localizeString }}</td>
+                        <td>{{ user.user.email }}</td>
+                        <td>{{ user.user.phoneNumber }}</td>
+                        <td class="action-icons">
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <em class="fa fa-ellipsis-v"></em>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" ng-click="visit.review(item.id)">
+                                        <em class="fa fa-eye"></em> {{'general.view' | translate}}
+                                    </a>
+                                    <a class="dropdown-item" ng-click="visit.edit(item.id)">
+                                        <em class="fa fa-pencil"></em> {{'general.edit' | translate}}
+                                    </a>
+                                    <a class="dropdown-item" ng-click="visit.delete(item.id)">
+                                        <em class="fa fa-trash"></em> {{'general.delete' | translate}}
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                        <!-- <td>
+                            <button class="btn btn-sm btn-primary" ng-click="users.edit(user.userId)">Edit</button>
+                            <button class="btn btn-sm btn-danger" ng-click="users.delete(user.userId)">Delete</button>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center custom-pagination">
+            <li class="page-item" ng-class="{disabled: users.pageIndex === 0}" ng-click="users.previousPage()">
+                <a class="page-link">&lsaquo;</a>
+            </li>
+
+            <li class="page-item" ng-if="users.pageIndex > 2" ng-click="users.goToPage(0)">
+                <a class="page-link">1</a>
+            </li>
+
+            <li class="page-item" ng-if="users.pageIndex > 2"><span class="page-link">...</span></li>
+
+            <li class="page-item" ng-repeat="page in users.getPageRange()" ng-class="{active: page === users.pageIndex}"
+                ng-click="users.goToPage(page)">
+                <a class="page-link">{{ page + 1 }}</a>
+            </li>
+
+            <li class="page-item" ng-if="users.pageIndex < users.totalPages - 3"><span class="page-link">...</span></li>
+
+            <li class="page-item" ng-if="users.pageIndex < users.totalPages - 3"
+                ng-click="users.goToPage(users.totalPages - 1)">
+                <a class="page-link">{{ users.totalPages }}</a>
+            </li>
+
+            <li class="page-item" ng-class="{disabled: users.pageIndex === users.totalPages - 1}"
+                ng-click="users.nextPage()">
+                <a class="page-link">&rsaquo;</a>
+            </li>
+        </ul>
+    </nav>
 </div>

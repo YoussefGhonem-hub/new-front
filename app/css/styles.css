@@ -12978,3 +12978,37 @@ html[lang="ar"] .menuList li.active a span::after {
     display: flex;
     align-items: center;
 }
+
+
+.sort-icons {
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: middle;
+}
+
+.fa-caret-up,
+.fa-caret-down {
+    font-size: 10px;
+    color: #ccc;
+    /* Default color for unsorted columns */
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.fa-caret-up.active,
+.fa-caret-down.active {
+    color: #000;
+    /* Color for active sort icon */
+}
+
+.fa-caret-up.active {
+    border-bottom: 2px solid #000;
+    /* Underline for up arrow */
+}
+
+th {
+    white-space: nowrap;
+    /* Prevent column titles from breaking */
+    padding-right: 10px;
+    position: relative;
+}

@@ -9,10 +9,12 @@
         <div class="profileImg">
             <div chained-animation="fadeInUp thumbnail">
                 <a ng-href="{{profile.userProfile.person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
-                    <img ng-src="{{profile.userProfile.person.photoUrlFullPath}}" alt="thumb" style="max-height:230px;" />
+                    <img ng-src="{{profile.userProfile.person.photoUrlFullPath}}" alt="thumb"
+                        style="max-height:230px;" />
                 </a>
             </div>
-            <button class="btn btn- btn-info btn-file center" ng-click="openCrop()">{{'profile.changeImage' | translate}}</button>
+            <button class="btn btn- btn-info btn-file center" ng-click="openCrop()">{{'profile.changeImage' |
+                translate}}</button>
         </div>
 
         <div class="userDeatils">
@@ -20,8 +22,8 @@
             <span><i class="fa fa-flag"></i>Emirati</span>
             <span><i class="fa fa-card"></i>7585155854</span>
         </div>
-        
-        
+
+
     </div>
 </div>
 
@@ -39,7 +41,8 @@
                             <div class="panel-body">
                                 <uib-tabset>
                                     <uib-tab heading="{{'profile.title' | translate}}">
-                                        <h2 class="text-orange">{{'profile.mediaFile' | translate}}: {{profile.userProfile.mediaFileNumber}}</h2>
+                                        <h2 class="text-orange">{{'profile.mediaFile' | translate}}:
+                                            {{profile.userProfile.mediaFileNumber}}</h2>
                                         <br />
                                         <div class="box-placeholder b0 bg-gray-lighter">
                                             <h3>{{'profileNationalityDirective.personalDetails' | translate}}</h3>
@@ -49,30 +52,44 @@
                                                     <div>
                                                         <div>
                                                             <div chained-animation="fadeInUp thumbnail">
-                                                                <a ng-href="{{profile.userProfile.person.photoUrlFullPath}}" data-gallery="" title="Unsplash images">
-                                                                    <img ng-src="{{profile.userProfile.person.photoUrlFullPath}}" alt="thumb" style="max-height:230px;" />
+                                                                <a ng-href="{{profile.userProfile.person.photoUrlFullPath}}"
+                                                                    data-gallery="" title="Unsplash images">
+                                                                    <img ng-src="{{profile.userProfile.person.photoUrlFullPath}}"
+                                                                        alt="thumb" style="max-height:230px;" />
                                                                 </a>
                                                             </div>
-                                                            <button class="btn btn- btn-info btn-file center" ng-click="openCrop()">{{'profile.changeImage' | translate}}</button>
+                                                            <button class="btn btn- btn-info btn-file center"
+                                                                ng-click="openCrop()">{{'profile.changeImage' |
+                                                                translate}}</button>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'register.firstName' | translate}}</label>
+                                                            <label class="col-sm-4 control-label">{{'register.firstName'
+                                                                | translate}}</label>
                                                             <span class="col-sm-8 form-control-static">
-                                                                <span onaftersave="profile.updateUserProfileInfo()" theme="bootstrap" editable-text="profile.userProfile.user.firstName"
-                                                                      name="firstName" e-ng-model="profile.userProfile.user.firstName" e-style="min-width:100%;">
+                                                                <span onaftersave="profile.updateUserProfileInfo()"
+                                                                    theme="bootstrap"
+                                                                    editable-text="profile.userProfile.user.firstName"
+                                                                    name="firstName"
+                                                                    e-ng-model="profile.userProfile.user.firstName"
+                                                                    e-style="min-width:100%;">
                                                                     {{profile.userProfile.user.firstName}}
                                                                 </span>
                                                             </span>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'register.lastName' | translate}}</label>
+                                                            <label class="col-sm-4 control-label">{{'register.lastName'
+                                                                | translate}}</label>
                                                             <span class="col-sm-8 form-control-static">
-                                                                <span onaftersave="profile.updateUserProfileInfo()" theme="bootstrap" editable-text="profile.userProfile.user.lastName"
-                                                                      name="firstName" e-ng-model="profile.userProfile.user.lastName" e-style="min-width:100%;">
+                                                                <span onaftersave="profile.updateUserProfileInfo()"
+                                                                    theme="bootstrap"
+                                                                    editable-text="profile.userProfile.user.lastName"
+                                                                    name="firstName"
+                                                                    e-ng-model="profile.userProfile.user.lastName"
+                                                                    e-style="min-width:100%;">
                                                                     {{profile.userProfile.user.lastName}}
                                                                 </span>
                                                             </span>
@@ -80,52 +97,88 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
-                                                            <span class="col-sm-8 form-control-static">{{(profile.userProfile.person.dateOfBirth| date:"dd-MMMM-yyyy") || 'empty'}}</span>
+                                                            <label
+                                                                class="col-sm-4 control-label">{{'profileNationalityDirective.DateOfBirth'
+                                                                | translate}}</label>
+                                                            <span
+                                                                class="col-sm-8 form-control-static">{{(profile.userProfile.person.dateOfBirth|
+                                                                date:"dd-MMMM-yyyy") || 'empty'}}</span>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
-                                                            <span class="col-sm-8 form-control-static">{{profile.userProfile.person.gender| localizeString }}</span>
+                                                            <label
+                                                                class="col-sm-4 control-label">{{'profileNationalityDirective.Gender'
+                                                                | translate}}</label>
+                                                            <span
+                                                                class="col-sm-8 form-control-static">{{profile.userProfile.person.gender|
+                                                                localizeString }}</span>
                                                         </div>
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'newspaperMagazineLicense.email' | translate}}</label>
+                                                            <label
+                                                                class="col-sm-4 control-label">{{'newspaperMagazineLicense.email'
+                                                                | translate}}</label>
                                                             <span class="col-sm-3 form-control-static">
                                                                 {{profile.userProfile.user.email}}
                                                             </span>
                                                             <span>
-                                                                <i class="fa fa-check-circle-o fa-2x text-info col-md-offset-1" uib-tooltip="{{profile.emailConfirmedTooltip}}" aria-hidden="true" ng-if="profile.user.emailConfirmed"></i>
-                                                                <i class="fa fa-ban text-danger fa-2x col-md-offset-1" uib-tooltip="{{profile.emailNotConfirmedTooltip}}" ng-if="!profile.user.emailConfirmed"></i>
+                                                                <i class="fa fa-check-circle-o fa-2x text-info col-md-offset-1"
+                                                                    uib-tooltip="{{profile.emailConfirmedTooltip}}"
+                                                                    aria-hidden="true"
+                                                                    ng-if="profile.user.emailConfirmed"></i>
+                                                                <i class="fa fa-ban text-danger fa-2x col-md-offset-1"
+                                                                    uib-tooltip="{{profile.emailNotConfirmedTooltip}}"
+                                                                    ng-if="!profile.user.emailConfirmed"></i>
                                                             </span>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'newspaperMagazineLicense.mobileNumber' | translate}}</label>
+                                                            <label
+                                                                class="col-sm-4 control-label">{{'newspaperMagazineLicense.mobileNumber'
+                                                                | translate}}</label>
                                                             <span class="col-sm-6 form-control-static">
-                                                                <a onaftersave="profile.updateUserProfileInfo()" editable-text="profile.userProfile.user.phoneNumber" style="direction:ltr;">
-                                                                    <span style="unicode-bidi:embed;">{{profile.userProfile.user.phoneNumber}}</span>
+                                                                <a onaftersave="profile.updateUserProfileInfo()"
+                                                                    editable-text="profile.userProfile.user.phoneNumber"
+                                                                    style="direction:ltr;">
+                                                                    <span
+                                                                        style="unicode-bidi:embed;">{{profile.userProfile.user.phoneNumber}}</span>
                                                                 </a>
                                                             </span>
                                                             <span>
-                                                                <i uib-tooltip="{{profile.phoneConfirmedTooltip}}" class="fa fa-check-circle-o fa-2x text-info col-md-offset-1" aria-hidden="true" ng-if="profile.user.phoneNumberConfirmed"></i>
-                                                                <i class="fa fa-ban fa-2x text-danger col-md-offset-1" uib-tooltip="{{profile.phoneNotConfirmedTooltip}}" ng-if="!profile.user.phoneNumberConfirmed">></i>
+                                                                <i uib-tooltip="{{profile.phoneConfirmedTooltip}}"
+                                                                    class="fa fa-check-circle-o fa-2x text-info col-md-offset-1"
+                                                                    aria-hidden="true"
+                                                                    ng-if="profile.user.phoneNumberConfirmed"></i>
+                                                                <i class="fa fa-ban fa-2x text-danger col-md-offset-1"
+                                                                    uib-tooltip="{{profile.phoneNotConfirmedTooltip}}"
+                                                                    ng-if="!profile.user.phoneNumberConfirmed">></i>
                                                             </span>
                                                         </div>
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'completeProfile.userType' | translate}}</label>
-                                                            <span class="col-sm-8 form-control-static">{{profile.userProfile.userType | localizeString}}</span>
+                                                            <label
+                                                                class="col-sm-4 control-label">{{'completeProfile.userType'
+                                                                | translate}}</label>
+                                                            <span
+                                                                class="col-sm-8 form-control-static">{{profile.userProfile.userType
+                                                                | localizeString}}</span>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'users.lastLoginDate' | translate}}</label>
-                                                            <span class="col-sm-8 form-control-static">{{profile.userProfile.user.lastLoginDate | amCalendar:referenceTime:formats}}</span>
+                                                            <label
+                                                                class="col-sm-4 control-label">{{'users.lastLoginDate' |
+                                                                translate}}</label>
+                                                            <span
+                                                                class="col-sm-8 form-control-static">{{profile.userProfile.user.lastLoginDate
+                                                                | amCalendar:referenceTime:formats}}</span>
                                                         </div>
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
-                                                            <span class="col-sm-8 form-control-static">{{profile.userProfile.person.title}}</span>
+                                                            <label
+                                                                class="col-sm-4 control-label">{{'profileNationalityDirective.Occupation'
+                                                                | translate}}</label>
+                                                            <span
+                                                                class="col-sm-8 form-control-static">{{profile.userProfile.person.title}}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -136,19 +189,31 @@
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'address.Emirate' | translate}}</label>
-                                                            <span class="col-sm-8 form-control-static">{{profile.userProfile.address.emirate | localizeString}}</span>
+                                                            <label class="col-sm-4 control-label">{{'address.Emirate' |
+                                                                translate}}</label>
+                                                            <span
+                                                                class="col-sm-8 form-control-static">{{profile.userProfile.address.emirate
+                                                                | localizeString}}</span>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'address.Community' | translate}}</label>
+                                                            <label class="col-sm-4 control-label">{{'address.Community'
+                                                                | translate}}</label>
                                                             <div class="col-sm-8 form-control-static">
-                                                                <span onaftersave="profile.updateUserProfile()" theme="bootstrap" editable-ui-select="profile.userProfile.address.community"
-                                                                      name="community" e-ng-model="profile.userProfile.address.community" e-style="min-width:100%;">
-                                                                    {{profile.userProfile.address.community| localizeString}}
-                                                                    <editable-ui-select-match placeholder="{{'address.Community' | translate}}" class="xeditfullWidth">
+                                                                <span onaftersave="profile.updateUserProfile()"
+                                                                    theme="bootstrap"
+                                                                    editable-ui-select="profile.userProfile.address.community"
+                                                                    name="community"
+                                                                    e-ng-model="profile.userProfile.address.community"
+                                                                    e-style="min-width:100%;">
+                                                                    {{profile.userProfile.address.community|
+                                                                    localizeString}}
+                                                                    <editable-ui-select-match
+                                                                        placeholder="{{'address.Community' | translate}}"
+                                                                        class="xeditfullWidth">
                                                                         {{$select.selected| localizeString}}
                                                                     </editable-ui-select-match>
-                                                                    <editable-ui-select-choices class="xeditfullWidth" repeat="community in profile.profileCommunities | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
+                                                                    <editable-ui-select-choices class="xeditfullWidth"
+                                                                        repeat="community in profile.profileCommunities | propsFilter: {nameAr: $select.search, nameEn: $select.search,}">
                                                                         {{community| localizeString}}
                                                                     </editable-ui-select-choices>
                                                                 </span>
@@ -157,9 +222,11 @@
                                                     </div>
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'address.Street' | translate}}</label>
+                                                            <label class="col-sm-4 control-label">{{'address.Street' |
+                                                                translate}}</label>
                                                             <span class="col-sm-8 form-control-static">
-                                                                <a href="#" onaftersave="profile.updateUserProfile()" editable-textarea="profile.userProfile.address.street">
+                                                                <a href="#" onaftersave="profile.updateUserProfile()"
+                                                                    editable-textarea="profile.userProfile.address.street">
                                                                     {{ profile.userProfile.address.street }}
                                                                 </a>
                                                             </span>
@@ -167,21 +234,29 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <h3  ng-if="profile.user.smartpassPersonId == null">{{'profile.loginSettings' | translate}}</h3>
-                                            <hr  ng-if="profile.user.smartpassPersonId == null" />
-                                            <div ng-if="profile.user.smartpassPersonId == null" class="row form-horizontal">
+                                            <h3 ng-if="profile.user.smartpassPersonId == null">{{'profile.loginSettings'
+                                                | translate}}</h3>
+                                            <hr ng-if="profile.user.smartpassPersonId == null" />
+                                            <div ng-if="profile.user.smartpassPersonId == null"
+                                                class="row form-horizontal">
                                                 <div class="col-md-9 col-xs-12">
                                                     <div class="row form-group">
                                                         <div class="col-md-6">
                                                             <div class="col-sm-4 control-label">
-                                                                <button class="btn btn- btn-warning btn-file center" ng-click="profile.changePassword()">{{'profile.changePassword' | translate}}</button>
+                                                                <button class="btn btn- btn-warning btn-file center"
+                                                                    ng-click="profile.changePassword()">{{'profile.changePassword'
+                                                                    | translate}}</button>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-6">
-                                                            <label class="col-sm-4 control-label">{{'profile.2FATrigger' | translate}}</label>
+                                                            <label class="col-sm-4 control-label">{{'profile.2FATrigger'
+                                                                | translate}}</label>
                                                             <div class="col-sm-8 form-control-static">
                                                                 <label class="switch switch-lg">
-                                                                    <input type="checkbox" ng-model="profile.user.requireOTP" placeholder="OTP" ng-change="profile.change2FA(profile.user.requireOTP)">
+                                                                    <input type="checkbox"
+                                                                        ng-model="profile.user.requireOTP"
+                                                                        placeholder="OTP"
+                                                                        ng-change="profile.change2FA(profile.user.requireOTP)">
                                                                     <span></span>
                                                                 </label>
                                                             </div>
@@ -194,9 +269,11 @@
                                     <uib-tab heading="{{'profile.establishment' | translate}}" ng-if="profile.userProfile.userType.id == 2 || profile.userProfile.userType.id == 5 ||
                                              profile.userProfile.userType.id == 20 || profile.userProfile.userType.id == 22 || profile.userProfile.userType.id == 23 ||
                                              profile.userProfile.userType.id == 24">
-                                        <establishment-partners user-profile="profile.userProfile"></establishment-partners>
+                                        <establishment-partners
+                                            user-profile="profile.userProfile"></establishment-partners>
                                     </uib-tab>
-                                    <uib-tab heading="{{'profile.roles' | translate}}" ng-if="profile.showCurrentUserRole">
+                                    <uib-tab heading="{{'profile.roles' | translate}}"
+                                        ng-if="profile.showCurrentUserRole">
                                         <div class="row form-group">
                                             <div class="col-md-8">
                                                 <h2>{{'profile.userRoles' | translate}}</h2>
@@ -204,11 +281,13 @@
                                         </div>
                                         <div class="row form-group" ng-if="profile.departments[0].roles.length > 0">
                                             <div class="col-md-8">
-                                                <div class="box-placeholder b0 bg-success bg-dark" dnd-list="profile.departments[0].roles">
+                                                <div class="box-placeholder b0 bg-success bg-dark"
+                                                    dnd-list="profile.departments[0].roles">
                                                     <h4>{{profile.departments[0] | localizeString}}</h4>
                                                     <ul class="nav">
                                                         <li ng-repeat="role in profile.departments[0].roles">
-                                                            <div class="dd3-content" style="color:black">{{role.fullName.split('$')[1]}}</div>
+                                                            <div class="dd3-content" style="color:black">
+                                                                {{role.fullName.split('$')[1]}}</div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -216,11 +295,13 @@
                                         </div>
                                         <div class="row form-group" ng-if="profile.departments[1].roles.length>0">
                                             <div class="col-md-8">
-                                                <div class="box-placeholder b0 bg-amber bg-dark" dnd-list="profile.departments[1].roles">
+                                                <div class="box-placeholder b0 bg-amber bg-dark"
+                                                    dnd-list="profile.departments[1].roles">
                                                     <h4>{{profile.departments[1] | localizeString}}</h4>
                                                     <ul class="nav">
                                                         <li ng-repeat="role in profile.departments[1].roles">
-                                                            <div class="dd3-content" style="color:black">{{role.fullName.split('$')[1]}}</div>
+                                                            <div class="dd3-content" style="color:black">
+                                                                {{role.fullName.split('$')[1]}}</div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -228,11 +309,13 @@
                                         </div>
                                         <div class="row form-group" ng-if="profile.departments[2].roles.length>0">
                                             <div class="col-md-8">
-                                                <div class="box-placeholder b0 bg-amber bg-dark" dnd-list="profile.departments[2].roles">
+                                                <div class="box-placeholder b0 bg-amber bg-dark"
+                                                    dnd-list="profile.departments[2].roles">
                                                     <h4>{{profile.departments[2] | localizeString}}</h4>
                                                     <ul class="nav">
                                                         <li ng-repeat="role in profile.departments[2].roles">
-                                                            <div class="dd3-content" style="color:black">{{role.fullName.split('$')[1]}}</div>
+                                                            <div class="dd3-content" style="color:black">
+                                                                {{role.fullName.split('$')[1]}}</div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -240,11 +323,13 @@
                                         </div>
                                         <div class="row form-group" ng-if="profile.departments[3].roles.length>0">
                                             <div class="col-md-8">
-                                                <div class="box-placeholder b0 bg-amber bg-dark" dnd-list="profile.departments[3].roles">
+                                                <div class="box-placeholder b0 bg-amber bg-dark"
+                                                    dnd-list="profile.departments[3].roles">
                                                     <h4>{{profile.departments[3] | localizeString}}</h4>
                                                     <ul class="nav">
                                                         <li ng-repeat="role in profile.departments[3].roles">
-                                                            <div class="dd3-content" style="color:black">{{role.fullName.split('$')[1]}}</div>
+                                                            <div class="dd3-content" style="color:black">
+                                                                {{role.fullName.split('$')[1]}}</div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -252,11 +337,13 @@
                                         </div>
                                         <div class="row form-group" ng-if="profile.departments[4].roles.length>0">
                                             <div class="col-md-8">
-                                                <div class="box-placeholder b0 bg-amber bg-dark" dnd-list="profile.departments[4].roles">
+                                                <div class="box-placeholder b0 bg-amber bg-dark"
+                                                    dnd-list="profile.departments[4].roles">
                                                     <h4>{{profile.departments[4] | localizeString}}</h4>
                                                     <ul class="nav">
                                                         <li ng-repeat="role in profile.departments[4].roles">
-                                                            <div class="dd3-content" style="color:black">{{role.fullName.split('$')[1]}}</div>
+                                                            <div class="dd3-content" style="color:black">
+                                                                {{role.fullName.split('$')[1]}}</div>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -264,51 +351,65 @@
                                         </div>
                                         <div class="row form-group" ng-if="profile.departments[5].roles.length>0">
                                             <div class="col-md-8">
-                                                <div class="box-placeholder b0 bg-amber bg-dark" dnd-list="profile.departments[5].roles">
+                                                <div class="box-placeholder b0 bg-amber bg-dark"
+                                                    dnd-list="profile.departments[5].roles">
                                                     <h4>{{profile.departments[5] | localizeString}}</h4>
                                                     <ul class="nav">
                                                         <li ng-repeat="role in profile.departments[5].roles">
-                                                            <div class="dd3-content" style="color:black">{{role.fullName.split('$')[1]}}</div>
+                                                            <div class="dd3-content" style="color:black">
+                                                                {{role.fullName.split('$')[1]}}</div>
                                                         </li>
                                                     </ul>
                                                 </div>
                                             </div>
                                         </div>
                                     </uib-tab>
-                                    <uib-tab heading="{{'profile.filters' | translate}}" ng-if="profile.userProfile.userType.code == '06'">
+                                    <uib-tab heading="{{'profile.filters' | translate}}"
+                                        ng-if="profile.userProfile.userType.code == '06'">
                                         <div class="row">
                                             <div class="col-md-12" ng-if="profile.dtFilterOptions">
-                                                <table datatable="" class="row-border hover" dt-options="profile.dtFilterOptions" dt-columns="profile.dtFilterColumns"
-                                                       dt-instance="profile.dtFilterInstance" style="width:100%;"></table>
+                                                <table datatable="" class="row-border hover"
+                                                    dt-options="profile.dtFilterOptions"
+                                                    dt-columns="profile.dtFilterColumns"
+                                                    dt-instance="profile.dtFilterInstance" style="width:100%;"></table>
                                             </div>
                                         </div>
                                     </uib-tab>
-                                    <uib-tab heading="{{'profile.roles' | translate}}" ng-if="profile.groups && profile.userProfile && profile.userProfile.userType.code=='06'">
+                                    <uib-tab heading="{{'profile.roles' | translate}}"
+                                        ng-if="profile.groups && profile.userProfile && profile.userProfile.userType.code=='06'">
                                         <br />
                                         <br />
                                         <div class="row">
                                             <div class="col-md-10">
                                                 <span>
-                                                    {{'profile.assign' | translate}} <a ng-click="profile.showAdvance()" style="cursor:pointer">
-                                                        <strong data-translate="profile.click">{{'profile.click' | translate}} </strong>
+                                                    {{'profile.assign' | translate}} <a ng-click="profile.showAdvance()"
+                                                        style="cursor:pointer">
+                                                        <strong data-translate="profile.click">{{'profile.click' |
+                                                            translate}} </strong>
                                                     </a> {{'profile.foradvancedfeature' | translate}}
                                                 </span>
                                             </div>
                                             <div class="col-md-2">
-                                                <button class="btn btn-warning" ng-click="profile.generateUserRoleReport()">{{'profile.rolesReport' | translate}}</button>
+                                                <button class="btn btn-warning"
+                                                    ng-click="profile.generateUserRoleReport()">{{'profile.rolesReport'
+                                                    | translate}}</button>
                                             </div>
                                         </div>
                                         <br />
                                         <br />
                                         <div class="row form-group">
-                                            <label class="col-sm-3 control-label">{{'profile.employeeGroup' | translate}}</label>
+                                            <label class="col-sm-3 control-label">{{'profile.employeeGroup' |
+                                                translate}}</label>
                                             <div class="col-sm-9">
                                                 <div class="radio c-radio" ng-repeat="group in profile.groups">
                                                     <label>
-                                                        <input type="radio" name="aaa" ng-value="group" ng-model="profile.userProfile.group" ng-disabled="profile.showAdvanceFeature"
-                                                               ng-checked="group.id == profile.userProfile.group.id" />
+                                                        <input type="radio" name="aaa" ng-value="group"
+                                                            ng-model="profile.userProfile.group"
+                                                            ng-disabled="profile.showAdvanceFeature"
+                                                            ng-checked="group.id == profile.userProfile.group.id" />
                                                         <span class="fa fa-circle"></span>{{group | localizeString}}
-                                                        <div class="help-block m-b-none">{{group | localizeDescString}}</div>
+                                                        <div class="help-block m-b-none">{{group | localizeDescString}}
+                                                        </div>
                                                     </label>
                                                 </div>
                                             </div>
@@ -326,30 +427,43 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-success bg-dark" dnd-list="profile.userDepartments[0].roles" dnd-allowed-types="profile.userDepartments[0].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-success bg-dark"
+                                                            dnd-list="profile.userDepartments[0].roles"
+                                                            dnd-allowed-types="profile.userDepartments[0].allowedTypes">
                                                             <h4>{{profile.userDepartments[0] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[0].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[0].roles.splice($index, 1)">
+                                                                <li ng-repeat="role in profile.userDepartments[0].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[0].roles.splice($index, 1)">
                                                                     <div class="dd-handle dd3-handle">Drag</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaLicenseRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaLicenseRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-success bg-light" dnd-list="profile.departments[0].roles" dnd-allowed-types="profile.departments[0].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-success bg-light"
+                                                            dnd-list="profile.departments[0].roles"
+                                                            dnd-allowed-types="profile.departments[0].allowedTypes">
                                                             <h4>{{profile.departments[0] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[0].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[0].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[0].roles.splice($index, 1)">
                                                                     <div class="dd-handle dd3-handle">Drag</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -360,30 +474,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-amber bg-dark" dnd-list="profile.userDepartments[1].roles" dnd-allowed-types="profile.userDepartments[1].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-amber bg-dark"
+                                                            dnd-list="profile.userDepartments[1].roles"
+                                                            dnd-allowed-types="profile.userDepartments[1].allowedTypes">
                                                             <h4>{{profile.userDepartments[1] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[1].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[1].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[1].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[1].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-amber bg-light" dnd-list="profile.departments[1].roles" dnd-allowed-types="profile.departments[1].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-amber bg-light"
+                                                            dnd-list="profile.departments[1].roles"
+                                                            dnd-allowed-types="profile.departments[1].allowedTypes">
                                                             <h4>{{profile.departments[1] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[1].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[1].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[1].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -393,30 +522,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-purple bg-dark" dnd-list="profile.userDepartments[2].roles" dnd-allowed-types="profile.userDepartments[2].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-purple bg-dark"
+                                                            dnd-list="profile.userDepartments[2].roles"
+                                                            dnd-allowed-types="profile.userDepartments[2].allowedTypes">
                                                             <h4>{{profile.userDepartments[2] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[2].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[2].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[2].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[2].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.foreignMediaRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.foreignMediaRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-purple bg-light" dnd-list="profile.departments[2].roles" dnd-allowed-types="profile.departments[2].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-purple bg-light"
+                                                            dnd-list="profile.departments[2].roles"
+                                                            dnd-allowed-types="profile.departments[2].allowedTypes">
                                                             <h4>{{profile.departments[2] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[2].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[2].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[2].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -426,30 +570,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-orange bg-dark" dnd-list="profile.userDepartments[3].roles" dnd-allowed-types="profile.userDepartments[3].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-orange bg-dark"
+                                                            dnd-list="profile.userDepartments[3].roles"
+                                                            dnd-allowed-types="profile.userDepartments[3].allowedTypes">
                                                             <h4>{{profile.userDepartments[3] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[3].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[3].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[3].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[3].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-orange bg-light" dnd-list="profile.departments[3].roles" dnd-allowed-types="profile.departments[3].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-orange bg-light"
+                                                            dnd-list="profile.departments[3].roles"
+                                                            dnd-allowed-types="profile.departments[3].allowedTypes">
                                                             <h4>{{profile.departments[3] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[3].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[3].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[3].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -459,30 +618,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-gray bg-dark" dnd-list="profile.userDepartments[4].roles" dnd-allowed-types="profile.userDepartments[4].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-gray bg-dark"
+                                                            dnd-list="profile.userDepartments[4].roles"
+                                                            dnd-allowed-types="profile.userDepartments[4].allowedTypes">
                                                             <h4>{{profile.userDepartments[4] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[4].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[4].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[4].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[4].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-gray bg-light" dnd-list="profile.departments[4].roles" dnd-allowed-types="profile.departments[4].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-gray bg-light"
+                                                            dnd-list="profile.departments[4].roles"
+                                                            dnd-allowed-types="profile.departments[4].allowedTypes">
                                                             <h4>{{profile.departments[4] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[4].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[4].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[4].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -492,30 +666,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-lime bg-dark" dnd-list="profile.userDepartments[5].roles" dnd-allowed-types="profile.userDepartments[5].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-lime bg-dark"
+                                                            dnd-list="profile.userDepartments[5].roles"
+                                                            dnd-allowed-types="profile.userDepartments[5].allowedTypes">
                                                             <h4>{{profile.userDepartments[5] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[5].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[5].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[5].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[5].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-lime bg-light" dnd-list="profile.departments[5].roles" dnd-allowed-types="profile.departments[5].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-lime bg-light"
+                                                            dnd-list="profile.departments[5].roles"
+                                                            dnd-allowed-types="profile.departments[5].allowedTypes">
                                                             <h4>{{profile.departments[5] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[5].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[5].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[5].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -525,30 +714,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-danger bg-dark" dnd-list="profile.userDepartments[8].roles" dnd-allowed-types="profile.userDepartments[8].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-danger bg-dark"
+                                                            dnd-list="profile.userDepartments[8].roles"
+                                                            dnd-allowed-types="profile.userDepartments[8].allowedTypes">
                                                             <h4>{{profile.userDepartments[8] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[8].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[8].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[8].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[8].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-danger bg-light" dnd-list="profile.departments[8].roles" dnd-allowed-types="profile.departments[8].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-danger bg-light"
+                                                            dnd-list="profile.departments[8].roles"
+                                                            dnd-allowed-types="profile.departments[8].allowedTypes">
                                                             <h4>{{profile.departments[8] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[8].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[8].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[8].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -558,30 +762,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-inverse bg-dark" dnd-list="profile.userDepartments[6].roles" dnd-allowed-types="profile.userDepartments[6].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-inverse bg-dark"
+                                                            dnd-list="profile.userDepartments[6].roles"
+                                                            dnd-allowed-types="profile.userDepartments[6].allowedTypes">
                                                             <h4>{{profile.userDepartments[6] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[6].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[6].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[6].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[6].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-gray-dark bg-light" dnd-list="profile.departments[6].roles" dnd-allowed-types="profile.departments[6].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-gray-dark bg-light"
+                                                            dnd-list="profile.departments[6].roles"
+                                                            dnd-allowed-types="profile.departments[6].allowedTypes">
                                                             <h4>{{profile.departments[6] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[6].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[6].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[6].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -591,30 +810,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-pink bg-dark" dnd-list="profile.userDepartments[7].roles" dnd-allowed-types="profile.userDepartments[7].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-pink bg-dark"
+                                                            dnd-list="profile.userDepartments[7].roles"
+                                                            dnd-allowed-types="profile.userDepartments[7].allowedTypes">
                                                             <h4>{{profile.userDepartments[7] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[7].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[7].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[7].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[7].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-pink bg-light" dnd-list="profile.departments[7].roles" dnd-allowed-types="profile.departments[7].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-pink bg-light"
+                                                            dnd-list="profile.departments[7].roles"
+                                                            dnd-allowed-types="profile.departments[7].allowedTypes">
                                                             <h4>{{profile.departments[7] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[7].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[7].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[7].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -624,30 +858,45 @@
                                                 <hr />
                                                 <div class="row">
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-pink bg-dark" dnd-list="profile.userDepartments[9].roles" dnd-allowed-types="profile.userDepartments[9].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-pink bg-dark"
+                                                            dnd-list="profile.userDepartments[9].roles"
+                                                            dnd-allowed-types="profile.userDepartments[9].allowedTypes">
                                                             <h4>{{profile.userDepartments[9] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li ng-repeat="role in profile.userDepartments[9].roles" dnd-disable-if="role.type == 'unknown'"
-                                                                    dnd-draggable="role" dnd-type="role.type" dnd-moved="profile.userDepartments[9].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
-                                                                    <div class="dd3-content" style="color:black">{{role | localizeString}}</div>
+                                                                <li ng-repeat="role in profile.userDepartments[9].roles"
+                                                                    dnd-disable-if="role.type == 'unknown'"
+                                                                    dnd-draggable="role" dnd-type="role.type"
+                                                                    dnd-moved="profile.userDepartments[9].roles.splice($index, 1)">
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
+                                                                    <div class="dd3-content" style="color:black">{{role
+                                                                        | localizeString}}</div>
                                                                 </li>
                                                                 <li class="dndPlaceholder">
-                                                                    {{'profile.dropany' | translate}} <strong>{{'profile.mediaContentRole' | translate}}</strong> {{'profile.here' | translate}}
+                                                                    {{'profile.dropany' | translate}}
+                                                                    <strong>{{'profile.mediaContentRole' |
+                                                                        translate}}</strong> {{'profile.here' |
+                                                                    translate}}
                                                                 </li>
                                                             </ul>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-6">
-                                                        <div class="box-placeholder b0 bg-pink bg-light" dnd-list="profile.departments[9].roles" dnd-allowed-types="profile.departments[9].allowedTypes">
+                                                        <div class="box-placeholder b0 bg-pink bg-light"
+                                                            dnd-list="profile.departments[9].roles"
+                                                            dnd-allowed-types="profile.departments[9].allowedTypes">
                                                             <h4>{{profile.departments[9] | localizeString}}</h4>
                                                             <ul class="nav">
-                                                                <li class="dd-item dd3-item" ng-repeat="role in profile.departments[9].roles" dnd-draggable="role" dnd-type="role.type"
+                                                                <li class="dd-item dd3-item"
+                                                                    ng-repeat="role in profile.departments[9].roles"
+                                                                    dnd-draggable="role" dnd-type="role.type"
                                                                     dnd-moved="profile.departments[9].roles.splice($index, 1)">
-                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' | translate}}</div>
+                                                                    <div class="dd-handle dd3-handle">{{'profile.drag' |
+                                                                        translate}}</div>
                                                                     <div class="dd3-content" style="color:black">
                                                                         {{role | localizeString}}<br />
-                                                                        <small class="text-muted">{{role.description}}</small>
+                                                                        <small
+                                                                            class="text-muted">{{role.description}}</small>
                                                                     </div>
                                                                 </li>
                                                             </ul>
@@ -659,8 +908,12 @@
                                         <hr />
                                         <div class="row">
                                             <div class="col-md-offset-9 col-md-3">
-                                                <button type="submit" class="btn btn-primary" ng-click="profile.updateRoles()" ng-disabled="profile.isBusy">{{'general.save' | translate}}</button>
-                                                <button type="button" class="btn btn-warning" ng-disabled="profile.isBusy">{{'general.cancel' | translate}}</button>
+                                                <button type="submit" class="btn btn-primary"
+                                                    ng-click="profile.updateRoles()"
+                                                    ng-disabled="profile.isBusy">{{'general.save' | translate}}</button>
+                                                <button type="button" class="btn btn-warning"
+                                                    ng-disabled="profile.isBusy">{{'general.cancel' |
+                                                    translate}}</button>
                                             </div>
                                         </div>
                                     </uib-tab>
@@ -676,7 +929,8 @@
         <!-- The Gallery as lightbox dialog, should be a child element of the document body-->
         <div id="blueimp-gallery" class="blueimp-gallery">
             <div class="slides">
-                <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a class="close">&times;</a>
+                <h3 class="title"></h3><a class="prev">&lsaquo;</a><a class="next">&rsaquo;</a><a
+                    class="close">&times;</a>
                 <a class="play-pause"></a>
                 <ol class="indicator"></ol>
             </div>
