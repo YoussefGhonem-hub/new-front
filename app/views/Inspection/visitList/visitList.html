@@ -1,5 +1,154 @@
-﻿
-<div class="app-view-header">
+﻿<div ng-controller="visitListController as visit">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <p class="breadcrumb-text">
+            {{'dashboard.home' | translate}}
+            <em class="fa fa-chevron-right"></em>
+            {{app | localizeString}}
+            <em class="fa fa-chevron-right"></em>
+            {{app.description | localizeString}}
+        </p>
+    </div>
+
+    <!-- Header and Buttons -->
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="app-view-header" style="font-weight: bold; font-size: 22px;">
+                <span class="back-arrow">
+                    <em class="fa fa-chevron-left"></em>
+                </span>
+                {{'visit.visitList' | translate}}
+            </h2>
+        </div>
+        <div class="col-md-8 text-right formSubmit">
+            <button type="button" class="btn btn-warning" ng-click="visit.unscheduledvisit()">
+                &nbsp;&nbsp;<em class="fa fa-camera" aria-hidden="true"></em>
+            </button>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="row d-flex align-items-center" style="margin-bottom: 5px;">
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search" ng-model="visit.searchText"
+                ng-change="visit.filterData()">
+        </div>
+        <div class="col-md-2">
+            <div ng-if="!visit.isObjectEmpty(visit.filterParams)">
+                <span class="col-md-1 ">
+                    <a ng-click="visit.exportExcel()" uib-tooltip="Excel">
+                        <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="visit.exportCSV()" uib-tooltip="CSV">
+                        <em class="fa fa-file-text-o fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+                <span class="col-md-1">
+                    <a ng-click="visit.exportPDF()" uib-tooltip="PDF">
+                        <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
+                    </a>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <!-- Dropdown for entries per page -->
+            <select class="form-control" ng-model="visit.selectedEntries" ng-options="entry for entry in visit.entries"
+                ng-change="visit.loadVisits()">
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" btn-layer-morph="visit.click()" btn-layer="visit.filter"
+                target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
+                    aria-hidden="true"></em>
+            </button>
+        </div>
+    </div>
+
+    <!-- Table Section -->
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered">
+                <thead class="thead-light">
+                    <tr>
+                        <th>{{'inspection.visitNumber' | translate}}</th>
+                        <th>{{'establishment.LicenseNumber' | translate}}</th>
+                        <th>{{'address.Emirate' | translate}}</th>
+                        <th>{{'address.Community' | translate}}</th>
+                        <th>{{'completeProfile.establishmentName' | translate}}</th>
+                        <th>{{'general.actions' | translate}}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in visit.visits">
+                        <td>{{item.visitNumber}}</td>
+                        <td>{{item.establishment.licenseNumber}}</td>
+                        <td>{{visit.getTranslatedEmirate(item.establishment.address.community.region.id)}}</td>
+                        <td>{{visit.getTranslatedCommunity(item.establishment.address.community.id)}}</td>
+                        <td>{{visit.getEstablishmentName(item.establishment)}}</td>
+                        <!-- Dynamic name based on language -->
+                        <td class="action-icons">
+                            <div class="dropdown">
+                                <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
+                                    <em class="fa fa-ellipsis-v"></em>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" ng-click="visit.review(item.id)">
+                                        <em class="fa fa-eye"></em> {{'general.view' | translate}}
+                                    </a>
+                                    <a class="dropdown-item" ng-click="visit.edit(item.id)">
+                                        <em class="fa fa-pencil"></em> {{'general.edit' | translate}}
+                                    </a>
+                                    <a class="dropdown-item" ng-click="visit.delete(item.id)">
+                                        <em class="fa fa-trash"></em> {{'general.delete' | translate}}
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Pagination Section -->
+    <nav aria-label="Page navigation" class="mt-3">
+        <ul class="pagination justify-content-center custom-pagination">
+            <li class="page-item" ng-class="{disabled: visit.pageIndex === 0}" ng-click="visit.previousPage()">
+                <a class="page-link">&lsaquo;</a>
+            </li>
+
+            <li class="page-item" ng-if="visit.pageIndex > 2" ng-click="visit.goToPage(0)">
+                <a class="page-link">1</a>
+            </li>
+
+            <li class="page-item" ng-if="visit.pageIndex > 2"><span class="page-link">...</span></li>
+
+            <li class="page-item" ng-repeat="page in visit.getPageRange()" ng-class="{active: page === visit.pageIndex}"
+                ng-click="visit.goToPage(page)">
+                <a class="page-link">{{ page + 1 }}</a>
+            </li>
+
+            <li class="page-item" ng-if="visit.pageIndex < visit.totalPages - 3"><span class="page-link">...</span></li>
+
+            <li class="page-item" ng-if="visit.pageIndex < visit.totalPages - 3"
+                ng-click="visit.goToPage(visit.totalPages - 1)">
+                <a class="page-link">{{ visit.totalPages }}</a>
+            </li>
+
+            <li class="page-item" ng-class="{disabled: visit.pageIndex === visit.totalPages - 1}"
+                ng-click="visit.nextPage()">
+                <a class="page-link">&rsaquo;</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+
+
+<!-- <div class="app-view-header">
     {{'visit.visitList' | translate}}
     <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
 </div>
@@ -34,15 +183,21 @@
         </div>
         <div class="col-md-2"></div>
         <div class="col-md-5">
-            <button ng-if="visit.userFilters == null || visit.userFilters.length == 0" class="btn btn-primary btn-md pull-right" btn-layer-morph="visit.click()"
-                    btn-layer="visit.filter" target="#layer-search">
-                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+            <button ng-if="visit.userFilters == null || visit.userFilters.length == 0"
+                class="btn btn-primary btn-md pull-right" btn-layer-morph="visit.click()" btn-layer="visit.filter"
+                target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
+                    aria-hidden="true"></em>
             </button>
-            <div ng-if="visit.userFilters.length > 0" uib-dropdown="dropdown" class="btn-group mb-sm mr dropdown open pull-right">
-                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary" aria-haspopup="true" aria-expanded="true">
+            <div ng-if="visit.userFilters.length > 0" uib-dropdown="dropdown"
+                class="btn-group mb-sm mr dropdown open pull-right">
+                <button type="button" uib-dropdown-toggle="" ripple="" class="btn dropdown-toggle btn-primary"
+                    aria-haspopup="true" aria-expanded="true">
                     <span ng-if="visit.filterParams.userFilterId == undefined">{{'general.filter' | translate}}</span>
-                    <span ng-if="visit.filterParams.userFilterId != undefined && visit.filterParams.userFilterId == visit.defaultUserFilter.id">{{visit.defaultUserFilter.name}}</span>
-                    <span ng-if="visit.filterParams.userFilterId != undefined && visit.filterParams.userFilterId != visit.defaultUserFilter.id">{{visit.selectedUserFilter.name}}</span>&nbsp;
+                    <span
+                        ng-if="visit.filterParams.userFilterId != undefined && visit.filterParams.userFilterId == visit.defaultUserFilter.id">{{visit.defaultUserFilter.name}}</span>
+                    <span
+                        ng-if="visit.filterParams.userFilterId != undefined && visit.filterParams.userFilterId != visit.defaultUserFilter.id">{{visit.selectedUserFilter.name}}</span>&nbsp;
                     <span class="caret"></span>
                     <span class="ripple"><span class="angular-ripple"></span></span>
                 </button>
@@ -62,13 +217,12 @@
 
     <div class="row">
         <div class="col-md-12">
-            <table datatable="" ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"
-                   dt-options="visit.dtApplicationOptions" dt-columns="visit.dtApplicationColumns"
-                   dt-instance="visit.dtApplicationInstance" width="100%" id="visitDatatable"></table>
+            <table datatable=""
+                ng-class="{'row-border hover color-blind' : app.layout.isColorBlind, 'row-border hover' : !app.layout.isColorBlind}"
+                dt-options="visit.dtApplicationOptions" dt-columns="visit.dtApplicationColumns"
+                dt-instance="visit.dtApplicationInstance" width="100%" id="visitDatatable"></table>
         </div>
     </div>
-
-    <!-- Layer Morph-->
     <div class="layer-morph-overlay">
         <div class="layer-morph-inner bg-primary"></div>
     </div>
@@ -77,14 +231,16 @@
     </div>
     <div class="layer-morph-container bg-primary">
         <div class="layer-morph-wrapper">
-            <div id="layer-search" ng-include="'app/views/Inspection/visitList/filter/filterVisitList.html'" class="layer-morph"></div>
-            <!--<div id="layer-search" ng-include="'app/views/Dashboard/filter/filterDashboard.html'" class="layer-morph"></div>-->
+            <div id="layer-search" ng-include="'app/views/Inspection/visitList/filter/filterVisitList.html'"
+                class="layer-morph"></div>
             <div class="row">
                 <div class="col-md-4 pull-right">
-                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close="" ng-click="visit.removeFilter(this)">
+                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close=""
+                        ng-click="visit.removeFilter(this)">
                         {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
                     </button>
-                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter="" ng-click="visit.filter(this)">
+                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter=""
+                        ng-click="visit.filter(this)">
                         {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
                     </button>
                 </div>
@@ -92,6 +248,6 @@
             <br /><br />
         </div>
     </div>
-    <!--End Layer Morph-->
 
-</div>
+
+</div> -->
