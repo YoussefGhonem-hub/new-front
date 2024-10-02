@@ -14311,3 +14311,356 @@ input[type="checkbox"]:focus {
     scrollbar-color: #8B5E3C #E0E0E0 !important;
     /* thumb color, track color */
 }
+
+
+
+/* Grid styles */
+
+/* Custom styles for the table and pagination */
+.table th, .table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table th {
+    background-color: #f1edea;
+    color: #444;
+}
+
+.table tbody tr:nth-child(odd) {
+    background-color: #efede8;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.btn-progress {
+    background-color: #d4b183;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+}
+
+    .btn-progress:hover {
+        background-color: #c0a776;
+    }
+
+.btn-filter {
+    background-color: #d4b183;
+    color: white;
+    width: 100%;
+}
+
+    .btn-filter:hover {
+        background-color: #c0a776;
+    }
+
+.pagination .page-link {
+    color: #d4b183;
+}
+
+    .pagination .page-link:hover {
+        background-color: #d4b183;
+        color: white;
+    }
+
+.pagination .active .page-link {
+    background-color: #d4b183;
+}
+
+/* Hover effect on table rows */
+
+
+
+/* Custom layout for LTR */
+.custom-flex-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    /* Align button to the right for LTR */
+    .custom-flex-row .text-right {
+        text-align: right;
+    }
+
+/* RTL-specific styles */
+html[lang="ar"] .custom-flex-row {
+    flex-direction: row-reverse; /* Reverse the row layout for RTL */
+}
+
+/* Menu item active state */
+.menuList li.active a span::after {
+    width: 100%;
+    height: 2px;
+    content: "";
+    position: absolute;
+    inset-inline-start: 0; /* Logical property for left/right in LTR/RTL */
+    inset-inline-end: 0; /* Logical property for left/right in LTR/RTL */
+    background: #4E3C2E;
+    bottom: -0.5rem;
+}
+
+/* RTL-specific changes for inset */
+html[lang="ar"] .menuList li.active a span::after {
+    inset-inline-start: unset;
+    inset-inline-end: 0;
+}
+
+.filter .modal-header .close {
+    margin-top: -26px !important;
+}
+
+.filter-title {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: auto;
+}
+
+.inspector button.btn {
+    background: #997133;
+    border: none;
+    border-radius: 0.3rem;
+}
+
+.custom-button {
+    border: 2px solid #b28e5b; /* Gold-like color */
+    background-color: #fff; /* White background */
+    color: #b28e5b !important; /* Gold-like text color */
+    font-weight: 700;
+    height: 36px;
+}
+
+    .custom-button:hover {
+        background-color: #b28e5b;
+        color: white !important;
+        border: #b28e5b;
+    }
+
+.back-arrow {
+    display: inline-block;
+    font-size: 17px; /* Adjust the size of the arrow */
+    margin-right: 10px; /* Space between arrow and text */
+    cursor: pointer;
+}
+
+.table th {
+    color: #997133 !important;
+    background-color: white !important;
+}
+
+.action-icons .dropdown-toggle {
+    color: #997133; /* Color for the 3-dot icon */
+    font-size: 20px; /* Adjust icon size */
+    border: none;
+    background: none; /* Remove button background */
+}
+
+.action-icons .dropdown-item {
+    display: flex;
+    align-items: center; /* Vertically align icon and text */
+    color: #333; /* Set default text color */
+    font-size: 14px;
+    padding: 8px 16px; /* Control padding for better spacing */
+}
+
+    .action-icons .dropdown-item em {
+        margin-right: 8px; /* Add space between icon and text */
+        color: #997133; /* Color of the icons */
+        font-size: 16px; /* Icon size */
+    }
+
+    .action-icons .dropdown-item:hover {
+        background-color: #f5f5f5; /* Hover effect on the dropdown items */
+    }
+
+.dropdown-menu {
+    padding: 0; /* Remove extra padding */
+}
+
+/* .custom-pagination .page-item {
+    margin: 0 5px;
+}
+
+.custom-pagination .page-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 31px;
+    height: 31px;
+    border-radius: 50%;
+    border: 1px solid #ced4da;
+    background-color: white;
+    color: #333;
+    font-weight: 500;
+    font-size: 16px;
+    padding: 0px;
+}
+
+.custom-pagination .page-item.active .page-link {
+    background-color: #b07d3e;
+    color: white;
+    border-color: #b07d3e;
+    margin-right: 1%;
+}
+
+.custom-pagination .page-item.disabled .page-link {
+    pointer-events: none;
+    color: #ccc;
+}
+
+.custom-pagination .page-link:hover {
+    background-color: #efede8;
+    border-color: #efede8;
+    color: #000;
+}
+
+.custom-pagination .page-link span {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.custom-pagination .page-item span.page-link {
+    border: none;
+    background: none;
+    cursor: default;
+} */
+
+
+.custom-pagination {
+    display: flex;
+    justify-content: center; /* Centers the pagination */
+    align-items: center; /* Vertically aligns the pagination */
+    margin-top: 20px;
+}
+
+    .custom-pagination .page-item {
+        margin: 0 3px; /* Smaller space between pagination numbers */
+    }
+
+    .custom-pagination .page-link {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 35px; /* Smaller width for pagination circles */
+        height: 35px; /* Smaller height for pagination circles */
+        border-radius: 50%;
+        border: 1px solid #ced4da;
+        background-color: white;
+        color: #333;
+        font-weight: 500;
+        font-size: 14px; /* Smaller font size */
+        padding: 0px;
+    }
+
+    .custom-pagination .page-item.active .page-link {
+        background-color: #b07d3e;
+        color: white;
+        border-color: #b07d3e;
+    }
+
+    .custom-pagination .page-item.disabled .page-link {
+        pointer-events: none;
+        color: #ccc;
+    }
+
+    .custom-pagination .page-link:hover {
+        background-color: #efede8;
+        border-color: #efede8;
+        color: #000;
+    }
+
+    .custom-pagination .page-link span {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .custom-pagination .page-item span.page-link {
+        border: none;
+        background: none;
+        cursor: default;
+    }
+
+
+/* filter inspector */
+
+.filter-container {
+    background-color: #efede8;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+    .filter-container .filter-title {
+        font-size: 24px;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+
+    .filter-container .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+
+
+    .filter-container label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .filter-container .form-control {
+        width: 100%;
+        padding: 10px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #fff;
+    }
+
+    .filter-container .radio-group {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 10px;
+    }
+
+        .filter-container .radio-group label {
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+    .filter-container .button-group {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 20px;
+    }
+
+    .filter-container .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+        margin-left: 10px;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .filter-container .btn-primary {
+        background-color: #efede8;
+        color: white;
+    }
+
+    .filter-container .btn-secondary {
+        background-color: #ccc;
+        color: black;
+    }
+
+.calender-custom {
+    height: 36px;
+    z-index: 1 !important;
+    box-shadow: none !important;
+}
+
+.filter-container .form-control {
+    padding: 8px 3px 0 3px !important;
+}
