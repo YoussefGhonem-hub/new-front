@@ -775,6 +775,7 @@
     "chiefEditor": "رئيس التحرير"
   },
   "newspaper": {
+    "title": "إدارة قائمة الصحف والمجلات",
     "suggestedName": "عنوان الصحيفة/ المجلة",
     "languages": "اللغات",
     "selectLanguage": "اختر اللغة",

@@ -674,6 +674,7 @@
     "chiefEditor": "CHIEF EDITOR"
   },
   "newspaper": {
+    "title": "Manage Newspaper/ Magazine List",
     "suggestedName": "Suggested Name",
     "languages": "Languages",
     "selectLanguage": "Select or search multiple languages in the list.....",

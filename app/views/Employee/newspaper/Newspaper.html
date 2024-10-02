@@ -1,8 +1,27 @@
-﻿<div class="app-view-header">
-    {{'dashboard.home' | translate}}
-    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
-</div>
-<div ng-controller="NewspaperController as newspaper">
+﻿<div ng-controller="NewspaperController as newspaper">
+    <div class="breadcrumb-container">
+        <p class="breadcrumb-text">
+            {{'dashboard.home' | translate}}
+            <em class="fa fa-chevron-right"></em>
+            {{app | localizeString}}
+            <em class="fa fa-chevron-right"></em>
+            {{app.description | localizeString}}
+        </p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="app-view-header" style="font-weight: bold;">
+                <span class="back-arrow">
+                    <em class="fa fa-chevron-left"></em>
+                </span>
+                {{'newspaper.title' | translate}}
+            </h2>
+        </div>
+    </div>
+
+
+
     <div class="row">
         <div class="col-md-2">
             <span class="col-md-2">
