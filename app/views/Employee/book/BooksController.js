@@ -20,27 +20,28 @@
         vm.pageSize = 10;
         vm.totalPages = 0;
         vm.searchText = '';
-        vm.sortBy = 'title';
-        vm.sortDirection = 'asc';
+        vm.sortBy = null; // No default sorting column initially
+        vm.sortDirection = null; // No default sorting direction initially
 
         vm.entries = [5, 10, 20, 30, 50];
         vm.selectedEntries = vm.entries[1];
         vm.totalBooks = 0;
-      // Helper function to format the languages
+
+        // Helper function to format the languages
         vm.formatLanguages = function (languages) {
             return languages.map(function(langObj) {
                 return $filter('localizeString')(langObj.language); // Assuming language field exists in the object
             }).join(', ');
         };
 
-        // Load books
+        // Load books with sorting and pagination
         vm.loadBooks = function () {
             var params = {
                 page: vm.pageIndex + 1,
                 pageSize: vm.selectedEntries,
                 searchText: vm.searchText || null,
-                sortBy: vm.sortBy || 'title',
-                sortDirection: vm.sortDirection || 'asc'
+                sortBy: vm.sortBy, // No sorting if null
+                sortDirection: vm.sortDirection // No sorting if null
             };
 
             $http.post($rootScope.app.httpSource + 'api/Book/GetAllBooks', params)
@@ -59,7 +60,7 @@
                 vm.sortDirection = (vm.sortDirection === 'asc') ? 'desc' : 'asc';
             } else {
                 vm.sortBy = column;
-                vm.sortDirection = 'asc';
+                vm.sortDirection = 'asc'; // Default to ascending when a column is sorted
             }
             vm.loadBooks();
         };
@@ -95,13 +96,44 @@
 
         // Export functions (CSV, PDF, Excel)
         vm.exportExcel = function () {
-            // Similar export logic
+            $http.post($rootScope.app.httpSource + 'api/Book/ExportExcel', vm.params, { responseType: 'arraybuffer' })
+                .then(function (resp) {
+                    var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
+                    saveAs(data, "BookList.xlsx");
+                },
+                function (error) {
+                    console.error('Error exporting Excel', error);
+                });
         };
+
         vm.exportCSV = function () {
-            // Similar export logic
+            $http.post($rootScope.app.httpSource + 'api/Book/ExportCSV', vm.params)
+                .then(function (resp) {
+                    var BOM = "\uFEFF"; // UTF-8 BOM for proper encoding
+                    var csvContent = BOM + resp.data;
+                    var myBlob = new Blob([csvContent], { type: 'text/csv' });
+                    var url = window.URL.createObjectURL(myBlob);
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.href = url;
+                    a.download = "BookList.csv";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                },
+                function (error) {
+                    console.error('Error exporting CSV', error);
+                });
         };
+
         vm.exportPDF = function () {
-            // Similar export logic
+            $http.post($rootScope.app.httpSource + 'api/Book/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
+                .then(function (resp) {
+                    var data = new Blob([resp.data], { type: 'application/pdf' });
+                    saveAs(data, "BookList.pdf");
+                },
+                function (error) {
+                    console.error('Error exporting PDF', error);
+                });
         };
 
         // Review function for action buttons
@@ -113,6 +145,7 @@
         vm.loadBooks();
     }
 })();
+
 
 
 // (function () {
