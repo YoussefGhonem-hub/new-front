@@ -1,13 +1,12 @@
 ﻿(function () {
     'use strict';
-
     angular
         .module('eServices')
         .controller('visitListController', visitListController);
 
-    visitListController.$inject = ['$rootScope', '$scope', '$http', '$timeout', '$uibModal', 'SweetAlert', 'UserProfile', '$filter', '$compile', '$state'];
+    visitListController.$inject = ['$rootScope', '$scope', '$http', '$timeout', 'UserProfile', '$uibModal', '$state', 'SweetAlert', '$filter', '$compile'];
 
-    function visitListController($rootScope, $scope, $http, $timeout, $uibModal, SweetAlert, UserProfile, $filter, $compile, $state) {
+    function visitListController($rootScope, $scope, $http, $timeout, UserProfile, $uibModal, $state, SweetAlert, $filter, $compile) {
         var vm = this;
 
         // Initialize variables
@@ -19,12 +18,14 @@
         vm.selectedEntries = vm.entries[1];
         vm.searchText = '';
         vm.visits = [];
-        vm.emirates = [];
-        vm.communities = [];
         var searchTimeout;
 
-        // Loader function
-        function loader() {
+        vm.language = $rootScope.language.selected; // Language for translation
+        vm.employees = [];
+        vm.filterParams = {};
+
+        // Function to show loader
+        function showLoader() {
             var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
                 '<div class="sk-cube sk-cube1"></div>' +
                 '<div class="sk-cube sk-cube2"></div>' +
@@ -39,39 +40,59 @@
             angular.element('body').append($compile(htmlSectionLoader)($scope));
         }
 
-        function removeLoader() {
+        // Function to hide loader
+        function hideLoader() {
             angular.element('.sk-cube-grid').remove();
         }
 
-        // Fetch emirates and communities for translation
-        $http.get($rootScope.app.httpSource + 'api/Emirate')
-            .then(function (response) {
-                vm.emirates = response.data;
-            }, function (error) {
-                console.error('Error fetching emirates', error);
-            });
-
-        $http.get($rootScope.app.httpSource + 'api/Community/GetCommunities')
-            .then(function (response) {
-                vm.communities = response.data;
-            }, function (error) {
-                console.error('Error fetching communities', error);
-            });
-
-        // Translation helper methods
-        vm.getTranslatedEmirate = function (communityId) {
-            var community = $filter('filter')(vm.communities, { id: communityId }, true)[0];
-            return community ? (vm.language === 'ar' ? community.region.emirate.nameAr : community.region.emirate.nameEn) : '';
+        // Function to get "Assigned To" based on createdBy field
+        vm.getAssignedTo = function (createdBy) {
+            if (vm.employees.length === 0) {
+                return '';
+            } else {
+                var employee = $filter('filter')(vm.employees, { id: createdBy }, true)[0];
+                if (employee) {
+                    return employee.firstName + ' ' + employee.lastName;
+                }
+                return '';
+            }
         };
 
-        vm.getTranslatedCommunity = function (communityId) {
-            var community = $filter('filter')(vm.communities, { id: communityId }, true)[0];
-            return community ? (vm.language === 'ar' ? community.nameAr : community.nameEn) : '';
+        // Export functionalities (Excel, PDF, CSV)
+        vm.exportExcel = function () {
+            $http.post($rootScope.app.httpSource + 'api/Visit/ExportExcel', vm.params, { responseType: 'arraybuffer' })
+                .then(function (resp) {
+                    var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
+                    saveAs(data, "VisitList.xlsx");
+                });
         };
 
-        // Fetch visits from the server
+        vm.exportPDF = function () {
+            $http.post($rootScope.app.httpSource + 'api/Visit/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
+                .then(function (resp) {
+                    var data = new Blob([resp.data], { type: 'application/pdf' });
+                    saveAs(data, "VisitList.pdf");
+                });
+        };
+
+        vm.exportCSV = function () {
+            $http.post($rootScope.app.httpSource + 'api/Visit/ExportCSV', vm.params)
+                .then(function (resp) {
+                    var myBlob = new Blob([resp.data], { type: 'text/html' });
+                    var url = window.URL.createObjectURL(myBlob);
+                    var a = document.createElement("a");
+                    document.body.appendChild(a);
+                    a.href = url;
+                    a.download = "VisitList.csv";
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                });
+        };
+
+        // Function to load visits
         vm.loadVisits = function () {
-            loader(); // Show loader
+            // Show loader before the API call
+            showLoader();
 
             var params = {
                 page: vm.pageIndex + 1,
@@ -84,10 +105,18 @@
                     vm.visits = response.data.content;
                     var totalRecords = response.data.totalRecords || 0;
                     vm.totalPages = totalRecords > 0 ? Math.ceil(totalRecords / vm.selectedEntries) : 1;
-                    removeLoader(); // Remove loader
-                }, function (error) {
-                    console.error('Error loading visits', error);
-                    removeLoader(); // Remove loader in case of error
+
+                    // Fetch the list of employees for the "Assigned To" field
+                    if (vm.employees.length === 0) {
+                        $http.get($rootScope.app.httpSource + 'api/UserProfile/GetInspectors')
+                            .then(function (response) {
+                                vm.employees = response.data.map(item => item.user);
+                            });
+                    }
+                })
+                .finally(function () {
+                    // Hide loader after the API call completes
+                    hideLoader();
                 });
         };
 
@@ -120,35 +149,14 @@
             return Array.from({ length: end - start }, (_, i) => start + i);
         };
 
-        // Export functions
-        vm.exportExcel = function () {
-            $http.post($rootScope.app.httpSource + 'api/Visit/ExportExcel', {}, { responseType: 'arraybuffer' })
-                .then(function (resp) {
-                    var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
-                    saveAs(data, "VisitList.xlsx");
-                });
+        // Function to get translated establishment name
+        vm.getEstablishmentName = function (establishment) {
+            return vm.language === 'ar' ? establishment.nameAr : establishment.nameEn;
         };
 
-        vm.exportPDF = function () {
-            $http.post($rootScope.app.httpSource + 'api/Visit/ExportToPdf', {}, { responseType: 'arraybuffer' })
-                .then(function (resp) {
-                    var data = new Blob([resp.data], { type: 'application/pdf' });
-                    saveAs(data, "VisitList.pdf");
-                });
-        };
-
-        vm.exportCSV = function () {
-            $http.post($rootScope.app.httpSource + 'api/Visit/ExportCSV', {})
-                .then(function (resp) {
-                    var myBlob = new Blob([resp.data], { type: 'text/html' });
-                    var url = window.URL.createObjectURL(myBlob);
-                    var a = document.createElement("a");
-                    document.body.appendChild(a);
-                    a.href = url;
-                    a.download = "VisitList.csv";
-                    a.click();
-                    window.URL.revokeObjectURL(url);
-                });
+        // Function to get "Application Status" (visitStatus) and translate it
+        vm.getApplicationStatus = function (visitStatus) {
+            return $filter('localizeString')(visitStatus);
         };
 
         // Search functionality with debounce
@@ -159,22 +167,48 @@
             searchTimeout = $timeout(function () {
                 vm.pageIndex = 0;
                 vm.loadVisits();
-            }, 2000); // 2 seconds debounce
+            }, 1000);  // 1-second debounce time
         };
-        // Function to get the translated establishment name
-        vm.getEstablishmentName = function (establishment) {
-            if (!establishment) return '';
-            return vm.language === 'ar' ? establishment.nameAr : establishment.nameEn;
-        };
-        vm.unscheduledvisit = function () {
-            $state.go('app.unscheduledvisit');
 
-        }
-        // Initial load
+        // Review function (for viewing visit details)
+        vm.review = function (visitId) {
+            $state.go('app.ReviewVisitList', { id: visitId });
+        };
+
+        // Edit function (for editing visit details)
+        vm.edit = function (visitId) {
+            $state.go('app.visit', { visitId: visitId });
+        };
+
+        // Delete function
+        vm.delete = function (visitId) {
+            SweetAlert.swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover this visit!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes, delete it!",
+                cancelButtonText: "No, cancel!",
+                closeOnConfirm: false,
+                closeOnCancel: true
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    $http.post($rootScope.app.httpSource + 'api/Visit/DeleteVisit', { id: visitId })
+                        .then(function (response) {
+                            SweetAlert.swal("Deleted!", "The visit has been deleted.", "success");
+                            vm.loadVisits();
+                        }, function (error) {
+                            SweetAlert.swal("Error!", "Unable to delete the visit.", "error");
+                        });
+                }
+            });
+        };
+
+        // Initial load of visits
         vm.loadVisits();
     }
 })();
-
 
 
 

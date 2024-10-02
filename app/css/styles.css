@@ -12757,54 +12757,37 @@ html[lang="ar"] .menuList li.active a span::after {
     /* Remove extra padding */
 }
 
-/* .custom-pagination .page-item {
-    margin: 0 5px;
+.status-approved {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
 }
 
-.custom-pagination .page-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 31px;
-    height: 31px;
-    border-radius: 50%;
-    border: 1px solid #ced4da;
-    background-color: white;
-    color: #333;
-    font-weight: 500;
-    font-size: 16px;
-    padding: 0px;
+.status-expiring {
+    background-color: #fff3cd;
+    color: #856404;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
 }
 
-.custom-pagination .page-item.active .page-link {
-    background-color: #b07d3e;
-    color: white;
-    border-color: #b07d3e;
-    margin-right: 1%;
+.status-expired {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
 }
 
-.custom-pagination .page-item.disabled .page-link {
-    pointer-events: none;
-    color: #ccc;
+.status-unknown {
+    background-color: #e2e3e5;
+    color: #6c757d;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
 }
-
-.custom-pagination .page-link:hover {
-    background-color: #efede8;
-    border-color: #efede8;
-    color: #000;
-}
-
-.custom-pagination .page-link span {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.custom-pagination .page-item span.page-link {
-    border: none;
-    background: none;
-    cursor: default;
-} */
-
 
 .custom-pagination {
     display: flex;

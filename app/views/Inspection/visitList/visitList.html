@@ -76,22 +76,26 @@
             <table class="table table-bordered">
                 <thead class="thead-light">
                     <tr>
-                        <th>{{'inspection.visitNumber' | translate}}</th>
-                        <th>{{'establishment.LicenseNumber' | translate}}</th>
-                        <th>{{'address.Emirate' | translate}}</th>
-                        <th>{{'address.Community' | translate}}</th>
+                        <th>{{'visit.visitNumber' | translate}}</th>
                         <th>{{'completeProfile.establishmentName' | translate}}</th>
+                        <th>{{'dashboard.applicationStatus' | translate}}</th>
+                        <th>{{'inspection.assignedTo' | translate}}</th>
+                        <th>{{'inspection.createdOn' | translate}}</th>
                         <th>{{'general.actions' | translate}}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr ng-repeat="item in visit.visits">
-                        <td>{{item.visitNumber}}</td>
-                        <td>{{item.establishment.licenseNumber}}</td>
-                        <td>{{visit.getTranslatedEmirate(item.establishment.address.community.region.id)}}</td>
-                        <td>{{visit.getTranslatedCommunity(item.establishment.address.community.id)}}</td>
-                        <td>{{visit.getEstablishmentName(item.establishment)}}</td>
-                        <!-- Dynamic name based on language -->
+                        <td>{{ item.visitNumber }}</td>
+                        <td>{{ visit.getEstablishmentName(item.establishment) }}</td>
+                        <td>
+                            <span class="status-approved">
+                                {{ visit.getApplicationStatus(item.visitStatus) }}
+                            </span>
+                        </td>
+                        <td>{{ visit.getAssignedTo(item.createdBy) }}</td>
+                        <td>{{ item.createdOn | date: 'dd-MMMM-yyyy' }}</td>
+                        <!-- Actions -->
                         <td class="action-icons">
                             <div class="dropdown">
                                 <button class="btn btn-link dropdown-toggle" type="button" data-toggle="dropdown">
@@ -112,6 +116,7 @@
                         </td>
                     </tr>
                 </tbody>
+
             </table>
         </div>
     </div>
