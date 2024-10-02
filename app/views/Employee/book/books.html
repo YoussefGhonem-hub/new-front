@@ -9,7 +9,32 @@
         </p>
     </div>
 
-    <div class="row mb-2">
+
+    <div class="row">
+        <div class="col-md-4">
+            <h2 class="app-view-header" style="font-weight: bold;">
+                <span class="back-arrow">
+                    <em class="fa fa-chevron-left"></em>
+                </span>
+                {{'inspection.title' | translate}}
+            </h2>
+        </div>
+        <div class="col-md-8 text-right formSubmit">
+            <button type="submit" class="btn btn-primary" ng-click="books.open('lg')" ng-disabled="books.isLoading">
+                &nbsp;&nbsp;<em class="fa fa-plus" aria-hidden="true"></em> {{'bookCard.addBook' | translate}}
+            </button>
+        </div>
+    </div>
+
+
+
+    <div class="row mb-2" style="margin-bottom: 1%;">
+
+        <div class="col-md-6">
+            <input type="text" class="form-control" placeholder="Search" ng-model="books.searchText"
+                ng-change="books.loadBooks()">
+        </div>
+
         <div class="col-md-2">
             <!-- Export buttons -->
             <a ng-click="books.exportExcel()" uib-tooltip="Excel">
@@ -22,20 +47,17 @@
                 <em class="fa fa-file-pdf-o text-danger fa-2x" style="cursor:pointer"></em>
             </a>
         </div>
-        <div class="col-md-4">
-            <input type="text" class="form-control" placeholder="Search" ng-model="books.searchText"
-                ng-change="books.loadBooks()">
-        </div>
         <div class="col-md-2">
             <!-- Dropdown to select number of rows per page -->
             <select class="form-control" ng-model="books.selectedEntries" ng-options="entry for entry in books.entries"
                 ng-change="books.loadBooks()"></select>
         </div>
-        <div class="col-md-2">
-            <!-- Add Book Button -->
-            <button ng-if="books.isAllowedBookForm" class="btn btn-warning btn-md pull-right"
-                ng-click="books.open('lg')">
-                {{'bookCard.addBook' | translate}} <span class="ripple"></span>
+
+        <div class="col-md-2 inspector">
+            <button class="btn btn-primary" btn-layer-morph="books.click()" btn-layer="books.filter"
+                target="#layer-search">
+                <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
+                    aria-hidden="true"></em>
             </button>
         </div>
     </div>
