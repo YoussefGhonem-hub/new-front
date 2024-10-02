@@ -901,6 +901,7 @@
   "users": {
     "email": "Email",
     "ManageUsers": "Manage Users",
+    "ManageEmployees": "Manage Employees",
     "phoneNumber": "Phone Number",
     "isActive": "Is Active",
     "createdOn": "Created On",

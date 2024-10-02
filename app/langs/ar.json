@@ -1003,6 +1003,7 @@
   },
   "users": {
     "ManageUsers": "جدول المستخدمسن",
+    "ManageEmployees": " جدول الموظفين",
     "email": "البريد الإلكتروني",
     "phoneNumber": "رقم الهاتف",
     "isActive": "الحساب مفعل",
