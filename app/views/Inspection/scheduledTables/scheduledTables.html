@@ -55,13 +55,14 @@
             </div>
             <div class="col-md-2">
                 <select class="form-control" ng-model="scheduledTables.selectedEntries"
-                    ng-options="entry for entry in task.entries" ng-change="scheduledTables.loadTaskGroups()">
+                    ng-options="entry for entry in scheduledTables.entries"
+                    ng-change="scheduledTables.loadTaskGroups()">
                 </select>
             </div>
             <div class="col-md-2 inspector">
                 <!-- Button to open the filter modal -->
-                <button class="btn btn-primary" btn-layer-morph="task.click()" btn-layer="task.filter"
-                    target="#layer-search">
+                <button class="btn btn-primary" btn-layer-morph="scheduledTables.click()"
+                    btn-layer="scheduledTables.filter" target="#layer-search">
                     <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
                         aria-hidden="true"></em>
                 </button>
