@@ -53,7 +53,62 @@
                     console.error('Error loading books', error);
                 });
         };
+        vm.open = function (size) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/Employee/book/AddBook/addBook.html',
+                controller: 'addBookController',
+                size: size,
+                resolve: {
+                    book: function () {
+                        return null;
+                    }
+                }
+            });
 
+            modalInstance.result.then(function (newBook) {
+                vm.insertBook(newBook);
+            }, function () {
+                // Handle dismissal of the modal
+            });
+        };
+
+        // Function to handle book insertion
+        vm.insertBook = function (newBook) {
+            var translate = $filter('translate');
+            vm.inputParms = {
+                title: newBook.title,
+                authorName: newBook.authorName,
+                isbn: newBook.isbn,
+                subjectId: newBook.subjectCategory.id,
+                subjectSubCategoryId: newBook.subjectSubCategory.id,
+                printYear: newBook.printYear,
+                versionNumber: newBook.versionNumber,
+                isApproved: false,
+                bookLanguages: []
+            };
+
+            for (var i = 0; i < newBook.selectedLangauges.length; i++) {
+                var languageList = {};
+                languageList.language = newBook.selectedLangauges[i];
+                vm.inputParms.bookLanguages.push(languageList);
+            }
+
+            $http.post($rootScope.app.httpSource + 'api/Book/SaveBook', vm.inputParms)
+                .then(function (response) {
+                    if (response.data === true) {
+                        SweetAlert.swal(translate('establishment.success'), translate('bookCard.dataAdded'), "success");
+                        vm.loadBooks(); // Refresh books list
+                    } else {
+                        SweetAlert.swal(translate('establishment.error'), translate('establishment.error'), "error");
+                    }
+                }, function (error) {
+                    if (error.data && error.data.exceptionMessage === "ISBNExist") {
+                        SweetAlert.swal(translate('establishment.error'), translate('bookCard.alreadyExist'), "error");
+                    } else {
+                        SweetAlert.swal(translate('establishment.error'), translate('establishment.error'), "error");
+                    }
+                });
+        };
         // Sorting logic
         vm.sortColumn = function (column) {
             if (vm.sortBy === column) {
