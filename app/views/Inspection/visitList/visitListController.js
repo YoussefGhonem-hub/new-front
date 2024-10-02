@@ -204,6 +204,10 @@
                 }
             });
         };
+        vm.unscheduledvisit = function () {
+            $state.go('app.unscheduledvisit');
+
+        }
 
         // Initial load of visits
         vm.loadVisits();
