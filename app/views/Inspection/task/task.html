@@ -1,15 +1,40 @@
-﻿<div class="app-view-header">
-    {{'dashboard.home' | translate}}
-    <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
-</div>
+﻿<div ng-controller="taskController as task">
 
-<div ng-controller="taskController as task">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-container">
+        <p class="breadcrumb-text">
+            {{'dashboard.home' | translate}}
+            <em class="fa fa-chevron-right"></em>
+            {{app | localizeString}}
+            <em class="fa fa-chevron-right"></em>
+            {{app.description | localizeString}}
+        </p>
+    </div>
 
-    <!-- Table Controls: Filters and Export Options -->
+
+
+    <!-- Header and Buttons -->
     <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-4">
+            <h2 class="app-view-header" style="font-weight: bold;    font-size: 22px;">
+                <span class="back-arrow">
+                    <em class="fa fa-chevron-left"></em>
+                </span>
+                {{'task.title' | translate}}
+            </h2>
+        </div>
+    </div>
+
+    <!-- Search and Filter Section -->
+    <div class="row d-flex align-items-center" style="margin-bottom: 5px;">
+        <div class="col-md-6">
+            <!-- Search Bar -->
+            <input type="text" class="form-control" placeholder="Search" ng-model="task.searchText"
+                ng-change="task.filterData()">
+        </div>
+        <div class="col-md-2">
             <div ng-if="!task.isObjectEmpty(task.filterParams)">
-                <span class="col-md-1">
+                <span class="col-md-1 ">
                     <a ng-click="task.exportExcel()" uib-tooltip="Excel">
                         <em class="fa fa-file-excel-o text-success fa-2x" style="cursor:pointer"></em>
                     </a>
@@ -26,16 +51,20 @@
                 </span>
             </div>
         </div>
-
-        <div class="col-md-5 text-right">
-            <button class="btn btn-primary btn-md pull-right" btn-layer-morph="task.click()" btn-layer="task.filter"
+        <div class="col-md-2">
+            <select class="form-control" ng-model="task.selectedEntries" ng-options="entry for entry in task.entries"
+                ng-change="task.loadTaskGroups()">
+            </select>
+        </div>
+        <div class="col-md-2 inspector">
+            <!-- Button to open the filter modal -->
+            <button class="btn btn-primary" btn-layer-morph="task.click()" btn-layer="task.filter"
                 target="#layer-search">
                 <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
                     aria-hidden="true"></em>
             </button>
         </div>
     </div>
-
     <!-- Table Section -->
     <div class="row">
         <div class="col-md-12">
