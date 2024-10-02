@@ -283,6 +283,7 @@
     "scheduleName": "Schedule Name",
     "assignedTo": "Assigned To",
     "createdOn": "Created On",
+    "title": "Inspector Scheduled Tables",
     "addScheduleTable": "Add New Schedule Table",
     "completedEstablishments": "Completed",
     "scheduleTable": "Scheduled Table",
@@ -411,7 +412,6 @@
     "invalidTradeLicenseNo": "Invalid Trade License Number",
     "aquiantanceNote": "Please download the acquaintance form at this link, fill out the form, and stamp or sign it before attaching",
     "link": "link"
-
   },
   "completeProfile": {
     "pageTitle": "Complete Profile",

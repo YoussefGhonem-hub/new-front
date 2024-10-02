@@ -1,23 +1,32 @@
 <div ng-controller="ScheduledTablesController as scheduledTables">
-    <div class=" mt-4">
-        <p>{{app | localizeString}} > {{app.description | localizeString}}</p>
-        
+    <div class="mt-1">
+        <div class="breadcrumb-container">
+            <p class="breadcrumb-text">
+                {{'dashboard.home' | translate}}
+                <em class="fa fa-chevron-right"></em>
+                {{app | localizeString}}
+                <em class="fa fa-chevron-right"></em>
+                {{app.description | localizeString}}
+            </p>
+        </div>
         <!-- Flex container for header and button -->
         <div class="row">
             <div class="col-md-4">
-              <h2 class="app-view-header" style="font-weight: bold;">
-                <span class="back-arrow">
-                    <em class="fa fa-chevron-left"></em>
-                </span>
-                 {{'inspection.title' | translate}}
-              </h2>
+                <h2 class="app-view-header" style="font-weight: bold;">
+                    <span class="back-arrow">
+                        <em class="fa fa-chevron-left"></em>
+                    </span>
+                    {{'inspection.title' | translate}}
+                </h2>
             </div>
             <div class="col-md-8 text-right formSubmit">
-                <button type="submit" class="btn btn-primary" ng-click="scheduledTables.addScheduleTable()" ng-disabled="scheduledTables.isLoading">
-                    &nbsp;&nbsp;<em class="fa fa-plus" aria-hidden="true"></em> {{'inspection.addScheduleTable' | translate}}
+                <button type="submit" class="btn btn-primary" ng-click="scheduledTables.addScheduleTable()"
+                    ng-disabled="scheduledTables.isLoading">
+                    &nbsp;&nbsp;<em class="fa fa-plus" aria-hidden="true"></em> {{'inspection.addScheduleTable' |
+                    translate}}
                 </button>
             </div>
-          </div>
+        </div>
 
         <!-- Search Bar and Filter -->
         <!-- <div class="row align-items-center" style="margin-bottom: 1%;">
@@ -46,7 +55,8 @@
                 </div>
                 <div class="col-md-2">
                     <!-- Dropdown to select number of rows per page -->
-                    <select class="form-control" ng-model="scheduledTables.selectedEntries" ng-change="scheduledTables.loadTaskGroups()" ng-init="scheduledTables.selectedEntries = null">
+                    <select class="form-control" ng-model="scheduledTables.selectedEntries"
+                        ng-change="scheduledTables.loadTaskGroups()" ng-init="scheduledTables.selectedEntries = null">
                         <!-- Placeholder option that is disabled and selected -->
                         <option value="" disabled selected>Entries</option>
                         <!-- Options for number of entries -->
@@ -56,135 +66,143 @@
                 <div class="col-md-2 inspector">
                     <!-- Button to open the filter modal -->
                     <button class="btn btn-primary" data-toggle="modal" data-target="#filterModal">
-                        <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter" aria-hidden="true"></em>
+                        <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
+                            aria-hidden="true"></em>
                     </button>
                 </div>
             </div>
         </div>
-        
-        
-        
-        
-<!-- Table Section -->
-<table class="table table-bordered">
-    <thead class="thead-light">
-        <tr>
-            <th>{{'inspection.scheduleName' | translate}}</th>
-            <th>{{'address.Emirate' | translate}}</th>
-            <th>{{'inspection.inspectionReason' | translate}}</th>
-            <th>{{'inspection.inspectionReason' | translate}}</th>
-            <th>{{'inspection.ScheduleEndingDate' | translate}}</th>
-            <th>{{'address.establishmentCount' | translate}}</th>
-            <th>{{'general.actions' | translate}}</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="task in scheduledTables.taskGroups">
-            <td>{{task.name}}</td>
-            <td>{{task.region.emirate.nameEn}} <span ng-if="task.region.emirateId == 1"> - {{task.region.name}}</span></td>
-            <td>{{task.inspectionReason.nameEn}}</td>
-            <td>{{task.startDate | date:'dd-MMMM-yyyy'}}</td>
-            <td>{{task.endDate | date:'dd-MMMM-yyyy'}}</td>
-            <td>{{scheduledTables.getEstablishmentCount(task)}}</td>
-            <td class="action-icons">
-                <div class="dropdown">
-                    <button class="btn btn-link dropdown-toggle" type="button" id="actionMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <em class="fa fa-ellipsis-v" aria-hidden="true"></em>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actionMenu">
-                        <a class="dropdown-item" href="#" ng-click="scheduledTables.review(task.id)">
-                            <em class="fa fa-eye" aria-hidden="true"></em> Details
-                        </a>
-                        <a class="dropdown-item" href="#" ng-click="scheduledTables.edit(task.id)">
-                            <em class="fa fa-pencil" aria-hidden="true"></em> Edit
-                        </a>
-                        <a class="dropdown-item" href="#" ng-click="scheduledTables.delete(task.id)">
-                            <em class="fa fa-trash" aria-hidden="true"></em> Delete
-                        </a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
 
-<!-- Pagination Section -->
-<nav aria-label="Page navigation" class="mt-3">
-    <ul class="pagination justify-content-center custom-pagination">
-        <!-- Previous Button -->
-        <li class="page-item" ng-class="{disabled: scheduledTables.pageIndex === 0}" ng-click="scheduledTables.previousPage()">
-            <a class="page-link">
-                <span aria-hidden="true">&lsaquo;</span>
-            </a>
-        </li>
 
-        <!-- First Page -->
-        <li class="page-item" ng-if="scheduledTables.pageIndex > 2" ng-click="scheduledTables.goToPage(0)">
-            <a class="page-link">1</a>
-        </li>
 
-        <!-- Ellipsis for Pages Skipped -->
-        <li class="page-item" ng-if="scheduledTables.pageIndex > 2">
-            <span class="page-link">...</span>
-        </li>
 
-        <!-- Page Numbers Range -->
-        <li class="page-item" ng-repeat="page in scheduledTables.getPageRange()" ng-class="{active: page === scheduledTables.pageIndex}" ng-click="scheduledTables.goToPage(page)">
-            <a class="page-link">{{ page + 1 }}</a>
-        </li>
+        <!-- Table Section -->
+        <table class="table table-bordered">
+            <thead class="thead-light">
+                <tr>
+                    <th>{{'inspection.scheduleName' | translate}}</th>
+                    <th>{{'address.Emirate' | translate}}</th>
+                    <th>{{'inspection.inspectionReason' | translate}}</th>
+                    <th>{{'inspection.inspectionReason' | translate}}</th>
+                    <th>{{'inspection.ScheduleEndingDate' | translate}}</th>
+                    <th>{{'address.establishmentCount' | translate}}</th>
+                    <th>{{'general.actions' | translate}}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="task in scheduledTables.taskGroups">
+                    <td>{{task.name}}</td>
+                    <td>{{task.region.emirate.nameEn}} <span ng-if="task.region.emirateId == 1"> -
+                            {{task.region.name}}</span></td>
+                    <td>{{task.inspectionReason.nameEn}}</td>
+                    <td>{{task.startDate | date:'dd-MMMM-yyyy'}}</td>
+                    <td>{{task.endDate | date:'dd-MMMM-yyyy'}}</td>
+                    <td>{{scheduledTables.getEstablishmentCount(task)}}</td>
+                    <td class="action-icons">
+                        <div class="dropdown">
+                            <button class="btn btn-link dropdown-toggle" type="button" id="actionMenu"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <em class="fa fa-ellipsis-v" aria-hidden="true"></em>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="actionMenu">
+                                <a class="dropdown-item" href="#" ng-click="scheduledTables.review(task.id)">
+                                    <em class="fa fa-eye" aria-hidden="true"></em> Details
+                                </a>
+                                <a class="dropdown-item" href="#" ng-click="scheduledTables.edit(task.id)">
+                                    <em class="fa fa-pencil" aria-hidden="true"></em> Edit
+                                </a>
+                                <a class="dropdown-item" href="#" ng-click="scheduledTables.delete(task.id)">
+                                    <em class="fa fa-trash" aria-hidden="true"></em> Delete
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-        <!-- Ellipsis for Skipped Pages After -->
-        <li class="page-item" ng-if="scheduledTables.pageIndex < scheduledTables.totalPages - 3">
-            <span class="page-link">...</span>
-        </li>
+        <!-- Pagination Section -->
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination justify-content-center custom-pagination">
+                <!-- Previous Button -->
+                <li class="page-item" ng-class="{disabled: scheduledTables.pageIndex === 0}"
+                    ng-click="scheduledTables.previousPage()">
+                    <a class="page-link">
+                        <span aria-hidden="true">&lsaquo;</span>
+                    </a>
+                </li>
 
-        <!-- Last Page -->
-<!-- Last Page -->
-<li class="page-item" ng-if="scheduledTables.pageIndex < scheduledTables.totalPages - 3" ng-click="scheduledTables.goToPage(scheduledTables.totalPages - 1)">
-    <a class="page-link">{{ scheduledTables.totalPages }}</a>
-</li>
+                <!-- First Page -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex > 2" ng-click="scheduledTables.goToPage(0)">
+                    <a class="page-link">1</a>
+                </li>
 
-        <!-- Next Button -->
-        <li class="page-item" ng-class="{disabled: scheduledTables.pageIndex === scheduledTables.totalPages - 1}" ng-click="scheduledTables.nextPage()">
-            <a class="page-link">
-                <span aria-hidden="true">&rsaquo;</span>
-            </a>
-        </li>
-    </ul>
-</nav>
+                <!-- Ellipsis for Pages Skipped -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex > 2">
+                    <span class="page-link">...</span>
+                </li>
+
+                <!-- Page Numbers Range -->
+                <li class="page-item" ng-repeat="page in scheduledTables.getPageRange()"
+                    ng-class="{active: page === scheduledTables.pageIndex}" ng-click="scheduledTables.goToPage(page)">
+                    <a class="page-link">{{ page + 1 }}</a>
+                </li>
+
+                <!-- Ellipsis for Skipped Pages After -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex < scheduledTables.totalPages - 3">
+                    <span class="page-link">...</span>
+                </li>
+
+                <!-- Last Page -->
+                <!-- Last Page -->
+                <li class="page-item" ng-if="scheduledTables.pageIndex < scheduledTables.totalPages - 3"
+                    ng-click="scheduledTables.goToPage(scheduledTables.totalPages - 1)">
+                    <a class="page-link">{{ scheduledTables.totalPages }}</a>
+                </li>
+
+                <!-- Next Button -->
+                <li class="page-item"
+                    ng-class="{disabled: scheduledTables.pageIndex === scheduledTables.totalPages - 1}"
+                    ng-click="scheduledTables.nextPage()">
+                    <a class="page-link">
+                        <span aria-hidden="true">&rsaquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
     </div>
 
-<!-- Modal Structure -->
-<div id="filterModal" class="modal fade filter" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <p class="filter-title" data-translate="dashboard.lookingFor"></p>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <!-- Include the filterDashboard.html content -->
-                <div ng-include="'app/views/Dashboard/filter/filterDashboard.html'"></div>
-            </div>
-            <div class="modal-footer ">
-                <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'dashboard.close' | translate}}</button> -->
-                <button type="button" class="btn btn-warning custom-button" ng-click="scheduledTables.removeFilter(this)">
-                    {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
-                </button>
-                <ng-container class="inspector">
-
-                    <button type="button" class="btn btn-primary" ng-click="scheduledTables.filter(this)">
-                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+    <!-- Modal Structure -->
+    <div id="filterModal" class="modal fade filter" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="filter-title" data-translate="dashboard.lookingFor"></p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Include the filterDashboard.html content -->
+                    <div ng-include="'app/views/Dashboard/filter/filterDashboard.html'"></div>
+                </div>
+                <div class="modal-footer ">
+                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'dashboard.close' | translate}}</button> -->
+                    <button type="button" class="btn btn-warning custom-button"
+                        ng-click="scheduledTables.removeFilter(this)">
+                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
+                    </button>
+                    <ng-container class="inspector">
 
-                </ng-container>
+                        <button type="button" class="btn btn-primary" ng-click="scheduledTables.filter(this)">
+                            {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check"
+                                aria-hidden="true"></em>
+                        </button>
+
+                    </ng-container>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</div>
-
-

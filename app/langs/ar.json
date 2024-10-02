@@ -376,6 +376,7 @@
     "establishmentCount": "عدد المنشآت"
   },
   "inspection": {
+    "title": " جدول مهام ",
     "regionData": "بيانات المنطقة الجغرافية",
     "inspectionData": "بيانات التفتيش",
     "inspectionReason": "سبب التفتيش",
@@ -1387,7 +1388,6 @@
     "officeNameEn": "اسم بالإنجليزية",
     "officeCode": "الشفرة",
     "officeAddress": "عنوان",
-
     "fileManager": "مدير الملفات",
     "confirm": "تؤكد",
     "cancel": "إلغاء",
