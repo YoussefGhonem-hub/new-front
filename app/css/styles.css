@@ -13030,3 +13030,186 @@ th {
         padding: 0.5rem;
     }
 }
+
+/* Amr Css  */
+.stepper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 139px;
+    gap: 10px;
+    position: relative;
+    width: 100%;
+    max-width: 1073px;
+    height: 112px;
+    border-radius: 3px;
+    background-color: #fff;
+    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
+}
+
+.step-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 0;
+    width: 801px;
+    height: 81px;
+    border: 1px solid #CFD6DC;
+    border-radius: 6px;
+}
+
+.step {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    padding: 16px 24px;
+    gap: 10px;
+    width: 266.67px;
+    height: 72px;
+    position: relative;
+}
+
+.step-Active {
+    width: 266px;
+    height: 100px;
+    background: #B68A33;
+    box-shadow: 0px 2px 16px rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+    position: relative;
+    bottom: 11px;
+
+}
+
+.step-Done {
+    background: #F5EDDE;
+    height: 100%;
+}
+
+.step-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border: 2px solid #CFD6DC;
+    border-radius: 20px;
+    background: #fff;
+}
+
+.step-number.completed {
+    border-color: #B68A33;
+    color: #fff;
+    background: #B68A33;
+}
+
+.step-number.completed-Active {
+    border-color: #fff;
+    color: #fff;
+    background: #B68A33;
+}
+
+.step-text {
+    width: 141px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.step-title {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+    color: #000;
+}
+
+.step-description {
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #E2E2E2;
+}
+
+.step-description-InActive {
+    color: #8B8B8B !important;
+}
+
+.step-wrapper:not(:last-child) {
+    border-right: 1px solid #E2E2E2;
+}
+
+@media (max-width: 800px) {
+    .stepper {
+        padding: 20px 10px;
+    }
+
+    .step-wrapper {
+        width: 100%;
+    }
+}
+
+.Button-Custom {
+    background: #997133 !important;
+    border: none;
+}
+
+.Button-Prev {
+    border: 1px solid #997133 !important;
+    border-radius: 3px !important;
+    background: #fff !important;
+    color: #997133 !important;
+}
+
+.Button-Continar {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    padding: 26px;
+}
+
+.calender-Text {
+    font-size: 20px;
+    color: #997133;
+}
+
+.label-Text-Calander {
+    background: #FFFBF6;
+    color: #000;
+}
+
+.label-Text-Calander-active {
+    background: #FFFBF6 !important;
+    color: #997133 !important;
+}
+
+.panal-Header-Body {
+    background: #FFFBF6 !important;
+}
+
+.Header-Panal {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+}
+
+.panel .panel-heading:after {
+    box-shadow: none !important;
+}
+
+.disabledCells {
+    background-color: #FFFBF6 !important;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.75px;
+    text-align: left;
+}
+
+.cal-day-today {
+    background-color: #685A51 !important;
+    color: #fff !important;
+}
+
+.cal-day-today span[data-cal-date] {
+    color: #fff !important;
+}

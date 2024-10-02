@@ -8,7 +8,51 @@
         <div ng-class="{'panel-body color-blind' : app.layout.isColorBlind, 'panel-body' : !app.layout.isColorBlind}">
             <br /><br />
             <div class="wizard">
-                <ul class="steps-bar">
+                <div class="stepper">
+                    <div class="step-wrapper">
+                        <div class="step"
+                            ng-class="{'step-Active':schedule.activeStep == 1, 'step-Done': schedule.activeStep > 1}">
+                            <div class="step-number completed" ng-if="schedule.activeStep == 1"
+                                ng-class="{'completed-Active':schedule.activeStep == 1}">01</div>
+                            <div class="step-number completed" ng-if="schedule.activeStep > 1"
+                                ng-class="{'completed-Active':schedule.activeStep == 1}">
+                                <i class="fa fa-check"></i>
+                            </div>
+
+                            <div class="step-text">
+                                <div class="step-title">Area Details</div>
+                                <div class="step-description"
+                                    ngClass="{'step-description-InActive': schedule.activeStep != 1}">Lorem Ipsum is
+                                    simply</div>
+                            </div>
+                        </div>
+                        <div class="step"
+                            ng-class="{'step-Active':schedule.activeStep == 2, 'step-Done': schedule.activeStep > 2}">
+                            <div class="step-number completed" ng-if="schedule.activeStep <= 2"
+                                ng-class="{'completed-Active':schedule.activeStep == 2}">02</div>
+                            <div class="step-number completed" ng-if="schedule.activeStep > 2"
+                                ng-class="{'completed-Active':schedule.activeStep == 2}">
+                                <i class="fa fa-check"></i>
+                            </div>
+                            <div class="step-text">
+                                <div class="step-title">Inspection Details</div>
+                                <div class="step-description"
+                                    ngClass="{'step-description-InActive': schedule.activeStep != 2}">Lorem Ipsum is
+                                    simply</div>
+                            </div>
+                        </div>
+                        <div class="step" ng-class="{'step-Active':schedule.activeStep == 3}">
+                            <div class="step-number" ng-class="{'completed-Active':schedule.activeStep == 3}">03</div>
+                            <div class="step-text">
+                                <div class="step-title">Task Distribution</div>
+                                <div class="step-description"
+                                    ngClass="{'step-description-InActive': schedule.activeStep != 3}">Lorem Ipsum is
+                                    simply</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <ul class="steps-bar">
                     <li ng-class="{'active':schedule.activeStep >= 1}">
                         <label>{{'inspection.regionData' | translate}}</label>
                     </li>
@@ -18,27 +62,40 @@
                     <li ng-class="{'active':schedule.activeStep >= 3}">
                         <label>{{'inspection.taskDistribution' | translate}}</label>
                     </li>
-                </ul>
+                </ul> -->
                 <hr />
                 <div ng-if="schedule.activeStep==1" class="wizard-step">
-                    <form role="form" class="mb-lg form-horizontal" name="stepOneForm">
+                    <form role="form" class="mb-lg" name="stepOneForm">
+                        <div class="row col-md-12" style="display: flex;flex-wrap: wrap;    background: #F0ECE6;
+                        /* height: 178px; */
+                        padding: 26px;">
+                            <div class="form-group col-6" style="padding: 10px;">
+                                <label><span class="text-danger">* </span><span>{{'inspection.scheduleName' |
+                                        translate}}</span></label>
+                                <input ng-model="schedule.inspectionSchedule.name" type="text"
+                                    placeholder="{{'inspection.scheduleName' | translate}}" autocomplete="off"
+                                    class="form-control" validator="required" name="scheduleName" maxlength="256"
+                                    ng-disabled="schedule.editMode && schedule.inspectionSchedule.isApproved" />
+                            </div>
+                            <location-inspection class="col-6 ng-model=" schedule.inspectionSchedule.location"
+                                is-preview="schedule.editMode"></location-inspection>
+                        </div>
                         <div class="row form-group">
-                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'inspection.scheduleName' | translate}}</span></label>
+                            <!-- <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'inspection.scheduleName' | translate}}</span></label>
                             <div class="col-sm-4">
                                 <input ng-model="schedule.inspectionSchedule.name" type="text" placeholder="{{'inspection.scheduleName' | translate}}"
                                        autocomplete="off" class="form-control" validator="required" name="scheduleName" maxlength="256"
                                        ng-disabled="schedule.editMode && schedule.inspectionSchedule.isApproved" />
-                            </div>
+                            </div> -->
                         </div>
                         <div class="row form-group">
-                            <div class="col-md-12">
-                                <location-inspection ng-model="schedule.inspectionSchedule.location" is-preview="schedule.editMode"></location-inspection>
-                            </div>
+
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <button type="submit" ripple="" ng-disabled="schedule.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="schedule.goToSecondStep()"
-                                        validation-submit="stepOneForm">
+                                <button type="submit" ripple="" ng-disabled="schedule.isBusy"
+                                    class="mr mb-sm btn btn-primary pull-right Button-Custom"
+                                    ng-click="schedule.goToSecondStep()" validation-submit="stepOneForm">
                                     {{'general.next' | translate}}<span class="ripple"></span>
                                 </button>
                             </div>
@@ -46,145 +103,188 @@
                     </form>
                 </div>
                 <div ng-if="schedule.activeStep==2" class="wizard-step">
-                    <form role="form" class="mb-lg form-horizontal" name="stepTwoForm">
-                        <div class="row form-group">
-                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'inspection.inspectionReason' | translate}}</span></label>
-                            <div class="col-sm-4">
-                                <ui-select ng-model="schedule.params.filterParams.inspectionReason" validator="required" name="inspectionReason" theme="bootstrap" class="text-left"
-                                           ng-disabled="schedule.editMode && schedule.inspectionSchedule.isApproved">
-                                    <ui-select-match placeholder="{{'inspection.inspectionReason' | translate}}">{{$select.selected | localizeString}}</ui-select-match>
-                                    <ui-select-choices repeat="inspectionReason in schedule.inspectionReasons | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
-                                        <span ng-bind-html="inspectionReason | localizeString | highlight: $select.search"></span>
+                    <form role="form" class="mb-lg" name="stepTwoForm">
+                        <div class="row col-md-12"
+                            style="display: flex;flex-wrap: wrap;    background: #F0ECE6;padding: 26px;">
+                            <div class="form-group col-6" style="padding: 10px;">
+                                <label><span class="text-danger">* </span><span>{{'inspection.inspectionReason' |
+                                        translate}}</span></label>
+                                <ui-select ng-model="schedule.params.filterParams.inspectionReason" validator="required"
+                                    name="inspectionReason" theme="bootstrap" class="text-left"
+                                    ng-disabled="schedule.editMode && schedule.inspectionSchedule.isApproved">
+                                    <ui-select-match
+                                        placeholder="{{'inspection.inspectionReason' | translate}}">{{$select.selected |
+                                        localizeString}}</ui-select-match>
+                                    <ui-select-choices
+                                        repeat="inspectionReason in schedule.inspectionReasons | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                                        <span
+                                            ng-bind-html="inspectionReason | localizeString | highlight: $select.search"></span>
                                     </ui-select-choices>
                                 </ui-select>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-sm-3 control-label"><span>{{'mediaLicense.activities' | translate}}</span></label>
-                            <div class="col-sm-4">
-                                <ui-select ng-model="schedule.params.filterParams.economicActivities" name="economicActivities" theme="bootstrap" multiple
-                                           ng-disabled="schedule.editMode && schedule.inspectionSchedule.isApproved">
-                                    <ui-select-match placeholder="{{'mediaLicense.selectActivities' | translate}}">{{$item| localizeString}}</ui-select-match>
-                                    <ui-select-choices repeat="economicActivity in schedule.economicActivities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                            <div class="form-group col-6" style="padding: 10px;">
+                                <label><span>{{'mediaLicense.activities' | translate}}</span></label>
+                                <ui-select ng-model="schedule.params.filterParams.economicActivities"
+                                    name="economicActivities" theme="bootstrap" multiple
+                                    ng-disabled="schedule.editMode && schedule.inspectionSchedule.isApproved">
+                                    <ui-select-match
+                                        placeholder="{{'mediaLicense.selectActivities' | translate}}">{{$item|
+                                        localizeString}}</ui-select-match>
+                                    <ui-select-choices
+                                        repeat="economicActivity in schedule.economicActivities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
                                         <div class="row">
                                             <div class="col-md-10">
-                                                <span ng-bind-html="economicActivity | localizeString | highlight: $select.search" style="white-space:normal !important"></span>
+                                                <span
+                                                    ng-bind-html="economicActivity | localizeString | highlight: $select.search"
+                                                    style="white-space:normal !important"></span>
                                             </div>
                                             <div class="col-md-2">
-                                                <div class="label pull-left label-warning">{{economicActivity.numberOfEstablishments}}</div>
+                                                <div class="label pull-left label-warning">
+                                                    {{economicActivity.numberOfEstablishments}}</div>
                                             </div>
                                         </div>
                                     </ui-select-choices>
                                 </ui-select>
+                                <span ui-multiple item="'economicActivity'"
+                                    frommodel="schedule.params.filterParams.economicActivities"
+                                    tomodel="schedule.inspectionSchedule.taskGroupEconomicActivities"
+                                    editmode="schedule.editMode"></span>
                             </div>
-                            <span ui-multiple item="'economicActivity'" frommodel="schedule.params.filterParams.economicActivities" tomodel="schedule.inspectionSchedule.taskGroupEconomicActivities"
-                                  editmode="schedule.editMode"></span>
-                        </div>
-                        <div class="row form-group">
-                            <label for="input-id-1" class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'inspection.ScheduleStartingDate' | translate}}</span></label>
-                            <div class="col-sm-4">
+                            <div class="form-group col-6" style="padding: 10px;">
+                                <label for="input-id-1"><span class="text-danger">*
+                                    </span><span>{{'inspection.ScheduleStartingDate' | translate}}</span></label>
                                 <p class="input-group hackyhack">
-                                    <input type="text" uib-datepicker-popup="{{schedule.format}}" ng-model="schedule.inspectionSchedule.startDate" name="startingDate" validator="required"
-                                           is-open="schedule.startDateOpened" min-date="false" max-date="false" uib-datepicker-options="schedule.dateOptions" show-weeks="false"
-                                           date-disabled="schedule.startDateDisabled(date, mode)"
-                                           close-text="{{'datePicker.close' | translate}}" class="form-control" current-text="{{'datePicker.today' | translate}}"
-                                           clear-text="{{'datePicker.clear' | translate}}" placeholder="dd/MM/yyyy" disabled />
+                                    <input type="text" uib-datepicker-popup="{{schedule.format}}"
+                                        ng-model="schedule.inspectionSchedule.startDate" name="startingDate"
+                                        validator="required" is-open="schedule.startDateOpened" min-date="false"
+                                        max-date="false" uib-datepicker-options="schedule.dateOptions"
+                                        show-weeks="false" date-disabled="schedule.startDateDisabled(date, mode)"
+                                        close-text="{{'datePicker.close' | translate}}" class="form-control"
+                                        current-text="{{'datePicker.today' | translate}}"
+                                        clear-text="{{'datePicker.clear' | translate}}" placeholder="dd/MM/yyyy"
+                                        disabled />
                                     <span class="input-group-btn">
-                                        <button type="button" ng-disabled="schedule.isBusy" ng-click="schedule.openStartDate($event)" class="btn btn-default">
+                                        <button type="button" ng-disabled="schedule.isBusy"
+                                            ng-click="schedule.openStartDate($event)" class="btn btn-default">
                                             <em class="fa fa-calendar"></em>
                                         </button>
                                     </span>
                                 </p>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <label for="input-id-1" class="col-sm-3 control-label"><span class="text-danger">* </span><span>{{'inspection.ScheduleEndingDate' | translate}}</span></label>
-                            <div class="col-sm-4">
+                            <div class="form-group col-6" style="padding: 10px;">
+                                <label for="input-id-1"><span class="text-danger">*
+                                    </span><span>{{'inspection.ScheduleEndingDate' | translate}}</span></label>
                                 <p class="input-group hackyhack">
-                                    <input type="text" uib-datepicker-popup="{{schedule.format}}" ng-model="schedule.inspectionSchedule.endDate" name="endingDate" validator="required"
-                                           is-open="schedule.endDateOpened" min-date="false" max-date="false" show-weeks="false" show-button-bar="false"
-                                           uib-datepicker-options="schedule.dateOptions"
-                                           date-disabled="schedule.endDisabled(date, mode)" close-text="{{'datePicker.close' | translate}}" class="form-control"
-                                           current-text="{{'datePicker.today' | translate}}" clear-text="{{'datePicker.clear' | translate}}" disabled />
+                                    <input type="text" uib-datepicker-popup="{{schedule.format}}"
+                                        ng-model="schedule.inspectionSchedule.endDate" name="endingDate"
+                                        validator="required" is-open="schedule.endDateOpened" min-date="false"
+                                        max-date="false" show-weeks="false" show-button-bar="false"
+                                        uib-datepicker-options="schedule.dateOptions"
+                                        date-disabled="schedule.endDisabled(date, mode)"
+                                        close-text="{{'datePicker.close' | translate}}" class="form-control"
+                                        current-text="{{'datePicker.today' | translate}}"
+                                        clear-text="{{'datePicker.clear' | translate}}" disabled />
                                     <span class="input-group-btn">
-                                        <button type="button" ng-click="schedule.openEndDate($event)" class="btn btn-default">
+                                        <button type="button" ng-click="schedule.openEndDate($event)"
+                                            class="btn btn-default">
                                             <em class="fa fa-calendar"></em>
                                         </button>
                                     </span>
                                 </p>
                             </div>
-                        </div>
-                        <div class="row form-group">
-                            <label class="col-sm-3 control-label"><span class="text-danger">* </span><span data-translate="achievements.employeeName"></span></label>
-                            <div class="col-sm-4">
-                                <ui-select ng-model="schedule.inspectors" theme="bootstrap" class="text-left" name="employee" multiple>
-                                    <ui-select-match placeholder="{{'achievements.selectEmployee' | translate}}">{{$item.firstName + ' ' + $item.lastName}}</ui-select-match>
-                                    <ui-select-choices repeat="employee in schedule.employees | propsFilter: {firstName: $select.search, lastName: $select.search}">
-                                        <span ng-bind-html="employee.firstName + ' ' + employee.lastName | highlight: $select.search"></span>
+                            <div class="form-group col-6" style="padding: 10px;">
+                                <label><span class="text-danger">* </span><span
+                                        data-translate="achievements.employeeName"></span></label>
+                                <ui-select ng-model="schedule.inspectors" theme="bootstrap" class="text-left"
+                                    name="employee" multiple>
+                                    <ui-select-match
+                                        placeholder="{{'achievements.selectEmployee' | translate}}">{{$item.firstName +
+                                        ' ' + $item.lastName}}</ui-select-match>
+                                    <ui-select-choices
+                                        repeat="employee in schedule.employees | propsFilter: {firstName: $select.search, lastName: $select.search}">
+                                        <span
+                                            ng-bind-html="employee.firstName + ' ' + employee.lastName | highlight: $select.search"></span>
                                     </ui-select-choices>
                                 </ui-select>
+                                <span ui-multiple item="'user'" frommodel="schedule.inspectors"
+                                    tomodel="schedule.inspectionSchedule.taskGroupEmployees"
+                                    editmode="schedule.editMode"></span>
                             </div>
-                            <span ui-multiple item="'user'" frommodel="schedule.inspectors" tomodel="schedule.inspectionSchedule.taskGroupEmployees" editmode="schedule.editMode"></span>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
-                                <button type="submit" ripple="" ng-disabled="schedule.isBusy" class="mr mb-sm btn btn-primary pull-right" ng-click="schedule.goToThirdStep()"
-                                        validation-submit="stepTwoForm">
+                            <div class="col-md-12 Button-Continar">
+                                <button type="submit" ripple="" ng-disabled="schedule.isBusy"
+                                    class="mr mb-sm btn btn-primary pull-right Button-Custom"
+                                    ng-click="schedule.goToThirdStep()" validation-submit="stepTwoForm">
                                     {{'general.next' | translate}}<span class="ripple"></span>
                                 </button>
-                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="schedule.previousToFirstStep()">
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right Button-Prev"
+                                    ng-click="schedule.previousToFirstStep()">
                                     {{'general.previous' | translate}}<span class="ripple"></span>
                                 </button>
                             </div>
                         </div>
                     </form>
                 </div>
+
                 <div ng-if="schedule.activeStep==3" class="wizard-step">
                     <form role="form" class="mb-lg form-horizontal" name="stepThreeForm">
                         <div class="row">
                             <div ng-class="{ 'col-md-9': !(schedule.editMode && schedule.inspectionSchedule.isApproved),
                                  'col-md-11': (schedule.editMode && schedule.inspectionSchedule.isApproved) }">
-                                <div class="row form-group">
-                                    <label class="col-sm-4 control-label"></label>
-                                    <div class="col-sm-4">
-                                        <ui-select ng-model="schedule.inspector" validator="required" name="inspector" theme="bootstrap" class="text-left"
-                                                   ng-if="!(schedule.editMode && schedule.inspectionSchedule.isApproved)">
-                                            <ui-select-match placeholder="{{'achievements.selectEmployee' | translate}}">
+
+                                <div class="row">
+                                    <ng-include
+                                        src="'app/views/Inspection/schedule/calendarControls.html'"></ng-include>
+                                    <mwl-calendar view="schedule.calendarView" view-date="schedule.viewDate"
+                                        events="schedule.events" view-title="schedule.calendarTitle"
+                                        day-view-start="07:00" day-view-end="15:00" day-view-split="60"
+                                        on-event-click="eventClicked(calendarEvent)"
+                                        on-event-times-changed="schedule.eventDropped(calendarEvent, calendarNewEventStart, calendarNewEventEnd)"
+                                        cell-is-open="true" cell-modifier="schedule.cellModifier(calendarCell)">
+                                    </mwl-calendar>
+                                </div>
+                            </div>
+                            <div class="col-md-3"
+                                ng-if="!(schedule.editMode && schedule.inspectionSchedule.isApproved)">
+                                <div class="row">
+                                    <label class="col-sm-12 control-label"></label>
+                                    <div class="col-sm-12">
+                                        <ui-select ng-model="schedule.inspector" validator="required" name="inspector"
+                                            theme="bootstrap" class="text-left"
+                                            ng-if="!(schedule.editMode && schedule.inspectionSchedule.isApproved)">
+                                            <ui-select-match
+                                                placeholder="{{'achievements.selectEmployee' | translate}}">
                                                 {{$select.selected.firstName + ' ' + $select.selected.lastName}}
                                             </ui-select-match>
-                                            <ui-select-choices repeat="inspector in schedule.employees | propsFilter: {firstName: $select.search, lastName: $select.search}">
-                                                <span ng-bind-html="inspector.firstName + ' ' + inspector.lastName | highlight: $select.search"></span>
+                                            <ui-select-choices
+                                                repeat="inspector in schedule.employees | propsFilter: {firstName: $select.search, lastName: $select.search}">
+                                                <span
+                                                    ng-bind-html="inspector.firstName + ' ' + inspector.lastName | highlight: $select.search"></span>
                                             </ui-select-choices>
                                         </ui-select>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <ng-include src="'app/views/Inspection/schedule/calendarControls.html'"></ng-include>
-                                    <mwl-calendar view="schedule.calendarView" view-date="schedule.viewDate" events="schedule.events" view-title="schedule.calendarTitle"
-                                                  day-view-start="07:00" day-view-end="15:00" day-view-split="60" on-event-click="eventClicked(calendarEvent)"
-                                                  on-event-times-changed="schedule.eventDropped(calendarEvent, calendarNewEventStart, calendarNewEventEnd)"
-                                                  cell-is-open="true" cell-modifier="schedule.cellModifier(calendarCell)">
-                                    </mwl-calendar>
-                                </div>
-                            </div>
-                            <div class="col-md-3" ng-if="!(schedule.editMode && schedule.inspectionSchedule.isApproved)">
-                                <div class="panel panel-primary">
-                                    <div class="panel-heading">{{'inspection.establishmentList' | translate}}</div>
-                                    <div class="panel-body">
+                                <div class="panel panel-primary" style="margin-top: 10px;">
+                                    <div class="panel-heading label-Text-Calander-active Header-Panal">
+                                        {{'inspection.establishmentList' | translate}}</div>
+                                    <div class="panel-body panal-Header-Body">
                                         <div class="row form-group">
                                             <div class="col-md-12">
                                                 <div class="input-group">
-                                                    <input type="text" class="form-control" ng-model="schedule.params.searchtext">
+                                                    <input type="text" class="form-control"
+                                                        ng-model="schedule.params.searchtext">
                                                     <span class="input-group-btn">
-                                                        <button type="button" class="btn btn-default" ng-click="schedule.doSearch()">بحث</button>
+                                                        <button type="button" class="btn btn-default"
+                                                            ng-click="schedule.doSearch()">بحث</button>
                                                     </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <div ng-repeat="item in schedule.establishments" drop-data="{event: item}"
-                                                     mwl-draggable="true">
+                                                <div ng-repeat="item in schedule.establishments"
+                                                    drop-data="{event: item}" mwl-draggable="true">
                                                     <div style="border-color:darkkhaki; border-style:solid; border-width:1px; width:100%; border-radius:5px; padding-top:7px;
                                                                     padding-bottom:7px; margin-bottom:3px;">
                                                         <div class="row">
@@ -196,19 +296,20 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-1"></div>
-                                                            <div class="col-md-5">
+                                                            <!-- <div class="col-md-5">
                                                                 <small data-translate="address.Community"></small>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="col-md-5">
-                                                                <small>{{item.address.community | localizeString}}</small>
+                                                                <small>{{item.address.community |
+                                                                    localizeString}}</small>
                                                             </div>
                                                             <div class="col-md-1"></div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="col-md-1"></div>
-                                                            <div class="col-md-5">
+                                                            <!-- <div class="col-md-5">
                                                                 <small data-translate="establishment.LicenseNumber"></small>
-                                                            </div>
+                                                            </div> -->
                                                             <div class="col-md-5">
                                                                 <small>{{item.licenseNumber}}</small>
                                                             </div>
@@ -218,10 +319,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row" ng-if="schedule.params.totalRecords > schedule.params.pageSize">
+                                        <div class="row"
+                                            ng-if="schedule.params.totalRecords > schedule.params.pageSize">
                                             <div class="col-md-1"></div>
                                             <div class="col-md-10 text-center">
-                                                <div paging adjacent="1" page="schedule.params.page" page-size="schedule.params.pageSize" total="schedule.params.totalRecords" paging-action="schedule.DoPaging(page, pageSize, total)"></div>
+                                                <div paging adjacent="1" page="schedule.params.page"
+                                                    page-size="schedule.params.pageSize"
+                                                    total="schedule.params.totalRecords"
+                                                    paging-action="schedule.DoPaging(page, pageSize, total)"></div>
                                             </div>
                                             <div class="col-md-1"></div>
                                         </div>
@@ -231,16 +336,20 @@
                         </div>
                         <hr />
                         <div class="row">
-                            <div class="col-md-12">
-                                <button type="button" ripple="" validation-submit="stepThreeForm" ng-if="!schedule.editMode" ng-disabled="schedule.isBusy"
-                                        class="mr mb-sm btn btn-primary pull-right" ng-click="schedule.save(2)">
+                            <div class="col-md-12 Button-Continar">
+                                <button type="button" ripple="" validation-submit="stepThreeForm"
+                                    ng-if="!schedule.editMode" ng-disabled="schedule.isBusy"
+                                    class="mr mb-sm btn btn-primary pull-right Button-Custom"
+                                    ng-click="schedule.save(2)">
                                     {{'general.save' | translate}}<span class="ripple"></span>
                                 </button>
-                                <button type="button" ripple="" validation-submit="stepThreeForm" ng-if="!schedule.editMode" ng-disabled="schedule.isBusy"
-                                        class="mr mb-sm btn btn-default pull-right" ng-click="schedule.save(1)">
+                                <button type="button" ripple="" validation-submit="stepThreeForm"
+                                    ng-if="!schedule.editMode" ng-disabled="schedule.isBusy"
+                                    class="mr mb-sm btn btn-default pull-right" ng-click="schedule.save(1)">
                                     {{'general.applyLater' | translate}}<span class="ripple"></span>
                                 </button>
-                                <button type="button" class="mr mb-sm btn btn-warning pull-right" ng-click="schedule.previousToSecondStep()">
+                                <button type="button" class="mr mb-sm btn btn-warning pull-right Button-Prev"
+                                    ng-click="schedule.previousToSecondStep()">
                                     {{'general.previous' | translate}}<span class="ripple"></span>
                                 </button>
                             </div>
