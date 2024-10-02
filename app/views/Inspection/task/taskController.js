@@ -1,13 +1,13 @@
-﻿(function () {
+﻿   (function () {
     'use strict';
 
     angular
         .module('eServices')
         .controller('taskController', taskController);
 
-    taskController.$inject = ['$rootScope', '$scope', '$http', '$uibModal', '$filter', '$timeout', 'UserProfile'];
+    taskController.$inject = ['$rootScope', '$scope', '$http', '$timeout', '$filter', '$compile', 'UserProfile'];
 
-    function taskController($rootScope, $scope, $http, $uibModal, $filter, $timeout, UserProfile) {
+    function taskController($rootScope, $scope, $http, $timeout, $filter, $compile, UserProfile) {
         var vm = this;
 
         // Initialize variables
@@ -15,7 +15,12 @@
         vm.pageIndex = 0;
         vm.pageSize = 10;
         vm.totalPages = 0;
+        vm.entries = [5, 10, 20, 30, 50];
+        vm.selectedEntries = vm.entries[1];
+        vm.searchText = '';
         vm.tasks = [];
+        vm.emirates = [];
+        vm.communities = [];
         var searchTimeout;
 
         // Fetch emirates and communities for translation
@@ -33,29 +38,57 @@
                 console.error('Error fetching communities', error);
             });
 
-        // Get translated establishment name
+        // Function to get translated emirate name
         vm.getTranslatedEmirate = function (communityId) {
             var community = $filter('filter')(vm.communities, { id: communityId }, true)[0];
             return community ? (vm.language === 'ar' ? community.region.emirate.nameAr : community.region.emirate.nameEn) : '';
         };
 
+        // Function to get translated community name
         vm.getTranslatedCommunity = function (communityId) {
             var community = $filter('filter')(vm.communities, { id: communityId }, true)[0];
             return community ? (vm.language === 'ar' ? community.nameAr : community.nameEn) : '';
         };
 
+        // Loader function
+        function loader() {
+            var loaderHtml = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
+                '<div class="sk-cube sk-cube1"></div>' +
+                '<div class="sk-cube sk-cube2"></div>' +
+                '<div class="sk-cube sk-cube3"></div>' +
+                '<div class="sk-cube sk-cube4"></div>' +
+                '<div class="sk-cube sk-cube5"></div>' +
+                '<div class="sk-cube sk-cube6"></div>' +
+                '<div class="sk-cube sk-cube7"></div>' +
+                '<div class="sk-cube sk-cube8"></div>' +
+                '<div class="sk-cube sk-cube9"></div>' +
+                '</div>';
+            angular.element('body').append($compile(loaderHtml)($scope));
+        }
+
+        // Function to remove loader
+        function removeLoader() {
+            angular.element('.sk-cube-grid').remove();
+        }
+
         // Fetch tasks from the server
         vm.loadTasks = function () {
+            loader(); // Show loader
+
             var params = {
                 page: vm.pageIndex + 1,
-                pageSize: vm.pageSize
+                pageSize: vm.selectedEntries,
+                searchtext: vm.searchText || null
             };
+
             $http.post($rootScope.app.httpSource + 'api/InspectionTask/GetInspectionTask', params)
                 .then(function (response) {
                     vm.tasks = response.data.content;
-                    vm.totalPages = Math.ceil(response.data.totalRecords / vm.pageSize);
+                    vm.totalPages = Math.ceil(response.data.totalRecords / vm.selectedEntries);
+                    removeLoader(); // Remove loader after loading tasks
                 }, function (error) {
                     console.error('Error loading tasks', error);
+                    removeLoader(); // Remove loader on error
                 });
         };
 
@@ -82,12 +115,24 @@
         };
 
         vm.getPageRange = function () {
-            var start = Math.max(0, vm.pageIndex - 2);
+            var start = Math.max(0, vm.pageIndex - Math.floor(5 / 2));
             var end = Math.min(vm.totalPages, start + 5);
+            start = Math.max(0, end - 5);
             return Array.from({ length: end - start }, (_, i) => start + i);
         };
 
-        // Initialize by loading tasks
+        // Search functionality with debounce
+        vm.filterData = function () {
+            if (searchTimeout) {
+                $timeout.cancel(searchTimeout);
+            }
+            searchTimeout = $timeout(function () {
+                vm.pageIndex = 0;
+                vm.loadTasks();
+            }, 2000);  // 2 seconds debounce time
+        };
+
+        // Initial load
         vm.loadTasks();
     }
 })();
