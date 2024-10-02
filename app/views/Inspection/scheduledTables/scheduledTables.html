@@ -55,12 +55,11 @@
                 </div>
                 <div class="col-md-2">
                     <!-- Dropdown to select number of rows per page -->
+
+
                     <select class="form-control" ng-model="scheduledTables.selectedEntries"
-                        ng-change="scheduledTables.loadTaskGroups()" ng-init="scheduledTables.selectedEntries = null">
-                        <!-- Placeholder option that is disabled and selected -->
-                        <option value="" disabled selected>Entries</option>
-                        <!-- Options for number of entries -->
-                        <option ng-repeat="entry in scheduledTables.entries" value="{{entry}}">{{entry}}</option>
+                        ng-options="entry for entry in scheduledTables.entries"
+                        ng-change="scheduledTables.loadTaskGroups()">
                     </select>
                 </div>
                 <div class="col-md-2 inspector">

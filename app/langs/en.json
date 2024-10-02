@@ -858,6 +858,7 @@
   },
   "establishment": {
     "establishmentName": "Establishment Name",
+    "title": "Establishment Scheduled Tables",
     "establishmentDetails": "Establishment Details",
     "Authority": "Authority",
     "LicenseNumber": "License Number",

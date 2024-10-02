@@ -10,14 +10,16 @@
         </p>
     </div>
 
+
+
     <!-- Header and Buttons -->
     <div class="row">
         <div class="col-md-4">
-            <h2 class="app-view-header" style="font-weight: bold;">
+            <h2 class="app-view-header" style="font-weight: bold;    font-size: 22px;">
                 <span class="back-arrow">
                     <em class="fa fa-chevron-left"></em>
                 </span>
-                {{'inspection.title' | translate}}
+                {{'establishment.title' | translate}}
             </h2>
         </div>
         <div class="col-md-8 text-right formSubmit">
@@ -40,9 +42,9 @@
         </div>
         <div class="col-md-2">
             <!-- Dropdown to select number of rows per page -->
+            <!-- Dropdown to select number of rows per page -->
             <select class="form-control" ng-model="establishment.selectedEntries"
-                ng-change="establishment.loadTaskGroups()">
-                <option ng-repeat="entry in establishment.entries" value="{{entry}}">{{entry}}</option>
+                ng-options="entry for entry in establishment.entries" ng-change="establishment.loadTaskGroups()">
             </select>
         </div>
         <div class="col-md-2 inspector">
