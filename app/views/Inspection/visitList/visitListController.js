@@ -166,7 +166,10 @@
             if (!establishment) return '';
             return vm.language === 'ar' ? establishment.nameAr : establishment.nameEn;
         };
+        vm.unscheduledvisit = function () {
+            $state.go('app.unscheduledvisit');
 
+        }
         // Initial load
         vm.loadVisits();
     }

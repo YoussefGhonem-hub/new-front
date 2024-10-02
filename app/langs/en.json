@@ -320,6 +320,7 @@
     "FineNo": "Fine Number"
   },
   "visit": {
+    "unscheduledVisit": "Unscheduled Visit",
     "isItFound": "Do you find the establishment?",
     "yes": "Yes",
     "no": "No",

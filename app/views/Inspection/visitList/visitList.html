@@ -22,7 +22,8 @@
         </div>
         <div class="col-md-8 text-right formSubmit">
             <button type="button" class="btn btn-warning" ng-click="visit.unscheduledvisit()">
-                &nbsp;&nbsp;<em class="fa fa-camera" aria-hidden="true"></em>
+                &nbsp;&nbsp;<em class="fa fa-camera" aria-hidden="true"></em> {{'visit.unscheduledVisit' |
+                translate}}
             </button>
         </div>
     </div>
@@ -58,7 +59,9 @@
                 ng-change="visit.loadVisits()">
             </select>
         </div>
-        <div class="col-md-2">
+
+        <div class="col-md-2 inspector">
+            <!-- Button to open the filter modal -->
             <button class="btn btn-primary" btn-layer-morph="visit.click()" btn-layer="visit.filter"
                 target="#layer-search">
                 <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
