@@ -3,36 +3,38 @@
 
     angular
         .module('eServices')
-        .controller('BooksController', BooksController);
+        .controller('ScheduledTablesController', ScheduledTablesController);
 
-    BooksController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$uibModal', '$state', '$compile'];
+    ScheduledTablesController.$inject = ['$rootScope', '$scope', 'UserProfile', '$filter', '$http', '$state', 'SweetAlert', '$compile', '$timeout'];
 
-    function BooksController($rootScope, $scope, $http, $filter, $uibModal, $state, $compile) {
+    function ScheduledTablesController($rootScope, $scope, UserProfile, $filter, $http, $state, SweetAlert, $compile, $timeout) {
         var vm = this;
 
-        // Initialize variables
-        vm.books = [];
+        // Loader flag
+        vm.isLoading = false;
+
+        // Pagination parameters
         vm.pageIndex = 0;
         vm.pageSize = 10;
         vm.totalPages = 0;
-        vm.searchText = '';
-        vm.sortBy = null; // No default sorting column initially
-        vm.sortDirection = null; // No default sorting direction initially
-        vm.entries = [5, 10, 20, 30, 50];
-        vm.selectedEntries = vm.entries[1];
-        vm.totalBooks = 0;
-        vm.isLoading = false; // Loader flag
+        vm.visiblePages = 5;
 
-        // Helper function to format the languages
-        vm.formatLanguages = function (languages) {
-            return languages.map(function (langObj) {
-                return $filter('localizeString')(langObj.language); // Assuming language field exists in the object
-            }).join(', ');
-        };
+        // Entries list
+        vm.entries = [5, 10, 20, 30, 50];
+        vm.selectedEntries = vm.entries[1]; 
+
+        // Search text with debounce timer
+        vm.searchText = '';  // Default search text
+        var searchTimeout;  // Timer for debouncing the search
+
+        // Get user profile
+        vm.user = UserProfile.getProfile();
+
+        // Task groups data
+        vm.taskGroups = [];
 
         // Loader function
         function loader() {
-            vm.isLoading = true;
             var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
                 '<div class="sk-cube sk-cube1"></div>' +
                 '<div class="sk-cube sk-cube2"></div>' +
@@ -49,180 +51,162 @@
 
         function removeLoader() {
             angular.element('.sk-cube-grid').remove();
-            vm.isLoading = false;
         }
-
-        // Load books with sorting and pagination
-        vm.loadBooks = function () {
-            loader();  // Show loader while fetching data
+         vm.isObjectEmpty = function (card) {
+            if (card) {
+                return Object.keys(card).length === 0;
+            }
+            else {
+                return true;
+            }
+        }
+        // Fetch data for task groups with pagination, page size, and search filter
+        vm.loadTaskGroups = function () {
+            loader();  // Show loader
 
             var params = {
                 page: vm.pageIndex + 1,
-                pageSize: vm.selectedEntries,
-                searchText: vm.searchText || null,
-                sortBy: vm.sortBy, // No sorting if null
-                sortDirection: vm.sortDirection // No sorting if null
+                pageSize: (vm.selectedEntries ?? 10),
+                searchtext: vm.searchText || null  // If searchText is empty, send an empty string
             };
 
-            $http.post($rootScope.app.httpSource + 'api/Book/GetAllBooks', params)
+            $http.post($rootScope.app.httpSource + 'api/TaskGroup/GetTaskGroups', params)
                 .then(function (response) {
-                    vm.books = response.data.content;
-                    vm.totalBooks = response.data.totalRecords || 0;
-                    vm.totalPages = Math.ceil(vm.totalBooks / vm.selectedEntries);
-                    removeLoader();  // Remove loader after fetching data
+                    vm.taskGroups = response.data.content;
+                    var totalRecords = response.data.totalRecords || 0;
+                    vm.totalPages = totalRecords > 0 
+                        ? Math.ceil(totalRecords / (vm.selectedEntries ?? 10)) 
+                        : 1;  // Handle cases where there are no records
+                    removeLoader();
                 }, function (error) {
-                    console.error('Error loading books', error);
-                    removeLoader();  // Remove loader in case of error
+                    console.error('Error loading task groups', error);
+                    removeLoader();
                 });
         };
 
-        // Open the modal for adding a new book
-        vm.open = function (size) {
-            var modalInstance = $uibModal.open({
-                templateUrl: 'app/views/Employee/book/AddBook/addBook.html',
-                controller: 'addBookController',
-                size: size,
-                resolve: {
-                    book: function () {
-                        return null;
-                    }
+        vm.addScheduleTable = function () {
+            console.log("addScheduleTable =>>");
+            $state.go('app.scheduleInspectors');
+        };
+        vm.edit = function (taskGroupId) {
+            $state.go('app.scheduleInspectors', { id: taskGroupId });
+        };
+
+        vm.review = function (Id) {
+            $state.go('app.scheduleInspectors', { id: Id });
+        };
+
+        // Initialize by loading task groups
+        vm.loadTaskGroups();
+
+        // Watch for changes in selectedEntries to reload data with new page size
+        $scope.$watch('scheduledTables.selectedEntries', function (newVal, oldVal) {
+            if (newVal !== oldVal) {
+                vm.pageSize = newVal;
+                vm.pageIndex = 0;
+                vm.loadTaskGroups();
+            }
+        });
+
+        // Debounced search filter
+        $scope.$watch('scheduledTables.searchText', function (newVal, oldVal) {
+            if (newVal !== oldVal) {
+                // Clear the existing timeout if the user is still typing
+                if (searchTimeout) {
+                    $timeout.cancel(searchTimeout);
                 }
-            });
 
-            modalInstance.result.then(function (newBook) {
-                vm.insertBook(newBook);
-            }, function () {
-                // Handle dismissal of the modal
-            });
-        };
-
-        // Function to handle book insertion
-        vm.insertBook = function (newBook) {
-            var translate = $filter('translate');
-            vm.inputParms = {
-                title: newBook.title,
-                authorName: newBook.authorName,
-                isbn: newBook.isbn,
-                subjectId: newBook.subjectCategory.id,
-                subjectSubCategoryId: newBook.subjectSubCategory.id,
-                printYear: newBook.printYear,
-                versionNumber: newBook.versionNumber,
-                isApproved: false,
-                bookLanguages: []
-            };
-
-            for (var i = 0; i < newBook.selectedLangauges.length; i++) {
-                var languageList = {};
-                languageList.language = newBook.selectedLangauges[i];
-                vm.inputParms.bookLanguages.push(languageList);
+                // Set a new timeout for 2 seconds before executing the search
+                searchTimeout = $timeout(function () {
+                    vm.pageIndex = 0;  // Reset to first page when search is applied
+                    vm.loadTaskGroups();
+                }, 2000);  // 2 seconds debounce time
             }
+        });
 
-            $http.post($rootScope.app.httpSource + 'api/Book/SaveBook', vm.inputParms)
-                .then(function (response) {
-                    if (response.data === true) {
-                        SweetAlert.swal(translate('establishment.success'), translate('bookCard.dataAdded'), "success");
-                        vm.loadBooks(); // Refresh books list
-                    } else {
-                        SweetAlert.swal(translate('establishment.error'), translate('establishment.error'), "error");
-                    }
-                }, function (error) {
-                    if (error.data && error.data.exceptionMessage === "ISBNExist") {
-                        SweetAlert.swal(translate('establishment.error'), translate('bookCard.alreadyExist'), "error");
-                    } else {
-                        SweetAlert.swal(translate('establishment.error'), translate('establishment.error'), "error");
+        // Get total establishments
+        vm.getEstablishmentCount = function (task) {
+            var numberOfEstablishments = 0;
+
+            // Check if task and taskGroupEmployees exist
+            if (task && task.taskGroupEmployees && Array.isArray(task.taskGroupEmployees)) {
+                task.taskGroupEmployees.forEach(function (employee) {
+                    // Ensure taskLists exists and is an array
+                    if (employee.taskLists && Array.isArray(employee.taskLists)) {
+                        numberOfEstablishments += employee.taskLists.length;
                     }
                 });
-        };
-
-        // Sorting logic
-        vm.sortColumn = function (column) {
-            if (vm.sortBy === column) {
-                vm.sortDirection = (vm.sortDirection === 'asc') ? 'desc' : 'asc';
-            } else {
-                vm.sortBy = column;
-                vm.sortDirection = 'asc'; // Default to ascending when a column is sorted
             }
-            vm.loadBooks();
+
+            return numberOfEstablishments;
         };
 
         // Pagination controls
         vm.previousPage = function () {
             if (vm.pageIndex > 0) {
                 vm.pageIndex--;
-                vm.loadBooks();
+                vm.loadTaskGroups();
             }
         };
 
         vm.nextPage = function () {
             if (vm.pageIndex < vm.totalPages - 1) {
                 vm.pageIndex++;
-                vm.loadBooks();
+                vm.loadTaskGroups();
             }
         };
 
         vm.goToPage = function (pageIndex) {
             if (pageIndex >= 0 && pageIndex < vm.totalPages) {
                 vm.pageIndex = pageIndex;
-                vm.loadBooks();
+                vm.loadTaskGroups();
             }
         };
 
+        // Pagination range calculation
         vm.getPageRange = function () {
-            var start = Math.max(0, vm.pageIndex - Math.floor(5 / 2));
-            var end = Math.min(vm.totalPages, start + 5);
-            start = Math.max(0, end - 5);
+            var start = Math.max(0, vm.pageIndex - Math.floor(vm.visiblePages / 2));
+            var end = Math.min(vm.totalPages, start + vm.visiblePages);
+            start = Math.max(0, end - vm.visiblePages);
             return Array.from({ length: end - start }, (_, i) => start + i);
         };
 
-        // Export functions (CSV, PDF, Excel)
-        vm.exportExcel = function () {
-            $http.post($rootScope.app.httpSource + 'api/Book/ExportExcel', vm.params, { responseType: 'arraybuffer' })
+                vm.exportExcel = function () {
+            $http.post($rootScope.app.httpSource + 'api/Application/ExportExcel', vm.params, { responseType: 'arraybuffer' })
                 .then(function (resp) {
                     var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
-                    saveAs(data, "BookList.xlsx");
-                }, function (error) {
-                    console.error('Error exporting Excel', error);
+                    saveAs(data, "Applications.xlsx");
+                },
+                function (response) {
                 });
         };
-
-        vm.exportCSV = function () {
-            $http.post($rootScope.app.httpSource + 'api/Book/ExportCSV', vm.params)
+        vm.exportPDF = function () {
+            $http.post($rootScope.app.httpSource + 'api/Application/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
                 .then(function (resp) {
-                    var BOM = "\uFEFF"; // UTF-8 BOM for proper encoding
-                    var csvContent = BOM + resp.data;
-                    var myBlob = new Blob([csvContent], { type: 'text/csv' });
+                    var data = new Blob([resp.data], { type: 'application/pdf' });
+                    saveAs(data, "Applications.pdf");
+                },
+                function (response) {
+                });
+        };
+        vm.exportCSV = function () {
+
+            $http.post($rootScope.app.httpSource + 'api/Application/ExportCSV', vm.params)
+                .then(function (resp) {
+                    var myBlob = new Blob([resp.data], { type: 'text/html' });
                     var url = window.URL.createObjectURL(myBlob);
                     var a = document.createElement("a");
                     document.body.appendChild(a);
                     a.href = url;
-                    a.download = "BookList.csv";
+                    a.download = "Applications.csv";
                     a.click();
                     window.URL.revokeObjectURL(url);
-                }, function (error) {
-                    console.error('Error exporting CSV', error);
+                },
+                function (response) {
                 });
         };
-
-        vm.exportPDF = function () {
-            $http.post($rootScope.app.httpSource + 'api/Book/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
-                .then(function (resp) {
-                    var data = new Blob([resp.data], { type: 'application/pdf' });
-                    saveAs(data, "BookList.pdf");
-                }, function (error) {
-                    console.error('Error exporting PDF', error);
-                });
-        };
-
-        // Review function for action buttons
-        vm.review = function (bookId) {
-            $state.go('app.bookCard', { id: bookId });
-        };
-
-        // Initialize load
-        vm.loadBooks();
     }
 })();
-
 
 
 

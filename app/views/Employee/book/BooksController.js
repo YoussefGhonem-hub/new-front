@@ -9,9 +9,9 @@
         .module('eServices')
         .controller('BooksController', BooksController);
 
-    BooksController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$uibModal', '$state'];
+    BooksController.$inject = ['$rootScope', '$scope', '$http', '$filter', '$uibModal', '$state', '$compile'];
 
-    function BooksController($rootScope, $scope, $http, $filter, $uibModal, $state) {
+    function BooksController($rootScope, $scope, $http, $filter, $uibModal, $state, $compile) {
         var vm = this;
 
         // Initialize variables
@@ -22,20 +22,44 @@
         vm.searchText = '';
         vm.sortBy = null; // No default sorting column initially
         vm.sortDirection = null; // No default sorting direction initially
-
         vm.entries = [5, 10, 20, 30, 50];
         vm.selectedEntries = vm.entries[1];
         vm.totalBooks = 0;
+        vm.isLoading = false; // Loader flag
 
         // Helper function to format the languages
         vm.formatLanguages = function (languages) {
-            return languages.map(function(langObj) {
+            return languages.map(function (langObj) {
                 return $filter('localizeString')(langObj.language); // Assuming language field exists in the object
             }).join(', ');
         };
 
+        // Loader function
+        function loader() {
+            vm.isLoading = true;
+            var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
+                '<div class="sk-cube sk-cube1"></div>' +
+                '<div class="sk-cube sk-cube2"></div>' +
+                '<div class="sk-cube sk-cube3"></div>' +
+                '<div class="sk-cube sk-cube4"></div>' +
+                '<div class="sk-cube sk-cube5"></div>' +
+                '<div class="sk-cube sk-cube6"></div>' +
+                '<div class="sk-cube sk-cube7"></div>' +
+                '<div class="sk-cube sk-cube8"></div>' +
+                '<div class="sk-cube sk-cube9"></div>' +
+                '</div>';
+            angular.element('body').append($compile(htmlSectionLoader)($scope));
+        }
+
+        function removeLoader() {
+            angular.element('.sk-cube-grid').remove();
+            vm.isLoading = false;
+        }
+
         // Load books with sorting and pagination
         vm.loadBooks = function () {
+            loader();  // Show loader while fetching data
+
             var params = {
                 page: vm.pageIndex + 1,
                 pageSize: vm.selectedEntries,
@@ -49,10 +73,14 @@
                     vm.books = response.data.content;
                     vm.totalBooks = response.data.totalRecords || 0;
                     vm.totalPages = Math.ceil(vm.totalBooks / vm.selectedEntries);
+                    removeLoader();  // Remove loader after fetching data
                 }, function (error) {
                     console.error('Error loading books', error);
+                    removeLoader();  // Remove loader in case of error
                 });
         };
+
+        // Open the modal for adding a new book
         vm.open = function (size) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/Employee/book/AddBook/addBook.html',
@@ -109,6 +137,7 @@
                     }
                 });
         };
+
         // Sorting logic
         vm.sortColumn = function (column) {
             if (vm.sortBy === column) {
@@ -155,8 +184,7 @@
                 .then(function (resp) {
                     var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
                     saveAs(data, "BookList.xlsx");
-                },
-                function (error) {
+                }, function (error) {
                     console.error('Error exporting Excel', error);
                 });
         };
@@ -174,8 +202,7 @@
                     a.download = "BookList.csv";
                     a.click();
                     window.URL.revokeObjectURL(url);
-                },
-                function (error) {
+                }, function (error) {
                     console.error('Error exporting CSV', error);
                 });
         };
@@ -185,8 +212,7 @@
                 .then(function (resp) {
                     var data = new Blob([resp.data], { type: 'application/pdf' });
                     saveAs(data, "BookList.pdf");
-                },
-                function (error) {
+                }, function (error) {
                     console.error('Error exporting PDF', error);
                 });
         };
