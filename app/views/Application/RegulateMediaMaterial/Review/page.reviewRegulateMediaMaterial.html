@@ -1,39 +1,296 @@
 ﻿<div ng-controller="ReviewRegulateMediaMaterialController as vm">
-    <div class="app-view-header">
-        {{'mediaMaterial.pageTitle' | translate}}<br /> <small>{{vm.mediaMaterial.applicationDetail.application.applicationNumber}}</small>
+    <div class="ma-d-flex">
+        <em class="fa fa-arrow-left ma-review-arrow " aria-hidden="true"></em>
+
+        <div class="ma-app-view-header">
+            {{'mediaMaterial.pageTitle' |
+            translate}}<br />
+            <small>{{'matrialLicense.licensenumber' |
+                translate}}: {{vm.mediaMaterial.applicationDetail.application.applicationNumber}}</small>
+        </div>
     </div>
     <div class="container-fluid">
-        <uib-accordion close-others="oneAtATime">
-            <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
+
+        <div class="row mb-xl">
+            <div class="col-sm-3 pr-0">
+                <div class="card ma-card" style="width: 100%;">
+                    <div class="card-body">
+                        <h2 class="ma-review-cardTitle"><i
+                                class="fa fa-id-card-o ma-fa-card main-color mr-lg ma-fa-card"
+                                aria-hidden="true"></i>{{'matrialLicense.requestnumber' | translate}}
+                        </h2>
+                        <p class="ma-review-cardBody">
+                            {{vm.mediaMaterial.applicationDetail.application.applicationNumber}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 pr-0">
+                <div class="card ma-card" style="width: 100%;">
+                    <div class="card-body">
+                        <h2 class="ma-review-cardTitle"><i
+                                class="fa fa-calendar-o ma-fa-card main-color mr-lg ma-fa-card"
+                                aria-hidden="true"></i>{{'matrialLicense.submissionDate' | translate}}
+                        </h2>
+                        <p class="ma-review-cardBody">Sep-10-2024</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 pr-0">
+                <div class="card ma-card" style="width: 100%;">
+                    <div class="card-body">
+                        <h2 class="ma-review-cardTitle"><i class="fa fa-clock-o ma-fa-card main-color mr-lg ma-fa-card"
+                                aria-hidden="true"></i>{{'matrialLicense.requestStatus' | translate}}
+                        </h2>
+                        <p class="ma-review-cardBody">{{'matrialLicense.pendingReview' | translate}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="card ma-card" style="width: 100%;">
+                    <div class="card-body">
+                        <h2 class="ma-review-cardTitle"><i
+                                class="fa fa-hourglass-o ma-fa-card main-color mr-lg ma-fa-card"
+                                aria-hidden="true"></i>{{'matrialLicense.lastModified' | translate}}
+                        </h2>
+                        <p class="ma-review-cardBody">Sep-27-2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="nav nav-pills mb-3 ma-nav-ul" id="pills-tab" role="tablist">
+            <li class="nav-item ">
+                <div class="nav-link active" id="applicantDetails-tab" data-toggle="pill" href="#applicantDetails"
+                    role="tab" aria-controls="applicantDetails" aria-selected="true">
+                    {{'applicantDetails.applicantDetails' | translate}}</sp>
+            </li>
+            <li class="nav-item">
+                <div class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#establishmentDetails" role="tab"
+                    aria-controls="establishmentDetails" aria-selected="false"> {{'completeProfile.establishmentDetails'
+                    | translate}}</div>
+            </li>
+            <li class="nav-item active">
+                <div class="nav-link" id="partnerDetails-tab" data-toggle="pill" href="#partnerDetails" role="tab"
+                    aria-controls="partnerDetails" aria-selected="false">{{'completeProfile.partnerDetails' |
+                    translate}}</div>
+            </li>
+            <li class="nav-item">
+                <div class="nav-link" id="applicationDetails-tab" data-toggle="pill" href="#applicationDetails"
+                    role="tab" aria-controls="applicationDetails" aria-selected="false">{{'general.applicationDetails' |
+                    translate}}</div>
+            </li>
+        </ul>
+        <div class="tab-content mt-xl" id="pills-tabContent">
+            <div class="tab-pane fade" id="applicantDetails" role="tabpanel" aria-labelledby="applicantDetails-tab">
+                <applicant ng-model="vm.mediaMaterial.applicationDetail.application.user.userProfiles[0]"
+                    applicant-user="vm.mediaMaterial.applicationDetail.application.user"></applicant>
+            </div>
+            <div class="tab-pane fade" id="establishmentDetails" role="tabpanel"
+                aria-labelledby="establishmentDetails-tab">
+                <applicant-establishment ng-model="vm.mediaMaterial.applicationDetail.application.establishment"
+                    application-detail="vm.mediaMaterial.applicationDetail"></applicant-establishment>
+            </div>
+            <div class="tab-pane fade active in" id="partnerDetails" role="tabpanel"
+                aria-labelledby="partnerDetails-tab">
+                <partners-list ng-if="vm.mediaMaterial.applicationDetail.application.establishment.id"
+                    establishment-id="vm.mediaMaterial.applicationDetail.application.establishment.id"
+                    is-viewonly="true"></partners-list>
+            </div>
+            <div class="tab-pane fade" id="applicationDetails" role="tabpanel" aria-labelledby="applicationDetails-tab">
+                <div class="row form-group" ng-if="vm.mediaMaterial.policyNumber">
+                    <div class="col-sm-6 mb-lg">
+                        <label class=" control-label">{{'mediaMaterial.policyNumber' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.policyNumber}}</div>
+                    </div>
+                    <div class="col-sm-6 mb-lg">
+                        <label class=" control-label">{{'mediaMaterial.policyDate' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.policyDate | date: 'dd-MMMM-yyyy'}}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mb-lg" ng-if="vm.mediaMaterial.country">
+                        <label class="control-label">{{'mediaMaterial.arrivalCountry' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.country | localizeString}}</div>
+                    </div>
+
+                    <div class="col-sm-6 mb-lg">
+                        <label class=" control-label">{{'mediaMaterial.policyDate' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.policyDate | date: 'dd-MMMM-yyyy'}}
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mb-lg" ng-if="vm.mediaMaterial.country">
+                        <label class="control-label">{{'mediaMaterial.arrivalCountry' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.country | localizeString}}</div>
+                    </div>
+                    <div class="col-sm-6 mb-lg" ng-if="vm.mediaMaterial.port">
+                        <label class="control-label">{{'mediaMaterial.portOfArrival' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.port | localizeString}}</div>
+                    </div>
+                    <div class="col-sm-6 mb-lg" ng-if="vm.user.userTypeCode == '07'">
+                        <label class="control-label">{{'mediaMaterial.beneficiaryType' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.beneficiaryType | localizeString}}
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-lg" ng-if="vm.mediaMaterial.shippingBeneficiary">
+                        <label class="control-label">{{'mediaMaterial.beneficiaryName' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.shippingBeneficiary | localizeString}}
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-lg" ng-if="vm.mediaMaterial.beneficiaryName">
+                        <label class="control-label">{{'mediaMaterial.beneficiaryName' | translate}}</label>
+                        <div class="form-control-static">{{vm.mediaMaterial.beneficiaryName}}</div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <h2 class='ma-header-section'>Attachments</h1>
+                    </div>
+
+                    <div class="col-sm-6 mb-lg">
+                        <label class=" control-label">{{'mediaMaterial.uploadCustomDeclaration' |
+                            translate}}</label>
+                        <div class="form-control-static">
+                            <div ng-if="vm.mediaMaterial.customDeclarationUrl.split('.')[1] !== 'pdf'"
+                                chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.mediaMaterial.customDeclarationUrlFullPath}}" data-gallery=""
+                                    title="Unsplash images">
+                                    <img ng-src="{{vm.mediaMaterial.customDeclarationUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.mediaMaterial.customDeclarationUrl.split('.')[1] == 'pdf'" target="_blank"
+                                ng-href="{{vm.mediaMaterial.customDeclarationUrlFullPath}}">
+                                <em class="fa fa-1x fa-paperclip"></em>
+                                <span class="ma-filePdf ml-sm">File.pdf</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mb-lg">
+                        <label class="control-label">{{'mediaMaterial.uploadPolicy' | translate}}</label>
+                        <div class="form-control-static">
+                            <div ng-if="vm.mediaMaterial.policyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp"
+                                class="thumbnail col-md-6">
+                                <a ng-href="{{vm.mediaMaterial.policyUrlFullPath}}" data-gallery=""
+                                    title="Unsplash images">
+                                    <img ng-src="{{vm.mediaMaterial.policyUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.mediaMaterial.policyUrl.split('.')[1] == 'pdf'" target="_blank"
+                                ng-href="{{vm.mediaMaterial.policyUrlFullPath}}">
+                                <em class="fa fa-1x fa-paperclip"></em>
+                                <span class="ma-filePdf ml-sm">File.pdf</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 mb-lg">
+                        <label class="control-label">{{'mediaMaterial.uploadPurchaseInvoices' | translate}}</label>
+                        <div class="form-control-static">
+                            <div ng-if="vm.mediaMaterial.invoicesUrl.split('.')[1] !== 'pdf'"
+                                chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.mediaMaterial.invoicesUrlFullPath}}" data-gallery=""
+                                    title="Unsplash images">
+                                    <img ng-src="{{vm.mediaMaterial.invoicesUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.mediaMaterial.invoicesUrl.split('.')[1] == 'pdf'" target="_blank"
+                                ng-href="{{vm.mediaMaterial.invoicesUrlFullPath}}">
+                                <em class="fa fa-1x fa-paperclip"></em>
+                                <span class="ma-filePdf ml-sm">File.pdf</span>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!--==========================================EXPO2020============================-->
+                    <div class="col-sm-6 mb-lg" ng-if="vm.mediaMaterial.isExpo">
+                        <label class="control-label">{{'expo2020.areYouexpoUser' | translate}}</label>
+                        <div class="form-control-static">{{'expo2020.yes' | translate}}</div>
+                    </div>
+                    <div class="col-sm-6 mb-lg" ng-if="vm.mediaMaterial.isExpo && vm.mediaMaterial.expoProofUrl">
+                        <label class="control-label">{{'expo2020.expoProofDoc' | translate}}</label>
+                        <div class="form-control-static">
+                            <div ng-if="vm.mediaMaterial.expoProofUrl.split('.')[1] !== 'pdf'"
+                                chained-animation="fadeInUp" class="thumbnail col-md-6">
+                                <a ng-href="{{vm.mediaMaterial.expoProofUrlFullPath}}" data-gallery=""
+                                    title="Unsplash images">
+                                    <img ng-src="{{vm.mediaMaterial.expoProofUrlFullPath}}" alt="thumb" />
+                                </a>
+                            </div>
+                            <a ng-if="vm.mediaMaterial.expoProofUrl.split('.')[1].toLowerCase() == 'pdf'"
+                                target="_blank" href="{{vm.mediaMaterial.expoProofUrlFullPath}}">
+                                <em class="fa fa-1x fa-paperclip"></em>
+                                <span class="ma-filePdf ml-sm">File.pdf</span>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <!--==========================================EXPO2020============================-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-placeholder b0 bg-gray-lighter">
+                            <h3 data-translate="mediaMaterial.materialList"></h3>
+                            <div class="row">
+                                <div class="col-md-12" ng-if="vm.regulateItemsDt.dtOptions">
+                                    <table datatable="" class="row-border hover"
+                                        dt-options="vm.regulateItemsDt.dtOptions"
+                                        dt-columns="vm.regulateItemsDt.dtColumns"
+                                        dt-instance="vm.regulateItemsDt.dtInstance" width="100%"></table>
+                                </div>
+                            </div>
+                            <div class="row"><br /></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-xl">
+                    <service-fee ng-model="vm.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- ////////////////////////// will removed ////////////////////////// -->
+        <!-- <uib-accordion close-others="oneAtATime"> -->
+        <!-- <uib-accordion-group is-open="applicantDetails.open" panel-class="panel-primary" class="form-horizontal">
                 <uib-accordion-heading>
                     {{'applicantDetails.applicantDetails' | translate}}
-                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
+                    <i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down': applicantDetails.open, 'glyphicon-chevron-right': !applicantDetails.open}"></i>
                 </uib-accordion-heading>
                 <br />
-                <applicant ng-model="vm.mediaMaterial.applicationDetail.application.user.userProfiles[0]" applicant-user="vm.mediaMaterial.applicationDetail.application.user"></applicant>
-            </uib-accordion-group>
-            <br />
-            <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal" ng-if='vm.userTypeCode !="01"'>
+                <applicant ng-model="vm.mediaMaterial.applicationDetail.application.user.userProfiles[0]"
+                    applicant-user="vm.mediaMaterial.applicationDetail.application.user"></applicant>
+            </uib-accordion-group> -->
+        <!-- <br /> -->
+        <!-- <uib-accordion-group is-open="estDetails.open" panel-class="panel-primary" class="form-horizontal"
+                ng-if='vm.userTypeCode !="01"'>
                 <uib-accordion-heading>
                     {{'completeProfile.establishmentDetails' | translate}}
-                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
+                    <i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down': estDetails.open, 'glyphicon-chevron-right': !estDetails.open}"></i>
                 </uib-accordion-heading>
                 <br />
-                <applicant-establishment ng-model="vm.mediaMaterial.applicationDetail.application.establishment" application-detail="vm.mediaMaterial.applicationDetail"></applicant-establishment>
-            </uib-accordion-group>
-            <br />
-            <uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary" ng-if='vm.userTypeCode !="01"'>
+                <applicant-establishment ng-model="vm.mediaMaterial.applicationDetail.application.establishment"
+                    application-detail="vm.mediaMaterial.applicationDetail"></applicant-establishment>
+            </uib-accordion-group> -->
+        <!-- <br /> -->
+        <!-- <uib-accordion-group is-open="vm.partnerOpen" panel-class="panel-primary" ng-if='vm.userTypeCode !="01"'>
                 <uib-accordion-heading>
                     {{'completeProfile.partnerDetails' | translate}}
-                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
+                    <i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down': vm.partnerOpen, 'glyphicon-chevron-right': !vm.partnerOpen}"></i>
                 </uib-accordion-heading>
-                <partners-list ng-if="vm.mediaMaterial.applicationDetail.application.establishment.id" establishment-id="vm.mediaMaterial.applicationDetail.application.establishment.id" is-viewonly="true"></partners-list>
-            </uib-accordion-group>
-            <br />
-            <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
+                <partners-list ng-if="vm.mediaMaterial.applicationDetail.application.establishment.id"
+                    establishment-id="vm.mediaMaterial.applicationDetail.application.establishment.id"
+                    is-viewonly="true"></partners-list>
+            </uib-accordion-group> -->
+        <!-- <br /> -->
+        <!-- <uib-accordion-group is-open="vm.applicationOpen" panel-class="panel-primary" class="form-horizontal">
                 <uib-accordion-heading>
                     {{'general.applicationDetails' | translate}}
-                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
+                    <i class="pull-right glyphicon"
+                        ng-class="{'glyphicon-chevron-down': vm.applicationOpen, 'glyphicon-chevron-right': !vm.applicationOpen}"></i>
                 </uib-accordion-heading>
                 <br />
                 <div class="row form-group" ng-if="vm.mediaMaterial.policyNumber">
@@ -43,18 +300,23 @@
                 </div>
                 <div class="row form-group" ng-if="vm.mediaMaterial.policyDate">
                     <label class="col-sm-3 control-label">{{'mediaMaterial.policyDate' | translate}}</label>
-                    <div class="col-sm-7 form-control-static">{{vm.mediaMaterial.policyDate | date: 'dd-MMMM-yyyy'}}</div>
+                    <div class="col-sm-7 form-control-static">{{vm.mediaMaterial.policyDate | date: 'dd-MMMM-yyyy'}}
+                    </div>
                     <div class="col-sm-2"></div>
                 </div>
                 <div class="row form-group">
-                    <label class="col-sm-3 control-label">{{'mediaMaterial.uploadCustomDeclaration' | translate}}</label>
+                    <label class="col-sm-3 control-label">{{'mediaMaterial.uploadCustomDeclaration' |
+                        translate}}</label>
                     <div class="col-sm-7 form-control-static">
-                        <div ng-if="vm.mediaMaterial.customDeclarationUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-                            <a ng-href="{{vm.mediaMaterial.customDeclarationUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <div ng-if="vm.mediaMaterial.customDeclarationUrl.split('.')[1] !== 'pdf'"
+                            chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{vm.mediaMaterial.customDeclarationUrlFullPath}}" data-gallery=""
+                                title="Unsplash images">
                                 <img ng-src="{{vm.mediaMaterial.customDeclarationUrlFullPath}}" alt="thumb" />
                             </a>
                         </div>
-                        <a ng-if="vm.mediaMaterial.customDeclarationUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.mediaMaterial.customDeclarationUrlFullPath}}">
+                        <a ng-if="vm.mediaMaterial.customDeclarationUrl.split('.')[1] == 'pdf'" target="_blank"
+                            ng-href="{{vm.mediaMaterial.customDeclarationUrlFullPath}}">
                             <em class="fa fa-5x fa-file-pdf-o"></em>
                         </a>
                     </div>
@@ -62,12 +324,14 @@
                 <div class="row form-group">
                     <label class="col-sm-3 control-label">{{'mediaMaterial.uploadPolicy' | translate}}</label>
                     <div class="col-sm-7 form-control-static">
-                        <div ng-if="vm.mediaMaterial.policyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
+                        <div ng-if="vm.mediaMaterial.policyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp"
+                            class="thumbnail col-md-6">
                             <a ng-href="{{vm.mediaMaterial.policyUrlFullPath}}" data-gallery="" title="Unsplash images">
                                 <img ng-src="{{vm.mediaMaterial.policyUrlFullPath}}" alt="thumb" />
                             </a>
                         </div>
-                        <a ng-if="vm.mediaMaterial.policyUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.mediaMaterial.policyUrlFullPath}}">
+                        <a ng-if="vm.mediaMaterial.policyUrl.split('.')[1] == 'pdf'" target="_blank"
+                            ng-href="{{vm.mediaMaterial.policyUrlFullPath}}">
                             <em class="fa fa-5x fa-file-pdf-o"></em>
                         </a>
                     </div>
@@ -75,12 +339,15 @@
                 <div class="row form-group">
                     <label class="col-sm-3 control-label">{{'mediaMaterial.uploadPurchaseInvoices' | translate}}</label>
                     <div class="col-sm-7 form-control-static">
-                        <div ng-if="vm.mediaMaterial.invoicesUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-                            <a ng-href="{{vm.mediaMaterial.invoicesUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <div ng-if="vm.mediaMaterial.invoicesUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp"
+                            class="thumbnail col-md-6">
+                            <a ng-href="{{vm.mediaMaterial.invoicesUrlFullPath}}" data-gallery=""
+                                title="Unsplash images">
                                 <img ng-src="{{vm.mediaMaterial.invoicesUrlFullPath}}" alt="thumb" />
                             </a>
                         </div>
-                        <a ng-if="vm.mediaMaterial.invoicesUrl.split('.')[1] == 'pdf'" target="_blank" ng-href="{{vm.mediaMaterial.invoicesUrlFullPath}}">
+                        <a ng-if="vm.mediaMaterial.invoicesUrl.split('.')[1] == 'pdf'" target="_blank"
+                            ng-href="{{vm.mediaMaterial.invoicesUrlFullPath}}">
                             <em class="fa fa-5x fa-file-pdf-o"></em>
                         </a>
                     </div>
@@ -97,21 +364,23 @@
                 </div>
                 <div class="row form-group" ng-if="vm.user.userTypeCode == '07'">
                     <label class="col-sm-3 control-label">{{'mediaMaterial.beneficiaryType' | translate}}</label>
-                    <div class="col-sm-7 form-control-static">{{vm.mediaMaterial.beneficiaryType | localizeString}}</div>
+                    <div class="col-sm-7 form-control-static">{{vm.mediaMaterial.beneficiaryType | localizeString}}
+                    </div>
                     <div class="col-sm-2"></div>
                 </div>
                 <div class="row form-group" ng-if="vm.mediaMaterial.shippingBeneficiary">
                     <label class="col-sm-3 control-label">{{'mediaMaterial.beneficiaryName' | translate}}</label>
-                    <div class="col-sm-7 form-control-static">{{vm.mediaMaterial.shippingBeneficiary | localizeString}}</div>
+                    <div class="col-sm-7 form-control-static">{{vm.mediaMaterial.shippingBeneficiary | localizeString}}
+                    </div>
                     <div class="col-sm-2"></div>
                 </div>
                 <div class="row form-group" ng-if="vm.mediaMaterial.beneficiaryName">
                     <label class="col-sm-3 control-label">{{'mediaMaterial.beneficiaryName' | translate}}</label>
                     <div class="col-sm-7 form-control-static">{{vm.mediaMaterial.beneficiaryName}}</div>
                     <div class="col-sm-2"></div>
-                </div>
-                <!--==========================================EXPO2020============================-->
-                <div class="row form-group" ng-if="vm.mediaMaterial.isExpo">
+                </div> -->
+        <!--==========================================EXPO2020============================-->
+        <!-- <div class="row form-group" ng-if="vm.mediaMaterial.isExpo">
                     <label class="col-sm-3 control-label">{{'expo2020.areYouexpoUser' | translate}}</label>
                     <div class="col-sm-7 form-control-static">{{'expo2020.yes' | translate}}</div>
                     <div class="col-sm-2"></div>
@@ -119,26 +388,31 @@
                 <div class="row form-group" ng-if="vm.mediaMaterial.isExpo && vm.mediaMaterial.expoProofUrl">
                     <label class="col-sm-3 control-label">{{'expo2020.expoProofDoc' | translate}}</label>
                     <div class="col-sm-7 form-control-static">
-                        <div ng-if="vm.mediaMaterial.expoProofUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-                            <a ng-href="{{vm.mediaMaterial.expoProofUrlFullPath}}" data-gallery="" title="Unsplash images">
+                        <div ng-if="vm.mediaMaterial.expoProofUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp"
+                            class="thumbnail col-md-6">
+                            <a ng-href="{{vm.mediaMaterial.expoProofUrlFullPath}}" data-gallery=""
+                                title="Unsplash images">
                                 <img ng-src="{{vm.mediaMaterial.expoProofUrlFullPath}}" alt="thumb" />
                             </a>
                         </div>
-                        <a ng-if="vm.mediaMaterial.expoProofUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" href="{{vm.mediaMaterial.expoProofUrlFullPath}}">
+                        <a ng-if="vm.mediaMaterial.expoProofUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank"
+                            href="{{vm.mediaMaterial.expoProofUrlFullPath}}">
                             <em class="fa fa-5x fa-file-pdf-o"></em>
                         </a>
                     </div>
                     <div class="col-sm-2"></div>
-                </div>
-                <!--==========================================EXPO2020============================-->
-                <div class="row">
+                </div> -->
+        <!--==========================================EXPO2020============================-->
+        <!-- <div class="row">
                     <div class="col-md-12">
                         <div class="box-placeholder b0 bg-gray-lighter">
                             <h3 data-translate="mediaMaterial.materialList"></h3>
                             <div class="row">
                                 <div class="col-md-12" ng-if="vm.regulateItemsDt.dtOptions">
-                                    <table datatable="" class="row-border hover" dt-options="vm.regulateItemsDt.dtOptions" dt-columns="vm.regulateItemsDt.dtColumns"
-                                           dt-instance="vm.regulateItemsDt.dtInstance" width="100%"></table>
+                                    <table datatable="" class="row-border hover"
+                                        dt-options="vm.regulateItemsDt.dtOptions"
+                                        dt-columns="vm.regulateItemsDt.dtColumns"
+                                        dt-instance="vm.regulateItemsDt.dtInstance" width="100%"></table>
                                 </div>
                             </div>
                             <div class="row"><br /></div>
@@ -149,7 +423,7 @@
                     <service-fee ng-model="vm.serviceFeesObj" class="col-sm-12" is-review="true"></service-fee>
                 </div>
             </uib-accordion-group>
-        </uib-accordion>
+        </uib-accordion> -->
 
         <!-- START panel-->
         <div class="panel panel-primary">
@@ -158,7 +432,8 @@
                     <div class="row">
                         <div class="col-md-8"></div>
                         <div class="col-md-4">
-                            <workflow-action ng-model="vm.mediaMaterial.applicationDetail" application="vm.mediaMaterial.applicationDetail.application"></workflow-action>
+                            <workflow-action ng-model="vm.mediaMaterial.applicationDetail"
+                                application="vm.mediaMaterial.applicationDetail.application"></workflow-action>
                         </div>
                     </div>
                 </form>

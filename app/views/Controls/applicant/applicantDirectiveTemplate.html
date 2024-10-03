@@ -1,150 +1,182 @@
 ﻿<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Nationality' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.person.country | localizeString}}</div>
-</div>
-<div class="row form-group" ng-if="passModel.person.emiratesId">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.EmiratesId' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.person.emiratesId}}</div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label" ng-show="passModel.person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' | translate}}</label>
-    <label class="col-sm-3 control-label" ng-show="!passModel.person.emiratesId">{{'profileNationalityDirective.fullNameIsNotResident' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.person.name}}</div>
-</div>
-<div class="row form-group" ng-if="passModel.person.passportNumber">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.person.passportNumber}}</div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.person.title}}</div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.person.gender | localizeString}}</div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.person.dateOfBirth | date: 'dd-MMMM-yyyy'}}</div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'completeProfile.userType' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{passModel.userType | localizeString}}</div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'users.email' | translate}}</label>
-    <div class="col-sm-7 form-control-static">{{applicantUser.email}}</div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'completeProfile.PhoneNumber' | translate}}</label>
-    <div class="col-sm-7 form-control-static"><span style="unicode-bidi:embed; direction: ltr">{{applicantUser.phoneNumber}}</span></div>
-</div>
-<div class="row form-group">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.personalPhoto' | translate}}</label>
-    <div class="col-sm-7 form-control-static">
-        <div ng-if="passModel.person.photoUrl.split('.')[1].toLowerCase() !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-            <a ng-href="{{passModel.person.photoUrlFullPath}}" data-gallery="" title="{{passModel.person.name}}">
-                <img ng-src="{{passModel.person.photoUrlFullPath}}" alt="photo" />
-            </a>
-        </div>
-        <a ng-if="passModel.person.photoUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{passModel.person.photoUrlFullPath}}">
-            <em class="fa fa-5x fa-file-pdf-o"></em>
-        </a>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label">{{'profileNationalityDirective.Nationality' | translate}}</label>
+        <div class=" form-control-static">{{passModel.person.country | localizeString}}</div>
     </div>
-    <div class="col-sm-2"></div>
-</div>
-<div class="row form-group" ng-if="passModel.person.emiratesId">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.emiratesId' | translate}}</label>
-    <div class="col-sm-7 form-control-static">
-        <div ng-if="passModel.person.emiratesIdCopyUrl.split('.')[1].toLowerCase() !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-            <a ng-href="{{passModel.person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
-                <img ng-src="{{passModel.person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
-            </a>
-        </div>
-        <a ng-if="passModel.person.emiratesIdCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{passModel.person.emiratesIdCopyUrlFullPath}}">
-            <em class="fa fa-5x fa-file-pdf-o"></em>
-        </a>
+    <div class="col-sm-6 mb-lg" ng-if="passModel.person.emiratesId">
+        <label class=" control-label" ng-if="passModel.person.emiratesId">{{'profileNationalityDirective.EmiratesId' |
+            translate}}</label>
+        <div class=" form-control-static">{{passModel.person.emiratesId}}</div>
     </div>
-    <div class="col-sm-2"></div>
-</div>
-<div class="row form-group" ng-if="passModel.person.passportCopyUrl">
-    <label class="col-sm-3 control-label">{{'profileNationalityDirective.passport' | translate}}</label>
-    <div class="col-sm-7 form-control-static">
-        <div ng-if="passModel.person.passportCopyUrl.split('.')[1].toLowerCase() !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-            <a ng-href="{{passModel.person.passportCopyUrl}}" data-gallery="" title="Unsplash images">
-                <img ng-src="{{passModel.person.passportCopyUrlFullPath}}" alt="passport" />
-            </a>
-        </div>
-        <a ng-if="passModel.person.passportCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{passModel.person.passportCopyUrlFullPath}}">
-            <em class="fa fa-5x fa-file-pdf-o"></em>
-        </a>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label"
+            ng-if="passModel.person.emiratesId">{{'profileNationalityDirective.fullNameIsResident' |
+            translate}}</label>
+        <label class=" control-label"
+            ng-if="!passModel.person.emiratesId">{{'profileNationalityDirective.fullNameIsNotResident' |
+            translate}}</label>
+        <div class=" form-control-static">{{passModel.person.name}}</div>
     </div>
-    <div class="col-sm-2"></div>
-</div>
-<div class="row form-group" ng-if="passModel.person.iqamaUrl">
-    <label class="col-sm-3 control-label" ng-if="passModel.country.isoCode2 !== 'AE'"><span class="text-danger">* </span><span>{{'profileNationalityDirective.visa' | translate}}</span></label>
-    <label class="col-sm-3 control-label" ng-if="passModel.country.isoCode2 == 'AE'"><span class="text-danger">* </span><span>{{'profileNationalityDirective.kholasa' | translate}}</span></label>
-    <div class="col-sm-7 form-control-static">
-        <div ng-if="passModel.person.iqamaUrl.split('.')[1].toLowerCase() !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-            <a ng-href="{{passModel.person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
-                <img ng-src="{{passModel.person.iqamaUrlFullPath}}" alt="aquintance" />
-            </a>
-        </div>
-        <a ng-if="passModel.person.iqamaUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{passModel.person.iqamaUrlFullPath}}">
-            <em class="fa fa-5x fa-file-pdf-o"></em>
-        </a>
+    <div class="col-sm-6 mb-lg" ng-if="passModel.person.passportNumber">
+        <label class=" control-label"
+            ng-if="passModel.person.passportNumber">{{'profileNationalityDirective.PassportNumber' | translate}}</label>
+        <div class=" form-control-static">{{passModel.person.passportNumber}}</div>
     </div>
-    <div class="col-sm-2"></div>
-</div>
-<div class="row form-group" ng-if="passModel.person.acquaintanceFormCopyUrlFullPath">
-    <label class="col-sm-3 control-label">{{'journalists.acquaintanceForm' | translate}}</label>
-    <div class="col-sm-7 form-control-static">
-        <div ng-if="passModel.person.acquitanceFormUrl.split('.')[1].toLowerCase() !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-            <a ng-href="{{passModel.person.acquaintanceFormCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
-                <img ng-src="{{passModel.person.acquaintanceFormCopyUrlFullPath}}" alt="aquintance" />
-            </a>
-        </div>
-        <a ng-if="passModel.person.acquitanceFormUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{passModel.person.acquaintanceFormCopyUrlFullPath}}">
-            <em class="fa fa-5x fa-file-pdf-o"></em>
-        </a>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label">{{'profileNationalityDirective.Occupation' | translate}}</label>
+        <div class=" form-control-static">{{passModel.person.title}}</div>
     </div>
-    <div class="col-sm-2"></div>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label">{{'profileNationalityDirective.Gender' | translate}}</label>
+        <div class=" form-control-static">{{passModel.person.gender | localizeString}}</div>
+    </div>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label">{{'profileNationalityDirective.DateOfBirth' | translate}}</label>
+        <div class=" form-control-static">{{passModel.person.dateOfBirth | date: 'dd-MMMM-yyyy'}}</div>
+    </div>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label">{{'completeProfile.userType' | translate}}</label>
+        <div class=" form-control-static">{{passModel.userType | localizeString}}</div>
+    </div>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label">{{'users.email' | translate}}</label>
+        <div class=" form-control-static">{{applicantUser.email}}</div>
+    </div>
+    <div class="col-sm-6 mb-lg">
+        <label class=" control-label">{{'completeProfile.PhoneNumber' | translate}}</label>
+        <div class=" form-control-static"><span
+                style="unicode-bidi:embed; direction: ltr">{{applicantUser.phoneNumber}}</span></div>
+    </div>
 </div>
 
-<div ng-if="isForSocialMedia">
-    <div class="row form-group" ng-if="passModel.person.tradeLicenseNo"> 
-        <label class="col-sm-3 control-label">{{'profileNationalityDirective.tradeLicenseNo' | translate}}</label>
-        <div class="col-sm-7 form-control-static">{{passModel.person.tradeLicenseNo}}</div>
-        <div class="col-sm-2"></div>
-    </div>
-    <div class="row form-group" ng-if="passModel.person.authority.emirate">
-        <label class="col-sm-3 control-label">{{'profileNationalityDirective.emirate' | translate}}</label>
-        <div class="col-sm-7 form-control-static">{{passModel.person.authority.emirate | localizeString}}</div>
-        <div class="col-sm-2"></div>
-    </div>
-    <div class="row form-group" ng-if="passModel.person.authority">
-        <label class="col-sm-3 control-label">{{'profileNationalityDirective.authority' | translate}}</label>
-        <div class="col-sm-7 form-control-static">{{passModel.person.authority | localizeString}}</div>
-        <div class="col-sm-2"></div>
-    </div>
-    <div class="row form-group" ng-if="passModel.person.tradeLicenseEndDate">
-        <label class="col-sm-3 control-label">{{'profileNationalityDirective.tradeLicenseEndDate' | translate}}</label>
-        <div class="col-sm-7 form-control-static">{{passModel.person.tradeLicenseEndDate | date: 'longDate'}}</div>
-        <div class="col-sm-2"></div>
-    </div>
-    <div class="row form-group" ng-if="passModel.person.tradeLicenseCopyUrlFullPath">
-        <label class="col-sm-3 control-label">{{'profileNationalityDirective.uploadTradeLicense' | translate}}</label>
-        <div class="col-sm-7 form-control-static">
-            <div ng-if="passModel.person.tradeLicenseCopyUrl.split('.')[1] !== 'pdf'" chained-animation="fadeInUp" class="thumbnail col-md-6">
-                <a ng-href="{{passModel.person.tradeLicenseCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
-                    <img ng-src="{{passModel.person.tradeLicenseCopyUrlFullPath}}" alt="aquintance" />
+<h2 class='ma-header-section'>Attachments</h1>
+
+    <div class="row form-group">
+        <div class="col-sm-6 mb-lg">
+            <label>{{'profileNationalityDirective.personalPhoto' | translate}}</label>
+            <div ng-if="passModel.person.photoUrl.split('.')[1].toLowerCase() !== 'pdf'" chained-animation="fadeInUp"
+                class="thumbnail">
+                <a ng-href="{{passModel.person.photoUrlFullPath}}" data-gallery="" title="{{passModel.person.name}}">
+                    <img ng-src="{{passModel.person.photoUrlFullPath}}" alt="photo" />
                 </a>
             </div>
-            <a ng-if="passModel.person.tradeLicenseCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank" ng-href="{{passModel.person.tradeLicenseCopyUrlFullPath}}">
-                <em class="fa fa-5x fa-file-pdf-o"></em>
-            </a>
+            <div ng-if="passModel.person.photoUrl.split('.')[1].toLowerCase() == 'pdf'">
+                <a target="_blank" ng-href="{{passModel.person.photoUrlFullPath}}">
+                    <em class="fa fa-1x fa-paperclip"></em>
+                    <span class="ma-filePdf ml-sm">File.pdf</span>
+                </a>
+            </div>
         </div>
-        <div class="col-sm-2"></div>
+        <div class="col-sm-6 mb-lg" ng-if="passModel.person.emiratesId">
+            <label>{{'profileNationalityDirective.emiratesId' | translate}}</label>
+            <div ng-if="passModel.person.emiratesIdCopyUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                chained-animation="fadeInUp" class="thumbnail">
+                <a ng-href="{{passModel.person.emiratesIdCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                    <img ng-src="{{passModel.person.emiratesIdCopyUrlFullPath}}" alt="thumb" />
+                </a>
+            </div>
+            <div>
+                <div ng-if="passModel.person.emiratesIdCopyUrl.split('.')[1].toLowerCase() == 'pdf'">
+                    <a target="_blank" ng-href="{{passModel.person.emiratesIdCopyUrlFullPath}}">
+                        <em class="fa fa-1x fa-paperclip"></em>
+                        <span class="ma-filePdf ml-sm">File.pdf</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-lg" ng-if="passModel.person.passportCopyUrl">
+            <label>{{'profileNationalityDirective.passport' | translate}}</label>
+            <div ng-if="passModel.person.passportCopyUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                chained-animation="fadeInUp" class="thumbnail">
+                <a ng-href="{{passModel.person.passportCopyUrl}}" data-gallery="" title="Unsplash images">
+                    <img ng-src="{{passModel.person.passportCopyUrlFullPath}}" alt="passport" />
+                </a>
+            </div>
+            <div ng-if="passModel.person.passportCopyUrl.split('.')[1].toLowerCase() == 'pdf'">
+                <a target="_blank" ng-href="{{passModel.person.passportCopyUrlFullPath}}">
+                    <em class="fa fa-1x fa-paperclip"></em>
+                    <span class="ma-filePdf ml-sm">File.pdf</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-lg" ng-if="passModel.person.iqamaUrl">
+            <label ng-if="passModel.country.isoCode2 !== 'AE'"><span class="text-danger">*
+                </span><span>{{'profileNationalityDirective.visa' | translate}}</span></label>
+            <label ng-if="passModel.country.isoCode2 == 'AE'"><span class="text-danger">*
+                </span><span>{{'profileNationalityDirective.kholasa' | translate}}</span></label>
+            <div ng-if="passModel.person.iqamaUrl.split('.')[1].toLowerCase() !== 'pdf'" chained-animation="fadeInUp"
+                class="thumbnail">
+                <a ng-href="{{passModel.person.iqamaUrlFullPath}}" data-gallery="" title="Unsplash images">
+                    <img ng-src="{{passModel.person.iqamaUrlFullPath}}" alt="aquintance" />
+                </a>
+            </div>
+            <div ng-if="passModel.person.iqamaUrl.split('.')[1].toLowerCase() == 'pdf'">
+                <a target="_blank" ng-href="{{passModel.person.iqamaUrlFullPath}}">
+                    <em class="fa fa-1x fa-paperclip"></em>
+                    <span class="ma-filePdf ml-sm">File.pdf</span>
+                </a>
+            </div>
+        </div>
+        <div class="col-sm-6 mb-lg">
+            <label class="control-label">{{'journalists.acquaintanceForm' | translate}}</label>
+            <div class="form-control-static">
+                <div ng-if="passModel.person.acquitanceFormUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                    chained-animation="fadeInUp" class="thumbnail col-md-6">
+                    <a ng-href="{{passModel.person.acquaintanceFormCopyUrlFullPath}}" data-gallery=""
+                        title="Unsplash images">
+                        <img ng-src="{{passModel.person.acquaintanceFormCopyUrlFullPath}}" alt="aquintance" />
+                    </a>
+                </div>
+                <div ng-if="passModel.person.acquitanceFormUrl.split('.')[1].toLowerCase() == 'pdf'">
+                    <a target="_blank" ng-href="{{passModel.person.acquaintanceFormCopyUrlFullPath}}">
+                        <em class="fa fa-1x fa-paperclip"></em>
+                        <span class="ma-filePdf ml-sm">File.pdf</span>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+    <div ng-if="isForSocialMedia">
+        <div class="row form-group">
+            <div class="col-sm-6 mb-lg" ng-if="passModel.person.tradeLicenseNo">
+                <label class=" control-label">{{'profileNationalityDirective.tradeLicenseNo' | translate}}</label>
+                <div class="form-control-static">{{passModel.person.tradeLicenseNo}}</div>
+            </div>
+            <div class="col-sm-6 mb-lg" ng-if="passModel.person.authority.emirate">
+                <label class="control-label">{{'profileNationalityDirective.emirate' | translate}}</label>
+                <div class="form-control-static">{{passModel.person.authority.emirate | localizeString}}</div>
 
+            </div>
+            <div class="col-sm-6 mb-lg" ng-if="passModel.person.authority">
+                <label class="control-label">{{'profileNationalityDirective.authority' | translate}}</label>
+                <div class="form-control-static">{{passModel.person.authority | localizeString}}</div>
+
+            </div>
+            <div class="col-sm-6 mb-lg" ng-if="passModel.person.tradeLicenseEndDate">
+                <label class="control-label">{{'profileNationalityDirective.tradeLicenseEndDate' |
+                    translate}}</label>
+                <div class="form-control-static">{{passModel.person.tradeLicenseEndDate | date: 'longDate'}}</div>
+
+            </div>
+            <div class="col-sm-6 mb-lg" ng-if="passModel.person.tradeLicenseCopyUrlFullPath">
+                <label class="control-label">{{'profileNationalityDirective.uploadTradeLicense' |
+                    translate}}</label>
+                <div class="form-control-static">
+                    <div ng-if="passModel.person.tradeLicenseCopyUrl.split('.')[1] !== 'pdf'"
+                        chained-animation="fadeInUp" class="thumbnail col-md-6">
+                        <a ng-href="{{passModel.person.tradeLicenseCopyUrlFullPath}}" data-gallery=""
+                            title="Unsplash images">
+                            <img ng-src="{{passModel.person.tradeLicenseCopyUrlFullPath}}" alt="aquintance" />
+                        </a>
+                    </div>
+                    <div ng-if="passModel.person.tradeLicenseCopyUrl.split('.')[1].toLowerCase() == 'pdf'">
+                        <a target="_blank" ng-href="{{passModel.person.tradeLicenseCopyUrlFullPath}}">
+                            <em class="fa fa-1x fa-paperclip"></em>
+                            <span class="ma-filePdf ml-sm">File.pdf</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>

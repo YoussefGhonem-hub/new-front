@@ -1,31 +1,36 @@
 ﻿<div ng-if="!isVisit && !isEnquiry" uib-dropdown="dropdown" class="btn-group mr pull-right">
-    <button uib-dropdown-toggle="" ng-disabled="isBusy || !workFlowApplication.applicationState.transitions.length" 
-            class="dropdown-toggle btn" ng-class="{'btn btn-default': isDefault, 'btn btn-primary': !isDefault}">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+    <button uib-dropdown-toggle="" ng-disabled="isBusy || !workFlowApplication.applicationState.transitions.length"
+        class="dropdown-toggle btn ma-defaultBtn">{{'dashboard.actions' | translate}}<b class="caret"></b></button>
+    <!-- <button uib-dropdown-toggle="" ng-disabled="isBusy || !workFlowApplication.applicationState.transitions.length" 
+            class="dropdown-toggle btn" ng-class="{'btn btn-default': isDefault, 'btn btn-primary': !isDefault}">{{'dashboard.actions' | translate}}<b class="caret"></b></button> -->
     <ul role="menu" class="dropdown-menu animated zoomIn">
         <li ng-repeat="transition in workFlowApplication.applicationState.transitions">
-            <a href="" ng-click="workflowClick(workFlowApplication.id, transition.action.id)">{{transition.action | localizeString}}</a>
+            <a href="" ng-click="workflowClick(workFlowApplication.id, transition.action.id)">{{transition.action |
+                localizeString}}</a>
         </li>
     </ul>
 </div>
 <div ng-if="isVisit" uib-dropdown="dropdown" class="btn-group mr pull-right">
     <button uib-dropdown-toggle="" ng-disabled="isBusy || !workFlowApplication.visitState.transitions.length"
-            class="dropdown-toggle btn" ng-class="{'btn btn-default': isDefault, 'btn btn-primary': !isDefault}">
+        class="dropdown-toggle btn" ng-class="{'btn btn-default': isDefault, 'btn btn-primary': !isDefault}">
         {{'dashboard.actions' | translate}}<b class="caret"></b>
     </button>
     <ul role="menu" class="dropdown-menu animated zoomIn">
         <li ng-repeat="transition in workFlowApplication.visitState.transitions">
-            <a href="" ng-click="workflowClick(workFlowApplication.id, transition.action.id)">{{transition.action | localizeString}}</a>
+            <a href="" ng-click="workflowClick(workFlowApplication.id, transition.action.id)">{{transition.action |
+                localizeString}}</a>
         </li>
     </ul>
 </div>
 <div ng-if="isEnquiry" uib-dropdown="dropdown" class="btn-group mr pull-right">
     <button uib-dropdown-toggle="" ng-disabled="isBusy || !workFlowApplication.enquiryState.transitions.length"
-            class="dropdown-toggle btn" ng-class="{'btn btn-default': isDefault, 'btn btn-primary': !isDefault}">
+        class="dropdown-toggle btn" ng-class="{'btn btn-default': isDefault, 'btn btn-primary': !isDefault}">
         {{'dashboard.actions' | translate}}<b class="caret"></b>
     </button>
     <ul role="menu" class="dropdown-menu animated zoomIn">
         <li ng-repeat="transition in workFlowApplication.enquiryState.transitions">
-            <a href="" ng-click="workflowClick(workFlowApplication.id, transition.action.id)">{{transition.action | localizeString}}</a>
+            <a href="" ng-click="workflowClick(workFlowApplication.id, transition.action.id)">{{transition.action |
+                localizeString}}</a>
         </li>
     </ul>
 </div>

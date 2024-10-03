@@ -1,4 +1,4 @@
-﻿
+﻿<!-- 
 <div class="row">
     <div ng-class="passModel.address.latitude? 'col-md-6' : 'col-md-12' ">
         <div class="row form-group">
@@ -108,4 +108,142 @@
             </section>
         </div>
     </div>
+</div> -->
+
+<div class="row">
+    <div ng-class="passModel.address.latitude? 'col-md-6' : 'col-md-12' ">
+        <div class="row form-group">
+            <div class="col-sm-6 mb-lg">
+                <label class="control-label">{{'completeProfile.establishmentNameAr' | translate}}</label>
+                <div class="form-control-static">{{passModel.nameAr}}</div>
+            </div>
+            <div class="col-sm-6 mb-lg">
+                <label class="control-label">{{'completeProfile.establishmentNameEn' | translate}}</label>
+                <div class="form-control-static">{{passModel.nameEn}}</div>
+            </div>
+            <div class="col-sm-6 mb-lg">
+                <label class="control-label">{{'address.Emirate' | translate}}</label>
+                <div class="form-control-static">{{passModel.authority.emirate | localizeString}}</div>
+            </div>
+            <div class="col-sm-6 mb-lg">
+                <label class="control-label">{{'completeProfile.Authority' | translate}}</label>
+                <div class="form-control-static">{{passModel.authority | localizeString}}</div>
+            </div>
+            <div class="col-sm-6 mb-lg">
+                <label class="control-label">{{'completeProfile.LicenseNumber' | translate}}</label>
+                <div class="form-control-static">{{passModel.licenseNumber}}</div>
+            </div>
+        </div>
+
+        <h2 class='ma-header-section'>Attachments</h1>
+
+            <div class="row form-group">
+                <div class="col-sm-6 mb-lg">
+                    <label class="control-label">{{'completeProfile.UploadLicenseCopy' | translate}}</label>
+                    <div class="form-control-static">
+                        <div ng-if="passModel.licenseCopyUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                            chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{passModel.licenseCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{passModel.licenseCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="passModel.licenseCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank"
+                            ng-href="{{passModel.licenseCopyUrlFullPath}}">
+                            <em class="fa fa-1x fa-paperclip"></em>
+                            <span class="ma-filePdf ml-sm">File.pdf</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-lg" ng-if="passModel.tenancyContractEndDate">
+                    <label class="control-label">{{'completeProfile.TenancyContract' | translate}}</label>
+                    <div class="form-control-static">{{passModel.tenancyContractEndDate | date: 'dd-MMMM-yyyy'}}
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-lg">
+                    <label class="control-label">{{'completeProfile.UploadTenancyContract' | translate}}</label>
+                    <div class="form-control-static">
+                        <div ng-if="passModel.tenancyContractCopyUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                            chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{passModel.tenancyContractCopyUrlFullPath}}" data-gallery=""
+                                title="Unsplash images">
+                                <img ng-src="{{passModel.tenancyContractCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="passModel.tenancyContractCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank"
+                            ng-href="{{passModel.tenancyContractCopyUrlFullPath}}">
+                            <em class="fa fa-1x fa-paperclip"></em>
+                            <span class="ma-filePdf ml-sm">File.pdf</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6 mb-lg" ng-if="passModel.memorandumOfAssociationCopyUrl">
+                    <label class="control-label">{{'completeProfile.MemorandumOfAssociation' | translate}}</label>
+                    <div class="form-control-static">
+                        <div ng-if="passModel.memorandumOfAssociationCopyUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                            chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{passModel.memorandumOfAssociationCopyUrlFullPath}}" data-gallery=""
+                                title="Unsplash images">
+                                <img ng-src="{{passModel.memorandumOfAssociationCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="passModel.memorandumOfAssociationCopyUrl.split('.')[1].toLowerCase() == 'pdf'"
+                            target="_blank" ng-href="{{passModel.memorandumOfAssociationCopyUrlFullPath}}">
+                            <em class="fa fa-1x fa-paperclip"></em>
+                            <span class="ma-filePdf ml-sm">File.pdf</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6" ng-if="passModel.powerOfAttorneyCopyUrl">
+                    <label class="control-label">{{'completeProfile.PowerOfAttorney' | translate}}</label>
+                    <div class="form-control-static">
+                        <div ng-if="passModel.powerOfAttorneyCopyUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                            chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{passModel.powerOfAttorneyCopyUrlFullPath}}" data-gallery=""
+                                title="Unsplash images">
+                                <img ng-src="{{passModel.powerOfAttorneyCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="passModel.powerOfAttorneyCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank"
+                            ng-href="{{passModel.powerOfAttorneyCopyUrlFullPath}}">
+                            <em class="fa fa-1x fa-paperclip"></em>
+                            <span class="ma-filePdf ml-sm">File.pdf</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-sm-6" ng-if="passModel.statementCopyUrl">
+                    <label class="control-label">{{'completeProfile.Statement' | translate}}</label>
+                    <div class="form-control-static">
+                        <div ng-if="passModel.statementCopyUrl.split('.')[1].toLowerCase() !== 'pdf'"
+                            chained-animation="fadeInUp" class="thumbnail col-md-6">
+                            <a ng-href="{{passModel.statementCopyUrlFullPath}}" data-gallery="" title="Unsplash images">
+                                <img ng-src="{{passModel.statementCopyUrlFullPath}}" alt="thumb" />
+                            </a>
+                        </div>
+                        <a ng-if="passModel.statementCopyUrl.split('.')[1].toLowerCase() == 'pdf'" target="_blank"
+                            ng-href="{{passModel.statementCopyUrlFullPath}}">
+                            <em class="fa fa-1x fa-paperclip"></em>
+                            <span class="ma-filePdf ml-sm">File.pdf</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-lg" ng-if="passModel.address.latitude">
+                <div class="col-md-6">
+                    <div class="col-md-12" style="height:500px">
+                        <section id="map" style="height:500px">
+                            <div map-lazy-load="https://maps.google.com/maps/api/js"
+                                map-lazy-load-params="{{googleMapsUrl}}" style="height:500px">
+                                <ng-map center="{{passModel.address.latitude}},{{passModel.address.longitude}}"
+                                    zoom="15" style="height:500px">
+                                    <marker draggable="false"
+                                        position="{{passModel.address.latitude}}, {{passModel.address.longitude}}">
+                                    </marker>
+                                </ng-map>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+    </div>
+
 </div>

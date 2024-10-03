@@ -594,7 +594,7 @@
     "renewFee": "Renew Fee"
   },
   "mediaMaterial": {
-    "pageTitle": "Regulate The Entry Of Media Materials",
+    "pageTitle": "Media Licence",
     "policyNumber": "AWB/ DEC Number",
     "policyDate": "AWB/ DEC Date",
     "arrivalCountry": "Country of Origin",
@@ -705,6 +705,14 @@
     "profile": "Profile",
     "signOut": "Sign Out",
     "menu": "Menu"
+  },
+  "matrialLicense": {
+    "requestnumber": "Request number",
+    "licensenumber": "License Number",
+    "submissionDate": "Request submission date",
+    "pendingReview": "Pending Review",
+    "requestStatus": "Request status",
+    "lastModified": "Last modified date"
   },
   "dashboard": {
     "applications": "Applications",

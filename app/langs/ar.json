@@ -766,6 +766,14 @@
     "mazagineName": "مجلة الاسم",
     "OwnerApproval": "موافقة المالك الرئيسي للمطبوعة"
   },
+  "matrialLicense": {
+    "requestnumber": "رقم الطلب",
+    "licensenumber": "رقم الرخصة",
+    "submissionDate": "تاريخ الارسال",
+    "pendingReview": "قيد المراجعة",
+    "requestStatus": "حالة الطلب",
+    "lastModified": "تاريخ اخر تعديل"
+  },
   "newspapercard": {
     "review": "بطاقة جريدة مراجعة",
     "header": "جريدة بطاقة",
