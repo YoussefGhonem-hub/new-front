@@ -10,7 +10,7 @@
     </div>
 
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <h2 class="app-view-header" style="font-weight: bold;">
                 <span class="back-arrow">
                     <em class="fa fa-chevron-left"></em>
@@ -23,6 +23,8 @@
 
 
     <div class="row">
+        <div class="col-md-8"></div>
+
         <div class="col-md-2">
             <span class="col-md-2">
                 <a ng-click="newspaper.exportExcel()" uib-tooltip="Excel">
@@ -40,8 +42,7 @@
                 </a>
             </span>
         </div>
-        <div class="col-md-8"></div>
-        <div class="col-md-2">
+        <div class="col-md-2 inspector">
             <button class="btn btn-primary btn-md pull-right" ng-click="newspaper.toggleFilter()">
                 <span>{{'general.filter' | translate}}</span>&nbsp;&nbsp;<em class="fa fa-filter"
                     aria-hidden="true"></em>
