@@ -23,35 +23,35 @@
         vm.selectedEntries = vm.entries[1]; // Default entry
         vm.totalNewspapers = 0;
         vm.isLoading = false; // Loader flag
+        vm.filterParams = {}; // Filter parameters for advanced filtering
 
         // Helper function to format the languages
-// Function to format languages (array of languages)
-vm.formatLanguages = function (languages) {
-    if (!languages || languages.length === 0) return '';
-    
-    // Format languages by localizing and joining them with a comma or Arabic comma based on the language
-    return languages.map(function (langObj) {
-        return $filter('localizeString')(langObj.language) + ' - ' + langObj.name;
-    }).join($rootScope.language.selected !== 'English' ? '، ' : ', ');
-};
+        vm.formatLanguages = function (languages) {
+            if (!languages || languages.length === 0) return '';
+            
+            // Format languages by localizing and joining them with a comma or Arabic comma based on the language
+            return languages.map(function (langObj) {
+                return $filter('localizeString')(langObj.language) + ' - ' + langObj.name;
+            }).join($rootScope.language.selected !== 'English' ? '، ' : ', ');
+        };
 
-vm.getNewspaperType = function (item) {
-    return item.isMagazine ? $filter('translate')('newspaperMagazineLicense.magazineOption') : $filter('translate')('newspaperMagazineLicense.newspaperOption');
-};
+        vm.getNewspaperType = function (item) {
+            return item.isMagazine ? $filter('translate')('newspaperMagazineLicense.magazineOption') : $filter('translate')('newspaperMagazineLicense.newspaperOption');
+        };
 
-vm.getIssuanceFormat = function (item) {
-    return item.isElectronic ? $filter('translate')('newspaperMagazineLicense.electronicFormat') : $filter('translate')('newspaperMagazineLicense.printedFormat');
-};
+        vm.getIssuanceFormat = function (item) {
+            return item.isElectronic ? $filter('translate')('newspaperMagazineLicense.electronicFormat') : $filter('translate')('newspaperMagazineLicense.printedFormat');
+        };
 
-// Function to format subject categories (array of categories)
-vm.getSubjectCategories = function (subjectCategories) {
-    if (!subjectCategories || subjectCategories.length === 0) return '';
-    
-    // Format subject categories by localizing them and joining with a comma or Arabic comma
-    return subjectCategories.map(function (category) {
-        return $filter('localizeString')(category.newspaperCategory);
-    }).join($rootScope.language.selected !== 'English' ? '، ' : ', ');
-};
+        // Function to format subject categories (array of categories)
+        vm.getSubjectCategories = function (subjectCategories) {
+            if (!subjectCategories || subjectCategories.length === 0) return '';
+            
+            // Format subject categories by localizing them and joining with a comma or Arabic comma
+            return subjectCategories.map(function (category) {
+                return $filter('localizeString')(category.newspaperCategory);
+            }).join($rootScope.language.selected !== 'English' ? '، ' : ', ');
+        };
 
         // Loader function
         function loader() {
@@ -76,7 +76,7 @@ vm.getSubjectCategories = function (subjectCategories) {
             vm.isLoading = false;
         }
 
-        // Load newspapers with sorting and pagination
+        // Load newspapers with sorting, pagination, and filtering
         vm.loadNewspapers = function () {
             loader(); // Show loader while fetching data
 
@@ -84,6 +84,7 @@ vm.getSubjectCategories = function (subjectCategories) {
                 page: vm.pageIndex + 1,
                 pageSize: vm.selectedEntries,
                 searchText: vm.searchText || null, // Filter text
+                filterParams: vm.filterParams || {}, // Filter parameters
                 sortBy: vm.sortBy, // Sorting column
                 sortDirection: vm.sortDirection // Sorting direction
             };
@@ -99,6 +100,20 @@ vm.getSubjectCategories = function (subjectCategories) {
                     console.error('Error loading newspapers', error);
                     removeLoader(); // Remove loader in case of error
                 });
+        };
+
+        // Apply filters
+        vm.applyFilters = function () {
+            console.log("Applying filters with params: ", vm.filterParams);
+            vm.pageIndex = 0;  // Reset to the first page when filters are applied
+            vm.loadNewspapers();  // Reload the newspapers with applied filters
+        };
+
+        // Remove filters
+        vm.removeFilter = function () {
+            vm.filterParams = {}; // Reset the filter params
+            vm.pageIndex = 0;  // Reset pagination to the first page
+            vm.loadNewspapers();  // Reload the newspapers without filters
         };
 
         // Function to handle sorting

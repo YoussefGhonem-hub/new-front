@@ -19,7 +19,7 @@
         vm.filter = {
         };
 
-        $scope.$parent.$parent.filterParams = vm.filter;
+        $scope.$parent.$parent.newspaper.filterParams = vm.filter;
 
         vm.openFromCreatedOn = function ($event) {
             vm.fromCreatedOnPopup.opened = true;
