@@ -1,187 +1,188 @@
-﻿<div class="container form-horizontal" ng-controller="filterBookController as filterCtrl">
-    <label class="text-hg text-white" data-translate="dashboard.lookingFor"></label>
-    <br /><br /><br /><br />
+﻿<div class="filter-container form-horizontal" ng-controller="filterBookController as filterCtrl">
     <div class="row form-group">
         <div class="col-md-6">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'address.Emirate' | translate}}</label>
-                <div class="col-sm-8">
-                    <ui-select ng-model="filterCtrl.filter.emirates" name="office" theme="bootstrap" class="text-left" multiple>
-                        <ui-select-match placeholder="{{'address.Emirate' | translate}}">{{$item | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="emirate in filterCtrl.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
-                            <div ng-bind-html="emirate | localizeString | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
+            <label class=" control-label text-white">{{'address.Emirate' | translate}}</label>
+            <ui-select ng-model="filterCtrl.filter.emirates" name="office" theme="bootstrap" class="text-left" multiple>
+                <ui-select-match placeholder="{{'address.Emirate' | translate}}">{{$item |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="emirate in filterCtrl.emirates | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div ng-bind-html="emirate | localizeString | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="col-md-6" ng-if="filterCtrl.filter.emirates.length == 0 || filterCtrl.filter.emirates == null">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'address.Region' | translate}}</label>
-                <div class="col-sm-8">
-                    <ui-select ng-model="filterCtrl.filter.regions" name="office" theme="bootstrap" class="text-left" multiple>
-                        <ui-select-match placeholder="{{'address.Region' | translate}}">{{$item | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="office in filterCtrl.regions | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
-                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
+            <label class=" control-label text-white">{{'address.Region' | translate}}</label>
+            <ui-select ng-model="filterCtrl.filter.regions" name="office" theme="bootstrap" class="text-left" multiple>
+                <ui-select-match placeholder="{{'address.Region' | translate}}">{{$item |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="office in filterCtrl.regions | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="col-md-6" ng-if="filterCtrl.filter.emirates.length > 0">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'address.Region' | translate}}</label>
-                <div class="col-sm-8">
-                    <ui-select ng-model="filterCtrl.filter.regions" name="office" theme="bootstrap" class="text-left" multiple>
-                        <ui-select-match placeholder="{{'address.Region' | translate}}">{{$item | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="office in filterCtrl.regions | filterByEmirate: filterCtrl.filter.emirates">
-                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
+            <label class=" control-label text-white">{{'address.Region' | translate}}</label>
+            <ui-select ng-model="filterCtrl.filter.regions" name="office" theme="bootstrap" class="text-left" multiple>
+                <ui-select-match placeholder="{{'address.Region' | translate}}">{{$item |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices repeat="office in filterCtrl.regions | filterByEmirate: filterCtrl.filter.emirates">
+                    <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
         </div>
     </div>
     <hr />
     <div class="row form-group">
         <div class="col-md-6">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'printingPermit.subject' | translate}}</label>
-                <div class="col-sm-8">
-                    <ui-select ng-model="filterCtrl.filter.subjectCategories" name="office" theme="bootstrap" class="text-left" multiple>
-                        <ui-select-match placeholder="{{'printingPermit.subject' | translate}}">{{$item | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="office in filterCtrl.subjectCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
-                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
+            <label class=" control-label text-white">{{'printingPermit.subject' | translate}}</label>
+            <ui-select ng-model="filterCtrl.filter.subjectCategories" name="office" theme="bootstrap" class="text-left"
+                multiple>
+                <ui-select-match placeholder="{{'printingPermit.subject' | translate}}">{{$item |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="office in filterCtrl.subjectCategories | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'printingPermit.languages' | translate}}</label>
-                <div class="col-sm-8">
-                    <ui-select ng-model="filterCtrl.filter.languages" name="office" theme="bootstrap" class="text-left" multiple>
-                        <ui-select-match placeholder="{{'printingPermit.languages' | translate}}">{{$item | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="office in filterCtrl.languages | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
-                            <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
+            <label class=" control-label text-white">{{'printingPermit.languages' | translate}}</label>
+            <ui-select ng-model="filterCtrl.filter.languages" name="office" theme="bootstrap" class="text-left"
+                multiple>
+                <ui-select-match placeholder="{{'printingPermit.languages' | translate}}">{{$item |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="office in filterCtrl.languages | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div ng-bind-html="office | localizeString | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
         </div>
     </div>
     <hr />
     <div class="row form-group">
         <div class="col-md-6">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'dashboard.nationalities' | translate}}</label>
-                <div class="col-sm-8">
-                    <ui-select ng-model="filterCtrl.filter.nationalities" name="nationality" theme="bootstrap" class="text-left" multiple>
-                        <ui-select-match placeholder="{{'dashboard.nationalities' | translate}}">
-                            <div class="col-md-5">
-                                <img class="img-responsive" style="max-height:25px;" ng-src="../src/imgs/Countries/{{$item.isoCode2}}.png" />
-                            </div>
-                            <div class="col-md-5 mobileHideName" style="padding-top:3px;">
-                                <span class="text-sm pull-right">{{$item | localizeString}}</span>
-                            </div>
-                        </ui-select-match>
-                        <ui-select-choices repeat="nationality in filterCtrl.nationalities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+            <label class=" control-label text-white">{{'dashboard.nationalities' | translate}}</label>
+            <ui-select ng-model="filterCtrl.filter.nationalities" name="nationality" theme="bootstrap" class="text-left"
+                multiple>
+                <ui-select-match placeholder="{{'dashboard.nationalities' | translate}}">
+                    <div class="col-md-5">
+                        <img class="img-responsive" style="max-height:25px;"
+                            ng-src="../src/imgs/Countries/{{$item.isoCode2}}.png" />
+                    </div>
+                    <div class="col-md-5 mobileHideName" style="padding-top:3px;">
+                        <span class="text-sm pull-right">{{$item | localizeString}}</span>
+                    </div>
+                </ui-select-match>
+                <ui-select-choices
+                    repeat="nationality in filterCtrl.nationalities | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <img class="img-responsive" ng-src="../src/imgs/Countries/{{nationality.isoCode2}}.png" />
+                        </div>
+                        <div class="col-md-8">
                             <div class="row">
-                                <div class="col-md-4">
-                                    <img class="img-responsive" ng-src="../src/imgs/Countries/{{nationality.isoCode2}}.png" />
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div ng-bind-html="nationality | localizeString | highlight: $select.search"></div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <small data-translate="country.countryCode"></small>: <small ng-bind-html="nationality.isoCode3 | highlight: $select.search"></small>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <small data-translate="country.phoneCode"></small>: <small ng-bind-html="nationality.phoneCode | highlight: $select.search"></small>
-                                        </div>
+                                <div class="col-md-12">
+                                    <div ng-bind-html="nationality | localizeString | highlight: $select.search">
                                     </div>
                                 </div>
                             </div>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <small data-translate="country.countryCode"></small>: <small
+                                        ng-bind-html="nationality.isoCode3 | highlight: $select.search"></small>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <small data-translate="country.phoneCode"></small>: <small
+                                        ng-bind-html="nationality.phoneCode | highlight: $select.search"></small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ui-select-choices>
+            </ui-select>
         </div>
         <div class="col-md-6">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'printingPermit.bookStatus' | translate}}</label>
-                <div class="col-sm-8">
-                    <ui-select ng-model="filterCtrl.filter.BookStatus" name="bookStatus" theme="bootstrap" class="text-left" multiple>
-                        <ui-select-match placeholder="{{'printingPermit.bookStatus' | translate}}">{{$item | localizeString}}</ui-select-match>
-                        <ui-select-choices repeat="bookStatus in filterCtrl.BookStatus | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
-                            <div ng-bind-html="bookStatus | localizeString | highlight: $select.search"></div>
-                        </ui-select-choices>
-                    </ui-select>
-                </div>
-            </div>
-        </div>
-    </div>
-    <hr />
-    <div class="row form-group">
-        <div class="col-md-6">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'printingPermit.fromBookApprovedOn' | translate}}</label>
-                <div class="col-sm-8">
-                    <p class="input-group hackyhack">
-                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.FromCreatedOn"
-                               is-open="filterCtrl.fromCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
-                        <span class="input-group-btn">
-                            <button type="button" ng-click="filterCtrl.openFromCreatedOn($event)" class="btn btn-default">
-                                <em class="fa fa-calendar"></em>
-                            </button>
-                        </span>
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="row">
-                <label class="col-sm-4 control-label text-white">{{'printingPermit.toBookApprovedOn' | translate}}</label>
-                <div class="col-sm-8">
-                    <p class="input-group hackyhack">
-                        <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.ToCreatedOn"
-                               is-open="filterCtrl.toCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close" class="form-control" />
-                        <span class="input-group-btn">
-                            <button type="button" ng-click="filterCtrl.openToCreatedOn($event)" class="btn btn-default">
-                                <em class="fa fa-calendar"></em>
-                            </button>
-                        </span>
-                    </p>
-                </div>
-            </div>
+            <label class=" control-label text-white">{{'printingPermit.bookStatus' | translate}}</label>
+            <ui-select ng-model="filterCtrl.filter.BookStatus" name="bookStatus" theme="bootstrap" class="text-left"
+                multiple>
+                <ui-select-match placeholder="{{'printingPermit.bookStatus' | translate}}">{{$item |
+                    localizeString}}</ui-select-match>
+                <ui-select-choices
+                    repeat="bookStatus in filterCtrl.BookStatus | propsFilter: {nameAr: $select.search, nameEn: $select.search}">
+                    <div ng-bind-html="bookStatus | localizeString | highlight: $select.search"></div>
+                </ui-select-choices>
+            </ui-select>
         </div>
     </div>
     <hr />
     <div class="row form-group">
         <div class="col-md-6">
-            <label class="col-sm-6 control-label text-white">{{'dashboard.saveFilter' | translate}}</label>
-            <div class="col-sm-2">
-                <label class="switch switch-lg switch-warning">
-                    <input type="checkbox" ng-model="filterCtrl.filter.saveFilter" ng-checked="filterCtrl.filter.saveFilter == true" ng-disabled="filterCtrl.filter.emirates == null &&
-                           filterCtrl.filter.subjectCategories == null && filterCtrl.filter.nationalities == null && filterCtrl.filter.regions == null
-                           && filterCtrl.filter.languages == null && filterCtrl.filter.BookApprovedStatus == null">
-                    <span></span>
+            <label class=" control-label text-white">{{'printingPermit.fromBookApprovedOn' |
+                translate}}</label>
+            <p class="input-group hackyhack">
+                <input type="text" uib-datepicker-popup="{{filterCtrl.format}}"
+                    ng-model="filterCtrl.filter.FromCreatedOn" is-open="filterCtrl.fromCreatedOnPopup.opened"
+                    min-date="false" max-date="false" close-text="Close" class="form-control" />
+                <span class="input-group-btn">
+                    <button type="button" ng-click="filterCtrl.openFromCreatedOn($event)"
+                        class="btn btn-default calender-custom">
+                        <em class="fa fa-calendar"></em>
+                    </button>
+                </span>
+            </p>
+        </div>
+        <div class="col-md-6">
+            <label class=" control-label text-white">{{'printingPermit.toBookApprovedOn' |
+                translate}}</label>
+            <p class="input-group hackyhack">
+                <input type="text" uib-datepicker-popup="{{filterCtrl.format}}" ng-model="filterCtrl.filter.ToCreatedOn"
+                    is-open="filterCtrl.toCreatedOnPopup.opened" min-date="false" max-date="false" close-text="Close"
+                    class="form-control" />
+                <span class="input-group-btn">
+                    <button type="button" ng-click="filterCtrl.openToCreatedOn($event)"
+                        class="btn btn-default calender-custom">
+                        <em class="fa fa-calendar"></em>
+                    </button>
+                </span>
+            </p>
+        </div>
+    </div>
+    <hr />
+    <div class="row form-group">
+        <div class="col-md-6">
+            <label class="control-label text-white">{{'dashboard.saveFilter' | translate}}</label>
+            <div style="display: flex; align-items: center; margin-top: 10px;">
+                <label class="radio-inline">
+                    <input type="radio" ng-model="filterCtrl.filter.saveFilter" value="true" ng-disabled="filterCtrl.filter.emirates == null &&
+                             filterCtrl.filter.subjectCategories == null &&
+                             filterCtrl.filter.nationalities == null &&
+                             filterCtrl.filter.regions == null &&
+                             filterCtrl.filter.languages == null &&
+                             filterCtrl.filter.BookApprovedStatus == null" />
+                    Yes
+                </label>
+                <label class="radio-inline" style="margin-left: 10px;">
+                    <input type="radio" ng-model="filterCtrl.filter.saveFilter" value="false" ng-disabled="filterCtrl.filter.emirates == null &&
+                             filterCtrl.filter.subjectCategories == null &&
+                             filterCtrl.filter.nationalities == null &&
+                             filterCtrl.filter.regions == null &&
+                             filterCtrl.filter.languages == null &&
+                             filterCtrl.filter.BookApprovedStatus == null" />
+                    No
                 </label>
             </div>
         </div>
+
         <div class="col-md-6">
-            <label class="col-sm-4 control-label text-white"><span>{{'dashboard.saveWithName' | translate}}</span></label>
-            <div class="col-sm-8">
-                <input ng-model="filterCtrl.filter.name" type="text" placeholder="{{'dashboard.saveWithName' | translate}}" autocomplete="off" class="form-control" validator="required"
-                       name="fullName" maxlength="120" ng-disabled="!filterCtrl.filter.saveFilter" />
-            </div>
+            <label class=" control-label text-white"><span>{{'dashboard.saveWithName' |
+                    translate}}</span></label>
+            <input ng-model="filterCtrl.filter.name" type="text" placeholder="{{'dashboard.saveWithName' | translate}}"
+                autocomplete="off" class="form-control" validator="required" name="fullName" maxlength="120"
+                ng-disabled="!filterCtrl.filter.saveFilter" />
         </div>
     </div>
     <br /><br /><br />

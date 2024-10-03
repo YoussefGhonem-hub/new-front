@@ -1,7 +1,6 @@
 /**=========================================================
  * Module: DashboardController.js
  =========================================================*/
-
 (function () {
     'use strict';
 
@@ -26,6 +25,7 @@
         vm.selectedEntries = vm.entries[1];
         vm.totalBooks = 0;
         vm.isLoading = false; // Loader flag
+        vm.filterParams = {}; // Initialize filterParams to capture filters from the modal
 
         // Helper function to format the languages
         vm.formatLanguages = function (languages) {
@@ -56,7 +56,7 @@
             vm.isLoading = false;
         }
 
-        // Load books with sorting and pagination
+        // Load books with sorting, pagination, and filters
         vm.loadBooks = function () {
             loader();  // Show loader while fetching data
 
@@ -65,7 +65,8 @@
                 pageSize: vm.selectedEntries,
                 searchText: vm.searchText || null,
                 sortBy: vm.sortBy, // No sorting if null
-                sortDirection: vm.sortDirection // No sorting if null
+                sortDirection: vm.sortDirection, // No sorting if null
+                filterParams: vm.filterParams || {} // Apply filters if any
             };
 
             $http.post($rootScope.app.httpSource + 'api/Book/GetAllBooks', params)
@@ -78,6 +79,22 @@
                     console.error('Error loading books', error);
                     removeLoader();  // Remove loader in case of error
                 });
+        };
+
+        // Apply filters
+        vm.applyFilters = function () {
+            console.log("Applying filters with params: ", vm.filterParams);
+            vm.pageIndex = 0;  // Reset to the first page when filters are applied
+            vm.loadBooks();  // Reload the books with applied filters
+            angular.element('#filterModal').modal('hide');  // Close the modal (if any)
+        };
+
+        // Remove filters
+        vm.removeFilter = function () {
+            vm.filterParams = {}; // Reset the filter params
+            vm.pageIndex = 0;  // Reset pagination to the first page
+            vm.loadBooks();  // Reload the books without filters
+            angular.element('#filterModal').modal('hide');  // Close the modal (if any)
         };
 
         // Open the modal for adding a new book

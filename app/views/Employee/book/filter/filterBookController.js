@@ -19,7 +19,7 @@
         vm.filter = {
         };
 
-        $scope.$parent.$parent.filterParams = vm.filter;
+        $scope.$parent.$parent.books.filterParams = vm.filter;
 
         // -----------------------------------------------
 
