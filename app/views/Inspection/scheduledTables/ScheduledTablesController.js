@@ -123,6 +123,8 @@
 
             vm.pageIndex = 0;
             vm.loadTaskGroups();  // Reload data with new filters
+             angular.element('#filterModal').modal('hide');
+
         };
 
         // Get total establishments

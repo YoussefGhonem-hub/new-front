@@ -89,6 +89,14 @@
                 // Close the modal after applying filters
              angular.element('#filterModal').modal('hide');
         };
+        // Remove filters
+        vm.removeFilter = function () {
+            vm.filterParams = {}; // Reset the filter params
+            vm.pageIndex = 0;  // Reset the pagination to the first page
+            vm.loadTasks();  // Reload the tasks without filters
+             angular.element('#filterModal').modal('hide');
+
+        };
 
         // Watch for changes in selectedEntries to reload data with new page size
         $scope.$watch('dashboard.selectedEntries', function (newVal, oldVal) {
