@@ -22,6 +22,7 @@
         vm.emirates = [];
         vm.communities = [];
         var searchTimeout;
+        vm.filterParams = {}; // Filter params to store filter conditions
         
         // Set up translation filter
         vm.translateFilter = $filter('translate');
@@ -90,7 +91,8 @@
             var params = {
                 page: vm.pageIndex + 1,
                 pageSize: vm.selectedEntries,
-                searchtext: vm.searchText || null
+                searchtext: vm.searchText || null,
+                filterParams: vm.filterParams // Include filter parameters if applied
             };
 
             $http.post($rootScope.app.httpSource + 'api/Establishment/GetEstablishments', params)
@@ -105,6 +107,19 @@
                 });
         };
 
+        // Apply filters
+        vm.applyFilters = function () {
+            console.log("Applying filters: ", vm.filterParams);
+            vm.pageIndex = 0;  // Reset to the first page when filters are applied
+            vm.loadTaskGroups();  // Reload the establishments with applied filters
+             angular.element('#filterModal').modal('hide');
+        };
+
+        vm.removeFilter = function () {
+            vm.filterParams = {};
+            vm.loadTaskGroups();  // Reload the establishments with applied filters
+             angular.element('#filterModal').modal('hide');
+        }
         vm.open = function (size) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/Inspection/establishments/AddEstablishment/addEstablishmnet.html',
@@ -127,7 +142,6 @@
             });
 
             modalInstance.result.then(function (establishmentBranch) {
-                //vm.CheckLicenseNumber(establishmentBranch);
                 vm.insertEstablishment(establishmentBranch);
             },
                 function () {
@@ -137,20 +151,20 @@
         ///Insert Establishment
         vm.insertEstablishment = function (establishmentBranch) {
             $http.post($rootScope.app.httpSource + 'api/Establishment/SaveEstablishment', inputRequest(establishmentBranch))
-                .then(
-                function (response) {
+                .then(function (response) {
                     var translate = $filter('translate');
-                    if(response.data == true){
+                    if (response.data == true) {
                         SweetAlert.swal(translate('establishment.success'), translate('establishment.dataAdded'), "success");
-                        vm.dtApplicationInstance.reloadData();
+                        vm.loadTaskGroups();
                     }
-                    else{
+                    else {
                         SweetAlert.swal(translate('establishment.error'), translate('establishment.alreadyExist'), "error");
                     }
                 },
-                function (error) {
-                });
-        }
+                    function (error) {
+                    });
+        };
+
         function inputRequest(establishmentBranch) {
             return {
                 "address": {
@@ -199,11 +213,6 @@
             var end = Math.min(vm.totalPages, start + 5);
             start = Math.max(0, end - 5);
             return Array.from({ length: end - start }, (_, i) => start + i);
-        };
-
-        // **Fixed checkFine function**
-        vm.checkFine = function () {
-            $window.open('/#/page/payFines/', '_blank');
         };
 
         // Search functionality with debounce

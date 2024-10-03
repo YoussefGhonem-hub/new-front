@@ -20,9 +20,13 @@
 
             $scope.$parent.$parent.scheduledTables.filterParams = vm.filter;
         }
-        else{
+        else if($scope.$parent.$parent.dashboard){
 
             $scope.$parent.$parent.dashboard.filterParams = vm.filter;
+        }
+        else if( $scope.$parent.$parent.establishment){
+
+            $scope.$parent.$parent.establishment.filterParams = vm.filter;
         }
 
         // Datepickers logic

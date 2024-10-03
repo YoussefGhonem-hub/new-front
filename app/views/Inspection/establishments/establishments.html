@@ -58,19 +58,20 @@
             </div>
         </div>
         <div class="col-md-2">
-            <!-- Dropdown to select number of rows per page -->
-            <!-- Dropdown to select number of rows per page -->
+
             <select class="form-control" ng-model="establishment.selectedEntries"
                 ng-options="entry for entry in establishment.entries" ng-change="establishment.loadTaskGroups()">
             </select>
         </div>
         <div class="col-md-2 inspector">
-            <!-- Button to open the filter modal -->
-            <button class="btn btn-primary" btn-layer-morph="establishment.click()" btn-layer="establishment.filter"
-                target="#layer-search">
+
+
+            <button class="btn btn-primary btn-md pull-right" data-toggle="modal" data-target="#filterModal">
                 <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
                     aria-hidden="true"></em>
             </button>
+
+
         </div>
     </div>
 
@@ -170,7 +171,7 @@
         </ul>
     </nav>
 
-    <div class="layer-morph-overlay">
+    <!-- <div class="layer-morph-overlay">
         <div class="layer-morph-inner bg-primary"></div>
     </div>
     <div layer-morph-close="" class="layer-morph-close">
@@ -194,13 +195,64 @@
             </div>
             <br /><br />
         </div>
+    </div> -->
+
+
+
+
+    <div id="filterModal" class="modal fade filter" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="filter-title" data-translate="dashboard.lookingFor"></p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Include the filterDashboard.html content -->
+                    <div id="layer-search" ng-include="'app/views/Dashboard/filter/filterDashboard.html'"
+                        class="layer-morph">
+                    </div>
+                    <div class="modal-footer">
+
+
+                        <div class="row mt-lg">
+                            <div class="col-md-4 pull-right"
+                                style="display: flex;
+                                                                                                            gap: 16px;
+                                                                                                            justify-content: end;
+                                                                                                            margin-right: 32px;">
+                                <button class="btn btn-md"
+                                    style="color: #997133;
+                                                                                                    border: 1px solid #997133;"
+                                    ng-click="establishment.removeFilter()">
+                                    {{"dashboard.removeFilter" | translate}}
+                                </button>
+                                <button class="btn btn-md" style="background-color: #997133; color: white;"
+                                    ng-click="establishment.applyFilters()">
+                                    {{"dashboard.applyFilter" | translate}}
+                                </button>
+                            </div>
+
+
+
+
+                        </div>
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
 
 
 
 
-<!-- 
+    <!-- 
 <div class="app-view-header">
     {{'dashboard.home' | translate}}
     <small>{{app | localizeString}} - {{app.description | localizeString}}</small>
