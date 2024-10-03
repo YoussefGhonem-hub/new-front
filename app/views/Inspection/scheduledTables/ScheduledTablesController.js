@@ -33,6 +33,9 @@
         // Task groups data
         vm.taskGroups = [];
 
+        // Filter parameters
+        vm.filterParams = {};  // Initialize the filter params as an empty object
+
         // Loader function
         function loader() {
             var htmlSectionLoader = '<div class="sk-cube-grid" style="position:fixed; top: 25%; right:47%; z-index:9999">' +
@@ -52,22 +55,16 @@
         function removeLoader() {
             angular.element('.sk-cube-grid').remove();
         }
-         vm.isObjectEmpty = function (card) {
-            if (card) {
-                return Object.keys(card).length === 0;
-            }
-            else {
-                return true;
-            }
-        }
-        // Fetch data for task groups with pagination, page size, and search filter
+
+        // Fetch data for task groups with pagination, page size, search filter, and filter params
         vm.loadTaskGroups = function () {
             loader();  // Show loader
 
             var params = {
                 page: vm.pageIndex + 1,
                 pageSize: (vm.selectedEntries ?? 10),
-                searchtext: vm.searchText || null  // If searchText is empty, send an empty string
+                searchtext: vm.searchText || null,  // If searchText is empty, send null
+                filterParams: vm.filterParams  // Include the filter params in the request
             };
 
             $http.post($rootScope.app.httpSource + 'api/TaskGroup/GetTaskGroups', params)
@@ -88,6 +85,7 @@
             console.log("addScheduleTable =>>");
             $state.go('app.scheduleInspectors');
         };
+
         vm.edit = function (taskGroupId) {
             $state.go('app.scheduleInspectors', { id: taskGroupId });
         };
@@ -95,9 +93,6 @@
         vm.review = function (Id) {
             $state.go('app.scheduleInspectors', { id: Id });
         };
-
-        // Initialize by loading task groups
-        vm.loadTaskGroups();
 
         // Watch for changes in selectedEntries to reload data with new page size
         $scope.$watch('scheduledTables.selectedEntries', function (newVal, oldVal) {
@@ -108,30 +103,34 @@
             }
         });
 
-        // Debounced search filter
+        // Watch for changes in searchText to reload data with debounce
         $scope.$watch('scheduledTables.searchText', function (newVal, oldVal) {
             if (newVal !== oldVal) {
-                // Clear the existing timeout if the user is still typing
                 if (searchTimeout) {
                     $timeout.cancel(searchTimeout);
                 }
 
-                // Set a new timeout for 2 seconds before executing the search
                 searchTimeout = $timeout(function () {
-                    vm.pageIndex = 0;  // Reset to first page when search is applied
+                    vm.pageIndex = 0;
                     vm.loadTaskGroups();
-                }, 2000);  // 2 seconds debounce time
+                }, 2000);  // 2 seconds debounce
             }
         });
+
+        // Apply filters when they change
+        vm.applyFilters = function () {
+            console.log(" vm.filterParams", vm.filterParams);
+
+            vm.pageIndex = 0;
+            vm.loadTaskGroups();  // Reload data with new filters
+        };
 
         // Get total establishments
         vm.getEstablishmentCount = function (task) {
             var numberOfEstablishments = 0;
 
-            // Check if task and taskGroupEmployees exist
             if (task && task.taskGroupEmployees && Array.isArray(task.taskGroupEmployees)) {
                 task.taskGroupEmployees.forEach(function (employee) {
-                    // Ensure taskLists exists and is an array
                     if (employee.taskLists && Array.isArray(employee.taskLists)) {
                         numberOfEstablishments += employee.taskLists.length;
                     }
@@ -163,7 +162,6 @@
             }
         };
 
-        // Pagination range calculation
         vm.getPageRange = function () {
             var start = Math.max(0, vm.pageIndex - Math.floor(vm.visiblePages / 2));
             var end = Math.min(vm.totalPages, start + vm.visiblePages);
@@ -171,7 +169,7 @@
             return Array.from({ length: end - start }, (_, i) => start + i);
         };
 
-                vm.exportExcel = function () {
+        vm.exportExcel = function () {
             $http.post($rootScope.app.httpSource + 'api/Application/ExportExcel', vm.params, { responseType: 'arraybuffer' })
                 .then(function (resp) {
                     var data = new Blob([resp.data], { type: 'application/vnd.ms-excel' });
@@ -180,6 +178,7 @@
                 function (response) {
                 });
         };
+
         vm.exportPDF = function () {
             $http.post($rootScope.app.httpSource + 'api/Application/ExportToPdf', vm.params, { responseType: 'arraybuffer' })
                 .then(function (resp) {
@@ -189,8 +188,8 @@
                 function (response) {
                 });
         };
-        vm.exportCSV = function () {
 
+        vm.exportCSV = function () {
             $http.post($rootScope.app.httpSource + 'api/Application/ExportCSV', vm.params)
                 .then(function (resp) {
                     var myBlob = new Blob([resp.data], { type: 'text/html' });
@@ -205,8 +204,12 @@
                 function (response) {
                 });
         };
+
+        // Initialize by loading task groups
+        vm.loadTaskGroups();
     }
 })();
+
 
 
 

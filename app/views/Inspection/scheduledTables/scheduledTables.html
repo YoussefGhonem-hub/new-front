@@ -182,26 +182,35 @@
                     <div ng-include="'app/views/Dashboard/filter/filterDashboard.html'"></div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning custom-button"
-                        ng-click="scheduledTables.removeFilter(this)">
-                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
-                    </button>
-                    <ng-container class="inspector">
-                        <button type="button" class="btn btn-primary" ng-click="scheduledTables.filter(this)">
-                            {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check"
-                                aria-hidden="true"></em>
-                        </button>
-                    </ng-container>
+                    <div class="row mt-lg">
+                        <div class="col-md-4 pull-right" style="display: flex;
+                                                                gap: 16px;
+                                                                justify-content: end;
+                                                                margin-right: 32px;">
+                            <button class="btn btn-md" style="color: #997133;
+                                                        border: 1px solid #997133;" btn-layer="bookFilter"
+                                layer-morph-close="" ng-click="books.removeFilter(this)">
+                                {{"dashboard.removeFilter" | translate}}
+                            </button>
+                            <button class="btn btn-md" style="background-color: #997133; color: white;"
+                                btn-layer="bookFilter" layer-morph-filter="" ng-click="scheduledTables.applyFilters()">
+                                {{"dashboard.applyFilter" | translate}}
+                            </button>
+                        </div>
+
+
+
+
+                    </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-</div>
 
 
-
-<!-- 
+    <!-- 
 
 <div class="app-view-header">
     {{'dashboard.home' | translate}}

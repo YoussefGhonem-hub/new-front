@@ -1,7 +1,6 @@
 /**=========================================================
  * Module: DashboardController.js
  =========================================================*/
-
 (function () {
     'use strict';
 
@@ -10,20 +9,16 @@
         .controller('FilterDashboardController', FilterDashboardController);
 
     FilterDashboardController.$inject = ['$rootScope', '$scope', 'UserProfile', '$filter', '$http'];
+    
     function FilterDashboardController($rootScope, $scope, UserProfile, $filter, $http) {
         var vm = this;
         vm.user = UserProfile.getProfile();
-        vm.dtApplicationInstance = {};
-        vm.translateFilter = $filter('translate');
         vm.filter = {};
 
-        $scope.$parent.$parent.filterParams = vm.filter;
+        // Bind the filter to the parent scope so that the filter can be applied from the modal
+        $scope.$parent.$parent.scheduledTables.filterParams = vm.filter;
 
-        // -----------------------------------------------
-
-        // -----------------------------------
-        // Filter Datepicker
-        // -----------------------------------
+        // Datepickers logic
         vm.openFromCreatedOn = function ($event) {
             vm.fromCreatedOnPopup.opened = true;
         };
@@ -74,6 +69,7 @@
             opened: false
         };
 
+        // Fetch data for dropdowns
         $http.get($rootScope.app.httpSource + 'api/Emirate')
         .then(function (response) {
             vm.emirates = response.data;
@@ -125,3 +121,4 @@
         });
     }
 })();
+
