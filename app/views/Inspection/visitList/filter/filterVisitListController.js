@@ -18,7 +18,7 @@
         vm.filter = {};
         vm.employees = [];
 
-        $scope.$parent.$parent.filterParams = vm.filter;
+        $scope.$parent.$parent.visit.filterParams = vm.filter;
 
         // -----------------------------------------------
 

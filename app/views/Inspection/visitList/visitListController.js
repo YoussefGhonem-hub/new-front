@@ -18,11 +18,11 @@
         vm.selectedEntries = vm.entries[1];
         vm.searchText = '';
         vm.visits = [];
+        vm.filterParams = {}; // Initialize filterParams to hold filter values
         var searchTimeout;
 
         vm.language = $rootScope.language.selected; // Language for translation
         vm.employees = [];
-        vm.filterParams = {};
 
         // Function to show loader
         function showLoader() {
@@ -89,15 +89,15 @@
                 });
         };
 
-        // Function to load visits
+        // Load visits with pagination, filtering, and searching
         vm.loadVisits = function () {
-            // Show loader before the API call
-            showLoader();
+            showLoader(); // Show loader before API call
 
             var params = {
                 page: vm.pageIndex + 1,
                 pageSize: vm.selectedEntries,
-                searchtext: vm.searchText || null
+                searchtext: vm.searchText || null,
+                filterParams: vm.filterParams || {} // Apply filters if any
             };
 
             $http.post($rootScope.app.httpSource + 'api/Visit/GetVisit', params)
@@ -115,9 +115,22 @@
                     }
                 })
                 .finally(function () {
-                    // Hide loader after the API call completes
-                    hideLoader();
+                    hideLoader(); // Hide loader after API call
                 });
+        };
+
+        // Apply filters
+        vm.applyFilters = function () {
+            console.log("Applying filters with params: ", vm.filterParams);
+            vm.pageIndex = 0;  // Reset to the first page when filters are applied
+            vm.loadVisits();  // Reload the visits with applied filters
+        };
+
+        // Remove filters
+        vm.removeFilter = function () {
+            vm.filterParams = {}; // Reset the filter params
+            vm.pageIndex = 0;  // Reset pagination to the first page
+            vm.loadVisits();  // Reload the visits without filters
         };
 
         // Pagination control functions
@@ -204,10 +217,10 @@
                 }
             });
         };
+
         vm.unscheduledvisit = function () {
             $state.go('app.unscheduledvisit');
-
-        }
+        };
 
         // Initial load of visits
         vm.loadVisits();
