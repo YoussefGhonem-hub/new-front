@@ -181,24 +181,22 @@
                     <!-- Include the filterDashboard.html content -->
                     <div ng-include="'app/views/Dashboard/filter/filterDashboard.html'"></div>
                 </div>
-                <div class="modal-footer ">
-                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">{{'dashboard.close' | translate}}</button> -->
+                <div class="modal-footer">
                     <button type="button" class="btn btn-warning custom-button"
                         ng-click="scheduledTables.removeFilter(this)">
                         {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
                     </button>
                     <ng-container class="inspector">
-
                         <button type="button" class="btn btn-primary" ng-click="scheduledTables.filter(this)">
                             {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check"
                                 aria-hidden="true"></em>
                         </button>
-
                     </ng-container>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 
 

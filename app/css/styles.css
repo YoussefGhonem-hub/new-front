@@ -12568,7 +12568,6 @@ footer.newFooter {
 
 
 /* Grid styles */
-
 /* Custom styles for the table and pagination */
 .table th,
 .table td {
@@ -12583,12 +12582,10 @@ footer.newFooter {
 
 .table tbody tr:nth-child(odd) {
     background-color: rgba(241, 236, 229, 1);
-
 }
 
 .table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
-
 }
 
 .btn-progress {
@@ -12596,6 +12593,15 @@ footer.newFooter {
     color: white;
     border: none;
     padding: 5px 10px;
+    margin-inline-start: auto;
+    /* LTR alignment */
+    margin-inline-end: 0;
+}
+
+/* RTL-specific button alignment */
+html[lang="ar"] .btn-progress {
+    margin-inline-start: 0;
+    margin-inline-end: auto;
 }
 
 .btn-progress:hover {
@@ -12626,8 +12632,6 @@ footer.newFooter {
 }
 
 /* Hover effect on table rows */
-
-
 
 /* Custom layout for LTR */
 .custom-flex-row {
@@ -12669,21 +12673,19 @@ html[lang="ar"] .menuList li.active a span::after {
 
 .filter .modal-header .close {
     margin-top: -26px !important;
-
 }
 
 .filter-title {
     font-size: 24px;
     font-weight: 300;
     margin-bottom: auto;
-
 }
 
 .inspector button.btn {
     background: #997133;
     border: none;
     border-radius: 0.3rem;
-        width: 100%;
+    width: 100%;
 }
 
 .custom-button {
@@ -12707,9 +12709,15 @@ html[lang="ar"] .menuList li.active a span::after {
     display: inline-block;
     font-size: 17px;
     /* Adjust the size of the arrow */
-    margin-right: 10px;
-    /* Space between arrow and text */
+    margin-inline-start: 10px;
+    /* Logical property to adjust based on direction */
     cursor: pointer;
+}
+
+/* RTL-specific for back-arrow */
+html[lang="ar"] .back-arrow {
+    margin-inline-start: 0;
+    margin-inline-end: 10px;
 }
 
 .table th {
@@ -12739,12 +12747,18 @@ html[lang="ar"] .menuList li.active a span::after {
 }
 
 .action-icons .dropdown-item em {
-    margin-right: 8px;
-    /* Add space between icon and text */
+    margin-inline-start: 8px;
+    /* Logical property for spacing between icon and text */
     color: #997133;
     /* Color of the icons */
     font-size: 16px;
     /* Icon size */
+}
+
+/* RTL-specific for dropdown-item */
+html[lang="ar"] .action-icons .dropdown-item em {
+    margin-inline-start: 0;
+    margin-inline-end: 8px;
 }
 
 .action-icons .dropdown-item:hover {
@@ -12782,7 +12796,7 @@ html[lang="ar"] .menuList li.active a span::after {
 }
 
 .status-unknown {
-    background-color: #e2e3e5;
+    background-color: #e2e5e7;
     color: #6c757d;
     padding: 5px 10px;
     border-radius: 5px;
@@ -12849,11 +12863,9 @@ html[lang="ar"] .menuList li.active a span::after {
     cursor: default;
 }
 
-
 /* filter inspector */
-
 .filter-container {
-    background-color: #efede8;
+    background-color: rgba(239, 232, 222, 1);
     padding: 20px;
     border-radius: 10px;
 }
@@ -12869,7 +12881,6 @@ html[lang="ar"] .menuList li.active a span::after {
     justify-content: space-between;
     margin-bottom: 15px;
 }
-
 
 .filter-container label {
     font-size: 14px;
@@ -12906,10 +12917,16 @@ html[lang="ar"] .menuList li.active a span::after {
 .filter-container .btn {
     padding: 10px 20px;
     font-size: 14px;
-    margin-left: 10px;
+    margin-inline-start: 10px;
     border: none;
     cursor: pointer;
     border-radius: 5px;
+}
+
+/* RTL-specific button margin */
+html[lang="ar"] .filter-container .btn {
+    margin-inline-start: 0;
+    margin-inline-end: 10px;
 }
 
 .filter-container .btn-primary {
@@ -12930,7 +12947,6 @@ html[lang="ar"] .menuList li.active a span::after {
 
 .filter-container .form-control {
     padding: 8px 3px 0 3px !important;
-
 }
 
 .breadcrumb-container {
@@ -12947,13 +12963,18 @@ html[lang="ar"] .menuList li.active a span::after {
     display: flex;
     align-items: center;
     text-transform: capitalize;
-    margin-left: 20px;
-    /* Adjust according to your layout */
+    margin-inline-start: 20px;
 }
 
 .breadcrumb-text em {
-    margin: 0 5px;
-        font-size: 10px;
+    margin-inline-start: 5px;
+    font-size: 10px;
+}
+
+/* RTL-specific for breadcrumb-text */
+html[lang="ar"] .breadcrumb-text {
+    margin-inline-start: 0;
+    margin-inline-end: 20px;
 }
 
 .app-view-header {
@@ -12965,7 +12986,7 @@ html[lang="ar"] .menuList li.active a span::after {
 }
 
 .back-arrow {
-    margin-right: 10px;
+    margin-inline-start: 10px;
     cursor: pointer;
 }
 
@@ -12979,10 +13000,9 @@ html[lang="ar"] .menuList li.active a span::after {
     align-items: center;
 }
 
-
 .sort-icons {
     display: inline-block;
-    margin-left: 5px;
+    margin-inline-start: 5px;
     vertical-align: middle;
 }
 
@@ -12991,7 +13011,7 @@ html[lang="ar"] .menuList li.active a span::after {
     font-size: 10px;
     color: #ccc;
     cursor: pointer;
-    margin-left: 3px;
+    margin-inline-start: 3px;
 }
 
 .fa-caret-up.active,
@@ -13031,7 +13051,7 @@ th {
     }
 }
 
-/* Amr Css  */
+/* Amr Css */
 .stepper {
     display: flex;
     flex-direction: column;
@@ -13044,7 +13064,6 @@ th {
     height: 112px;
     border-radius: 3px;
     background-color: #fff;
-    /* box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); */
 }
 
 .step-wrapper {
@@ -13077,7 +13096,6 @@ th {
     border-radius: 6px;
     position: relative;
     bottom: 11px;
-
 }
 
 .step-Done {
@@ -13212,4 +13230,61 @@ th {
 
 .cal-day-today span[data-cal-date] {
     color: #fff !important;
+}
+
+
+/*  filters */
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f1edea;
+    /* Match the modal content background */
+    border-top: 1px solid #ccc;
+}
+
+.modal-footer .custom-button {
+    background-color: transparent;
+    color: #997133;
+    border: 1px solid #997133;
+    padding: 8px 15px;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.modal-footer .custom-button:hover {
+    background-color: #997133;
+    color: white;
+}
+
+.modal-footer .btn-primary {
+    background-color: #997133;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.modal-footer .btn-primary:hover {
+    background-color: #b07d3e;
+    border-color: #b07d3e;
+}
+
+.modal-footer .btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-footer em {
+    margin-left: 5px;
+    /* Space between the text and the icon */
+}
+
+.modal-footer .inspector {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
 }
