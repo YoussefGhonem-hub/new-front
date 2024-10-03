@@ -54,28 +54,30 @@
             }
 
             // Load applications with sorting and pagination
-            vm.loadApplications = function () {
-                loader();  // Show loader while fetching data
+        vm.loadApplications = function () {
+            console.log('Selected Entries:', vm.selectedEntries); // Debugging
+            loader();  // Show loader while fetching data
 
-                var params = {
-                    page: vm.pageIndex + 1,
-                    pageSize: vm.selectedEntries,
-                    searchText: vm.searchText || null,
-                    sortBy: vm.sortBy, // No sorting if null
-                    sortDirection: vm.sortDirection // No sorting if null
-                };
-
-                $http.post($rootScope.app.httpSource + 'api/Application/GetApplications', params)
-                    .then(function (response) {
-                        vm.applications = response.data.content;
-                        vm.totalApplications = response.data.totalRecords || 0;
-                        vm.totalPages = Math.ceil(vm.totalApplications / vm.selectedEntries);
-                        removeLoader();  // Remove loader after fetching data
-                    }, function (error) {
-                        console.error('Error loading applications', error);
-                        removeLoader();  // Remove loader in case of error
-                    });
+            var params = {
+                page: vm.pageIndex + 1,
+                pageSize: vm.selectedEntries, // Ensure this is the selected entries value
+                searchText: vm.searchText || null,
+                sortBy: vm.sortBy, // No sorting if null
+                sortDirection: vm.sortDirection // No sorting if null
             };
+
+    $http.post($rootScope.app.httpSource + 'api/Application/GetApplications', params)
+        .then(function (response) {
+            vm.applications = response.data.content;
+            vm.totalApplications = response.data.totalRecords || 0;
+            vm.totalPages = Math.ceil(vm.totalApplications / vm.selectedEntries);
+            removeLoader();  // Remove loader after fetching data
+        }, function (error) {
+            console.error('Error loading applications', error);
+            removeLoader();  // Remove loader in case of error
+        });
+};
+
 
       // Function to format consumedTime in whole minutes
         vm.formatConsumedTime = function (consumedTime) {
