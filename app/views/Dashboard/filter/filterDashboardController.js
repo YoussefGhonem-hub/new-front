@@ -16,7 +16,14 @@
         vm.filter = {};
 
         // Bind the filter to the parent scope so that the filter can be applied from the modal
-        $scope.$parent.$parent.scheduledTables.filterParams = vm.filter;
+        if($scope.$parent.$parent.scheduledTables){
+
+            $scope.$parent.$parent.scheduledTables.filterParams = vm.filter;
+        }
+        else{
+
+            $scope.$parent.$parent.dashboard.filterParams = vm.filter;
+        }
 
         // Datepickers logic
         vm.openFromCreatedOn = function ($event) {

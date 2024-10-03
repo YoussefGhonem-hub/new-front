@@ -56,11 +56,12 @@
             </button> -->
 
             <button ng-if="dashboard.userFilters == null || dashboard.userFilters.length == 0"
-                class="btn btn-primary btn-md pull-right" btn-layer-morph="dashboard.click()"
-                btn-layer="dashboard.filter" target="#layer-search">
+                class="btn btn-primary btn-md pull-right" ng-click="scheduledTables.applyFilters()" data-toggle="modal"
+                data-target="#filterModal">
                 <span data-translate="general.filter"></span>&nbsp;&nbsp;<em class="fa fa-filter"
                     aria-hidden="true"></em>
             </button>
+
         </div>
     </div>
 
@@ -198,29 +199,50 @@
     </nav>
 
     <!-- Layer Morph-->
-    <div class="layer-morph-overlay">
-        <div class="layer-morph-inner bg-primary"></div>
-    </div>
-    <div layer-morph-close="" class="layer-morph-close">
-        <em class="fa fa-close"></em>
-    </div>
-    <div class="layer-morph-container bg-primary">
-        <div class="layer-morph-wrapper">
-            <div id="layer-search" ng-include="'app/views/Dashboard/filter/filterDashboard.html'" class="layer-morph">
-            </div>
-            <div class="row">
-                <div class="col-md-4 pull-right">
-                    <button class="btn btn-warning btn-md" btn-layer="customerFilter" layer-morph-close=""
-                        ng-click="dashboard.removeFilter(this)">
-                        {{"dashboard.removeFilter" | translate}}&nbsp;<em class="fa fa-close" aria-hidden="true"></em>
-                    </button>
-                    <button class="btn btn-default btn-md" btn-layer="customerFilter" layer-morph-filter=""
-                        ng-click="dashboard.applyFilter(this)">
-                        {{"dashboard.applyFilter" | translate}}&nbsp;<em class="fa fa-check" aria-hidden="true"></em>
+    <div id="filterModal" class="modal fade filter" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <p class="filter-title" data-translate="dashboard.lookingFor"></p>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+                <div class="modal-body">
+                    <!-- Include the filterDashboard.html content -->
+                    <div ng-include="'app/views/Dashboard/filter/filterDashboard.html'"></div>
+                </div>
+                <div class="modal-footer">
+
+
+                    <div class="row mt-lg">
+                        <div class="col-md-4 pull-right"
+                            style="display: flex;
+                                                                                                        gap: 16px;
+                                                                                                        justify-content: end;
+                                                                                                        margin-right: 32px;">
+                            <button class="btn btn-md"
+                                style="color: #997133;
+                                                                                                border: 1px solid #997133;"
+                                btn-layer="bookFilter" layer-morph-close="" ng-click="books.removeFilter(this)">
+                                {{"dashboard.removeFilter" | translate}}
+                            </button>
+                            <button class="btn btn-md" style="background-color: #997133; color: white;"
+                                ng-click="dashboard.applyFilters()">
+                                {{"dashboard.applyFilter" | translate}}
+                            </button>
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+                </div>
             </div>
-            <br /><br />
         </div>
     </div>
 </div>
