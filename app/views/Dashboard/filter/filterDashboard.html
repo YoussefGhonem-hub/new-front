@@ -2,8 +2,8 @@
     <div class="row form-group">
         <div class="col-md-6">
             <label class="control-label">{{'address.Emirate' | translate}}</label>
-            <ui-select ng-model="filterCtrl.filter.emirates" name="office" theme="bootstrap" class="form-control" style="cursor: pointer;"
-                multiple>
+            <ui-select ng-model="filterCtrl.filter.emirates" name="office" theme="bootstrap" class="form-control"
+                style="cursor: pointer;" multiple>
                 <ui-select-match placeholder="{{'address.Emirate' | translate}}">{{$item |
                     localizeString}}</ui-select-match>
                 <ui-select-choices
@@ -311,8 +311,53 @@
         </div>
     </div>
     <hr />
-    <div class=" form-group">
+    <div class="">
         <div class="col-md-6">
+            <div class="form-group" style="
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;">
+                <label class="control-label text-white">{{'dashboard.saveFilter' | translate}}</label>
+                <div class="radio-container" style="display: flex;">
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="filterCtrl.filter.saveFilter" value="true" ng-disabled="filterCtrl.filter.emirates == null &&
+                                         filterCtrl.filter.applicationStatuses == null &&
+                                         filterCtrl.filter.serviceCategories == null &&
+                                         filterCtrl.filter.services == null &&
+                                         filterCtrl.filter.economicActivities == null &&
+                                         filterCtrl.filter.nationalities == null &&
+                                         filterCtrl.filter.publicationTypes == null &&
+                                         filterCtrl.filter.mediaMaterialTypes == null &&
+                                         filterCtrl.filter.fromCreatedOn == null &&
+                                         filterCtrl.filter.toCreatedOn == null &&
+                                         filterCtrl.filter.fromLicenseCreatedOn == null &&
+                                         filterCtrl.filter.toLicenseCreatedOn == null &&
+                                         filterCtrl.filter.calculatedApplicationStatuses == null &&
+                                         filterCtrl.filter.regions == null" />
+                        Yes
+                    </label>
+                    <label class="radio-inline" style="margin-left: 10px;">
+                        <input type="radio" ng-model="filterCtrl.filter.saveFilter" value="false" ng-disabled="filterCtrl.filter.emirates == null &&
+                                         filterCtrl.filter.applicationStatuses == null &&
+                                         filterCtrl.filter.serviceCategories == null &&
+                                         filterCtrl.filter.services == null &&
+                                         filterCtrl.filter.economicActivities == null &&
+                                         filterCtrl.filter.nationalities == null &&
+                                         filterCtrl.filter.publicationTypes == null &&
+                                         filterCtrl.filter.mediaMaterialTypes == null &&
+                                         filterCtrl.filter.fromCreatedOn == null &&
+                                         filterCtrl.filter.toCreatedOn == null &&
+                                         filterCtrl.filter.fromLicenseCreatedOn == null &&
+                                         filterCtrl.filter.toLicenseCreatedOn == null &&
+                                         filterCtrl.filter.calculatedApplicationStatuses == null &&
+                                         filterCtrl.filter.regions == null" />
+                        No
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="col-md-6">
             <div class="form-group"
             style="
                display: flex;
@@ -343,8 +388,8 @@
                     </label>
                 </div>
             </div>
-        </div>
-        
+        </div> -->
+
         <div class="col-md-6">
             <label class="control-label"><span>{{'dashboard.saveWithName' | translate}}</span></label>
             <input ng-model="filterCtrl.filter.name" type="text" placeholder="{{'dashboard.saveWithName' | translate}}"
