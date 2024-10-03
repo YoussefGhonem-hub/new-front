@@ -165,19 +165,50 @@
         </div>
     </div>
 
-    <!-- Pagination -->
+
     <nav aria-label="Page navigation" class="mt-3">
         <ul class="pagination justify-content-center custom-pagination">
+            <!-- Previous Button -->
             <li class="page-item" ng-class="{disabled: books.pageIndex === 0}" ng-click="books.previousPage()">
-                <a class="page-link">&lsaquo;</a>
+                <a class="page-link">
+                    <span aria-hidden="true">&lsaquo;</span>
+                </a>
             </li>
+
+            <!-- First Page -->
+            <li class="page-item" ng-if="books.pageIndex > 2" ng-click="books.goToPage(0)">
+                <a class="page-link">1</a>
+            </li>
+
+            <!-- Ellipsis for Pages Skipped -->
+            <li class="page-item" ng-if="books.pageIndex > 2">
+                <span class="page-link">...</span>
+            </li>
+
+            <!-- Page Numbers Range -->
             <li class="page-item" ng-repeat="page in books.getPageRange()" ng-class="{active: page === books.pageIndex}"
                 ng-click="books.goToPage(page)">
                 <a class="page-link">{{ page + 1 }}</a>
             </li>
+
+            <!-- Ellipsis for Skipped Pages After -->
+            <li class="page-item" ng-if="books.pageIndex < books.totalPages - 3">
+                <span class="page-link">...</span>
+            </li>
+
+            <!-- Last Page -->
+            <!-- Last Page -->
+            <li class="page-item" ng-if="books.pageIndex < books.totalPages - 3"
+                ng-click="books.goToPage(books.totalPages - 1)">
+                <a class="page-link">{{ books.totalPages }}</a>
+            </li>
+
+            <!-- Next Button -->
             <li class="page-item" ng-class="{disabled: books.pageIndex === books.totalPages - 1}"
                 ng-click="books.nextPage()">
-                <a class="page-link">&rsaquo;</a>
+                <a class="page-link">
+                    <span aria-hidden="true">&rsaquo;</span>
+                </a>
             </li>
         </ul>
     </nav>
